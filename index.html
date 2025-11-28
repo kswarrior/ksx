@@ -1,341 +1,57 @@
-<!DOCTYPE html>
-
+<!doctype html>
 <html lang="en">
-
 <head>
+  <meta charset="utf-8" />
 
-  <meta charset="UTF-8">
+  <!-- Mobile + performance -->
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+  <!-- SEO Essentials -->
   <title>KS Warrior</title>
+  <meta name="description" content="KS Warrior – Fast, modern tech website with clean UI and powerful tools." />
+  <meta name="robots" content="index, follow" />
+
+  <!-- Social Sharing -->
+  <meta property="og:title" content="KS Warrior">
+  <meta property="og:description" content="Explore KS Warrior – modern tools, gaming, and tech content.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://ks-main.pages.dev/">
+
+  <!-- Performance -->
+  <link rel="preconnect" href="https://ksx.pages.dev">
+  <link rel="dns-prefetch" href="https://ksx.pages.dev">
 
   <style>
-
-    body {
-
+    html, body {
       margin: 0;
-
-      font-family: 'Poppins', sans-serif;
-
-      background: white;
-
-    }
-
-    /* Header */
-
-    .header {
-
+      padding: 0;
+      height: 100%;
       width: 100%;
-
-      background: #0A73FF;
-
-      color: white;
-
-      padding: 15px 20px;
-
-      display: flex;
-
-      align-items: center;
-
-      justify-content: space-between;
-
-      position: fixed;
-
-      top: 0;
-
-      left: 0;
-
-      z-index: 1000;
-
-    }
-
-    .header-left {
-
-      font-size: 22px;
-
-      font-weight: 600;
-
-      display: flex;
-
-      align-items: center;
-
-      gap: 10px;
-
-    }
-
-    .header-icons span {
-
-      font-size: 22px;
-
-      cursor: pointer;
-
-    }
-
-    /* Search Dropdown */
-
-    #search-container {
-
-      width: 100%;
-
-      background: #ffffff;
-
-      padding: 10px 20px;
-
-      border-bottom: 2px solid #0A73FF;
-
-      display: none;
-
-      position: fixed;
-
-      top: 60px;
-
-      left: 0;
-
-      z-index: 900;
-
-    }
-
-    #search-input {
-
-      width: 100%;
-
-      padding: 12px;
-
-      border: 2px solid #0A73FF;
-
-      border-radius: 10px;
-
-      font-size: 16px;
-
-    }
-
-    /* Search Results */
-
-    #search-results {
-
-      margin-top: 10px;
-
-      background: #f1f6ff;
-
-      border-radius: 10px;
-
-      display: none;
-
-      padding: 10px;
-
-    }
-
-    .result-item {
-
-      padding: 10px;
-
-      border-bottom: 1px solid #c5d8ff;
-
-      display: flex;
-
-      align-items: center;
-
-      cursor: pointer;
-
-      transition: 0.2s;
-
-    }
-
-    .result-item:hover {
-
-      background: #e2ecff;
-
-    }
-
-    .result-item img {
-
-      width: 30px;
-
-      height: 30px;
-
-      border-radius: 5px;
-
-      margin-right: 10px;
-
+      overflow: hidden;
+      background: #000;
     }
 
     iframe {
-
-      width: 100%;
-
-      height: calc(100vh - 60px);
-
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
       border: none;
-
-      margin-top: 60px;
-
-      transition: 0.3s ease;
-
+      display: block;
     }
-
   </style>
-
 </head>
 
 <body>
-
-  <!-- Header -->
-
-  <div class="header">
-
-    <div class="header-left">☰ KS Warrior</div>
-
-    <div class="header-icons">
-
-      <span id="search-btn">🔍</span>
-
-      <span>👤</span>
-
-    </div>
-
-  </div>
-
-  <!-- Search Dropdown -->
-
-  <div id="search-container">
-
-    <input type="text" id="search-input" placeholder="Search tools like Pterodactyl, Puffer Panel, VPS...">
-
-    <div id="search-results"></div>
-
-  </div>
-
-  <!-- Dashboard -->
-
-  <iframe id="main-frame" src="dashboard.html"></iframe>
-
-<script>
-
-let searchOpen = false;
-
-const searchBtn = document.getElementById("search-btn");
-
-const searchContainer = document.getElementById("search-container");
-
-const searchInput = document.getElementById("search-input");
-
-const searchResults = document.getElementById("search-results");
-
-const iframe = document.getElementById("main-frame");
-
-// Show/hide search bar
-
-searchBtn.addEventListener("click", () => {
-
-  searchOpen = !searchOpen;
-
-  if (searchOpen) {
-
-    searchContainer.style.display = "block";
-
-    iframe.style.marginTop = "140px";
-
-    iframe.style.height = "calc(100vh - 140px)";
-
-    searchInput.focus();
-
-  } else {
-
-    searchContainer.style.display = "none";
-
-    searchResults.style.display = "none";
-
-    iframe.style.marginTop = "60px";
-
-    iframe.style.height = "calc(100vh - 60px)";
-
-  }
-
-});
-
-// Load JSON data
-
-let dataList = [];
-
-fetch("search-data.json")
-
-  .then(res => res.json())
-
-  .then(data => dataList = data);
-
-// LIVE SEARCH
-
-searchInput.addEventListener("input", () => {
-
-  const query = searchInput.value.toLowerCase();
-
-  if (query.trim() === "") {
-
-    searchResults.style.display = "none";
-
-    return;
-
-  }
-
-  const filtered = dataList.filter(item =>
-
-    item.name.toLowerCase().includes(query)
-
-  );
-
-  displayResults(filtered);
-
-});
-
-// Show results
-
-function displayResults(list) {
-
-  if (list.length === 0) {
-
-    searchResults.innerHTML = "<p>No results found</p>";
-
-    searchResults.style.display = "block";
-
-    return;
-
-  }
-
-  searchResults.innerHTML = "";
-
-  searchResults.style.display = "block";
-
-  list.forEach(item => {
-
-    const div = document.createElement("div");
-
-    div.className = "result-item";
-
-    div.innerHTML = `
-
-      <img src="${item.logo}">
-
-      <span>${item.name}</span>
-
-    `;
-
-    // On click load in iframe
-
-    div.onclick = () => {
-
-      iframe.src = item.url;
-
-    };
-
-    searchResults.appendChild(div);
-
-  });
-
-}
-
-</script>
-
+  <iframe
+    src="https://ksx.pages.dev/"
+    title="KS Warrior Main"
+    loading="eager"
+    allowfullscreen
+    referrerpolicy="no-referrer"
+    sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
+  >
+  </iframe>
 </body>
-
 </html>
