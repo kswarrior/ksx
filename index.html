@@ -1,57 +1,241 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>KS Warrior – Official KSX Dashboard & Tools</title>
+  <meta name="description" content="KS Warrior (KSX) — official dashboard for panels, tools and hosting links. Fast, secure, and maintained resource hub for gaming & tech." />
+  <meta name="keywords" content="KS Warrior, KSX, ksx.pages.dev, Pterodactyl, Puffer Panel, VPS, dashboard, hosting tools" />
+  <link rel="canonical" href="https://ksx.pages.dev/" />
 
-  <!-- Mobile + performance -->
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <!-- Open Graph -->
+  <meta property="og:site_name" content="KS Warrior" />
+  <meta property="og:title" content="KS Warrior – Official KSX Dashboard & Tools" />
+  <meta property="og:description" content="KS Warrior (KSX) — official dashboard for panels, tools and hosting links." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://ksx.pages.dev/" />
+  <meta property="og:image" content="https://ksx.pages.dev/og-image.png" />
 
-  <!-- SEO Essentials -->
-  <title>KS Warrior - Official Website</title>
-  <meta name="description" content="KS Warrior – Fast, modern tech website with clean UI and powerful tools." />
-  <meta name="robots" content="index, follow" />
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="KS Warrior – Official KSX Dashboard & Tools" />
+  <meta name="twitter:description" content="Official KS Warrior (KSX) hub for panels, hosting, and developer tools." />
+  <meta name="twitter:image" content="https://ksx.pages.dev/og-image.png" />
 
-  <!-- Social Sharing -->
-  <meta property="og:title" content="KS Warrior">
-  <meta property="og:description" content="Explore KS Warrior – modern tools, gaming, and tech content.">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://ks-main.pages.dev/">
+  <!-- Preconnect for fonts -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet" />
 
-  <!-- Performance -->
-  <link rel="preconnect" href="https://ks-main.pages.dev">
-  <link rel="dns-prefetch" href="https://ks-main.pages.dev">
+  <!-- Structured data (JSON-LD) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://ksx.pages.dev/#website",
+        "url": "https://ksx.pages.dev/",
+        "name": "KS Warrior",
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://ksx.pages.dev/?s={search_term_string}",
+          "query-input": "required name=search_term_string"
+        }
+      },
+      {
+        "@type": "Organization",
+        "@id": "https://ksx.pages.dev/#org",
+        "name": "KS Warrior",
+        "url": "https://ksx.pages.dev/",
+        "logo": "https://ksx.pages.dev/logo.png"
+      }
+    ]
+  }
+  </script>
 
   <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      width: 100%;
-      overflow: hidden;
-      background: #000;
+    :root{
+      --brand:#0A73FF;
+      --white:#ffffff;
+      --muted:#f1f6ff;
+      --text:#0b1220;
+      --radius:10px;
     }
-
-    iframe {
-      position: fixed;
-      inset: 0;
-      width: 100vw;
-      height: 100vh;
-      border: none;
-      display: block;
+    html,body{height:100%;margin:0;font-family:'Poppins',sans-serif;background:var(--white);color:var(--text);-webkit-font-smoothing:antialiased}
+    header.site-header{
+      position:fixed;top:0;left:0;right:0;height:60px;background:var(--brand);color:var(--white);display:flex;align-items:center;justify-content:space-between;padding:0 18px;z-index:1000;
+      box-shadow:0 2px 8px rgba(10,115,255,0.08)
     }
+    .brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:18px}
+    .brand .menu-icon{font-size:20px}
+    .header-actions{display:flex;align-items:center;gap:12px}
+    button.icon-btn{background:transparent;border:0;color:inherit;font-size:20px;cursor:pointer;padding:6px;border-radius:8px}
+    button.icon-btn:focus{outline:3px solid rgba(10,115,255,0.2)}
+    /* Search area */
+    #search-container{
+      position:fixed;left:0;right:0;top:60px;background:var(--white);padding:12px 16px;border-bottom:4px solid var(--brand);display:none;z-index:950;
+      box-shadow:0 6px 18px rgba(11,18,32,0.06)
+    }
+    #search-input{width:100%;padding:12px;border:2px solid var(--brand);border-radius:var(--radius);font-size:15px}
+    #search-results{margin-top:10px;background:var(--muted);border-radius:var(--radius);display:none;padding:8px;max-height:36vh;overflow:auto}
+    .result-item{display:flex;align-items:center;gap:10px;padding:10px;border-bottom:1px solid rgba(0,0,0,0.04);cursor:pointer;border-radius:8px}
+    .result-item:last-child{border-bottom:0}
+    .result-item:hover{background:#e8f2ff}
+    .result-item img{width:36px;height:36px;object-fit:cover;border-radius:6px}
+    main{padding-top:60px}
+    iframe#main-frame{width:100%;height:calc(100vh - 60px);border:0;transition:height 0.25s,margin-top 0.25s}
+    /* Responsive */
+    @media (min-width:900px){
+      .brand{font-size:20px}
+      .result-item img{width:40px;height:40px}
+    }
+    /* Small helper */
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
   </style>
 </head>
-
 <body>
-  <iframe
-    src="https://ks-main.pages.dev/"
-    title="KS Warrior Main"
-    loading="eager"
-    allowfullscreen
-    referrerpolicy="no-referrer"
-    sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
-  >
-  </iframe>
+  <header class="site-header" role="banner">
+    <div class="brand" aria-hidden="false">
+      <span class="menu-icon" aria-hidden="true">☰</span>
+      <span>KS Warrior</span>
+    </div>
+
+    <div class="header-actions" role="navigation" aria-label="Primary">
+      <!-- Search toggle -->
+      <button id="search-btn" class="icon-btn" aria-expanded="false" aria-controls="search-container" title="Open search">🔍</button>
+      <!-- Profile - placeholder -->
+      <button id="profile-btn" class="icon-btn" title="Profile" aria-label="Profile">👤</button>
+    </div>
+  </header>
+
+  <!-- Search dropdown -->
+  <div id="search-container" aria-hidden="true">
+    <label for="search-input" class="sr-only">Search tools and panels</label>
+    <input id="search-input" type="search" inputmode="search" placeholder="Search tools - e.g. Pterodactyl, Puffer Panel, VPS..." autocomplete="off" />
+    <div id="search-results" role="listbox" aria-live="polite" aria-label="Search results"></div>
+  </div>
+
+  <main id="main" role="main" tabindex="-1">
+    <h1 style="margin:12px 16px 8px;font-size:18px;">KS Warrior — Official Dashboard</h1>
+
+    <!-- Iframe dashboard -->
+    <iframe id="main-frame" src="dashboard.html" title="KS Warrior dashboard"></iframe>
+  </main>
+
+  <script>
+  // Minimal, deferred logic - keep fast
+  (function(){
+    const searchBtn = document.getElementById('search-btn');
+    const searchContainer = document.getElementById('search-container');
+    const searchInput = document.getElementById('search-input');
+    const searchResults = document.getElementById('search-results');
+    const iframe = document.getElementById('main-frame');
+
+    let dataList = [];
+
+    // Accessibility helpers
+    function openSearch(){
+      searchContainer.style.display = 'block';
+      searchContainer.setAttribute('aria-hidden','false');
+      searchBtn.setAttribute('aria-expanded','true');
+      iframe.style.marginTop = '140px';
+      iframe.style.height = 'calc(100vh - 140px)';
+      searchInput.focus();
+    }
+    function closeSearch(){
+      searchContainer.style.display = 'none';
+      searchContainer.setAttribute('aria-hidden','true');
+      searchBtn.setAttribute('aria-expanded','false');
+      searchResults.style.display = 'none';
+      iframe.style.marginTop = '60px';
+      iframe.style.height = 'calc(100vh - 60px)';
+      searchBtn.focus();
+    }
+
+    searchBtn.addEventListener('click', ()=> {
+      const expanded = searchBtn.getAttribute('aria-expanded') === 'true';
+      if(!expanded) openSearch(); else closeSearch();
+    });
+
+    // Close on Esc
+    document.addEventListener('keydown', (e)=>{
+      if(e.key === 'Escape'){ closeSearch(); }
+    });
+
+    // load search data (non-blocking)
+    fetch('search-data.json').then(r => {
+      if(!r.ok) throw new Error('no data');
+      return r.json();
+    }).then(d => { dataList = Array.isArray(d) ? d : []; })
+    .catch(()=>{ dataList = []; });
+
+    // Live search (debounce)
+    let timer = null;
+    searchInput.addEventListener('input', (e) => {
+      clearTimeout(timer);
+      timer = setTimeout(()=> {
+        const q = (e.target.value || '').trim().toLowerCase();
+        if(!q){ searchResults.style.display='none'; searchResults.innerHTML=''; return; }
+        const matched = dataList.filter(it => (it.name||'').toLowerCase().includes(q) || (it.tags||[]).join(' ').toLowerCase().includes(q));
+        renderResults(matched.slice(0,50));
+      }, 160);
+    });
+
+    function renderResults(list){
+      searchResults.innerHTML = '';
+      if(!list.length){
+        searchResults.innerHTML = '<div class="result-item" role="option">No results found</div>';
+        searchResults.style.display = 'block';
+        return;
+      }
+      list.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'result-item';
+        div.setAttribute('role','option');
+        // safe fallback for logo
+        const logo = item.logo || 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48"></svg>';
+        div.innerHTML = `
+          <img loading="lazy" decoding="async" src="${encodeURI(logo)}" alt="${(item.name||'Item') + ' logo'}">
+          <div style="line-height:1">
+            <div style="font-weight:600">${item.name || 'Untitled'}</div>
+            <div style="font-size:12px;color:#314e86">${item.desc || item.url || ''}</div>
+          </div>
+        `;
+        div.addEventListener('click', ()=> {
+          if(item.url) {
+            iframe.src = item.url;
+            // close search after selection
+            closeSearch();
+          }
+        });
+        searchResults.appendChild(div);
+      });
+      searchResults.style.display = 'block';
+    }
+
+    // Make clicking outside close the search
+    document.addEventListener('click', (ev)=>{
+      const path = ev.composedPath ? ev.composedPath() : (ev.path || []);
+      if(path && !path.includes(searchContainer) && !path.includes(searchBtn)){
+        // don't aggressively close if click inside iframe area
+        if(getComputedStyle(searchContainer).display !== 'none') closeSearch();
+      }
+    });
+
+    // Improve keyboard navigation: when pressing Enter in input, open first result
+    searchInput.addEventListener('keydown', (e)=>{
+      if(e.key === 'Enter'){
+        const first = searchResults.querySelector('.result-item');
+        if(first){
+          first.click();
+        }
+      }
+    });
+
+    // if you want, you can set a default focus to main content
+    // document.getElementById('main').focus();
+  })();
+  </script>
 </body>
 </html>
