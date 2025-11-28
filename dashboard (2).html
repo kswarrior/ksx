@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Dashboard</title>
+
+  <style>
+
+    body {
+
+      margin: 0;
+
+      padding: 20px;
+
+      font-family: 'Poppins', sans-serif;
+
+      background: white;
+
+      color: #0A73FF;
+
+    }
+
+    h2 {
+
+      margin: 25px 0 10px;
+
+      font-size: 20px;
+
+      color: #0A73FF;
+
+      font-weight: 600;
+
+    }
+
+    .section-box {
+
+      border: 1px solid #0A73FF;
+
+      padding: 15px;
+
+      border-radius: 12px;
+
+      margin-bottom: 25px;
+
+      background: white;
+
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+
+      animation: fadeIn 0.4s ease;
+
+    }
+
+    @keyframes fadeIn {
+
+      from {opacity: 0; transform: translateY(20px)}
+
+      to   {opacity: 1; transform: translateY(0)}
+
+    }
+
+    .grid {
+
+      display: grid;
+
+      gap: 10px;
+
+    }
+
+    .grid-4 { grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); }
+
+    .grid-3 { grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); }
+
+    .card {
+
+      height: 70px;
+
+      border: 1.5px solid #0A73FF;
+
+      border-radius: 10px;
+
+      background: #EAF2FF;
+
+      position: relative;
+
+      overflow: hidden;
+
+      cursor: pointer;
+
+      transition: 0.2s ease;
+
+    }
+
+    .card:hover {
+
+      transform: scale(1.03);
+
+      background: #dbe8ff;
+
+    }
+
+    .title {
+
+      position: absolute;
+
+      bottom: 5px;
+
+      left: 10px;
+
+      font-size: 14px;
+
+      color: #0A73FF;
+
+    }
+
+    /* Mobile friendly */
+
+    @media (max-width: 480px) {
+
+      .card { height: 60px; }
+
+      h2 { font-size: 18px; }
+
+    }
+
+  </style>
+
+</head>
+
+<body>
+  <!-- Favourites -->
+
+  <h2>Your Favourites</h2>
+
+  <div class="section-box">
+
+    <div class="grid grid-4">
+
+      <div class="card"><div class="title">Hostinger</div></div>
+
+      <div class="card"><div class="title">Free Domain</div></div>
+
+      <div class="card"><div class="title">Linux Guides</div></div>
+
+      <div class="card"><div class="title">Cloudflare</div></div>
+
+      <div class="card"><div class="title">Next.js</div></div>
+
+      <div class="card"><div class="title">MySQL</div></div>
+
+      <div class="card"><div class="title">Docker</div></div>
+
+      <div class="card"><div class="title">KS Tools</div></div>
+
+    </div>
+
+  </div>
+
+</body>
+
+</html>
