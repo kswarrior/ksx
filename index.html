@@ -102,19 +102,19 @@
     </div>
 
     <div class="header-actions" role="navigation" aria-label="Primary">
+
+      <div id="search-container" aria-hidden="true">
+    <label for="search-input" class="sr-only">Search tools and panels</label>
+    <input id="search-input" type="search" inputmode="search" placeholder="Search tools - e.g. Pterodactyl, Puffer Panel, VPS..." autocomplete="off" />
+    <div id="search-results" role="listbox" aria-live="polite" aria-label="Search results"></div>
+      </div>
+      
       <!-- Search toggle -->
       <button id="search-btn" class="icon-btn" aria-expanded="false" aria-controls="search-container" title="Open search">🔍</button>
       <!-- Profile - placeholder -->
       <button id="profile-btn" class="icon-btn" title="Profile" aria-label="Profile">👤</button>
     </div>
   </header>
-
-  <!-- Search dropdown -->
-  <div id="search-container" aria-hidden="true">
-    <label for="search-input" class="sr-only">Search tools and panels</label>
-    <input id="search-input" type="search" inputmode="search" placeholder="Search tools - e.g. Pterodactyl, Puffer Panel, VPS..." autocomplete="off" />
-    <div id="search-results" role="listbox" aria-live="polite" aria-label="Search results"></div>
-  </div>
 
   <main id="main" role="main" tabindex="-1">
     <h1 style="font-size:0px;">KS Warrior — Official Dashboard</h1>
