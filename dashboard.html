@@ -1,178 +1,222 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard</title>
 
-  <style>
-    body {
-      margin: 0;
-      padding: 20px;
-      font-family: 'Poppins', sans-serif;
-      background: white;
-      color: #0A73FF;
-    }
+<style>
+  body {
+    margin: 0;
+    padding: 20px;
+    font-family: 'Poppins', sans-serif;
+    background: white;
+    color: #0A73FF;
+  }
 
-    h2 {
-      margin: 25px 0 10px;
-      font-size: 20px;
-      font-weight: 600;
-    }
+  /* Top bar */
+  .top-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+  }
 
-    .section-box {
-      border: 1px solid #0A73FF;
-      padding: 15px;
-      border-radius: 12px;
-      margin-bottom: 25px;
-      background: white;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      animation: fadeIn 0.4s ease;
-    }
+  h2 {
+    font-size: 20px;
+    font-weight: 600;
+  }
 
-    @keyframes fadeIn {
-      from {opacity: 0; transform: translateY(20px)}
-      to   {opacity: 1; transform: translateY(0)}
-    }
+  .search-input {
+    flex: 1;
+    padding: 10px;
+    border: 1.5px solid #0A73FF;
+    border-radius: 10px;
+    font-size: 14px;
+  }
 
-    .grid {
-      display: grid;
-      gap: 10px;
-    }
+  .add-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: #0A73FF;
+    color: white;
+    border: none;
+    font-size: 22px;
+    cursor: pointer;
+  }
 
-    /* Show 1 card per row on phones */
-    .grid-4 {
-      grid-template-columns: repeat(auto-fit, minmax(100%, 1fr));
-    }
+  /* Section */
+  .section-box {
+    border: 1px solid #0A73FF;
+    padding: 15px;
+    border-radius: 12px;
+    background: white;
+  }
 
-    .card {
-      height: 70px;
-      border: 1.5px solid #0A73FF;
-      border-radius: 10px;
-      background: #EAF2FF;
-      position: relative;
-      overflow: hidden;
-      cursor: pointer;
-      transition: 0.2s ease;
-    }
+  .grid {
+    display: grid;
+    gap: 10px;
+  }
 
-    .card:hover {
-      transform: scale(1.03);
-      background: #dbe8ff;
-    }
+  .grid-4 {
+    grid-template-columns: repeat(auto-fit, minmax(100%, 1fr));
+  }
 
-    .title {
-      position: absolute;
-      bottom: 5px;
-      left: 10px;
-      font-size: 14px;
-    }
+  /* Card */
+  .card {
+    height: 70px;
+    border: 1.5px solid #0A73FF;
+    border-radius: 10px;
+    background: #EAF2FF;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px;
+    cursor: pointer;
+  }
 
-    /* Add Button */
-    .add-btn {
-      width: 40px;
-      height: 40px;
-      border-radius: 10px;
-      background: #0A73FF;
-      color: white;
-      border: none;
-      font-size: 22px;
-      cursor: pointer;
-      float: right;
-      margin-top: -45px;
-    }
+  .card img {
+    width: 35px;
+    height: 35px;
+    border-radius: 8px;
+    object-fit: cover;
+  }
 
-    /* Popup Search Bar */
-    #popup {
-      position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: white;
-      border: 2px solid #0A73FF;
-      border-radius: 10px;
-      padding: 10px;
-      width: 90%;
-      max-width: 350px;
-      display: none;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.2);
-    }
+  /* Popup add */
+  #popup {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: white;
+    border: 2px solid #0A73FF;
+    border-radius: 10px;
+    padding: 10px;
+    width: 90%;
+    max-width: 350px;
+    display: none;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+  }
 
-    #popup input {
-      width: 100%;
-      padding: 10px;
-      border: 1px solid #0A73FF;
-      border-radius: 8px;
-      font-size: 14px;
-    }
+  #popup input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #0A73FF;
+    border-radius: 8px;
+  }
 
-    #popup button {
-      margin-top: 8px;
-      width: 100%;
-      padding: 10px;
-      background: #0A73FF;
-      border: none;
-      color: white;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 14px;
-    }
+  #popup button {
+    margin-top: 8px;
+    width: 100%;
+    padding: 10px;
+    background: #0A73FF;
+    color: white;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+  }
 
-  </style>
+</style>
 </head>
 
 <body>
 
-  <h2>Your Favourites</h2>
-
+<!-- Top Bar -->
+<div class="top-bar">
+  <h2>Favourites</h2>
+  <input type="text" class="search-input" id="searchBar" placeholder="Search…" oninput="filterSearch()">
   <button class="add-btn" onclick="openAdd()">+</button>
+</div>
 
-  <div class="section-box">
-    <div class="grid grid-4" id="favContainer"></div>
-  </div>
+<!-- Favourites Section -->
+<div class="section-box">
+  <div class="grid grid-4" id="favContainer"></div>
+</div>
 
-  <!-- Popup Search -->
-  <div id="popup">
-    <input id="favInput" type="text" placeholder="Enter favourite name...">
-    <button onclick="saveFav()">Save</button>
-  </div>
+<!-- Add Popup -->
+<div id="popup">
+  <input id="favInput" type="text" placeholder="Enter favourite name...">
+  <button onclick="saveFav()">Save</button>
+</div>
 
 <script>
-  // Load saved favourites
-  function loadFav() {
-    const favs = JSON.parse(localStorage.getItem("favourites")) || [];
-    const box = document.getElementById("favContainer");
-    box.innerHTML = "";
+let searchData = [];
 
-    favs.forEach(name => {
-      box.innerHTML += `
-        <div class="card"><div class="title">${name}</div></div>
-      `;
-    });
+/* Load JSON file (name + url + logo) */
+async function loadSearchData() {
+  try {
+    const res = await fetch("search-data.json");
+    searchData = await res.json();
+  } catch (e) {
+    console.log("JSON Load Error:", e);
   }
+}
 
-  // Show popup
-  function openAdd() {
-    document.getElementById("popup").style.display = "block";
-  }
+/* Load saved favourites */
+function loadFav() {
+  const favs = JSON.parse(localStorage.getItem("favourites")) || [];
+  const box = document.getElementById("favContainer");
+  box.innerHTML = "";
 
-  // Save favourite
-  function saveFav() {
-    let name = document.getElementById("favInput").value.trim();
-    if (!name) return;
+  favs.forEach(item => {
+    box.innerHTML += `
+      <div class="card" onclick="window.open('${item.url}', '_blank')">
+        <img src="${item.logo}">
+        <div class="title">${item.name}</div>
+      </div>
+    `;
+  });
+}
 
-    let favs = JSON.parse(localStorage.getItem("favourites")) || [];
-    favs.push(name);
-    localStorage.setItem("favourites", JSON.stringify(favs));
+/* Show Add Popup */
+function openAdd() {
+  document.getElementById("popup").style.display = "block";
+}
 
-    document.getElementById("favInput").value = "";
-    document.getElementById("popup").style.display = "none";
+/* Save favourite (only by name input) */
+function saveFav() {
+  let name = document.getElementById("favInput").value.trim();
+  if (!name) return;
 
-    loadFav();
-  }
+  let match = searchData.find(x => x.name.toLowerCase() === name.toLowerCase());
+  if (!match) return alert("Item not found in JSON!");
 
-  // Load on page start
+  let favs = JSON.parse(localStorage.getItem("favourites")) || [];
+  favs.push(match);
+  localStorage.setItem("favourites", JSON.stringify(favs));
+
+  document.getElementById("favInput").value = "";
+  document.getElementById("popup").style.display = "none";
   loadFav();
+}
+
+/* Search through JSON */
+function filterSearch() {
+  let text = document.getElementById("searchBar").value.toLowerCase();
+  const box = document.getElementById("favContainer");
+
+  if (text === "") return loadFav();
+
+  let results = searchData.filter(item =>
+    item.name.toLowerCase().includes(text)
+  );
+
+  box.innerHTML = "";
+
+  results.forEach(r => {
+    box.innerHTML += `
+      <div class="card" onclick="window.open('${r.url}', '_blank')">
+        <img src="${r.logo}">
+        <div class="title">${r.name}</div>
+      </div>
+    `;
+  });
+}
+
+/* Start */
+loadSearchData();
+loadFav();
 </script>
 
 </body>
