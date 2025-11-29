@@ -1,166 +1,179 @@
 <!DOCTYPE html>
-
 <html lang="en">
-
 <head>
-
   <meta charset="UTF-8">
-
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <title>Dashboard</title>
 
   <style>
-
     body {
-
       margin: 0;
-
       padding: 20px;
-
       font-family: 'Poppins', sans-serif;
-
       background: white;
-
       color: #0A73FF;
-
     }
 
     h2 {
-
       margin: 25px 0 10px;
-
       font-size: 20px;
-
-      color: #0A73FF;
-
       font-weight: 600;
-
     }
 
     .section-box {
-
       border: 1px solid #0A73FF;
-
       padding: 15px;
-
       border-radius: 12px;
-
       margin-bottom: 25px;
-
       background: white;
-
       box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-
       animation: fadeIn 0.4s ease;
-
     }
 
     @keyframes fadeIn {
-
       from {opacity: 0; transform: translateY(20px)}
-
       to   {opacity: 1; transform: translateY(0)}
-
     }
 
     .grid {
-
       display: grid;
-
       gap: 10px;
-
     }
 
-    .grid-4 { grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); }
-
-    .grid-3 { grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); }
+    /* Show 1 card per row on phones */
+    .grid-4 {
+      grid-template-columns: repeat(auto-fit, minmax(100%, 1fr));
+    }
 
     .card {
-
       height: 70px;
-
       border: 1.5px solid #0A73FF;
-
       border-radius: 10px;
-
       background: #EAF2FF;
-
       position: relative;
-
       overflow: hidden;
-
       cursor: pointer;
-
       transition: 0.2s ease;
-
     }
 
     .card:hover {
-
       transform: scale(1.03);
-
       background: #dbe8ff;
-
     }
 
     .title {
-
       position: absolute;
-
       bottom: 5px;
-
       left: 10px;
-
       font-size: 14px;
-
-      color: #0A73FF;
-
     }
 
-    /* Mobile friendly */
+    /* Add Button */
+    .add-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: #0A73FF;
+      color: white;
+      border: none;
+      font-size: 22px;
+      cursor: pointer;
+      float: right;
+      margin-top: -45px;
+    }
 
-    @media (max-width: 480px) {
+    /* Popup Search Bar */
+    #popup {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: white;
+      border: 2px solid #0A73FF;
+      border-radius: 10px;
+      padding: 10px;
+      width: 90%;
+      max-width: 350px;
+      display: none;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+    }
 
-      .card { height: 60px; }
+    #popup input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #0A73FF;
+      border-radius: 8px;
+      font-size: 14px;
+    }
 
-      h2 { font-size: 18px; }
-
+    #popup button {
+      margin-top: 8px;
+      width: 100%;
+      padding: 10px;
+      background: #0A73FF;
+      border: none;
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
     }
 
   </style>
-
 </head>
 
 <body>
-  <!-- Favourites -->
 
   <h2>Your Favourites</h2>
 
+  <button class="add-btn" onclick="openAdd()">+</button>
+
   <div class="section-box">
-
-    <div class="grid grid-4">
-
-      <div class="card"><div class="title">Hostinger</div></div>
-
-      <div class="card"><div class="title">Free Domain</div></div>
-
-      <div class="card"><div class="title">Linux Guides</div></div>
-
-      <div class="card"><div class="title">Cloudflare</div></div>
-
-      <div class="card"><div class="title">Next.js</div></div>
-
-      <div class="card"><div class="title">MySQL</div></div>
-
-      <div class="card"><div class="title">Docker</div></div>
-
-      <div class="card"><div class="title">KS Tools</div></div>
-
-    </div>
-
+    <div class="grid grid-4" id="favContainer"></div>
   </div>
 
-</body>
+  <!-- Popup Search -->
+  <div id="popup">
+    <input id="favInput" type="text" placeholder="Enter favourite name...">
+    <button onclick="saveFav()">Save</button>
+  </div>
 
+<script>
+  // Load saved favourites
+  function loadFav() {
+    const favs = JSON.parse(localStorage.getItem("favourites")) || [];
+    const box = document.getElementById("favContainer");
+    box.innerHTML = "";
+
+    favs.forEach(name => {
+      box.innerHTML += `
+        <div class="card"><div class="title">${name}</div></div>
+      `;
+    });
+  }
+
+  // Show popup
+  function openAdd() {
+    document.getElementById("popup").style.display = "block";
+  }
+
+  // Save favourite
+  function saveFav() {
+    let name = document.getElementById("favInput").value.trim();
+    if (!name) return;
+
+    let favs = JSON.parse(localStorage.getItem("favourites")) || [];
+    favs.push(name);
+    localStorage.setItem("favourites", JSON.stringify(favs));
+
+    document.getElementById("favInput").value = "";
+    document.getElementById("popup").style.display = "none";
+
+    loadFav();
+  }
+
+  // Load on page start
+  loadFav();
+</script>
+
+</body>
 </html>
