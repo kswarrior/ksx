@@ -14,7 +14,6 @@
     color: #0A73FF;
   }
 
-  /* Top bar */
   .top-bar {
     display: flex;
     align-items: center;
@@ -32,7 +31,6 @@
     padding: 10px;
     border: 1.5px solid #0A73FF;
     border-radius: 10px;
-    font-size: 14px;
   }
 
   .add-btn {
@@ -46,12 +44,10 @@
     cursor: pointer;
   }
 
-  /* Section */
   .section-box {
     border: 1px solid #0A73FF;
     padding: 15px;
     border-radius: 12px;
-    background: white;
   }
 
   .grid {
@@ -63,7 +59,6 @@
     grid-template-columns: repeat(auto-fit, minmax(100%, 1fr));
   }
 
-  /* Card */
   .card {
     height: 70px;
     border: 1.5px solid #0A73FF;
@@ -83,38 +78,18 @@
     object-fit: cover;
   }
 
-  /* Popup add */
-  #popup {
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: white;
-    border: 2px solid #0A73FF;
-    border-radius: 10px;
-    padding: 10px;
-    width: 90%;
-    max-width: 350px;
+  /* FULLPAGE IFRAME */
+  #iframeContainer {
+    margin-top: 20px;
+    width: 100%;
+    height: 90vh;
     display: none;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.2);
   }
 
-  #popup input {
+  #viewFrame {
     width: 100%;
-    padding: 10px;
-    border: 1px solid #0A73FF;
-    border-radius: 8px;
-  }
-
-  #popup button {
-    margin-top: 8px;
-    width: 100%;
-    padding: 10px;
-    background: #0A73FF;
-    color: white;
-    border-radius: 8px;
+    height: 100%;
     border: none;
-    cursor: pointer;
   }
 
 </style>
@@ -134,26 +109,21 @@
   <div class="grid grid-4" id="favContainer"></div>
 </div>
 
-<!-- Add Popup -->
-<div id="popup">
-  <input id="favInput" type="text" placeholder="Enter favourite name...">
-  <button onclick="saveFav()">Save</button>
+<!-- FULLPAGE IFRAME -->
+<div id="iframeContainer">
+  <iframe id="viewFrame"></iframe>
 </div>
 
 <script>
 let searchData = [];
 
-/* Load JSON file (name + url + logo) */
+/* Load JSON */
 async function loadSearchData() {
-  try {
-    const res = await fetch("search-data.json");
-    searchData = await res.json();
-  } catch (e) {
-    console.log("JSON Load Error:", e);
-  }
+  const res = await fetch("search-data.json");
+  searchData = await res.json();
 }
 
-/* Load saved favourites */
+/* Load Favourites */
 function loadFav() {
   const favs = JSON.parse(localStorage.getItem("favourites")) || [];
   const box = document.getElementById("favContainer");
@@ -161,7 +131,7 @@ function loadFav() {
 
   favs.forEach(item => {
     box.innerHTML += `
-      <div class="card" onclick="window.open('${item.url}', '_blank')">
+      <div class="card" onclick="openInFrame('${item.url}')">
         <img src="${item.logo}">
         <div class="title">${item.name}</div>
       </div>
@@ -169,34 +139,35 @@ function loadFav() {
   });
 }
 
-/* Show Add Popup */
-function openAdd() {
-  document.getElementById("popup").style.display = "block";
+/* Open in full page iframe + save favourite automatically */
+function openInFrame(url) {
+  document.getElementById("iframeContainer").style.display = "block";
+  document.getElementById("viewFrame").src = url;
 }
 
-/* Save favourite (only by name input) */
-function saveFav() {
-  let name = document.getElementById("favInput").value.trim();
-  if (!name) return;
-
-  let match = searchData.find(x => x.name.toLowerCase() === name.toLowerCase());
-  if (!match) return alert("Item not found in JSON!");
-
+/* When searching item is clicked → add favourite + open iframe */
+function clickSearchItem(item) {
   let favs = JSON.parse(localStorage.getItem("favourites")) || [];
-  favs.push(match);
-  localStorage.setItem("favourites", JSON.stringify(favs));
+  let exists = favs.find(x => x.name === item.name);
 
-  document.getElementById("favInput").value = "";
-  document.getElementById("popup").style.display = "none";
-  loadFav();
+  if (!exists) {
+    favs.push(item);
+    localStorage.setItem("favourites", JSON.stringify(favs));
+    loadFav();
+  }
+
+  openInFrame(item.url);
 }
 
-/* Search through JSON */
+/* Search system */
 function filterSearch() {
   let text = document.getElementById("searchBar").value.toLowerCase();
   const box = document.getElementById("favContainer");
 
-  if (text === "") return loadFav();
+  if (text === "") {
+    loadFav();
+    return;
+  }
 
   let results = searchData.filter(item =>
     item.name.toLowerCase().includes(text)
@@ -206,7 +177,7 @@ function filterSearch() {
 
   results.forEach(r => {
     box.innerHTML += `
-      <div class="card" onclick="window.open('${r.url}', '_blank')">
+      <div class="card" onclick='clickSearchItem(${JSON.stringify(r)})'>
         <img src="${r.logo}">
         <div class="title">${r.name}</div>
       </div>
