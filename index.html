@@ -7,7 +7,15 @@
   <meta name="description" content="KS Warrior (KSX) — official dashboard for panels, tools and hosting links. Fast, secure, and maintained resource hub for gaming & tech." />
   <meta name="keywords" content="KS Warrior, KSX, ksx.pages.dev, Pterodactyl, Puffer Panel, VPS, dashboard, hosting tools" />
   <link rel="canonical" href="https://ksx.pages.dev/" />
-  <link rel="icon" href="logo.png">
+
+  <!-- Favicon + Logo -->
+  <link rel="icon" type="image/png" href="logo.png">
+  <link rel="apple-touch-icon" href="logo.png">
+  <link rel="shortcut icon" href="logo.png" />
+  <meta name="theme-color" content="#0A73FF">
+
+  <!-- Manifest (optional but improves Google logo detection) -->
+  <link rel="manifest" href="site.webmanifest">
 
   <!-- Open Graph -->
   <meta property="og:site_name" content="KS Warrior" />
@@ -28,7 +36,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet" />
 
-  <!-- Structured data (JSON-LD) -->
+  <!-- Google Logo Schema (Important for replacing Cloudflare name) -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -49,7 +57,8 @@
         "@id": "https://ksx.pages.dev/#org",
         "name": "KS Warrior",
         "url": "https://ksx.pages.dev/",
-        "logo": "https://ksx.pages.dev/logo.png"
+        "logo": "https://ksx.pages.dev/logo.png",
+        "sameAs": []
       }
     ]
   }
