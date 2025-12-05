@@ -133,9 +133,22 @@
     }
 
     function go() {
-      window.location.href = "dashboard.html";
+      // Get query string from URL
+      const page = new URLSearchParams(window.location.search).get("");
+
+      // Default page if nothing is set
+      const defaultPage = "dashboard.html";
+
+      // List of allowed pages
+      const allowedPages = ["dashboard", "about", "contact"];
+
+      // Redirect to requested page if allowed, else default
+      if (page && allowedPages.includes(page)) {
+        window.location.href = page + ".html";
+      } else {
+        window.location.href = defaultPage;
+      }
     }
   </script>
-
 </body>
 </html>
