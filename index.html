@@ -7,37 +7,30 @@
   <meta name="description" content="KS Warrior (KSX) — official dashboard for panels, tools and hosting links. Fast, secure, and maintained resource hub for gaming & tech." />
   <meta name="keywords" content="KS Warrior, KSX, ksx.pages.dev, Pterodactyl, Puffer Panel, VPS, dashboard, hosting tools" />
   <link rel="canonical" href="https://ksx.pages.dev/" />
-  <meta http-equiv="refresh" content="0; url=dashboard.html">
+  <meta http-equiv="refresh" content="">
 
-  <!-- Favicon + Logo -->
   <link rel="icon" type="image/png" href="logo.png">
   <link rel="apple-touch-icon" href="logo.png">
   <link rel="shortcut icon" href="logo.png" />
   <meta name="theme-color" content="#0A73FF">
-
-  <!-- Manifest (optional but improves Google logo detection) -->
   <link rel="manifest" href="site.webmanifest">
 
-  <!-- Open Graph -->
   <meta property="og:site_name" content="KS Warrior" />
   <meta property="og:title" content="KS Warrior – Official KSX Dashboard & Tools" />
-  <meta property="og:description" content="KS Warrior (KSX) — official dashboard for panels, tools and hosting links." />
+  <meta property="og:description" content="KS Warrior (KSX) — official dashboard for panels, hosting and developer tools." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://ksx.pages.dev/" />
   <meta property="og:image" content="https://ksx.pages.dev/og-image.png" />
 
-  <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="KS Warrior – Official KSX Dashboard & Tools" />
   <meta name="twitter:description" content="Official KS Warrior (KSX) hub for panels, hosting, and developer tools." />
   <meta name="twitter:image" content="https://ksx.pages.dev/og-image.png" />
 
-  <!-- Preconnect for fonts -->
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet" />
 
-  <!-- Google Logo Schema (Important for replacing Cloudflare name) -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -66,187 +59,84 @@
   </script>
 
   <style>
-    :root{
-      --brand:#0A73FF;
-      --white:#ffffff;
-      --muted:#f1f6ff;
-      --text:#0b1220;
-      --radius:10px;
+    h1 { font-size: 0px }
+    h2 { font-size: 0px }
+    h3 { font-size: 0px }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: #eef3ff;
+      font-family: 'Poppins', sans-serif;
     }
-    html,body{height:100%;margin:0;font-family:'Poppins',sans-serif;background:var(--white);color:var(--text);-webkit-font-smoothing:antialiased}
-    header.site-header{
-      position:fixed;top:0;left:0;right:0;height:60px;background:var(--brand);color:var(--white);display:flex;align-items:center;justify-content:space-between;padding:0 18px;z-index:1000;
-      box-shadow:0 2px 8px rgba(10,115,255,0.08)
+
+    #verify-box {
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 0 12px rgba(0,0,0,0.15);
+      text-align: center;
+      width: 330px;
     }
-    .brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:18px}
-    .brand .menu-icon{font-size:20px}
-    .header-actions{display:flex;align-items:center;gap:12px}
-    button.icon-btn{background:transparent;border:0;color:inherit;font-size:20px;cursor:pointer;padding:6px;border-radius:8px}
-    button.icon-btn:focus{outline:3px solid rgba(10,115,255,0.2)}
-    /* Search area */
-    #search-container{
-      position:fixed;left:0;right:0;top:60px;background:var(--white);padding:12px 16px;border-bottom:4px solid var(--brand);display:none;z-index:950;
-      box-shadow:0 6px 18px rgba(11,18,32,0.06)
+
+    button {
+      padding: 10px 22px;
+      font-size: 16px;
+      background: #0A73FF;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 10px;
     }
-    #search-input{width:100%;padding:12px;border:2px solid var(--brand);border-radius:var(--radius);font-size:15px}
-    #search-results{margin-top:10px;background:var(--muted);border-radius:var(--radius);display:none;padding:8px;max-height:36vh;overflow:auto}
-    .result-item{display:flex;align-items:center;gap:10px;padding:10px;border-bottom:1px solid rgba(0,0,0,0.04);cursor:pointer;border-radius:8px}
-    .result-item:last-child{border-bottom:0}
-    .result-item:hover{background:#e8f2ff}
-    .result-item img{width:36px;height:36px;object-fit:cover;border-radius:6px}
-    main{padding-top:0px}
-    iframe#main-frame{width:100%;height:calc(100vh - 60px);border:0;transition:height 0.25s,margin-top 0.25s}
-    /* Responsive */
-    @media (min-width:900px){
-      .brand{font-size:20px}
-      .result-item img{width:40px;height:40px}
+
+    button:hover {
+      background: #005fe0;
     }
-    /* Small helper */
-    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+    #loading {
+      display: none;
+      font-size: 16px;
+      margin-top: 15px;
+      font-weight: 600;
+    }
+
+    #continue-btn {
+      display: none;
+    }
   </style>
 </head>
+
 <body>
-  <header class="site-header" role="banner">
-    <div class="brand" aria-hidden="false">
-      <span class="menu-icon" aria-hidden="true">☰</span>
-      <span>KS Warrior</span>
-    </div>
 
-    <div class="header-actions" role="navigation" aria-label="Primary">
+  <div id="verify-box">
+    <h2 style="font-size:20px; font-weight:600;">Human Verification</h2>
+    <p>Please verify to continue to KSX Dashboard.</p>
 
-      <div id="search-container" aria-hidden="true">
-    <label for="search-input" class="sr-only">Search tools and panels</label>
-    <input id="search-input" type="search" inputmode="search" placeholder="Search tools - e.g. Pterodactyl, Puffer Panel, VPS..." autocomplete="off" />
-    <div id="search-results" role="listbox" aria-live="polite" aria-label="Search results"></div>
-      </div>
-      
-      <!-- Search toggle -->
-      <button id="search-btn" class="icon-btn" aria-expanded="false" aria-controls="search-container" title="Open search">🔍</button>
-      <!-- Profile - placeholder -->
-      <button id="profile-btn" class="icon-btn" title="Profile" aria-label="Profile">👤</button>
-    </div>
-  </header>
+    <button id="verify-btn" onclick="startVerification()">Verify</button>
 
-  <main id="main" role="main" tabindex="-1">
-    <h1 style="font-size:0px;">KS Warrior — Official Dashboard</h1>
+    <div id="loading">⏳ Verifying... Please wait 5 seconds</div>
 
-    <!-- Iframe dashboard -->
-    <iframe id="main-frame" src="dashboard.html" title="KS Warrior dashboard"></iframe>
-  </main>
+    <button id="continue-btn" onclick="go()">Continue</button>
+  </div>
 
   <script>
-  // Minimal, deferred logic - keep fast
-  (function(){
-    const searchBtn = document.getElementById('search-btn');
-    const searchContainer = document.getElementById('search-container');
-    const searchInput = document.getElementById('search-input');
-    const searchResults = document.getElementById('search-results');
-    const iframe = document.getElementById('main-frame');
+    function startVerification() {
+      document.getElementById("verify-btn").style.display = "none";
+      document.getElementById("loading").style.display = "block";
 
-    let dataList = [];
-
-    // Accessibility helpers
-    function openSearch(){
-      searchContainer.style.display = 'block';
-      searchContainer.setAttribute('aria-hidden','false');
-      searchBtn.setAttribute('aria-expanded','true');
-      iframe.style.marginTop = '140px';
-      iframe.style.height = 'calc(100vh - 140px)';
-      searchInput.focus();
-    }
-    function closeSearch(){
-      searchContainer.style.display = 'none';
-      searchContainer.setAttribute('aria-hidden','true');
-      searchBtn.setAttribute('aria-expanded','false');
-      searchResults.style.display = 'none';
-      iframe.style.marginTop = '60px';
-      iframe.style.height = 'calc(100vh - 60px)';
-      searchBtn.focus();
+      setTimeout(() => {
+        document.getElementById("loading").style.display = "none";
+        document.getElementById("continue-btn").style.display = "inline-block";
+      }, 5000);
     }
 
-    searchBtn.addEventListener('click', ()=> {
-      const expanded = searchBtn.getAttribute('aria-expanded') === 'true';
-      if(!expanded) openSearch(); else closeSearch();
-    });
-
-    // Close on Esc
-    document.addEventListener('keydown', (e)=>{
-      if(e.key === 'Escape'){ closeSearch(); }
-    });
-
-    // load search data (non-blocking)
-    fetch('search-data.json').then(r => {
-      if(!r.ok) throw new Error('no data');
-      return r.json();
-    }).then(d => { dataList = Array.isArray(d) ? d : []; })
-    .catch(()=>{ dataList = []; });
-
-    // Live search (debounce)
-    let timer = null;
-    searchInput.addEventListener('input', (e) => {
-      clearTimeout(timer);
-      timer = setTimeout(()=> {
-        const q = (e.target.value || '').trim().toLowerCase();
-        if(!q){ searchResults.style.display='none'; searchResults.innerHTML=''; return; }
-        const matched = dataList.filter(it => (it.name||'').toLowerCase().includes(q) || (it.tags||[]).join(' ').toLowerCase().includes(q));
-        renderResults(matched.slice(0,50));
-      }, 160);
-    });
-
-    function renderResults(list){
-      searchResults.innerHTML = '';
-      if(!list.length){
-        searchResults.innerHTML = '<div class="result-item" role="option">No results found</div>';
-        searchResults.style.display = 'block';
-        return;
-      }
-      list.forEach(item => {
-        const div = document.createElement('div');
-        div.className = 'result-item';
-        div.setAttribute('role','option');
-        // safe fallback for logo
-        const logo = item.logo || 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48"></svg>';
-        div.innerHTML = `
-          <img loading="lazy" decoding="async" src="${encodeURI(logo)}" alt="${(item.name||'Item') + ' logo'}">
-          <div style="line-height:1">
-            <div style="font-weight:600">${item.name || 'Untitled'}</div>
-            <div style="font-size:12px;color:#314e86">${item.desc || item.url || ''}</div>
-          </div>
-        `;
-        div.addEventListener('click', ()=> {
-          if(item.url) {
-            iframe.src = item.url;
-            // close search after selection
-            closeSearch();
-          }
-        });
-        searchResults.appendChild(div);
-      });
-      searchResults.style.display = 'block';
+    function go() {
+      window.location.href = "dashboard.html";
     }
-
-    // Make clicking outside close the search
-    document.addEventListener('click', (ev)=>{
-      const path = ev.composedPath ? ev.composedPath() : (ev.path || []);
-      if(path && !path.includes(searchContainer) && !path.includes(searchBtn)){
-        // don't aggressively close if click inside iframe area
-        if(getComputedStyle(searchContainer).display !== 'none') closeSearch();
-      }
-    });
-
-    // Improve keyboard navigation: when pressing Enter in input, open first result
-    searchInput.addEventListener('keydown', (e)=>{
-      if(e.key === 'Enter'){
-        const first = searchResults.querySelector('.result-item');
-        if(first){
-          first.click();
-        }
-      }
-    });
-
-    // if you want, you can set a default focus to main content
-    // document.getElementById('main').focus();
-  })();
   </script>
+
 </body>
 </html>
