@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>KS Warrior – Official KSX Dashboard & Tools</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>KS Warrior – KSX Dashboard</title>
   <style>
     body {
       margin: 0;
@@ -27,19 +27,25 @@
 <iframe id="page-frame"></iframe>
 
 <script>
-  const allowedPages = ["dashboard", "about", "contact"];
-  const defaultPage = "dashboard.html";
+  // Map of keys to full URLs or local files
+  const pageMap = {
+    "dashboard": "https://ksx.pages.dev/dashboard.html",
+    "about": "https://ksx.pages.dev/about.html",
+    "contact": "https://ksx.pages.dev/contact.html",
+    "free": "mc/hosting/free.html"
+  };
 
-  // Get "page" query string
-  const pageParam = new URLSearchParams(window.location.search).get("page");
+  // Get query string (everything after ?)
+  const query = window.location.search;
 
-  let pageToLoad = defaultPage;
-  if (pageParam && allowedPages.includes(pageParam)) {
-    pageToLoad = pageParam + ".html";
+  // Remove leading "?" to get the key
+  const key = query.startsWith("?") ? query.slice(1) : query;
+
+  // If key exists in pageMap, load the corresponding URL/file
+  if (key in pageMap) {
+    document.getElementById("page-frame").src = pageMap[key];
   }
-
-  // Load the page in iframe
-  document.getElementById("page-frame").src = pageToLoad;
+  // Otherwise, iframe stays blank
 </script>
 
 </body>
