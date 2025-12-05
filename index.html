@@ -36,16 +36,20 @@
   };
 
   // Get query string (everything after ?)
-  const query = window.location.search;
+  let query = window.location.search;
 
-  // Remove leading "?" to get the key
-  const key = query.startsWith("?") ? query.slice(1) : query;
-
-  // If key exists in pageMap, load the corresponding URL/file
-  if (key in pageMap) {
-    document.getElementById("page-frame").src = pageMap[key];
+  // Remove leading "?" and optional "="
+  if (query.startsWith("?=")) {
+    query = query.slice(2); // removes ?=
+  } else if (query.startsWith("?")) {
+    query = query.slice(1); // removes ?
   }
-  // Otherwise, iframe stays blank
+
+  // Default to "dashboard" if no query or invalid key
+  const key = query in pageMap ? query : "dashboard";
+
+  // Set iframe src
+  document.getElementById("page-frame").src = pageMap[key];
 </script>
 
 </body>
