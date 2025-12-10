@@ -1,436 +1,128 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html>
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Dashboard</title>
-  <style>
-    :root{--bg:#f4f7fb;--accent:#2563eb;--muted:#6b7280}
-    html,body{height:100%;margin:0;font-family:Inter,ui-sans-serif,system-ui,Segoe UI,Roboto,'Helvetica Neue',Arial}
-    body{background:var(--bg);display:flex;flex-direction:column}
-    /* Top bar */
-    .topbar{height:64px;display:flex;align-items:center;gap:12px;padding:0 18px;background:#fff;box-shadow:0 1px 6px rgba(15,23,42,0.06);z-index:40}
-    .brand{display:flex;align-items:center;gap:10px;font-weight:600;color:#0f172a}
-    .brand .logo{width:36px;height:36px;border-radius:8px;background:linear-gradient(135deg,#e6eefc,#eef6ff);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--accent)}
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>KSX Loader</title>
+<style>
+  body{margin:0;font-family:sans-serif;background:#f5f7fb}
 
-    .search-wrap{flex:1;display:flex;justify-content:center}
-    .search{width:100%;max-width:820px;position:relative}
-    input[type="search"]{width:100%;padding:12px 14px;border-radius:10px;border:1px solid #e6eef8;background:white;box-shadow:0 1px 0 rgba(2,6,23,0.02);font-size:15px}
+  /* Top Bar */
+  #topbar{
+    width:100%;
+    background:#1e2a47;
+    color:#fff;
+    padding:10px;
+    box-sizing:border-box;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
 
-    .results{position:absolute;left:0;right:0;top:calc(100% + 8px);background:#fff;border-radius:10px;border:1px solid #eef2ff;box-shadow:0 8px 30px rgba(2,6,23,0.06);max-height:420px;overflow:auto;padding:8px}
-    .result{display:flex;align-items:center;gap:12px;padding:9px;border-radius:8px;cursor:pointer}
-    .result:hover{background:rgba(37,99,235,0.04)}
-    .result img.logo{width:44px;height:44px;border-radius:8px;object-fit:cover;background:#f3f4f6}
-    .result .meta{display:flex;flex-direction:column}
-    .result .meta .name{font-size:15px;color:#0f172a}
-    .result .meta .url{font-size:12px;color:var(--muted)}
+  #searchBox{
+    flex:1;
+    padding:8px 12px;
+    border:0;
+    border-radius:6px;
+    font-size:15px;
+  }
 
-    /* Content area (below topbar) */
-    main{flex:1;padding:18px}
-    .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
-    .card{background:#fff;border-radius:12px;padding:12px;display:flex;gap:12px;align-items:center;box-shadow:0 1px 6px rgba(2,6,23,0.03)}
-    .card img{width:48px;height:48px;border-radius:8px}
-    .card .info{display:flex;flex-direction:column}
+  #searchBtn{
+    padding:8px 15px;
+    background:#007bff;
+    color:#fff;
+    border:0;
+    border-radius:6px;
+    cursor:pointer;
+    font-size:15px;
+  }
 
-    /* Fullscreen iframe (hidden until used) */
-    .iframe-full{position:fixed;inset:0;background:#fff;display:none;z-index:1000}
-    .iframe-full.show{display:block}
-    .iframe-full iframe{width:100%;height:100%;border:0}
-    .iframe-controls{position:absolute;right:14px;top:14px;display:flex;gap:10px;z-index:1010}
-    .btn{background:rgba(15,23,42,0.06);padding:8px 10px;border-radius:8px;border:0;cursor:pointer}
-    .btn:hover{background:rgba(15,23,42,0.09)}
-
-    /* Hidden helper */
-    .hidden{display:none !important}
-
-    /* Responsive tweaks */
-    @media (max-width:520px){.brand .text{display:none}}
-  </style>
+  #frame{width:100vw;height:calc(100vh - 50px);border:0}
+</style>
 </head>
 <body>
-  <div class="topbar" id="topbar">
-    <div class="brand">
-      <div class="logo">KS</div>
-      <div class="text">KS Dashboard</div>
-    </div>
 
-    <div class="search-wrap">
-      <div class="search" id="searchBox">
-        <input id="searchInput" type="search" placeholder="Search... (type to filter)" autocomplete="off" />
-        <div class="results hidden" id="results"></div>
-      </div>
-    </div>
+<!-- Top Bar -->
+<div id="topbar">
+  <input id="searchBox" type="text" placeholder="Search..." />
+  <button id="searchBtn">Search</button>
+</div>
 
-    <div style="width:14px"><!-- spacer --></div>
-  </div>
+<iframe id="frame"></iframe>
 
-  <main>
-    <h3 style="margin:0 0 12px 0;color:#0f172a">Quick links</h3>
-    <div class="cards" id="cards"></div>
-  </main>
+<script>
+/* ---------------------------
+   1. Pages for ?m=
+---------------------------- */
+const pages = {
+  dashboard: "dashboard.html",
+  about: "about.html",
+  contact: "contact.html",
+  free: "mc/hosting/free.html"
+};
 
-  <!-- Fullscreen iframe container -->
-  <div class="iframe-full" id="iframeFull" aria-hidden="true">
-    <div class="iframe-controls">
-      <button class="btn" id="openNew">Open in new tab</button>
-      <button class="btn" id="closeFrame">Exit</button>
-    </div>
-    <!-- iframe id used below by script as "page-frame" -->
-    <iframe id="page-frame" sandbox="allow-forms allow-modals allow-pointer-lock allow-popups allow-same-origin allow-scripts"></iframe>
-  </div>
+/* ---------------------------
+   Helper
+---------------------------- */
+function getQuery(name){
+  const p = new URLSearchParams(location.search);
+  return p.get(name);
+}
 
-  <script>
-    /**********************************************
-     * Configuration
-     **********************************************/
-    // Map keys to internal files (relative to this HTML file)
-    const pageMap = {
-      "dashboard": "dashboard.html",
-      "about": "about.html",
-      "contact": "contact.html",
-      "free": "mc/hosting/free.html"
-      // add more keys => relative-path mappings here
-    };
+/* ---------------------------
+   2. Handle ?m= and ?s=
+---------------------------- */
+async function init(){
+  const m = getQuery("m");
+  const s = getQuery("s");
+  const frame = document.getElementById("frame");
 
-    // Optional JSON file for search/cards (same-origin or CORS-enabled)
-    const DATA_URL = './search-data.json';
-
-    /**********************************************
-     * Elements & state
-     **********************************************/
-    const searchInput = document.getElementById('searchInput');
-    const resultsEl = document.getElementById('results');
-    const cardsEl = document.getElementById('cards');
-    const topbar = document.getElementById('topbar');
-    const iframeFull = document.getElementById('iframeFull');
-    const pageFrame = document.getElementById('page-frame');
-    const closeFrame = document.getElementById('closeFrame');
-    const openNew = document.getElementById('openNew');
-
-    let items = [];           // loaded from search-data.json or fallback
-    let currentKey = null;    // the current key or raw url shown in iframe
-
-    /**********************************************
-     * Utilities
-     **********************************************/
-    function debounce(fn, ms = 180) {
-      let t;
-      return (...a) => {
-        clearTimeout(t);
-        t = setTimeout(() => fn(...a), ms);
-      };
+  /* --- Case 1: ?m=pageKey --- */
+  if(m){
+    const key = m.toLowerCase();
+    if(pages[key]){
+      frame.src = pages[key];
+      return;
     }
+  }
 
-    function isProbablyUrl(q) {
-      if (!q) return false;
-      const lower = q.toLowerCase();
-      return lower.startsWith('http://') || lower.startsWith('https://') || lower.includes('.') || lower.includes('/');
-    }
+  /* --- Case 2: ?s=searchName --- */
+  if(s){
+    try{
+      const res = await fetch("search-data.json");
+      const data = await res.json();
+      const q = s.toLowerCase();
 
-    function normalizeQueryString(rawSearch) {
-      // Accept both "?=value" and "?value"
-      if (!rawSearch) return '';
-      if (rawSearch.startsWith('?=')) return decodeURIComponent(rawSearch.slice(2));
-      if (rawSearch.startsWith('?')) return decodeURIComponent(rawSearch.slice(1));
-      return decodeURIComponent(rawSearch);
-    }
+      const found = data.find(x =>
+        (x.name || "").toLowerCase().includes(q)
+      );
 
-    function buildQueryForKey(key) {
-      // always format as ?=key so it matches your preferred format
-      return '?=' + encodeURIComponent(key);
-    }
-
-    function setBrowserQuery(key, replace = false) {
-      const q = buildQueryForKey(key);
-      if (replace) {
-        history.replaceState(null, '', q);
-      } else {
-        history.pushState(null, '', q);
-      }
-    }
-
-    /**********************************************
-     * Data loading + rendering
-     **********************************************/
-    async function loadData() {
-      try {
-        const res = await fetch(DATA_URL, { cache: 'no-store' });
-        if (!res.ok) throw new Error('fetch failed ' + res.status);
-        items = await res.json();
-      } catch (err) {
-        console.warn('Could not load search-data.json, using fallback sample.', err);
-        items = [
-          { name: 'Dashboard (local)', key: 'dashboard', url: pageMap.dashboard || 'dashboard.html', logo: '' },
-          { name: 'About', key: 'about', url: pageMap.about || 'about.html', logo: '' },
-          { name: 'Contact', key: 'contact', url: pageMap.contact || 'contact.html', logo: '' },
-          { name: 'Free hosting', key: 'free', url: pageMap.free || 'mc/hosting/free.html', logo: '' },
-          { name: 'Pterodactyl', key: 'pterodactyl', url: 'https://pterodactyl.io', logo: '' }
-        ];
-      }
-      // enrich items with url if missing (use pageMap)
-      items = items.map(it => {
-        if (!it.url) {
-          if (it.key && pageMap[it.key]) it.url = pageMap[it.key];
-          else if (it.url && isProbablyUrl(it.url)) it.url = it.url;
-        }
-        return it;
-      });
-      renderCards();
-    }
-
-    function renderCards() {
-      cardsEl.innerHTML = '';
-      items.forEach(it => {
-        const card = document.createElement('div');
-        card.className = 'card';
-        const img = document.createElement('img');
-        img.src = it.logo || ('data:image/svg+xml;utf8,' + svgPlaceholder((it.name||'')[0]||''));
-        img.alt = it.name || '';
-        const info = document.createElement('div');
-        info.className = 'info';
-        const n = document.createElement('div'); n.style.fontWeight = 600; n.textContent = it.name || it.key || it.url;
-        const u = document.createElement('div'); u.style.fontSize='13px'; u.style.color = '#6b7280'; u.textContent = it.url || (it.key ? '?=' + it.key : '');
-        info.appendChild(n); info.appendChild(u);
-        card.appendChild(img); card.appendChild(info);
-        card.addEventListener('click', () => {
-          // if we have a key, prefer to set that key in query; else if url present use url string as key
-          const keyToUse = it.key || it.url || it.name;
-          navigateTo(keyToUse);
-        });
-        cardsEl.appendChild(card);
-      });
-    }
-
-    function svgPlaceholder(char) {
-      const safe = encodeURIComponent(char.toUpperCase());
-      return `<svg xmlns='http://www.w3.org/2000/svg' width='48' height='48'><rect width='100%' height='100%' fill='%23eef2ff'/><text x='50%' y='50%' alignment-baseline='central' text-anchor='middle' font-size='14' fill='%232563eb'>${safe}</text></svg>`;
-    }
-
-    /**********************************************
-     * Search UI
-     **********************************************/
-    function showResults(list) {
-      resultsEl.innerHTML = '';
-      if (!list.length) { resultsEl.classList.add('hidden'); return; }
-      list.forEach(it => {
-        const r = document.createElement('div'); r.className = 'result';
-        const img = document.createElement('img'); img.className = 'logo'; img.alt = it.name || '';
-        img.src = it.logo || ('data:image/svg+xml;utf8,' + svgSearchPlaceholder((it.name||'')[0]||''));
-        const meta = document.createElement('div'); meta.className = 'meta';
-        const name = document.createElement('div'); name.className = 'name'; name.textContent = it.name || it.key || it.url;
-        const url = document.createElement('div'); url.className = 'url'; url.textContent = it.url || (it.key ? '?=' + it.key : '');
-        meta.appendChild(name); meta.appendChild(url);
-        r.appendChild(img); r.appendChild(meta);
-        r.addEventListener('click', () => {
-          const keyToUse = it.key || it.url || it.name;
-          navigateTo(keyToUse);
-        });
-        resultsEl.appendChild(r);
-      });
-      resultsEl.classList.remove('hidden');
-    }
-
-    function svgSearchPlaceholder(char) {
-      const safe = encodeURIComponent(char.toUpperCase());
-      return `<svg xmlns='http://www.w3.org/2000/svg' width='44' height='44'><rect width='100%' height='100%' fill='%23f1f5f9'/><text x='50%' y='50%' alignment-baseline='central' text-anchor='middle' font-size='14' fill='%232563eb'>${safe}</text></svg>`;
-    }
-
-    const doSearch = debounce(() => {
-      const q = (searchInput.value || '').trim().toLowerCase();
-      if (!q) { resultsEl.classList.add('hidden'); return; }
-      const filtered = items.filter(it => {
-        const name = (it.name || '').toLowerCase();
-        const url = (it.url || '').toLowerCase();
-        const key = (it.key || '').toLowerCase();
-        return name.includes(q) || url.includes(q) || key.includes(q);
-      });
-      showResults(filtered.slice(0, 30));
-    }, 80);
-
-    searchInput.addEventListener('input', doSearch);
-    searchInput.addEventListener('focus', () => { if (searchInput.value.trim()) doSearch(); });
-
-    // Enter handler for search input
-    searchInput.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') {
-        e.preventDefault();
-        const raw = searchInput.value.trim();
-        if (!raw) return;
-        // If matches a pageMap key -> navigate to key
-        const lower = raw.toLowerCase();
-        if (pageMap[lower]) {
-          navigateTo(lower);
-          return;
-        }
-        // If matches an item key/url
-        const itemMatch = items.find(it => (it.key && it.key.toLowerCase() === lower) || ((it.name||'').toLowerCase() === lower) || ((it.url||'').toLowerCase() === lower));
-        if (itemMatch) {
-          navigateTo(itemMatch.key || itemMatch.url || itemMatch.name);
-          return;
-        }
-        // If it looks like a URL, open as URL
-        if (isProbablyUrl(raw)) {
-          const url = raw.startsWith('http://') || raw.startsWith('https://') ? raw : 'https://' + raw;
-          navigateTo(url);
-          return;
-        }
-        // fallback: treat as key and navigate (creates ?=raw)
-        navigateTo(raw);
-      }
-    });
-
-    // Close results when clicking outside the search box
-    document.addEventListener('click', (e) => {
-      if (!document.getElementById('searchBox').contains(e.target)) resultsEl.classList.add('hidden');
-    });
-
-    /**********************************************
-     * Navigation / iframe handling
-     **********************************************/
-    function resolveKeyToUrl(key) {
-      if (!key) return null;
-      // if key exactly matches pageMap key (case-insensitive)
-      const lowered = key.toLowerCase();
-      if (pageMap[lowered]) {
-        return pageMap[lowered];
-      }
-      // if input looks like a URL -> return it (ensure scheme)
-      if (key.startsWith('http://') || key.startsWith('https://')) return key;
-      if (isProbablyUrl(key)) {
-        // if contains space or not a proper host, assume https://
-        return key.includes('://') ? key : ('https://' + key);
-      }
-      // maybe a named key for items row (non-pageMap) -> find in items
-      const item = items.find(it => (it.key && it.key.toLowerCase() === lowered) || ((it.name||'').toLowerCase() === lowered));
-      if (item && item.url) {
-        return item.url;
-      }
-      // as last fallback, if key looks like a relative page file name, return it
-      return key;
-    }
-
-    function openInIframe(url, pushed = true) {
-      currentKey = url;
-      try {
-        pageFrame.src = url;
-      } catch (e) {
-        pageFrame.src = 'about:blank';
-        console.error('Failed to set iframe src:', e);
-      }
-      iframeFull.classList.add('show');
-      iframeFull.setAttribute('aria-hidden', 'false');
-      topbar.classList.add('hidden');
-      resultsEl.classList.add('hidden');
-      // update browser URL to ?=keyEquivalent
-      // we store the original user key (could be raw input or mapped key) using setBrowserQuery
-      if (pushed && typeof lastNavigatedKey !== 'undefined') {
-        // navigation already handled by navigateTo
-      }
-      // focus attempt
-      setTimeout(()=>{ try{ pageFrame.focus(); }catch(e){} }, 300);
-    }
-
-    function closeIframe() {
-      pageFrame.src = 'about:blank';
-      iframeFull.classList.remove('show');
-      iframeFull.setAttribute('aria-hidden', 'true');
-      topbar.classList.remove('hidden');
-      currentKey = null;
-    }
-
-    closeFrame.addEventListener('click', closeIframe);
-    openNew.addEventListener('click', () => {
-      if (!currentKey) return;
-      // open the resolved URL (if it was a key that maps to a relative path, try to resolve again)
-      const urlToOpen = resolveKeyToUrl(currentKey) || currentKey;
-      window.open(urlToOpen, '_blank');
-    });
-
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && iframeFull.classList.contains('show')) closeIframe();
-    });
-
-    // Keep track of the key that user navigated to (used to set ?=value)
-    let lastNavigatedKey = null;
-
-    // Navigate to a key (either a pageMap key, an item key, or a URL). This updates URL & iframe.
-    function navigateTo(key) {
-      if (!key) return;
-      lastNavigatedKey = key;
-      // For URL-like keys we still push the raw key so the bookmark shows what user typed
-      setBrowserQuery(key, false);
-      const resolved = resolveKeyToUrl(key);
-      if (!resolved) return;
-      openInIframe(resolved, true);
-      // set the search input to the friendly representation
-      searchInput.value = key;
-    }
-
-    // When the page loads with a query, we should open the mapped page automatically (but keep topbar hidden)
-    function initFromLocation() {
-      const raw = normalizeQueryString(window.location.search);
-      if (!raw) return;
-      // if raw equals 'dashboard' then load that pageMap otherwise if looks like url or file name load it
-      const keyCandidate = raw;
-      // if candidates key exists in pageMap or in items, use that key; otherwise if looks like url use it
-      if (pageMap[keyCandidate.toLowerCase()]) {
-        lastNavigatedKey = keyCandidate;
-        const url = resolveKeyToUrl(keyCandidate);
-        if (url) openInIframe(url, false);
-        searchInput.value = keyCandidate;
-        // replace history to keep same text but not create duplicate
-        setBrowserQuery(keyCandidate, true);
+      if(found && found.url){
+        frame.src = found.url;
         return;
       }
-      // if looks like url
-      if (isProbablyUrl(keyCandidate)) {
-        lastNavigatedKey = keyCandidate;
-        const url = resolveKeyToUrl(keyCandidate);
-        if (url) openInIframe(url, false);
-        searchInput.value = keyCandidate;
-        setBrowserQuery(keyCandidate, true);
-        return;
-      }
-      // fallback: if it's a filename present in pageMap values -> try to find matching key
-      const mapEntry = Object.keys(pageMap).find(k => pageMap[k] === keyCandidate);
-      if (mapEntry) {
-        lastNavigatedKey = mapEntry;
-        openInIframe(pageMap[mapEntry], false);
-        searchInput.value = mapEntry;
-        setBrowserQuery(mapEntry, true);
-        return;
-      }
-      // If nothing matched, treat as key and attempt to load directly as relative path or item
-      lastNavigatedKey = keyCandidate;
-      const url = resolveKeyToUrl(keyCandidate);
-      if (url) openInIframe(url, false);
-      searchInput.value = keyCandidate;
-      setBrowserQuery(keyCandidate, true);
+    }catch(e){
+      console.warn("search-data.json error", e);
     }
+  }
 
-    // handle browser backward/forward so query state matches iframe
-    window.addEventListener('popstate', () => {
-      const raw = normalizeQueryString(window.location.search);
-      if (!raw) {
-        closeIframe();
-        return;
-      }
-      // open without pushing history
-      lastNavigatedKey = raw;
-      const url = resolveKeyToUrl(raw) || raw;
-      openInIframe(url, false);
-      searchInput.value = raw;
-    });
+  /* --- Default --- */
+  frame.src = "dashboard.html";
+}
 
-    /**********************************************
-     * Init
-     **********************************************/
-    (async function init() {
-      await loadData();
-      // If user navigated with ?=... open it
-      initFromLocation();
-    })();
+init();
 
-  </script>
+/* ---------------------------
+   3. Top bar search handler
+---------------------------- */
+document.getElementById("searchBtn").onclick = () => {
+  const value = document.getElementById("searchBox").value.trim();
+  if(value){
+    // Reload page with ?s=
+    location.href = "?s=" + encodeURIComponent(value);
+  }
+};
+</script>
+
 </body>
 </html>
