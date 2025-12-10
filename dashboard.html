@@ -1,62 +1,201 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>KS Warrior</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Dashboard</title>
   <style>
-    body { margin:0; font-family:Poppins,sans-serif; }
-    .header { padding-top:60px; font-size:22px; font-weight:600; }
-    .search-row { display:flex; justify-content:center; gap:10px; padding:10px; }
-    .search-row input {
-      width:60%; padding:10px; font-size:16px;
-      border:1px solid #aaa; border-radius:10px;
-    }
-    .item {
-      padding:15px; margin:10px; border:1px solid #ddd;
-      border-radius:10px; cursor:pointer; font-size:18px;
-    }
+    :root{--bg:#f4f7fb;--accent:#2563eb;--muted:#6b7280}
+    html,body{height:100%;margin:0;font-family:Inter,ui-sans-serif,system-ui,Segoe UI,Roboto,'Helvetica Neue',Arial}
+    body{background:var(--bg);display:flex;flex-direction:column}
+
+    /* Top bar */
+    .topbar{height:64px;display:flex;align-items:center;gap:12px;padding:0 18px;background:#fff;box-shadow:0 1px 6px rgba(15,23,42,0.06);z-index:40}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:600;color:#0f172a}
+    .brand .logo{width:36px;height:36px;border-radius:8px;background:linear-gradient(135deg,#e6eefc,#eef6ff);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--accent)}
+
+    .search-wrap{flex:1;display:flex;justify-content:center}
+    .search{width:100%;max-width:820px;position:relative}
+    input[type="search"]{width:100%;padding:12px 14px;border-radius:10px;border:1px solid #e6eef8;background:white;box-shadow:0 1px 0 rgba(2,6,23,0.02);font-size:15px}
+
+    .results{position:absolute;left:0;right:0;top:calc(100% + 8px);background:#fff;border-radius:10px;border:1px solid #eef2ff;box-shadow:0 8px 30px rgba(2,6,23,0.06);max-height:420px;overflow:auto;padding:8px}
+    .result{display:flex;align-items:center;gap:12px;padding:9px;border-radius:8px;cursor:pointer}
+    .result:hover{background:rgba(37,99,235,0.04)}
+    .result img.logo{width:44px;height:44px;border-radius:8px;object-fit:cover;background:#f3f4f6}
+    .result .meta{display:flex;flex-direction:column}
+    .result .meta .name{font-size:15px;color:#0f172a}
+    .result .meta .url{font-size:12px;color:var(--muted)}
+
+    /* Content area (below topbar) */
+    main{flex:1;padding:18px}
+    .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
+    .card{background:#fff;border-radius:12px;padding:12px;display:flex;gap:12px;align-items:center;box-shadow:0 1px 6px rgba(2,6,23,0.03)}
+    .card img{width:48px;height:48px;border-radius:8px}
+    .card .info{display:flex;flex-direction:column}
+
+    /* Fullscreen iframe (hidden until used) */
+    .iframe-full{position:fixed;inset:0;background:#fff;display:none;z-index:1000}
+    .iframe-full.show{display:block}
+    .iframe-full iframe{width:100%;height:100%;border:0}
+    .iframe-controls{position:absolute;right:14px;top:14px;display:flex;gap:10px;z-index:1010}
+    .btn{background:rgba(15,23,42,0.06);padding:8px 10px;border-radius:8px;border:0;cursor:pointer}
+    .btn:hover{background:rgba(15,23,42,0.09)}
+
+    /* Hidden helper */
+    .hidden{display:none !important}
+
+    /* Responsive tweaks */
+    @media (max-width:520px){.brand .text{display:none}}
   </style>
 </head>
 <body>
+  <div class="topbar" id="topbar">
+    <div class="brand">
+      <div class="logo">KS</div>
+      <div class="text">KS Dashboard</div>
+    </div>
 
-<div class="header">Favourite  
-    <input id="searchBox" type="text" placeholder="Search..." style="margin-left:20px;width:50%">
-    Add
-</div>
+    <div class="search-wrap">
+      <div class="search" id="searchBox">
+        <input id="searchInput" type="search" placeholder="Search... (type to filter)" autocomplete="off" />
+        <div class="results hidden" id="results"></div>
+      </div>
+    </div>
 
-<div id="results"></div>
+    <div style="width:14px"><!-- spacer --></div>
+  </div>
 
-<script>
-async function loadData() {
-  const res = await fetch("search-data.json");
-  const data = await res.json();
-  window.allData = data;
-  display(data);
-}
+  <main>
+    <h3 style="margin:0 0 12px 0;color:#0f172a">Quick links</h3>
+    <div class="cards" id="cards"></div>
+  </main>
 
-function display(list) {
-  const div = document.getElementById("results");
-  div.innerHTML = "";
-  list.forEach(item => {
-    const box = document.createElement("div");
-    box.className = "item";
-    box.textContent = item.name;
-    box.onclick = () => {
-      window.location.href = `view.html?url=${encodeURIComponent(item.url)}`;
-    };
-    div.appendChild(box);
-  });
-}
+  <!-- Fullscreen iframe container -->
+  <div class="iframe-full" id="iframeFull">
+    <div class="iframe-controls">
+      <button class="btn" id="openNew">Open in new tab</button>
+      <button class="btn" id="closeFrame">Exit</button>
+    </div>
+    <iframe id="mainFrame" sandbox="allow-forms allow-modals allow-pointer-lock allow-popups allow-same-origin allow-scripts"></iframe>
+  </div>
 
-document.getElementById("searchBox").addEventListener("input", e => {
-  const q = e.target.value.toLowerCase();
-  const filtered = window.allData.filter(d => d.name.toLowerCase().includes(q));
-  display(filtered);
-});
+  <script>
+    // Path to JSON file (must be served from same origin or CORS-enabled)
+    const DATA_URL = './search-data.json';
 
-loadData();
-</script>
+    // Elements
+    const searchInput = document.getElementById('searchInput');
+    const resultsEl = document.getElementById('results');
+    const cardsEl = document.getElementById('cards');
+    const topbar = document.getElementById('topbar');
+    const iframeFull = document.getElementById('iframeFull');
+    const mainFrame = document.getElementById('mainFrame');
+    const closeFrame = document.getElementById('closeFrame');
+    const openNew = document.getElementById('openNew');
 
+    let items = [];
+    let currentUrl = null;
+
+    // Utility: debounce
+    function debounce(fn, ms=180){let t; return (...a)=>{clearTimeout(t);t=setTimeout(()=>fn(...a),ms)}}
+
+    // Fetch data
+    async function loadData(){
+      try{
+        const res = await fetch(DATA_URL, {cache: 'no-store'});
+        if(!res.ok) throw new Error('Failed to load data: ' + res.status);
+        items = await res.json();
+        renderCards();
+      }catch(e){
+        console.error(e);
+        // fallback sample if fetch fails
+        items = [
+          {name:'Pterodactyl Panel',url:'https://pterodactyl.io',logo:''},
+          {name:'Puffer Panel',url:'https://pufferpanel.com',logo:''},
+        ];
+        renderCards();
+      }
+    }
+
+    function renderCards(){
+      cardsEl.innerHTML = '';
+      items.forEach(it=>{
+        const card = document.createElement('div');card.className='card';
+        const img = document.createElement('img');
+        img.src = it.logo || 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48"><rect width="100%" height="100%" fill="%23eef2ff"/><text x="50%" y="50%" alignment-baseline="central" text-anchor="middle" font-size="14" fill="%232563eb">' + encodeURIComponent((it.name||'')[0]||'') + '</text></svg>';
+        img.alt = it.name;
+        const info = document.createElement('div');info.className='info';
+        const n = document.createElement('div');n.style.fontWeight=600;n.textContent = it.name;
+        const u = document.createElement('div');u.style.fontSize='13px';u.style.color='#6b7280';u.textContent = it.url;
+        info.appendChild(n);info.appendChild(u);
+        card.appendChild(img);card.appendChild(info);
+        card.addEventListener('click', ()=> openInFrame(it.url));
+        cardsEl.appendChild(card);
+      });
+    }
+
+    // Render results list for suggestions
+    function showResults(list){
+      resultsEl.innerHTML = '';
+      if(!list.length){ resultsEl.classList.add('hidden'); return; }
+      list.forEach(it=>{
+        const r = document.createElement('div'); r.className='result';
+        const img = document.createElement('img'); img.className='logo'; img.alt = it.name;
+        img.src = it.logo || 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="44" height="44"><rect width="100%" height="100%" fill="%23f1f5f9"/><text x="50%" y="50%" alignment-baseline="central" text-anchor="middle" font-size="14" fill="%232563eb">' + encodeURIComponent((it.name||'')[0]||'') + '</text></svg>';
+        const meta = document.createElement('div'); meta.className='meta';
+        const name = document.createElement('div'); name.className='name'; name.textContent = it.name;
+        const url = document.createElement('div'); url.className='url'; url.textContent = it.url;
+        meta.appendChild(name); meta.appendChild(url);
+        r.appendChild(img); r.appendChild(meta);
+        r.addEventListener('click', ()=> openInFrame(it.url));
+        resultsEl.appendChild(r);
+      });
+      resultsEl.classList.remove('hidden');
+    }
+
+    // Search logic
+    const doSearch = debounce(()=>{
+      const q = searchInput.value.trim().toLowerCase();
+      if(!q){ resultsEl.classList.add('hidden'); return; }
+      const filtered = items.filter(it => it.name.toLowerCase().includes(q) || (it.url||'').toLowerCase().includes(q));
+      showResults(filtered.slice(0,30));
+    }, 120);
+
+    searchInput.addEventListener('input', doSearch);
+    searchInput.addEventListener('focus', ()=>{ if(searchInput.value.trim()) doSearch(); });
+
+    // Close results when clicking outside
+    document.addEventListener('click', (e)=>{
+      if(!document.getElementById('searchBox').contains(e.target)) resultsEl.classList.add('hidden');
+    });
+
+    // Open url in fullscreen iframe and hide topbar
+    function openInFrame(url){
+      currentUrl = url;
+      // Some websites block being embedded via X-Frame-Options. We'll still attempt.
+      mainFrame.src = url;
+      iframeFull.classList.add('show');
+      topbar.classList.add('hidden');
+      resultsEl.classList.add('hidden');
+      // move focus to iframe
+      setTimeout(()=>{ try{ mainFrame.focus(); }catch(e){} },300);
+    }
+
+    function closeIframe(){
+      mainFrame.src = 'about:blank';
+      iframeFull.classList.remove('show');
+      topbar.classList.remove('hidden');
+      currentUrl = null;
+    }
+
+    closeFrame.addEventListener('click', closeIframe);
+    openNew.addEventListener('click', ()=>{ if(currentUrl) window.open(currentUrl, '_blank'); });
+
+    // ESC key to close
+    document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape' && iframeFull.classList.contains('show')) closeIframe(); });
+
+    // Initialize
+    loadData();
+  </script>
 </body>
 </html>
