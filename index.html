@@ -377,8 +377,10 @@ init();
 /* 3. Top bar search triggers ?s= */
 searchBox.addEventListener("keydown", function (e) {
   if (e.key === "Enter") {
-    e.preventDefault();
-    searchBtn.click();
+    const value = searchBox.value.trim();
+    if (value) {
+      location.href = "?s=" + encodeURIComponent(value);
+    }
   }
 });
 </script>
