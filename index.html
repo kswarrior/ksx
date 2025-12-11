@@ -70,6 +70,7 @@
     opacity: 0;
     transform: translateX(8px);
     margin-left:6px;
+    position:relative;
   }
 
   /* visible state for search (added/removed by JS on topbar) */
@@ -83,6 +84,46 @@
     pointer-events:auto;
   }
 
+  /* Suggestion box (live results) */
+  #suggestBox {
+    display:none;
+    position:absolute;
+    left: 14px; /* align under search area visually */
+    top: 56px;  /* directly under the topbar */
+    width: calc(100% - 28px);
+    max-width: 760px;
+    margin: 0 auto;
+    z-index: 90;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 8px 30px rgba(12,25,48,0.12);
+    list-style: none;
+    padding: 6px;
+    max-height: 260px;
+    overflow-y: auto;
+    box-sizing: border-box;
+    font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+  }
+  #suggestBox li {
+    padding: 9px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    color: #072048;
+    font-weight: 600;
+    font-size: 14px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+  #suggestBox li:hover,
+  #suggestBox li.active {
+    background: linear-gradient(90deg, rgba(37,99,235,0.06), rgba(96,165,250,0.03));
+  }
+  #suggestBox li .subtitle {
+    font-weight:500;
+    font-size:12px;
+    color: #4b5563;
+  }
   /* Search icon button (initial visible) */
   .btn-icon {
     width:40px;
@@ -163,6 +204,7 @@
     #sidebar{ left:-100%; width:78vw; }
     body.sidebar-open #sidebar{ left:0; }
     body.sidebar-open #frame{ transform: none; filter: brightness(.92) blur(.0px); }
+    #suggestBox { left: 8px; width: calc(100% - 16px); max-width: unset; }
   }
 
   /* Small touch-friendly spacing for topbar items */
@@ -221,6 +263,9 @@
   </div>
 </div>
 
+<!-- Suggestion box (YouTube/Instagram style) -->
+<ul id="suggestBox" role="listbox" aria-label="Search suggestions"></ul>
+
 <!-- Sidebar that opens from left -->
 <nav id="sidebar" aria-label="Sidebar navigation">
   <h3>KS Warrior - Official Website</h3>
@@ -241,7 +286,10 @@ const searchIcon = document.getElementById('searchIcon');
 const searchBox = document.getElementById('searchBox');
 const hamburger = document.getElementById('hamburger');
 const frame = document.getElementById('frame');
+const suggestBox = document.getElementById('suggestBox');
 
+let searchData = [];
+let highlightedIndex = -1;
 
 /* =========================================================
    SEARCH ICON TOGGLE
@@ -253,24 +301,27 @@ searchIcon.addEventListener('click', () => {
     setTimeout(() => searchBox.focus(), 160);
   } else {
     searchBox.value = "";
+    hideSuggestions();
   }
 });
 
-/* Close search when clicking outside */
+/* Close search when clicking outside (also hide suggestions) */
 document.addEventListener('click', (ev) => {
   if (!topbar.contains(ev.target) && topbar.classList.contains('search-active')) {
     topbar.classList.remove('search-active');
+    hideSuggestions();
   }
 });
 
-/* Keyboard shortcuts */
+/* Keyboard shortcuts (global) */
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') {
     topbar.classList.remove('search-active');
     document.body.classList.remove('sidebar-open');
+    hideSuggestions();
   }
 
-  /* ENTER search */
+  /* ENTER search (when focus is on search box) - original behavior preserved */
   if (e.key === 'Enter' && document.activeElement === searchBox) {
     const value = searchBox.value.trim();
     if (value) {
@@ -296,9 +347,149 @@ function loadInFrame(path){
   document.body.classList.remove('sidebar-open');
 }
 
+/* =========================================================
+   SUGGESTIONS - Live (YouTube/Instagram style)
+   - loads search-data.json once
+   - shows matches while typing
+   - keyboard nav (ArrowUp/ArrowDown + Enter)
+   - click selects and loads into iframe
+========================================================= */
+
+function hideSuggestions(){
+  suggestBox.style.display = 'none';
+  suggestBox.innerHTML = '';
+  highlightedIndex = -1;
+}
+
+function showSuggestions(){
+  suggestBox.style.display = 'block';
+}
+
+function renderSuggestions(results, query){
+  if(!results || results.length === 0){
+    hideSuggestions();
+    return;
+  }
+
+  // Build list (max 10)
+  const items = results.slice(0, 10).map((r, idx) => {
+    const safeName = String(r.name).replace(/"/g, '&quot;');
+    const subtitle = r.subtitle ? `<div class="subtitle">${r.subtitle}</div>` : '';
+    return `<li role="option" data-index="${idx}" data-url="${r.url}" data-name="${safeName}">
+              <div style="flex:1">${r.name}</div>
+              ${subtitle}
+            </li>`;
+  }).join('');
+
+  suggestBox.innerHTML = items;
+  showSuggestions();
+  highlightedIndex = -1;
+}
+
+function updateHighlight(newIndex){
+  const lis = suggestBox.querySelectorAll('li');
+  if(lis.length === 0) return;
+  // clamp
+  if(newIndex < 0) newIndex = -1;
+  if(newIndex >= lis.length) newIndex = lis.length - 1;
+  // remove old
+  lis.forEach(li => li.classList.remove('active'));
+  highlightedIndex = newIndex;
+  if(highlightedIndex >= 0){
+    lis[highlightedIndex].classList.add('active');
+    // ensure visible
+    lis[highlightedIndex].scrollIntoView({ block: 'nearest' });
+  }
+}
+
+function selectSuggestionByIndex(idx){
+  const li = suggestBox.querySelector(`li[data-index="${idx}"]`);
+  if(!li) return;
+  const url = li.getAttribute('data-url');
+  const name = li.getAttribute('data-name');
+  searchBox.value = name;
+  hideSuggestions();
+  // load into iframe (no redirect)
+  if(url) frame.src = url;
+}
+
+/* load search data once */
+fetch('search-data.json').then(r => r.json()).then(d => {
+  // ensure each item has name/url, optionally subtitle
+  searchData = Array.isArray(d) ? d : [];
+}).catch(e => {
+  console.warn('search-data.json error', e);
+  searchData = [];
+});
+
+/* input handler: live suggestions */
+searchBox.addEventListener('input', (ev) => {
+  const q = String(searchBox.value || '').toLowerCase().trim();
+  if(!q){
+    hideSuggestions();
+    return;
+  }
+
+  // find matches - includes partial substrings (case-insensitive)
+  const results = searchData.filter(item =>
+    (item.name || '').toLowerCase().includes(q) ||
+    (item.tags || []).join(' ').toLowerCase().includes(q) ||
+    (item.subtitle || '').toLowerCase().includes(q)
+  );
+
+  renderSuggestions(results, q);
+});
+
+/* keyboard navigation within suggestions */
+searchBox.addEventListener('keydown', (e) => {
+  const visible = suggestBox.style.display === 'block';
+  if(!visible) return;
+
+  if(e.key === 'ArrowDown'){
+    e.preventDefault();
+    updateHighlight(highlightedIndex + 1);
+  } else if(e.key === 'ArrowUp'){
+    e.preventDefault();
+    updateHighlight(highlightedIndex - 1);
+  } else if(e.key === 'Enter'){
+    // if a suggestion is highlighted, choose it instead of default Enter redirect
+    if(highlightedIndex >= 0){
+      e.preventDefault();
+      selectSuggestionByIndex(highlightedIndex);
+    }
+  } else if(e.key === 'Escape'){
+    hideSuggestions();
+  }
+});
+
+/* click on suggestion */
+suggestBox.addEventListener('click', (ev) => {
+  const li = ev.target.closest('li');
+  if(!li) return;
+  const url = li.getAttribute('data-url');
+  const name = li.getAttribute('data-name');
+  searchBox.value = name;
+  hideSuggestions();
+  if(url) frame.src = url;
+});
+
+/* hide suggestions on outside click */
+document.addEventListener('click', (ev) => {
+  if (!suggestBox.contains(ev.target) && !topbar.contains(ev.target)) {
+    hideSuggestions();
+  }
+});
+
+/* give focus to search on topbar click area to open suggestions */
+searchBox.addEventListener('focus', () => {
+  if (!topbar.classList.contains('search-active')) {
+    topbar.classList.add('search-active');
+  }
+});
 
 /* =========================================================
    MAIN LOGIC FOR ?m= AND ?s=
+   (left unchanged except suggestion behavior added above)
 ========================================================= */
 
 /* 1. Pages for ?m= */
@@ -330,41 +521,24 @@ async function init(){
   }
 
   /* Case 2: ?s=text */
-if(s){
-  try{
-    const res = await fetch("search-data.json");
-    const data = await res.json();
-    const q = s.toLowerCase();
+  if(s){
+    try{
+      const res = await fetch("search-data.json");
+      const data = await res.json();
+      const q = s.toLowerCase();
 
-    // get ALL results
-    const results = data.filter(x =>
-      (x.name || "").toLowerCase().includes(q)
-    );
+      const found = data.find(x =>
+        (x.name || "").toLowerCase().includes(q)
+      );
 
-    // if found multiple results
-    if(results.length > 0){
-      let html = `
-        <h2 style="font-family:Inter;padding:12px;">Search Results for "${s}"</h2>
-        <ul style="font-family:Inter;font-size:16px;line-height:1.9;padding:10px;">
-      `;
-
-      results.forEach(item => {
-        html += `<li><a href="${item.url}" target="frame">${item.name}</a></li>`;
-      });
-
-      html += `</ul>`;
-
-      // create temporary results page
-      const blob = new Blob([html], { type: "text/html" });
-      const url = URL.createObjectURL(blob);
-
-      frame.src = url;
-      return;
+      if(found && found.url){
+        frame.src = found.url;
+        return;
+      }
+    }catch(e){
+      console.warn("search-data.json error", e);
     }
-  }catch(e){
-    console.warn("search-data.json error", e);
   }
-}
 
   /* DEFAULT → Dashboard ALWAYS */
   frame.src = "dashboard.html";
