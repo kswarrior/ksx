@@ -330,24 +330,41 @@ async function init(){
   }
 
   /* Case 2: ?s=text */
-  if(s){
-    try{
-      const res = await fetch("search-data.json");
-      const data = await res.json();
-      const q = s.toLowerCase();
+if(s){
+  try{
+    const res = await fetch("search-data.json");
+    const data = await res.json();
+    const q = s.toLowerCase();
 
-      const found = data.find(x =>
-        (x.name || "").toLowerCase().includes(q)
-      );
+    // get ALL results
+    const results = data.filter(x =>
+      (x.name || "").toLowerCase().includes(q)
+    );
 
-      if(found && found.url){
-        frame.src = found.url;
-        return;
-      }
-    }catch(e){
-      console.warn("search-data.json error", e);
+    // if found multiple results
+    if(results.length > 0){
+      let html = `
+        <h2 style="font-family:Inter;padding:12px;">Search Results for "${s}"</h2>
+        <ul style="font-family:Inter;font-size:16px;line-height:1.9;padding:10px;">
+      `;
+
+      results.forEach(item => {
+        html += `<li><a href="${item.url}" target="frame">${item.name}</a></li>`;
+      });
+
+      html += `</ul>`;
+
+      // create temporary results page
+      const blob = new Blob([html], { type: "text/html" });
+      const url = URL.createObjectURL(blob);
+
+      frame.src = url;
+      return;
     }
+  }catch(e){
+    console.warn("search-data.json error", e);
   }
+}
 
   /* DEFAULT → Dashboard ALWAYS */
   frame.src = "dashboard.html";
