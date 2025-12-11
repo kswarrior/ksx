@@ -239,67 +239,49 @@
 const topbar = document.getElementById('topbar');
 const searchIcon = document.getElementById('searchIcon');
 const searchBox = document.getElementById('searchBox');
-const searchBtn = document.getElementById('searchBtn');
 const hamburger = document.getElementById('hamburger');
 const frame = document.getElementById('frame');
 
 
 /* =========================================================
-   SEARCH ICON TOGGLE (open/close)
+   SEARCH ICON TOGGLE
 ========================================================= */
 searchIcon.addEventListener('click', () => {
   const active = topbar.classList.toggle('search-active');
 
   if (active) {
     setTimeout(() => searchBox.focus(), 160);
-    searchIcon.setAttribute('aria-label','Close search');
-    searchIcon.title = 'Close';
   } else {
     searchBox.value = "";
-    searchIcon.setAttribute('aria-label','Open search');
-    searchIcon.title = 'Search';
   }
 });
 
-/* close search when clicking outside */
+/* Close search when clicking outside */
 document.addEventListener('click', (ev) => {
   if (!topbar.contains(ev.target) && topbar.classList.contains('search-active')) {
     topbar.classList.remove('search-active');
   }
 });
 
-/* keyboard shortcuts */
+/* Keyboard shortcuts */
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') {
-    if (topbar.classList.contains('search-active'))
-      topbar.classList.remove('search-active');
-
-    if (document.body.classList.contains('sidebar-open'))
-      document.body.classList.remove('sidebar-open');
+    topbar.classList.remove('search-active');
+    document.body.classList.remove('sidebar-open');
   }
 
+  /* ENTER search */
   if (e.key === 'Enter' && document.activeElement === searchBox) {
-    performSearch(searchBox.value);
+    const value = searchBox.value.trim();
+    if (value) {
+      location.href = "?s=" + encodeURIComponent(value);
+    }
   }
 });
 
-/* search button */
-searchBtn.addEventListener('click', () => performSearch(searchBox.value));
-
-function performSearch(q){
-  q = String(q || "").trim();
-  if (!q) {
-    loadInFrame("search.html");
-    return;
-  }
-  const encoded = encodeURIComponent(q);
-  loadInFrame("search.html?s=" + encoded);
-  topbar.classList.remove('search-active');
-}
-
 
 /* =========================================================
-   SIDEBAR / HAMBURGER
+   SIDEBAR
 ========================================================= */
 hamburger.addEventListener('click', () => {
   document.body.classList.toggle('sidebar-open');
@@ -317,7 +299,6 @@ function loadInFrame(path){
 
 /* =========================================================
    MAIN LOGIC FOR ?m= AND ?s=
-   (This is from your second script — primary logic)
 ========================================================= */
 
 /* 1. Pages for ?m= */
@@ -328,7 +309,7 @@ const pages = {
   free: "mc/hosting/free.html"
 };
 
-/* helper */
+/* Helper */
 function getQuery(name){
   const p = new URLSearchParams(location.search);
   return p.get(name);
@@ -348,7 +329,7 @@ async function init(){
     }
   }
 
-  /* Case 2: ?s=value (search from JSON) */
+  /* Case 2: ?s=text */
   if(s){
     try{
       const res = await fetch("search-data.json");
@@ -368,13 +349,15 @@ async function init(){
     }
   }
 
-  /* Default → Dashboard */
+  /* DEFAULT → Dashboard ALWAYS */
   frame.src = "dashboard.html";
 }
 
 init();
 
-/* 3. Top bar search triggers ?s= */
+/* =========================================================
+   ENTER SEARCH ONLY
+========================================================= */
 searchBox.addEventListener("keydown", function (e) {
   if (e.key === "Enter") {
     const value = searchBox.value.trim();
