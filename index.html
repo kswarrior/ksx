@@ -401,6 +401,13 @@ searchBtn.onclick = () => {
     location.href = "?s=" + encodeURIComponent(value);
   }
 };
+
+searchBox.addEventListener("keydown", function (e) {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    searchBtn.click();
+  }
+});
 </script>
 
 </body>
