@@ -6,116 +6,258 @@
 <title>KS Warrior</title>
 
 <style>
-:root{
-  --bg:#f4f7fb;
-  --top:#091233;
-  --muted:#718096;
-  --accent-1:#2563eb;
-  --accent-2:#60a5fa;
+  /* ---------------------------
+     Base & layout (keep ids)
+     --------------------------- */
+  :root{
+    --bg:#f4f7fb;
+    --top:#091233;
+    --muted:#718096;
+    --accent-1: #2563eb;
+    --accent-2: #60a5fa;
+    --glass: rgba(255,255,255,0.6);
+  }
+
+  html,body{height:100%;margin:0;background:linear-gradient(180deg,var(--bg),#eef4ff);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial; color:#0b1220}
+
+  /* Top bar */
+#topbar {
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 14px;
+
+  /* Gradient style */
+  background: linear-gradient(
+    -45deg,
+    #2d2dff,
+    #1a1abf,
+    #4545ff,
+    #2d2dff
+  );
+  background-size: 400% 400%;
+  animation: gradientFlow 10s ease infinite;
+
+  color: #fff;
+  font-family: 'Segoe UI', sans-serif;
+
+  /* Position */
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  height: 56px;
+
+  /* Glass + shadow (soft, not glow) */
+  backdrop-filter: blur(6px) saturate(120%);
+  box-shadow: 0 6px 18px rgba(6, 20, 40, 0.35);
+
+  /* Subtle shape */
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
 }
 
-html,body{
-  height:100%;
-  margin:0;
-  background:linear-gradient(180deg,var(--bg),#eef4ff);
-  font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial;
+@keyframes gradientFlow {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
-/* TOP BAR */
-#topbar{
-  position:fixed;
-  top:0;left:0;
-  width:100%;
-  height:56px;
-  display:flex;
-  align-items:center;
-  gap:12px;
-  padding:10px 14px;
-  background:linear-gradient(90deg,#0d254d,#061934);
-  color:#fff;
-  z-index:80;
-}
+  /* Logo (top-left) */
+  .logo-wrap{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    min-width:0;
+  }
 
-/* LOGO */
-.logo{width:42px;height:42px;border-radius:8px;overflow:hidden}
-.logo img{width:100%;height:100%;object-fit:contain}
+ .logo img {
+  width: 100%;
+  height: 100%;
+   border-radius: 25%;
+  object-fit: contain;
+  }
+  
+  h1 {
+    font-size: 18px;
+  }
 
-/* SEARCH */
-#searchBox{
-  width:0;
-  opacity:0;
-  transition:.25s;
-  padding:10px 14px;
-  border-radius:10px;
-  border:0;
-  outline:none;
-  background:rgba(255,255,255,.08);
-  color:#fff;
-}
-#topbar.search-active #searchBox{
-  width:clamp(220px,45vw,700px);
-  opacity:1;
-}
+  /* Keep existing searchBox id; hidden by default and animated open */
+  #searchBox{
+    flex:1;
+    padding:10px 8px;
+    border:0;
+    border-radius:10px;
+    font-size:14px;
+    outline:none;
+    background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+    color: #e6eefc;
+    box-shadow: inset 0 -1px 0 rgba(255,255,255,0.02);
+    transition: width .28s cubic-bezier(.2,.9,.2,1), opacity .18s ease, transform .18s ease;
+    width: 0;
+    max-width: 20%;
+    opacity: 0;
+    transform: translateX(8px);
+    margin-left:6px;
+    position:relative;
+  }
 
-/* ICON BUTTON */
-.btn-icon{
-  width:40px;height:40px;
-  display:grid;place-items:center;
-  border-radius:10px;
-  background:transparent;
-  border:1px solid rgba(255,255,255,.1);
-  cursor:pointer;
-  color:#fff;
-}
+  /* visible state for search (added/removed by JS on topbar) */
+  #topbar.search-active #searchBox {
+    width: clamp(220px, 45vw, 700px);
+    opacity:1;
+    transform:none;
+  }
+  #topbar.search-active #searchBtn {
+    opacity:1;
+    pointer-events:auto;
+  }
 
-/* SUGGESTIONS */
-#suggestBox{
-  display:none;
-  position:absolute;
-  top:56px;
-  left:14px;
-  width:calc(100% - 28px);
-  max-width:760px;
-  background:#fff;
-  border-radius:10px;
-  box-shadow:0 8px 30px rgba(0,0,0,.15);
-  list-style:none;
-  padding:6px;
-  z-index:90;
-}
-#suggestBox li{
-  padding:10px;
-  cursor:pointer;
-  border-radius:8px;
-  font-weight:600;
-}
-#suggestBox li.active,
-#suggestBox li:hover{
-  background:rgba(37,99,235,.08);
-}
+  /* Suggestion box (live results) */
+  #suggestBox {
+    display:none;
+    position:absolute;
+    left: 14px; /* align under search area visually */
+    top: 56px;  /* directly under the topbar */
+    width: calc(100% - 28px);
+    max-width: 760px;
+    margin: 0 auto;
+    z-index: 90;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 8px 30px rgba(12,25,48,0.12);
+    list-style: none;
+    padding: 6px;
+    max-height: 260px;
+    overflow-y: auto;
+    box-sizing: border-box;
+    font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+  }
+  #suggestBox li {
+    padding: 9px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    color: #072048;
+    font-weight: 600;
+    font-size: 14px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+  #suggestBox li:hover,
+  #suggestBox li.active {
+    background: linear-gradient(90deg, rgba(37,99,235,0.06), rgba(96,165,250,0.03));
+  }
+  #suggestBox li .subtitle {
+    font-weight:500;
+    font-size:12px;
+    color: #4b5563;
+  }
+  /* Search icon button (initial visible) */
+  .btn-icon {
+    width:40px;
+    height:40px;
+    display:inline-grid;
+    place-items:center;
+    background:transparent;
+    border-radius:10px;
+    cursor:pointer;
+    border:1px solid rgba(255,255,255,0.06);
+    transition: background .14s ease, transform .12s ease;
+  }
 
-/* SIDEBAR */
-#sidebar{
-  position:fixed;
-  top:56px;
-  left:-280px;
-  width:280px;
-  height:calc(100% - 56px);
-  background:#fff;
-  padding:16px;
-  transition:.25s;
-  z-index:70;
-}
-body.sidebar-open #sidebar{left:0}
+  .btn-icon:hover{ background: rgba(255,255,255,0.03); transform: translateY(-1px); }
 
-/* IFRAME */
-#frame{
-  position:fixed;
-  top:56px;left:0;
-  width:100%;
-  height:calc(100% - 56px);
-  border:0;
-}
+  /* Left-side sidebar (hidden by default) */
+  #sidebar {
+    --w:280px;
+    position:fixed;
+    left:calc(-1 * var(--w));
+    top:56px; /* below topbar */
+    width:var(--w);
+    height:calc(100% - 56px);
+    background: linear-gradient(180deg,#ffffff, #f3f7ff);
+    box-shadow: 8px 0 28px rgba(11,20,40,0.12);
+    border-right:1px solid rgba(6,25,52,0.04);
+    padding:16px;
+    box-sizing:border-box;
+    transition: left .26s cubic-bezier(.2,.9,.2,1);
+    z-index:70;
+    overflow:auto;
+    backdrop-filter: blur(6px);
+  }
+  /* when open (class toggled by JS on body) */
+  body.sidebar-open #sidebar{ left:0; }
+
+  /* content inside sidebar */
+  #sidebar h3 { margin:0 0 10px 0; font-size:14px; color:#072048; letter-spacing:0.4px }
+  #sidebar a { display:block; padding:8px 10px; margin:6px 0; border-radius:8px; text-decoration:none; color:#072048; font-weight:600; font-size:16px }
+  #sidebar a:hover{ background: linear-gradient(90deg, rgba(37,99,235,0.06), rgba(96,165,250,0.03)); }
+
+  /* Hamburger button (top-right) */
+  #hamburger {
+    margin-left:auto;
+    display:inline-grid;
+    place-items:center;
+    width:40px;height:40px;border-radius:10px;border:1px solid rgba(255,255,255,0.06);
+    background:transparent; cursor:pointer;
+    transition: transform .12s ease, background .12s ease;
+  }
+  #hamburger:hover{ background: rgba(255,255,255,0.03); transform: translateY(-1px); }
+
+  /* Page frame area (original id preserved) */
+  #frame {
+    position:fixed;
+    left:0;
+    top:56px;
+    width:100vw;
+    height:calc(100vh - 56px);
+    border:0;
+    background: #fff;
+    transition: transform .26s cubic-bezier(.2,.9,.2,1);
+    z-index:0;
+  }
+
+  /* When sidebar open, nudge frame to the right on wide screens */
+  @media (min-width:720px){
+    body.sidebar-open #frame{
+      transform: translateX(260px) scale(.995);
+      box-shadow: -8px 0 30px rgba(12,25,48,0.06);
+      border-radius:10px 0 0 10px;
+      overflow:hidden;
+    }
+  }
+
+  /* Small screens: sidebar overlays */
+  @media (max-width:719px){
+    #sidebar{ left:-100%; width:78vw; }
+    body.sidebar-open #sidebar{ left:0; }
+    body.sidebar-open #frame{ transform: none; filter: brightness(.92) blur(.0px); }
+    #suggestBox { left: 8px; width: calc(100% - 16px); max-width: unset; }
+  }
+
+  /* Small touch-friendly spacing for topbar items */
+  .right-controls{ display:flex; gap:10px; align-items:center; margin-left:auto; }
+
+  /* Logo visuals */
+  .logo {
+    width:42px; height:42px; border-radius:8px;
+    display:grid;place-items:center;
+    background: linear-gradient(135deg,var(--accent-2),var(--accent-1));
+    box-shadow: 0 6px 18px rgba(37,99,235,0.18);
+    font-weight:800; color:white; font-size:14px;
+    user-select:none;
+  }
+  .brand-text{ font-weight:700; font-size:14px; color: #eaf2ff; margin-left:6px; display:none; }
+
+  /* show brand text on wider screens */
+  @media (min-width:920px){ .brand-text{ display:inline-block } }
+
+  /* subtle helper */
+  .sr-only{ position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0; }
 </style>
 </head>
 
@@ -124,7 +266,7 @@ body.sidebar-open #sidebar{left:0}
 <!-- TOPBAR -->
 <div id="topbar">
   <div class="logo"><img src="/image/ks-logo.webp"></div>
-
+  <h1>KS Warrior</h1>
   <button class="btn-icon" id="searchIcon">🔍</button>
   <input id="searchBox" placeholder="Search...">
 
@@ -136,7 +278,6 @@ body.sidebar-open #sidebar{left:0}
 
 <!-- SIDEBAR -->
 <nav id="sidebar">
-  <h3>KS Warrior</h3>
   <a href="#" onclick="loadInFrame('dashboard.html')">Dashboard</a>
   <a href="#" onclick="loadInFrame('about.html')">About</a>
 </nav>
