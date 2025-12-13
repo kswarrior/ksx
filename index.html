@@ -406,11 +406,8 @@ function selectSuggestionByIndex(idx){
   const li = suggestBox.querySelector(`li[data-index="${idx}"]`);
   if(!li) return;
   const url = li.getAttribute('data-url');
-  const name = li.getAttribute('data-name');
-  searchBox.value = name;
   hideSuggestions();
-  // load into iframe (no redirect)
-  if(url) frame.src = url;
+  if(url) window.location.href = url;
 }
 
 /* load search data once */
@@ -487,73 +484,27 @@ searchBox.addEventListener('focus', () => {
   }
 });
 
+
 /* =========================================================
-   MAIN LOGIC FOR ?m= AND ?s=
-   (left unchanged except suggestion behavior added above)
+   DEFAULT LOAD (NO URL PARAMS)
 ========================================================= */
 
-/* 1. Pages for ?m= */
-const pages = {
-  dashboard: "dashboard.html",
-  about: "about.html",
-  contact: "contact.html",
-  free: "mc/hosting/free.html"
-};
-
-/* Helper */
-function getQuery(name){
-  const p = new URLSearchParams(location.search);
-  return p.get(name);
-}
-
-/* 2. Handle URL params */
-async function init(){
-  const m = getQuery("m");
-  const s = getQuery("s");
-
-  /* Case 1: ?m=pageKey */
-  if(m){
-    const key = m.toLowerCase();
-    if(pages[key]){
-      frame.src = pages[key];
-      return;
-    }
-  }
-
-  /* Case 2: ?s=text */
-  if(s){
-    try{
-      const res = await fetch("search-data.json");
-      const data = await res.json();
-      const q = s.toLowerCase();
-
-      const found = data.find(x =>
-        (x.name || "").toLowerCase().includes(q)
-      );
-
-      if(found && found.url){
-        frame.src = found.url;
-        return;
-      }
-    }catch(e){
-      console.warn("search-data.json error", e);
-    }
-  }
-
-  /* DEFAULT → Dashboard ALWAYS */
-  frame.src = "dashboard.html";
-}
-
-init();
-
+frame.src = "dashboard.html";
+  
 /* =========================================================
    ENTER SEARCH ONLY
 ========================================================= */
 searchBox.addEventListener("keydown", function (e) {
   if (e.key === "Enter") {
-    const value = searchBox.value.trim();
-    if (value) {
-      location.href = "?s=" + encodeURIComponent(value);
+    const q = searchBox.value.toLowerCase().trim();
+    if(!q) return;
+
+    const found = searchData.find(item =>
+      (item.name || "").toLowerCase().includes(q)
+    );
+
+    if(found && found.url){
+      window.location.href = found.url;
     }
   }
 });
