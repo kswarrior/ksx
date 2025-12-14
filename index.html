@@ -310,10 +310,10 @@ let searchData = [];
 let activeIndex = -1;
 
 /* DEFAULT LOAD */
-frame.src = "dashboard.html";
+frame.src = "/dashboard.html";
 
 /* LOAD SEARCH DATA */
-fetch("search-data.json")
+fetch("/search-data.json")
 .then(r=>r.json())
 .then(d=>searchData=d);
 
