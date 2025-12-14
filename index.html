@@ -81,9 +81,22 @@
   object-fit: contain;
   }
   
-  h1 {
-    font-size: 18px;
-  }
+  .owner-name {
+  font-size: 22px;
+  font-weight: bold;
+  background: linear-gradient(270deg,#00c6ff,#0072ff,#00f0ff,#0059b3,#00aaff);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: blueTextGlow 3s ease infinite;
+  font-family: 'Georgia','Times New Roman',serif;
+}
+
+@keyframes blueTextGlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
 
   /* Keep existing searchBox id; hidden by default and animated open */
   #searchBox{
@@ -266,7 +279,7 @@
 <!-- TOPBAR -->
 <div id="topbar">
   <div class="logo"><img src="/image/ks-logo.webp"></div>
-  <h1>KS Warrior</h1>
+  <h1 class="owner-name" >KS Warrior</h1>
   <button class="btn-icon" id="searchIcon">🔍</button>
   <input id="searchBox" placeholder="Search...">
 
