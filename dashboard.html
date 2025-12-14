@@ -29,78 +29,6 @@
       padding: 2rem;
     }
 
-    .infoes {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 15px;
-      max-width: 600px;
-      background: #eee;
-      padding: 15px;
-      border-radius: 15px;
-      box-shadow: 0 0 3px #00ffd5;
-    }
-
-    .responsive-logo-inline {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      background: #eee;
-      padding: 15px 20px;
-      border-radius: 16px;
-      box-shadow: 0 4px 20px rgba(45, 45, 255, 0.6);
-      max-width: fit-content;
-      margin: auto;
-      flex-wrap: wrap;
-      transition: transform 0.3s ease;
-      overflow-wrap: break-word;
-    }
-
-    .responsive-logo-inline:hover {
-      transform: scale(1.1);
-    }
-
-    .big-logo {
-      width: 100px;
-      height: 100px;
-      border-radius: 12px;
-      border: 1px solid #00ffd5;
-      box-shadow: 0 0 3px #00ffd5;
-    }
-
-    .owner-name {
-      font-size: 18px;
-      font-weight: bold;
-      color: #000;
-      margin: 0;
-    }
-
-    .clock-date-container {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      background: #eee;
-      padding: 15px 20px;
-      border-radius: 16px;
-      box-shadow: 0 4px 20px rgba(45, 45, 255, 0.6);
-      max-width: fit-content;
-      margin: auto;
-      flex-wrap: wrap;
-      transition: transform 0.3s ease;
-      overflow-wrap: break-word;
-    }
-
-    .clock-date-container:hover {
-      transform: scale(1.1);
-    }
-
-    .clock-date-container .date,
-    .clock-date-container .clock {
-      font-size: 15px;
-      padding: 4px 8px;
-      border-radius: 5px;
-    }
-
     /* Social Stats Cards */
     .social-stats {
   display: flex;
@@ -244,18 +172,7 @@
 
 <body>
   <main class="main">
-    <div class="infoes">
-      <div class="responsive-logo-inline">
-        <img src="/image/ks-logo.webp" alt="Logo" class="big-logo" />
-        <h3 class="owner-name">KS Warrior</h3>
-      </div>
-
-      <div class="clock-date-container">
-        <h5 class="date" id="date">Loading date...</h5>
-        <h4 class="clock" id="clock">Loading time...</h4>
-      </div>
-    </div>
-
+    
     <div class="social-stats">
       <a href="https://youtube.com/@ks_warrior_pro" target="_blank" class="social-card yt">
         <img class="social-logo" src="/image/youtube.png" alt="YouTube">
@@ -283,20 +200,5 @@
     </div>
   </main>
 
-  <script>
-    function updateClockAndDate() {
-      const now = new Date();
-      document.getElementById('clock').textContent = now.toLocaleTimeString();
-      document.getElementById('date').textContent = now.toLocaleDateString(undefined, {
-        weekday: 'short',
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric'
-      });
-    }
-
-    setInterval(updateClockAndDate, 1000);
-    updateClockAndDate();
-  </script>
-</body>
+  </body>
 </html>
