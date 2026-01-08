@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>KS Warrior</title>
 
 <style>
@@ -15,6 +15,8 @@
   --muted:#9aa0aa;
   --accent:#3b82f6;
 }
+
+*{box-sizing:border-box}
 
 html,body{
   height:100%;
@@ -33,7 +35,7 @@ html,body{
   display:flex;
   align-items:center;
   gap:10px;
-  padding:0 14px;
+  padding:0 12px;
   background:var(--top);
   border-bottom:1px solid var(--border);
   z-index:1000;
@@ -43,27 +45,24 @@ html,body{
 .logo{
   width:35px;
   height:35px;
-  background: #000;
-  border: 1px solid #eee;
+  background:#000;
+  border:1px solid var(--border);
   border-radius:8px;
   display:grid;
   place-items:center;
 }
-.logo img{
-  width:22px;
-  height:22px;
-}
+.logo img{width:22px;height:22px}
 
 /* TITLE */
 .owner-name{
   font-size:14px;
   font-weight:600;
-  color:#fff;
   white-space:nowrap;
 }
 
-/* BUTTONS */
-.btn-icon {
+/* ICON BUTTONS */
+.btn-icon,
+#hamburger{
   width:38px;
   height:38px;
   background:transparent;
@@ -72,31 +71,16 @@ html,body{
   color:#fff;
   cursor:pointer;
 }
-.btn-icon:hover,#hamburger:hover{
-  background:#1a1a22;
-}
 
-.hamburger-container {
-  display: flex; /* Use flexbox to align items */
-  justify-content: flex-start; /* Align items to the start (left) */
-  align-items: center; /* Center items vertically */
-  padding: 10px;
-}
-  
-#hamburger {
-  width: 38px;
-  height: 38px;
-  background: transparent;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  color: #fff;
-  cursor: pointer;
+.btn-icon:hover,
+#hamburger:hover{
+  background:#1a1a22;
 }
 
 /* SEARCH */
 #searchBox{
   flex:1;
-  max-width:175px;
+  max-width:200px;
   padding:8px 10px;
   background:#121218;
   border:1px solid var(--border);
@@ -107,20 +91,22 @@ html,body{
   opacity:0;
   transition:.2s;
 }
+
 #topbar.search-active #searchBox{
   width:100%;
   opacity:1;
 }
+
 #topbar.search-active #searchIcon{
   display:none;
 }
 
 /* SUGGESTIONS */
 #suggestBox{
-  position:absolute;
+  position:fixed;
   top:56px;
   left:10px;
-  width:calc(100% - 20px);
+  right:10px;
   max-width:520px;
   background:var(--panel);
   border:1px solid var(--border);
@@ -128,14 +114,15 @@ html,body{
   list-style:none;
   padding:6px;
   display:none;
-  z-index:90;
+  z-index:900;
 }
+
 #suggestBox li{
   padding:8px 10px;
   border-radius:6px;
   cursor:pointer;
-  font-size:14px;
 }
+
 #suggestBox li:hover,
 #suggestBox li.active{
   background:#1f1f2a;
@@ -145,16 +132,17 @@ html,body{
 #sidebar{
   position:fixed;
   top:56px;
-  left:-260px;
-  width:175px;
-  height:calc(100% - 55px);
+  left:-180px;
+  width:180px;
+  height:calc(100% - 56px);
   background:var(--panel);
   border-right:1px solid var(--border);
   padding:12px;
   transition:.25s;
-  z-index:70;
+  z-index:800;
 }
-body.sidebar-open #sidebar{ left:0; }
+
+body.sidebar-open #sidebar{left:0}
 
 #sidebar a{
   display:block;
@@ -162,8 +150,8 @@ body.sidebar-open #sidebar{ left:0; }
   border-radius:6px;
   text-decoration:none;
   color:var(--text);
-  font-weight:500;
 }
+
 #sidebar a:hover{
   background:#1f1f2a;
 }
@@ -173,15 +161,15 @@ body.sidebar-open #sidebar{ left:0; }
   position:fixed;
   top:56px;
   left:0;
-  width:100vw;
-  height:calc(100vh - 56px);
-  border:0;
-  background:#fff;
+  width:100%;
+  height:calc(100% - 56px);
+  border:none;
+  background:transparent;
 }
 
 @media(min-width:720px){
   body.sidebar-open #frame{
-    transform:translateX(260px);
+    transform:translateX(180px);
   }
 }
 </style>
@@ -191,74 +179,93 @@ body.sidebar-open #sidebar{ left:0; }
 
 <div id="topbar">
   <div class="logo"><img src="/image/ks-logo.webp"></div>
-  <h1 class="owner-name">❰🔹❰❰ 𝑲𝑺 𝑾𝒂𝒓𝒓𝒊𝒐𝒓 ❱❱🔹❱</h1>
+  <div class="owner-name">❰🔹❰❰ 𝑲𝑺 𝑾𝒂𝒓𝒓𝒊𝒐𝒓 ❱❱🔹❱</div>
 
   <button class="btn-icon" id="searchIcon">🔍</button>
   <input id="searchBox" placeholder="Search...">
-<div class="hamburger-container" >
   <button id="hamburger">☰</button>
-</div>
 </div>
 
 <ul id="suggestBox"></ul>
 
 <nav id="sidebar">
-  <a href="#" onclick="loadInFrame('dashboard.html')">Dashboard</a>
-  <a href="#" onclick="loadInFrame('about.html')">About</a>
+  <a onclick="loadInFrame('dashboard.html')">Dashboard</a>
+  <a onclick="loadInFrame('about.html')">About</a>
 </nav>
 
 <iframe id="frame"></iframe>
 
 <script>
-const topbar=document.getElementById("topbar");
-const searchIcon=document.getElementById("searchIcon");
-const searchBox=document.getElementById("searchBox");
-const suggestBox=document.getElementById("suggestBox");
-const hamburger=document.getElementById("hamburger");
-const frame=document.getElementById("frame");
+const topbar = document.getElementById("topbar");
+const searchIcon = document.getElementById("searchIcon");
+const searchBox = document.getElementById("searchBox");
+const suggestBox = document.getElementById("suggestBox");
+const hamburger = document.getElementById("hamburger");
+const frame = document.getElementById("frame");
 
-let searchData=[],activeIndex=-1;
-frame.src="/dashboard.html";
+let searchData = [], activeIndex = -1;
+frame.src = "dashboard.html";
 
 fetch("/search-data.json").then(r=>r.json()).then(d=>searchData=d);
 
-searchIcon.onclick=()=>{topbar.classList.add("search-active");searchBox.focus();}
-document.addEventListener("keydown",e=>{
-  if(e.key==="Escape"){
+searchIcon.onclick = () => {
+  topbar.classList.add("search-active");
+  searchBox.focus();
+};
+
+hamburger.onclick = () => {
+  document.body.classList.toggle("sidebar-open");
+};
+
+document.addEventListener("click", e=>{
+  if(!topbar.contains(e.target)){
     topbar.classList.remove("search-active");
-    searchBox.value="";
     suggestBox.style.display="none";
   }
 });
-hamburger.onclick=()=>document.body.classList.toggle("sidebar-open");
-function loadInFrame(u){frame.src=u;document.body.classList.remove("sidebar-open");}
 
-searchBox.oninput=()=>{
-  const q=searchBox.value.toLowerCase().trim();
+function loadInFrame(url){
+  frame.src = url;
+  document.body.classList.remove("sidebar-open");
+  suggestBox.style.display="none";
+}
+
+searchBox.oninput = () => {
+  const q = searchBox.value.toLowerCase().trim();
   if(!q){suggestBox.style.display="none";return;}
-  const r=searchData.filter(i=>(i.name||"").toLowerCase().includes(q));
-  if(!r.length){suggestBox.style.display="none";return;}
-  suggestBox.innerHTML=r.slice(0,8).map((x,i)=>`<li data-i="${i}" data-url="${x.url}">${x.name}</li>`).join("");
-  activeIndex=-1;
-  suggestBox.style.display="block";
+
+  const results = searchData.filter(i =>
+    i.name?.toLowerCase().includes(q)
+  );
+
+  if(!results.length){suggestBox.style.display="none";return;}
+
+  suggestBox.innerHTML = results.slice(0,8)
+    .map((x,i)=>`<li data-url="${x.url}">${x.name}</li>`)
+    .join("");
+
+  activeIndex = -1;
+  suggestBox.style.display = "block";
 };
 
-searchBox.onkeydown=e=>{
-  const items=[...suggestBox.children];
-  if(!items.length)return;
-  if(e.key==="ArrowDown")activeIndex=(activeIndex+1)%items.length;
-  if(e.key==="ArrowUp")activeIndex=(activeIndex-1+items.length)%items.length;
-  if(e.key==="Enter"){
-    const li=items[activeIndex];
-    if(li)location.href=li.dataset.url;
+searchBox.onkeydown = e => {
+  const items = [...suggestBox.children];
+  if(!items.length) return;
+
+  if(e.key==="ArrowDown") activeIndex=(activeIndex+1)%items.length;
+  if(e.key==="ArrowUp") activeIndex=(activeIndex-1+items.length)%items.length;
+
+  if(e.key==="Enter" && items[activeIndex]){
+    loadInFrame(items[activeIndex].dataset.url);
   }
+
   items.forEach(i=>i.classList.remove("active"));
-  if(items[activeIndex])items[activeIndex].classList.add("active");
+  items[activeIndex]?.classList.add("active");
 };
 
-suggestBox.onclick=e=>{
-  const li=e.target.closest("li");
-  if(li)location.href=li.dataset.url;
+suggestBox.onclick = e => {
+  const li = e.target.closest("li");
+  if(li) loadInFrame(li.dataset.url);
 };
 </script>
 
