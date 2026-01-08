@@ -6,404 +6,240 @@
 <title>KS Warrior</title>
 
 <style>
-  /* ---------------------------
-     Base & layout (keep ids)
-     --------------------------- */
-  :root{
-    --bg:#f4f7fb;
-    --top:#091233;
-    --muted:#718096;
-    --accent-1: #2563eb;
-    --accent-2: #60a5fa;
-    --glass: rgba(255,255,255,0.6);
-  }
-
-  html,body{height:100%;margin:0;background:linear-gradient(180deg,var(--bg),#eef4ff);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial; color:#0b1220}
-
-  /* Top bar */
-#topbar {
-  width: 100%;
-  box-sizing: border-box;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 10px 14px;
-
-  /* Gradient style */
-  background: linear-gradient(
-    -45deg,
-    #2d2dff,
-    #1a1abf,
-    #4545ff,
-    #2d2dff
-  );
-  background-size: 400% 400%;
-  animation: gradientFlow 10s ease infinite;
-
-  color: #fff;
-  font-family: 'Segoe UI', sans-serif;
-
-  /* Position */
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 1000;
-  height: 56px;
-
-  /* Glass + shadow (soft, not glow) */
-  backdrop-filter: blur(6px) saturate(120%);
-  box-shadow: 0 6px 18px rgba(6, 20, 40, 0.35);
-
-  /* Subtle shape */
-  border-bottom-left-radius: 3px;
-  border-bottom-right-radius: 3px;
+:root{
+  --bg:#0e0e11;
+  --top:#0b0b0f;
+  --panel:#15151b;
+  --border:#24242c;
+  --text:#e6e6eb;
+  --muted:#9aa0aa;
+  --accent:#3b82f6;
 }
 
-@keyframes gradientFlow {
-  0%   { background-position: 0% 50%; }
-  50%  { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+html,body{
+  height:100%;
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial;
 }
 
-  /* Logo (top-left) */
-.logo img {
-  display: block;
-  max-width: 95%;
-  max-height: 95%;
-  object-fit: contain;
-}
-  
-  .owner-name {
-  font-size: 15px;
-  font-weight: bold;
-  background: linear-gradient(270deg,#00c6ff,#0072ff,#00f0ff,#0059b3,#00aaff);
-  background-size: 200% 200%;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: blueTextGlow 3s ease infinite;
-  font-family: 'Georgia','Times New Roman',serif;
+/* TOPBAR */
+#topbar{
+  position:fixed;
+  top:0;left:0;
+  width:100%;
+  height:56px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:0 14px;
+  background:var(--top);
+  border-bottom:1px solid var(--border);
+  z-index:1000;
 }
 
-@keyframes blueTextGlow {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+/* LOGO */
+.logo{
+  width:34px;
+  height:34px;
+  background:var(--accent);
+  border-radius:8px;
+  display:grid;
+  place-items:center;
+}
+.logo img{
+  width:22px;
+  height:22px;
 }
 
-  /* Keep existing searchBox id; hidden by default and animated open */
-  #searchBox{
-    flex:1;
-    padding:10px 8px;
-    border:0;
-    border-radius:10px;
-    font-size:14px;
-    outline:none;
-    background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
-    color: #e6eefc;
-    box-shadow: inset 0 -1px 0 rgba(255,255,255,0.02);
-    transition: width .28s cubic-bezier(.2,.9,.2,1), opacity .18s ease, transform .18s ease;
-    width: 0px;
-    max-width: 18%;
-    opacity: 0;
-    transform: translateX(8px);
-    margin-left:6px;
-    position:relative;
-  }
-
-  /* visible state for search (added/removed by JS on topbar) */
-  #topbar.search-active #searchBox {
-    width: clamp(220px, 45vw, 700px);
-    opacity:1;
-    transform:none;
-  }
-  #topbar.search-active #searchBtn {
-    opacity:1;
-    pointer-events:auto;
-  }
-
-  /* Hide search icon when search is active */
-#topbar.search-active #searchIcon {
-  display: none;
-  width: 0px;
+/* TITLE */
+.owner-name{
+  font-size:14px;
+  font-weight:600;
+  color:#fff;
+  white-space:nowrap;
 }
-  
-  /* Suggestion box (live results) */
-  #suggestBox {
-    display:none;
-    position:absolute;
-    left: 14px; /* align under search area visually */
-    top: 56px;  /* directly under the topbar */
-    width: calc(100% - 28px);
-    max-width: 760px;
-    margin: 0 auto;
-    z-index: 90;
-    background: #fff;
-    border-radius: 10px;
-    box-shadow: 0 8px 30px rgba(12,25,48,0.12);
-    list-style: none;
-    padding: 6px;
-    max-height: 260px;
-    overflow-y: auto;
-    box-sizing: border-box;
-    font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
-  }
-  #suggestBox li {
-    padding: 9px 12px;
-    border-radius: 8px;
-    cursor: pointer;
-    color: #072048;
-    font-weight: 600;
-    font-size: 14px;
-    display: flex;
-    gap: 10px;
-    align-items: center;
-  }
-  #suggestBox li:hover,
-  #suggestBox li.active {
-    background: linear-gradient(90deg, rgba(37,99,235,0.06), rgba(96,165,250,0.03));
-  }
-  #suggestBox li .subtitle {
-    font-weight:500;
-    font-size:12px;
-    color: #4b5563;
-  }
-  /* Search icon button (initial visible) */
-  .btn-icon {
-    width:40px;
-    height:40px;
-    display:inline-grid;
-    place-items:center;
-    background:transparent;
-    border-radius:10px;
-    cursor:pointer;
-    border:1px solid rgba(255,255,255,0.06);
-    transition: background .14s ease, transform .12s ease;
-  }
 
-  .btn-icon:hover{ background: rgba(255,255,255,0.03); transform: translateY(-1px); }
-
-  /* Left-side sidebar (hidden by default) */
-  #sidebar {
-    --w:280px;
-    position:fixed;
-    left:calc(-1 * var(--w));
-    top:56px; /* below topbar */
-    width:var(--w);
-    height:calc(100% - 56px);
-    background: linear-gradient(180deg,#ffffff, #f3f7ff);
-    box-shadow: 8px 0 28px rgba(11,20,40,0.12);
-    border-right:1px solid rgba(6,25,52,0.04);
-    padding:16px;
-    box-sizing:border-box;
-    transition: left .26s cubic-bezier(.2,.9,.2,1);
-    z-index:70;
-    overflow:auto;
-    backdrop-filter: blur(6px);
-  }
-  /* when open (class toggled by JS on body) */
-  body.sidebar-open #sidebar{ left:0; }
-
-  /* content inside sidebar */
-  #sidebar h3 { margin:0 0 10px 0; font-size:14px; color:#072048; letter-spacing:0.4px }
-  #sidebar a { display:block; padding:8px 10px; margin:6px 0; border-radius:8px; text-decoration:none; color:#072048; font-weight:600; font-size:16px }
-  #sidebar a:hover{ background: linear-gradient(90deg, rgba(37,99,235,0.06), rgba(96,165,250,0.03)); }
-
-  /* Hamburger button (top-right) */
-  #hamburger {
-    margin-left:auto;
-    display:inline-grid;
-    place-items:center;
-    width:40px;height:40px;border-radius:10px;border:1px solid rgba(255,255,255,0.06);
-    background:transparent; cursor:pointer;
-    transition: transform .12s ease, background .12s ease;
-  }
-  #hamburger:hover{ background: rgba(255,255,255,0.03); transform: translateY(-1px); }
-
-  /* Page frame area (original id preserved) */
-  #frame {
-    position:fixed;
-    left:0;
-    top:56px;
-    width:100vw;
-    height:calc(100vh - 56px);
-    border:0;
-    background: #fff;
-    transition: transform .26s cubic-bezier(.2,.9,.2,1);
-    z-index:0;
-  }
-
-  /* When sidebar open, nudge frame to the right on wide screens */
-  @media (min-width:720px){
-    body.sidebar-open #frame{
-      transform: translateX(260px) scale(.995);
-      box-shadow: -8px 0 30px rgba(12,25,48,0.06);
-      border-radius:10px 0 0 10px;
-      overflow:hidden;
-    }
-  }
-
-  /* Small screens: sidebar overlays */
-  @media (max-width:719px){
-    #sidebar{ left:-100%; width:78vw; }
-    body.sidebar-open #sidebar{ left:0; }
-    body.sidebar-open #frame{ transform: none; filter: brightness(.92) blur(.0px); }
-    #suggestBox { left: 8px; width: calc(100% - 16px); max-width: unset; }
-  }
-
-  /* Small touch-friendly spacing for topbar items */
-  .right-controls{ display:flex; gap:10px; align-items:center; margin-left:auto; }
-
-  /* Logo visuals */
-  /* Logo visuals – PERFECT CENTER */
-.logo {
-  width: 35px;
-  height: 35px;
-  border-radius: 12px;
-
-  display: grid;
-  place-items: center;   /* centers horizontally + vertically */
-
-  background: linear-gradient(135deg, var(--accent-2), var(--accent-1));
-  box-shadow: 0 6px 18px rgba(37,99,235,0.18);
-
-  font-weight: 800;
-  color: white;
-  font-size: 14px;
-
-  user-select: none;
+/* BUTTONS */
+.btn-icon,#hamburger{
+  width:38px;
+  height:38px;
+  background:transparent;
+  border:1px solid var(--border);
+  border-radius:8px;
+  color:#fff;
+  cursor:pointer;
 }
-  .brand-text{ font-weight:700; font-size:14px; color: #eaf2ff; margin-left:6px; display:none; }
+.btn-icon:hover,#hamburger:hover{
+  background:#1a1a22;
+}
 
-  /* show brand text on wider screens */
-  @media (min-width:920px){ .brand-text{ display:inline-block } }
+/* SEARCH */
+#searchBox{
+  flex:1;
+  max-width:300px;
+  padding:8px 10px;
+  background:#121218;
+  border:1px solid var(--border);
+  border-radius:8px;
+  color:#fff;
+  outline:none;
+  width:0;
+  opacity:0;
+  transition:.2s;
+}
+#topbar.search-active #searchBox{
+  width:100%;
+  opacity:1;
+}
+#topbar.search-active #searchIcon{
+  display:none;
+}
 
-  /* subtle helper */
-  .sr-only{ position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0; }
+/* SUGGESTIONS */
+#suggestBox{
+  position:absolute;
+  top:56px;
+  left:10px;
+  width:calc(100% - 20px);
+  max-width:520px;
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:8px;
+  list-style:none;
+  padding:6px;
+  display:none;
+  z-index:90;
+}
+#suggestBox li{
+  padding:8px 10px;
+  border-radius:6px;
+  cursor:pointer;
+  font-size:14px;
+}
+#suggestBox li:hover,
+#suggestBox li.active{
+  background:#1f1f2a;
+}
+
+/* SIDEBAR */
+#sidebar{
+  position:fixed;
+  top:56px;
+  left:-260px;
+  width:260px;
+  height:calc(100% - 56px);
+  background:var(--panel);
+  border-right:1px solid var(--border);
+  padding:12px;
+  transition:.25s;
+  z-index:70;
+}
+body.sidebar-open #sidebar{ left:0; }
+
+#sidebar a{
+  display:block;
+  padding:10px;
+  border-radius:6px;
+  text-decoration:none;
+  color:var(--text);
+  font-weight:500;
+}
+#sidebar a:hover{
+  background:#1f1f2a;
+}
+
+/* FRAME */
+#frame{
+  position:fixed;
+  top:56px;
+  left:0;
+  width:100vw;
+  height:calc(100vh - 56px);
+  border:0;
+  background:#fff;
+}
+
+@media(min-width:720px){
+  body.sidebar-open #frame{
+    transform:translateX(260px);
+  }
+}
 </style>
 </head>
 
 <body>
 
-<!-- TOPBAR -->
 <div id="topbar">
   <div class="logo"><img src="/image/ks-logo.webp"></div>
-  <h1 class="owner-name" >❰🔹❰❰ 𝑲𝑺 𝑾𝒂𝒓𝒓𝒊𝒐𝒓 ❱❱🔹❱</h1>
+  <h1 class="owner-name">KS Warrior</h1>
+
   <button class="btn-icon" id="searchIcon">🔍</button>
   <input id="searchBox" placeholder="Search...">
 
-  <button class="btn-icon" id="hamburger">☰</button>
+  <button id="hamburger">☰</button>
 </div>
 
-<!-- SUGGESTIONS -->
 <ul id="suggestBox"></ul>
 
-<!-- SIDEBAR -->
 <nav id="sidebar">
   <a href="#" onclick="loadInFrame('dashboard.html')">Dashboard</a>
   <a href="#" onclick="loadInFrame('about.html')">About</a>
 </nav>
 
-<!-- FRAME -->
 <iframe id="frame"></iframe>
 
 <script>
-const topbar = document.getElementById("topbar");
-const searchIcon = document.getElementById("searchIcon");
-const searchBox = document.getElementById("searchBox");
-const suggestBox = document.getElementById("suggestBox");
-const hamburger = document.getElementById("hamburger");
-const frame = document.getElementById("frame");
+const topbar=document.getElementById("topbar");
+const searchIcon=document.getElementById("searchIcon");
+const searchBox=document.getElementById("searchBox");
+const suggestBox=document.getElementById("suggestBox");
+const hamburger=document.getElementById("hamburger");
+const frame=document.getElementById("frame");
 
-let searchData = [];
-let activeIndex = -1;
+let searchData=[],activeIndex=-1;
+frame.src="/dashboard.html";
 
-/* DEFAULT LOAD */
-frame.src = "/dashboard.html";
+fetch("/search-data.json").then(r=>r.json()).then(d=>searchData=d);
 
-/* LOAD SEARCH DATA */
-fetch("/search-data.json")
-.then(r => r.json())
-.then(d => searchData = d);
-
-/* SEARCH TOGGLE (🔍 click) */
-searchIcon.onclick = () => {
-  topbar.classList.add("search-active");
-  searchBox.focus();
-};
-
-/* CLOSE SEARCH (ESC key) */
-document.addEventListener("keydown", e => {
-  if (e.key === "Escape") {
+searchIcon.onclick=()=>{topbar.classList.add("search-active");searchBox.focus();}
+document.addEventListener("keydown",e=>{
+  if(e.key==="Escape"){
     topbar.classList.remove("search-active");
-    searchBox.value = "";
-    suggestBox.style.display = "none";
+    searchBox.value="";
+    suggestBox.style.display="none";
   }
 });
+hamburger.onclick=()=>document.body.classList.toggle("sidebar-open");
+function loadInFrame(u){frame.src=u;document.body.classList.remove("sidebar-open");}
 
-/* SIDEBAR */
-hamburger.onclick = () => {
-  document.body.classList.toggle("sidebar-open");
+searchBox.oninput=()=>{
+  const q=searchBox.value.toLowerCase().trim();
+  if(!q){suggestBox.style.display="none";return;}
+  const r=searchData.filter(i=>(i.name||"").toLowerCase().includes(q));
+  if(!r.length){suggestBox.style.display="none";return;}
+  suggestBox.innerHTML=r.slice(0,8).map((x,i)=>`<li data-i="${i}" data-url="${x.url}">${x.name}</li>`).join("");
+  activeIndex=-1;
+  suggestBox.style.display="block";
 };
 
-/* LOAD IN FRAME */
-function loadInFrame(url){
-  frame.src = url;
-  document.body.classList.remove("sidebar-open");
-}
-
-/* INPUT SEARCH */
-searchBox.oninput = () => {
-  const q = searchBox.value.toLowerCase().trim();
-  if (!q) {
-    suggestBox.style.display = "none";
-    return;
+searchBox.onkeydown=e=>{
+  const items=[...suggestBox.children];
+  if(!items.length)return;
+  if(e.key==="ArrowDown")activeIndex=(activeIndex+1)%items.length;
+  if(e.key==="ArrowUp")activeIndex=(activeIndex-1+items.length)%items.length;
+  if(e.key==="Enter"){
+    const li=items[activeIndex];
+    if(li)location.href=li.dataset.url;
   }
-
-  const res = searchData.filter(i =>
-    (i.name || "").toLowerCase().includes(q)
-  );
-
-  if (!res.length) {
-    suggestBox.style.display = "none";
-    return;
-  }
-
-  suggestBox.innerHTML = res.slice(0,10).map((r,i) =>
-    `<li data-i="${i}" data-url="${r.url}">${r.name}</li>`
-  ).join("");
-
-  activeIndex = -1;
-  suggestBox.style.display = "block";
+  items.forEach(i=>i.classList.remove("active"));
+  if(items[activeIndex])items[activeIndex].classList.add("active");
 };
 
-/* KEYBOARD NAVIGATION */
-searchBox.onkeydown = e => {
-  const items = [...suggestBox.children];
-  if (!items.length) return;
-
-  if (e.key === "ArrowDown") {
-    activeIndex = (activeIndex + 1) % items.length;
-  }
-
-  if (e.key === "ArrowUp") {
-    activeIndex = (activeIndex - 1 + items.length) % items.length;
-  }
-
-  if (e.key === "Enter") {
-    const li = items[activeIndex];
-    if (li) window.location.href = li.dataset.url;
-    return;
-  }
-
-  items.forEach(x => x.classList.remove("active"));
-  if (items[activeIndex]) items[activeIndex].classList.add("active");
-};
-
-/* CLICK SUGGESTION */
-suggestBox.onclick = e => {
-  const li = e.target.closest("li");
-  if (li) window.location.href = li.dataset.url;
+suggestBox.onclick=e=>{
+  const li=e.target.closest("li");
+  if(li)location.href=li.dataset.url;
 };
 </script>
 
