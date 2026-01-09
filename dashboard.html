@@ -2,78 +2,104 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Dashboard</title>
+<title>KS Dashboard</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
+/* ===============================
+   THEME VARIABLES
+================================ */
 :root{
   --bg:#0e0e11;
   --card:#15151d;
   --soft:#1f1f2a;
   --muted:#9ca3af;
   --accent:#4f46e5;
+  --radius:16px;
+}
+
+/* ===============================
+   BASE
+================================ */
+*{
+  box-sizing:border-box;
 }
 
 body{
   margin:0;
   padding:18px;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  background:var(--bg);
+  font-family:system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
+  background:radial-gradient(circle at top,#141421,#0e0e11);
   color:#fff;
 }
 
-/* ===== Layout ===== */
+/* ===============================
+   LAYOUT
+================================ */
 .dashboard{
   display:grid;
-  gap:18px;
+  gap:20px;
+  max-width:1100px;
+  margin:auto;
 }
 
-/* ===== News Slider ===== */
+/* ===============================
+   NEWS SLIDER
+================================ */
 .news{
+  position:relative;
   background:linear-gradient(135deg,#1b1b2f,#161622);
-  border-radius:16px;
-  padding:16px;
+  border-radius:var(--radius);
+  padding:18px;
   overflow:hidden;
+  box-shadow:0 0 0 1px rgba(255,255,255,.03),
+             0 20px 40px rgba(0,0,0,.4);
 }
 
 .news-header{
-  font-size:16px;
-  margin-bottom:12px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-size:15px;
   opacity:.9;
+  margin-bottom:14px;
 }
 
-/* Slider frame */
+.news-header span{
+  background:var(--accent);
+  padding:4px 10px;
+  border-radius:999px;
+  font-size:11px;
+}
+
 .news-slider{
   position:relative;
-  width:100%;
-  height:90px;
+  height:92px;
   overflow:hidden;
 }
 
-/* Moving track */
 .news-track{
   display:flex;
-  width:100%;
   height:100%;
-  transition:transform 1.5s cubic-bezier(.4,0,.2,1);
+  will-change:transform;
+  transition:transform 1.2s cubic-bezier(.4,0,.2,1);
 }
 
-/* Single slide */
 .news-slide{
   min-width:100%;
   height:100%;
-  background:#12121a;
-  border-radius:12px;
+  background:linear-gradient(135deg,#12121a,#181824);
+  border-radius:14px;
   padding:16px;
   display:flex;
   flex-direction:column;
   justify-content:center;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.04);
 }
 
 .news-title{
   font-size:18px;
   font-weight:600;
-  margin-bottom:4px;
 }
 
 .news-desc{
@@ -81,37 +107,77 @@ body{
   color:var(--muted);
 }
 
-/* ===== Two Columns ===== */
+/* Slider dots */
+.news-dots{
+  display:flex;
+  gap:6px;
+  position:absolute;
+  right:16px;
+  bottom:12px;
+}
+
+.news-dots i{
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:#3a3a4d;
+  transition:.3s;
+}
+
+.news-dots i.active{
+  background:var(--accent);
+}
+
+/* ===============================
+   GRID
+================================ */
 .grid{
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:18px;
+  gap:20px;
 }
 
+@media(max-width:800px){
+  .grid{
+    grid-template-columns:1fr;
+  }
+}
+
+/* ===============================
+   PANELS
+================================ */
 .panel{
-  background:var(--card);
-  border-radius:14px;
-  padding:14px;
+  background:linear-gradient(180deg,#16161f,#12121a);
+  border-radius:var(--radius);
+  padding:16px;
+  box-shadow:0 0 0 1px rgba(255,255,255,.04),
+             0 15px 30px rgba(0,0,0,.4);
 }
 
 .panel h2{
-  margin:0 0 12px;
+  margin:0 0 14px;
   font-size:16px;
+  font-weight:600;
 }
 
-/* ===== Lists ===== */
+/* ===============================
+   LISTS
+================================ */
 .list-item{
-  padding:12px;
-  border-radius:10px;
+  padding:12px 14px;
+  border-radius:12px;
   background:var(--soft);
   margin-bottom:10px;
   display:flex;
   justify-content:space-between;
+  align-items:center;
   cursor:pointer;
+  transition:.25s;
 }
 
 .list-item:hover{
-  outline:1px solid #2f2f44;
+  background:#252536;
+  transform:translateX(4px);
 }
 
 .time{
@@ -119,30 +185,43 @@ body{
   color:var(--muted);
 }
 
-/* ===== Highlighted ===== */
+/* ===============================
+   HIGHLIGHT
+================================ */
 .highlight{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
-  gap:14px;
+  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  gap:16px;
 }
 
 .h-card{
-  background:#181824;
-  border-radius:14px;
-  padding:16px;
+  background:linear-gradient(135deg,#181824,#12121a);
+  border-radius:var(--radius);
+  padding:18px;
   cursor:pointer;
+  transition:.3s;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.04);
+}
+
+.h-card:hover{
+  transform:translateY(-4px);
+  box-shadow:0 10px 30px rgba(79,70,229,.25);
 }
 
 .h-card span{
   display:block;
+  margin-top:6px;
   font-size:13px;
   color:var(--muted);
 }
 
-/* ===== Empty ===== */
+/* ===============================
+   EMPTY
+================================ */
 .empty{
-  color:#6b7280;
   font-size:13px;
+  color:#6b7280;
+  padding:10px;
 }
 </style>
 </head>
@@ -151,112 +230,124 @@ body{
 
 <div class="dashboard">
 
-  <!-- Updates -->
+<!-- NEWS -->
 <section class="news">
   <div class="news-header">
-    📰 Updates & News
+    📰 Updates & News <span>NEW</span>
   </div>
 
   <div class="news-slider">
     <div class="news-track" id="newsTrack">
       <div class="news-slide">
-        <div class="news-title">KS Panel v2.4 Released</div>
-        <div class="news-desc">Major UI polish, faster server actions and stability fixes</div>
+        <div class="news-title">KS Panel v2.4</div>
+        <div class="news-desc">UI polish, faster server actions & performance boost</div>
       </div>
 
       <div class="news-slide">
-        <div class="news-title">Security & Stability Improvements</div>
-        <div class="news-desc">Improved authentication, safer file handling and bug fixes</div>
+        <div class="news-title">Security Improvements</div>
+        <div class="news-desc">Safer auth, better file handling & bug fixes</div>
       </div>
+    </div>
+
+    <div class="news-dots" id="newsDots"></div>
+  </div>
+</section>
+
+<!-- RECENT + FAV -->
+<div class="grid">
+  <section class="panel">
+    <h2>🕒 Recent</h2>
+    <div id="recentList"></div>
+  </section>
+
+  <section class="panel">
+    <h2>❤️ Favourite</h2>
+    <div id="favList"></div>
+  </section>
+</div>
+
+<!-- HIGHLIGHT -->
+<section class="panel">
+  <h2>⭐ Highlighted</h2>
+  <div class="highlight">
+    <div class="h-card" onclick="openPage('dashboard.html')">
+      Dashboard
+      <span>Overview</span>
+    </div>
+    <div class="h-card" onclick="openPage('server-manage.html')">
+      Server
+      <span>Control & status</span>
+    </div>
+    <div class="h-card" onclick="openPage('file-manager.html')">
+      Files
+      <span>Manage server files</span>
     </div>
   </div>
 </section>
 
-  <!-- Recent + Favourite -->
-  <div class="grid">
-
-    <section class="panel">
-      <h2>🕒 Recent</h2>
-      <div id="recentList"></div>
-    </section>
-
-    <section class="panel">
-      <h2>❤️ Favourite</h2>
-      <div id="favList"></div>
-    </section>
-
-  </div>
-
-  <!-- Highlighted -->
-  <section class="panel">
-    <h2>⭐ Highlighted</h2>
-    <div class="highlight">
-      <div class="h-card" onclick="openPage('dashboard.html')">
-        Dashboard
-        <span>Overview</span>
-      </div>
-      <div class="h-card" onclick="openPage('server-manage.html')">
-        Server
-        <span>Control & status</span>
-      </div>
-      <div class="h-card" onclick="openPage('file-manager.html')">
-        Files
-        <span>Manage server files</span>
-      </div>
-    </div>
-  </section>
-
 </div>
+
 <script>
+/* ===============================
+   NEWS SLIDER LOGIC
+================================ */
 const track = document.getElementById("newsTrack");
-const slides = track.children;
+const dotsWrap = document.getElementById("newsDots");
+const slides = [...track.children];
 let index = 0;
 
-/* Auto slide every 1.5s */
-setInterval(() => {
-  index = (index + 1) % slides.length;
-  track.style.transform = `translateX(-${index * 100}%)`;
-}, 1500);
-</script>
-<script>
+slides.forEach((_,i)=>{
+  const d=document.createElement("i");
+  if(i===0)d.classList.add("active");
+  dotsWrap.appendChild(d);
+});
+
+const dots=[...dotsWrap.children];
+
+function slide(){
+  index=(index+1)%slides.length;
+  track.style.transform=`translateX(-${index*100}%)`;
+  dots.forEach(d=>d.classList.remove("active"));
+  dots[index].classList.add("active");
+}
+
+setInterval(slide,1800);
+
+/* ===============================
+   RECENT & FAV
+================================ */
 const RECENT_KEY="ls-web-recent";
 const FAV_KEY="ls-web-fav";
 
 function openPage(url){
-  parent.document.getElementById("frame").src=url;
+  try{
+    const f=parent.document.getElementById("frame");
+    if(f) f.src=url;
+  }catch(e){}
 }
 
 function timeAgo(t){
   const d=(Date.now()-t)/1000;
   if(d<60)return"Now";
-  if(d<3600)return Math.floor(d/60)+"m";
-  if(d<86400)return Math.floor(d/3600)+"h";
-  return Math.floor(d/86400)+"d";
+  if(d<3600)return`${Math.floor(d/60)}m`;
+  if(d<86400)return`${Math.floor(d/3600)}h`;
+  return`${Math.floor(d/86400)}d`;
 }
 
-function loadRecent(){
-  const r=JSON.parse(localStorage.getItem(RECENT_KEY))||[];
-  document.getElementById("recentList").innerHTML =
-    r.length ? r.slice(0,5).map(i=>`
+function loadList(key,el,withTime){
+  let data=[];
+  try{ data=JSON.parse(localStorage.getItem(key))||[] }catch{}
+  el.innerHTML=data.length
+    ? data.slice(0,5).map(i=>`
       <div class="list-item" onclick="openPage('${i.url}')">
         <span>${i.name}</span>
-        <span class="time">${timeAgo(i.time)}</span>
-      </div>
-    `).join("") : `<div class="empty">No recent activity</div>`;
+        ${withTime?`<span class="time">${timeAgo(i.time)}</span>`:""}
+      </div>`).join("")
+    : `<div class="empty">No data available</div>`;
 }
 
-function loadFav(){
-  const f=JSON.parse(localStorage.getItem(FAV_KEY))||[];
-  document.getElementById("favList").innerHTML =
-    f.length ? f.map(i=>`
-      <div class="list-item" onclick="openPage('${i.url}')">
-        <span>${i.name}</span>
-      </div>
-    `).join("") : `<div class="empty">No favourites added</div>`;
-}
-
-loadRecent();
-loadFav();
+loadList(RECENT_KEY,document.getElementById("recentList"),true);
+loadList(FAV_KEY,document.getElementById("favList"),false);
 </script>
 
 </body>
