@@ -6,156 +6,203 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
-  body{
-    margin:0;
-    padding:20px;
-    font-family: Arial, sans-serif;
-    background:#0e0e11;
-    color:#fff;
-  }
+:root{
+  --bg:#0e0e11;
+  --card:#15151d;
+  --soft:#1f1f2a;
+  --muted:#9ca3af;
+  --accent:#4f46e5;
+}
 
-  h2{
-    margin:25px 0 15px;
-    font-size:18px;
-    display:flex;
-    align-items:center;
-    gap:8px;
-  }
+body{
+  margin:0;
+  padding:18px;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  background:var(--bg);
+  color:#fff;
+}
 
-  ul{
-    list-style:none;
-    padding:0;
-    margin:0;
-  }
+/* ===== Layout ===== */
+.dashboard{
+  display:grid;
+  gap:18px;
+}
 
-  li{
-    padding:12px 14px;
-    margin-bottom:10px;
-    background:#1a1a22;
-    border-radius:8px;
-    cursor:pointer;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    transition:0.2s;
-  }
+/* ===== News ===== */
+.news{
+  background:linear-gradient(135deg,#1b1b2f,#161622);
+  border-radius:14px;
+  padding:18px;
+}
 
-  li:hover{
-    background:#232333;
-  }
+.news h2{
+  margin:0 0 12px;
+  font-size:17px;
+}
 
-  .name{
-    font-size:14px;
-  }
+.news-item{
+  padding:10px 0;
+  display:flex;
+  justify-content:space-between;
+  border-bottom:1px solid #242433;
+}
 
-  .time{
-    font-size:12px;
-    color:#aaa;
-  }
+.news-item:last-child{border:none}
 
-  .empty{
-    color:#888;
-    font-size:14px;
-    cursor:default;
-  }
+/* ===== Two Columns ===== */
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:18px;
+}
 
-  .badge{
-    font-size:11px;
-    padding:3px 6px;
-    background:#2563eb;
-    border-radius:6px;
-  }
+.panel{
+  background:var(--card);
+  border-radius:14px;
+  padding:14px;
+}
+
+.panel h2{
+  margin:0 0 12px;
+  font-size:16px;
+}
+
+/* ===== Lists ===== */
+.list-item{
+  padding:12px;
+  border-radius:10px;
+  background:var(--soft);
+  margin-bottom:10px;
+  display:flex;
+  justify-content:space-between;
+  cursor:pointer;
+}
+
+.list-item:hover{
+  outline:1px solid #2f2f44;
+}
+
+.time{
+  font-size:12px;
+  color:var(--muted);
+}
+
+/* ===== Highlighted ===== */
+.highlight{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+  gap:14px;
+}
+
+.h-card{
+  background:#181824;
+  border-radius:14px;
+  padding:16px;
+  cursor:pointer;
+}
+
+.h-card span{
+  display:block;
+  font-size:13px;
+  color:var(--muted);
+}
+
+/* ===== Empty ===== */
+.empty{
+  color:#6b7280;
+  font-size:13px;
+}
 </style>
 </head>
 
 <body>
 
-<!-- ================= Updates & News (KS) ================= -->
-<h2>📰 Updates & News (KS)</h2>
-<ul>
-  <li onclick="openPage('updates.html')">
-    <span class="name">KS Panel v2.1 Released</span>
-    <span class="badge">NEW</span>
-  </li>
-  <li onclick="openPage('changelog.html')">
-    <span class="name">Bug fixes & performance update</span>
-    <span class="time">2 days ago</span>
-  </li>
-</ul>
+<div class="dashboard">
 
-<!-- ================= Recent (Users) ================= -->
-<h2>🕒 Recent (Users)</h2>
-<ul id="recentList"></ul>
+  <!-- Updates -->
+  <section class="news">
+    <h2>📰 Updates & News</h2>
+    <div class="news-item">
+      <span>KS Panel v2.1 Released</span>
+      <span class="time">Today</span>
+    </div>
+    <div class="news-item">
+      <span>Security & stability improvements</span>
+      <span class="time">2 days ago</span>
+    </div>
+  </section>
 
-<!-- ================= Highlighted (KS) ================= -->
-<h2>⭐ Highlighted (KS)</h2>
-<ul>
-  <li onclick="openPage('dashboard.html')">
-    <span class="name">Main Dashboard</span>
-  </li>
-  <li onclick="openPage('server-manage.html')">
-    <span class="name">Server Manager</span>
-  </li>
-  <li onclick="openPage('file-manager.html')">
-    <span class="name">File Manager</span>
-  </li>
-</ul>
+  <!-- Recent + Favourite -->
+  <div class="grid">
 
-<!-- ================= Favourite (Users) ================= -->
-<h2>❤️ Favourite (Users)</h2>
-<ul id="favList"></ul>
+    <section class="panel">
+      <h2>🕒 Recent</h2>
+      <div id="recentList"></div>
+    </section>
+
+    <section class="panel">
+      <h2>❤️ Favourite</h2>
+      <div id="favList"></div>
+    </section>
+
+  </div>
+
+  <!-- Highlighted -->
+  <section class="panel">
+    <h2>⭐ Highlighted</h2>
+    <div class="highlight">
+      <div class="h-card" onclick="openPage('dashboard.html')">
+        Dashboard
+        <span>Overview</span>
+      </div>
+      <div class="h-card" onclick="openPage('server-manage.html')">
+        Server
+        <span>Control & status</span>
+      </div>
+      <div class="h-card" onclick="openPage('file-manager.html')">
+        Files
+        <span>Manage server files</span>
+      </div>
+    </div>
+  </section>
+
+</div>
 
 <script>
-/* ================= Recent ================= */
-const RECENT_KEY = "ls-web-recent";
-const FAV_KEY = "ls-web-fav";
+const RECENT_KEY="ls-web-recent";
+const FAV_KEY="ls-web-fav";
 
-const recentList = document.getElementById("recentList");
-const favList = document.getElementById("favList");
-
-function loadRecent() {
-  const recent = JSON.parse(localStorage.getItem(RECENT_KEY)) || [];
-
-  if (!recent.length) {
-    recentList.innerHTML = `<li class="empty">No recent pages</li>`;
-    return;
-  }
-
-  recentList.innerHTML = recent.slice(0,5).map(item => `
-    <li onclick="openPage('${item.url}')">
-      <span class="name">${item.name}</span>
-      <span class="time">${timeAgo(item.time)}</span>
-    </li>
-  `).join("");
-}
-
-/* ================= Favourite ================= */
-function loadFav(){
-  const fav = JSON.parse(localStorage.getItem(FAV_KEY)) || [];
-
-  if (!fav.length){
-    favList.innerHTML = `<li class="empty">No favourite pages</li>`;
-    return;
-  }
-
-  favList.innerHTML = fav.map(item => `
-    <li onclick="openPage('${item.url}')">
-      <span class="name">${item.name}</span>
-    </li>
-  `).join("");
-}
-
-/* ================= Helpers ================= */
 function openPage(url){
-  parent.document.getElementById("frame").src = url;
+  parent.document.getElementById("frame").src=url;
 }
 
-function timeAgo(time){
-  const diff = Math.floor((Date.now() - time) / 1000);
-  if (diff < 60) return "Just now";
-  if (diff < 3600) return Math.floor(diff/60) + " min ago";
-  if (diff < 86400) return Math.floor(diff/3600) + " hr ago";
-  return Math.floor(diff/86400) + " day ago";
+function timeAgo(t){
+  const d=(Date.now()-t)/1000;
+  if(d<60)return"Now";
+  if(d<3600)return Math.floor(d/60)+"m";
+  if(d<86400)return Math.floor(d/3600)+"h";
+  return Math.floor(d/86400)+"d";
+}
+
+function loadRecent(){
+  const r=JSON.parse(localStorage.getItem(RECENT_KEY))||[];
+  document.getElementById("recentList").innerHTML =
+    r.length ? r.slice(0,5).map(i=>`
+      <div class="list-item" onclick="openPage('${i.url}')">
+        <span>${i.name}</span>
+        <span class="time">${timeAgo(i.time)}</span>
+      </div>
+    `).join("") : `<div class="empty">No recent activity</div>`;
+}
+
+function loadFav(){
+  const f=JSON.parse(localStorage.getItem(FAV_KEY))||[];
+  document.getElementById("favList").innerHTML =
+    f.length ? f.map(i=>`
+      <div class="list-item" onclick="openPage('${i.url}')">
+        <span>${i.name}</span>
+      </div>
+    `).join("") : `<div class="empty">No favourites added</div>`;
 }
 
 loadRecent();
