@@ -13,6 +13,7 @@
   --muted:#9ca3af;
   --accent:#4f46e5;
   --radius:16px;
+  --hover-card:#202030;
 }
 
 *{ box-sizing:border-box; }
@@ -23,290 +24,173 @@ body{
   font-family:system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
   background:radial-gradient(circle at top,#141421,#0e0e11);
   color:#fff;
+  min-height:100vh;
 }
 
-.dashboard{
-  display:grid;
-  gap:20px;
-  max-width:1100px;
-  margin:auto;
-}
+.dashboard{ display:grid; gap:20px; max-width:1100px; margin:auto; }
 
-/* ================= NEWS ================= */
-.news{
-  background:linear-gradient(135deg,#1b1b2f,#161622);
-  border-radius:var(--radius);
-  padding:18px;
-  overflow:hidden;
-}
-
-.news-header{
-  display:flex;
-  gap:8px;
-  align-items:center;
-  margin-bottom:14px;
-  font-weight:600;
-}
-
-.news-header span{
-  background:var(--accent);
-  padding:4px 10px;
-  border-radius:999px;
-  font-size:11px;
-  font-weight:500;
-}
-
-.news-slider{ 
-  height:92px; 
-  overflow:hidden; 
-  position:relative;
-}
-
-.news-track{
-  display:flex;
-  width:100%;
-  transition:transform 0.8s ease;
-}
-
-.news-slide{
-  min-width:100%;
-  flex-shrink:0;
-  background:#141420;
-  border-radius:14px;
-  padding:16px;
-}
-
+/* NEWS */
+.news{ background:linear-gradient(135deg,#1b1b2f,#161622); border-radius:var(--radius); padding:18px; overflow:hidden; }
+.news-header{ display:flex; align-items:center; gap:8px; margin-bottom:14px; font-weight:600; }
+.news-header span{ background:var(--accent); padding:4px 10px; border-radius:999px; font-size:11px; font-weight:500; }
+.news-slider{ height:92px; overflow:hidden; position:relative; }
+.news-track{ display:flex; transition:transform 0.8s ease; }
+.news-slide{ min-width:100%; flex-shrink:0; background:#141420; border-radius:14px; padding:16px; }
 .news-title{ font-size:18px; font-weight:600; margin-bottom:6px; }
 .news-desc{ font-size:13px; color:var(--muted); line-height:1.4; }
-
-.news-dots{
-  display:flex;
-  gap:6px;
-  justify-content:flex-end;
-  margin-top:10px;
-}
-
-.news-dots i{
-  width:7px;
-  height:7px;
-  border-radius:50%;
-  background:#333;
-  transition:background 0.3s;
-}
+.news-dots{ display:flex; gap:6px; justify-content:flex-end; margin-top:10px; }
+.news-dots i{ width:7px; height:7px; border-radius:50%; background:#333; transition:background 0.3s; }
 .news-dots i.active{ background:var(--accent); }
 
-/* ================= GRID ================= */
-.grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:20px;
-}
-@media(max-width:800px){ .grid{grid-template-columns:1fr;} }
-
-/* ================= PANEL ================= */
-.panel{
-  background:#141420;
-  border-radius:var(--radius);
-  padding:16px;
-}
-
+/* GRID & PANEL */
+.grid{ display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+@media(max-width:800px){ .grid{ grid-template-columns:1fr; } }
+.panel{ background:#141420; border-radius:var(--radius); padding:16px; }
 .panel h2{ margin:0 0 14px 0; font-size:18px; }
 
-/* ================= LIST ================= */
+/* LIST ITEM */
 .list-item{
-  background:var(--soft);
-  padding:12px 14px;
-  border-radius:12px;
-  margin-bottom:8px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  cursor:pointer;
+  background:var(--soft); padding:12px 14px; border-radius:12px; margin-bottom:8px;
+  display:flex; justify-content:space-between; align-items:center; cursor:pointer;
   transition:background 0.2s;
 }
 .list-item:hover{ background:#2a2a3a; }
-.list-item:last-child { margin-bottom:0; }
-
+.list-item:last-child{ margin-bottom:0; }
 .time{ font-size:12px; color:var(--muted); }
 
-/* ================= HIGHLIGHT (VERTICAL) ================= */
-.highlight-slider{
-  overflow:hidden;
-  position:relative;
-}
-
-.highlight-track{
-  transition:transform 0.8s ease;
-}
-
+/* HIGHLIGHT */
+.highlight-slider{ overflow:hidden; position:relative; }
+.highlight-track{ transition:transform 0.8s ease; }
 .h-card{
-  background:#181828;
-  border-radius:14px;
-  padding:18px;
-  margin-bottom:10px;
-  cursor:pointer;
-  transition:background 0.2s;
+  background:#181828; border-radius:14px; padding:18px; margin-bottom:10px;
+  cursor:pointer; transition:background 0.2s;
 }
-.h-card:hover { background:#202030; }
+.h-card:hover{ background:var(--hover-card); }
+.h-card span{ display:block; font-size:13px; color:var(--muted); margin-top:6px; }
 
-.h-card span{ 
-  display:block;
-  font-size:13px;
-  color:var(--muted); 
-  margin-top:6px;
-}
-
-.empty{ 
-  color:#6b7280;
-  font-size:13px; 
-  text-align:center;
-  padding:20px 0;
-}
+.empty{ color:#6b7280; font-size:13px; text-align:center; padding:30px 0; }
 </style>
 </head>
 
 <body>
 <div class="dashboard">
 
-<!-- NEWS -->
-<section class="news">
-  <div class="news-header">📰 Updates & News <span>NEW</span></div>
-  <div class="news-slider">
-    <div class="news-track" id="newsTrack">
-      <div class="news-slide">
-        <div class="news-title">KS Panel v2.4</div>
-        <div class="news-desc">UI polish & performance boost</div>
+  <!-- NEWS -->
+  <section class="news">
+    <div class="news-header">📰 Updates & News <span>NEW</span></div>
+    <div class="news-slider">
+      <div class="news-track" id="newsTrack">
+        <div class="news-slide">
+          <div class="news-title">KS Panel v2.4</div>
+          <div class="news-desc">UI polish & performance boost</div>
+        </div>
+        <div class="news-slide">
+          <div class="news-title">Security Improvements</div>
+          <div class="news-desc">Safer auth & bug fixes</div>
+        </div>
       </div>
-      <div class="news-slide">
-        <div class="news-title">Security Improvements</div>
-        <div class="news-desc">Safer auth & bug fixes</div>
-      </div>
-      <!-- Add more slides here if needed -->
     </div>
+    <div class="news-dots" id="newsDots"></div>
+  </section>
+
+  <!-- RECENT + FAV -->
+  <div class="grid">
+    <section class="panel">
+      <h2>🕒 Recent</h2>
+      <div id="recentList"></div>
+    </section>
+    <section class="panel">
+      <h2>❤️ Favourite</h2>
+      <div id="favList"></div>
+    </section>
   </div>
-  <div class="news-dots" id="newsDots"></div>
-</section>
 
-<!-- RECENT + FAV -->
-<div class="grid">
+  <!-- HIGHLIGHT -->
   <section class="panel">
-    <h2>🕒 Recent</h2>
-    <div id="recentList"></div>
-  </section>
-  <section class="panel">
-    <h2>❤️ Favourite</h2>
-    <div id="favList"></div>
-  </section>
-</div>
-
-<!-- HIGHLIGHT -->
-<section class="panel">
-  <h2>⭐ Highlighted</h2>
-  <div class="highlight-slider">
-    <div class="highlight-track" id="highlightTrack">
-      <div class="h-card" onclick="openPage('dashboard.html','Dashboard')">
-        Dashboard <span>Overview</span>
+    <h2>⭐ Highlighted</h2>
+    <div class="highlight-slider">
+      <div class="highlight-track" id="highlightTrack">
+        <div class="h-card" onclick="parent.loadInFrame('dashboard.html')">
+          Dashboard <span>Overview</span>
+        </div>
+        <div class="h-card" onclick="parent.loadInFrame('server.html')">
+          Server <span>Control & status</span>
+        </div>
+        <div class="h-card" onclick="parent.loadInFrame('files.html')">
+          Files <span>Manage server files</span>
+        </div>
       </div>
-      <div class="h-card" onclick="openPage('server.html','Server')">
-        Server <span>Control & status</span>
-      </div>
-      <div class="h-card" onclick="openPage('files.html','Files')">
-        Files <span>Manage server files</span>
-      </div>
-      <!-- Add more cards here if needed -->
     </div>
-  </div>
-</section>
+  </section>
 
 </div>
 
 <script>
-/* ===== CONSTANTS ===== */
 const RECENT_KEY = "ks-web-recent";
 const FAV_KEY = "ks-web-fav";
 
-/* ===== NEWS SLIDER ===== */
+// News Slider
 const newsTrack = document.getElementById("newsTrack");
 const newsDots = document.getElementById("newsDots");
-const newsSlides = newsTrack.children;
-let newsIndex = 0;
+const slides = newsTrack.children;
 
-if (newsSlides.length > 1) {
-  // Create dots
-  for (let i = 0; i < newsSlides.length; i++) {
+if (slides.length > 1) {
+  for (let i = 0; i < slides.length; i++) {
     const dot = document.createElement("i");
     if (i === 0) dot.classList.add("active");
     newsDots.appendChild(dot);
   }
 
-  // Auto slide
+  let index = 0;
   setInterval(() => {
-    newsIndex = (newsIndex + 1) % newsSlides.length;
-    newsTrack.style.transform = `translateX(-${newsIndex * 100}%)`;
-    [...newsDots.children].forEach((d, i) => d.classList.toggle("active", i === newsIndex));
-  }, 3000); // Slower interval for better readability
+    index = (index + 1) % slides.length;
+    newsTrack.style.transform = `translateX(-${index * 100}%)`;
+    [...newsDots.children].forEach((d, i) => d.classList.toggle("active", i === index));
+  }, 3000);
 }
 
-/* ===== HIGHLIGHT VERTICAL SLIDER ===== */
-const highlightTrack = document.getElementById("highlightTrack");
-const hCards = highlightTrack.children;
-const cardHeight = 100; // padding 18px*2 + content ≈90px + margin-bottom 10px
-
-if (hCards.length > 1) {
+// Highlight Vertical Slider
+const hTrack = document.getElementById("highlightTrack");
+const cards = hTrack.children;
+if (cards.length > 1) {
   let hIndex = 0;
   setInterval(() => {
-    hIndex = (hIndex + 1) % hCards.length;
-    highlightTrack.style.transform = `translateY(-${hIndex * cardHeight}px)`;
+    hIndex = (hIndex + 1) % cards.length;
+    hTrack.style.transform = `translateY(-${hIndex * 100}px)`;
   }, 2500);
 }
 
-/* ===== RECENT & FAV ===== */
-function openPage(url, name) {
-  let recent = JSON.parse(localStorage.getItem(RECENT_KEY) || "[]");
-  
-  // Remove duplicate if already exists
-  recent = recent.filter(item => item.url !== url);
-  
-  // Add to top
-  recent.unshift({ name, url, time: Date.now() });
-  
-  // Keep only latest 5
-  recent = recent.slice(0, 5);
-  
-  localStorage.setItem(RECENT_KEY, JSON.stringify(recent));
-  
-  // Optional: navigate
-  // window.location.href = url;
+// Time Ago
+function timeAgo(ts) {
+  const s = Math.floor((Date.now() - ts) / 1000);
+  if (s < 60) return "Now";
+  if (s < 3600) return Math.floor(s / 60) + "m ago";
+  if (s < 86400) return Math.floor(s / 3600) + "h ago";
+  if (s < 2592000) return Math.floor(s / 86400) + "d ago";
+  return Math.floor(s / 2592000) + "mo ago";
 }
 
-function timeAgo(timestamp) {
-  const seconds = Math.floor((Date.now() - timestamp) / 1000);
-  
-  if (seconds < 60) return "Now";
-  if (seconds < 3600) return Math.floor(seconds / 60) + "m ago";
-  if (seconds < 86400) return Math.floor(seconds / 3600) + "h ago";
-  if (seconds < 2592000) return Math.floor(seconds / 86400) + "d ago";
-  return Math.floor(seconds / 2592000) + "mo ago";
-}
-
+// Render List
 function renderList(key, containerId, showTime = false) {
   const data = JSON.parse(localStorage.getItem(key) || "[]");
-  const container = document.getElementById(containerId);
-  
+  const el = document.getElementById(containerId);
+  el.innerHTML = "";
+
   if (data.length === 0) {
-    container.innerHTML = `<div class="empty">No data</div>`;
+    el.innerHTML = `<div class="empty">No data</div>`;
     return;
   }
-  
-  container.innerHTML = data.map(item => `
-    <div class="list-item" onclick="window.location.href='${item.url}'">
-      <span>${item.name}</span>
-      ${showTime ? `<span class="time">${timeAgo(item.time)}</span>` : ""}
-    </div>
-  `).join("");
+
+  data.forEach(item => {
+    const div = document.createElement("div");
+    div.className = "list-item";
+    div.innerHTML = `<span>${item.name}</span>${showTime ? `<span class="time">${timeAgo(item.time)}</span>` : ""}`;
+    div.onclick = () => parent.loadInFrame(item.url);
+    el.appendChild(div);
+  });
 }
 
-/* ===== INITIAL LOAD ===== */
+// Load lists on start
 renderList(RECENT_KEY, "recentList", true);
 renderList(FAV_KEY, "favList", false);
 </script>
