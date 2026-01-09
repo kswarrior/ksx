@@ -213,11 +213,38 @@ body.sidebar-open #sidebar { left: 0; }
     transform: translateX(220px);
   }
 }
+/* Always show sidebar on desktop */
+@media (min-width: 768px) {
+  body {
+    /* Make sidebar open by default on desktop */
+    left: 0;
+  }
+  #sidebar {
+    left: 0 !important; /* Force sidebar open */
+  }
+  #frame {
+    transform: translateX(220px);
+  }
+}
 </style>
 </head>
 
 <body>
+<script>
+  function handleSidebar() {
+  if (window.innerWidth >= 768) {
+    document.body.classList.add("sidebar-open");
+  } else {
+    document.body.classList.remove("sidebar-open");
+  }
+}
 
+// Run on load
+handleSidebar();
+
+// Run on window resize
+window.addEventListener("resize", handleSidebar);
+</script>
 <div id="topbar">
   <div class="logo"><img src="/image/ks-logo.webp" alt="KS Logo"></div>
   <div class="owner-name">❰🔹❰❰ 𝑲𝑺 𝑾𝒂𝒓𝒓𝒊𝒐𝒓 ❱❱🔹❱</div>
