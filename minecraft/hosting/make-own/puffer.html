@@ -3,25 +3,26 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Puffer Panel – KS Warrior</title>
+<title>Puffer Panel Installer – KS Warrior</title>
 
 <style>
 :root{
-  --bg:#000000;
-  --card:rgba(18,18,28,0.9);
-  --soft:rgba(28,28,40,0.95);
-  --border:rgba(255,255,255,0.12);
+  --bg:#0b1020;
+  --card:rgba(22,28,55,0.9);
+  --soft:rgba(32,40,80,0.95);
+  --border:rgba(255,255,255,0.14);
   --text:#ffffff;
-  --muted:#aaaaaa;
-  --accent:#ffffff;
-  --radius:12px;
-  --gap:24px;
+  --muted:#cfd7ff;
+  --accent:#4fc3ff;
+  --accent-glow:rgba(79,195,255,0.45);
+  --radius:14px;
+  --gap:26px;
   --transition:0.45s cubic-bezier(0.22,1,0.36,1);
 }
 
 *{box-sizing:border-box;margin:0;padding:0}
 body{
-  background:var(--bg);
+  background:radial-gradient(circle at top,#111a3a,#060916);
   color:var(--text);
   font-family:system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
   min-height:100vh;
@@ -31,32 +32,40 @@ body{
 main{
   max-width:980px;
   margin:auto;
-  padding:24px 16px;
-  animation:fadeIn 0.8s ease;
+  padding:26px 16px;
+  animation:fadeUp 0.8s ease;
 }
 
-@keyframes fadeIn{
-  from{opacity:0;transform:translateY(20px)}
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(24px)}
   to{opacity:1;transform:translateY(0)}
 }
 
 /* TITLE */
 .title{
   text-align:center;
-  font-size:30px;
+  font-size:32px;
   font-weight:900;
-  margin-bottom:36px;
-  background:linear-gradient(90deg,#ffffff,#bfbfbf);
+  margin-bottom:10px;
+  background:linear-gradient(90deg,#4fc3ff,#9be7ff);
   -webkit-background-clip:text;
   -webkit-text-fill-color:transparent;
+  text-shadow:0 0 25px var(--accent-glow);
 }
 
-/* SECTION CARD */
+.subtitle{
+  text-align:center;
+  color:var(--muted);
+  margin-bottom:40px;
+  font-size:14px;
+}
+
+/* SECTION */
 .section{
-  background:var(--card);
+  background:linear-gradient(145deg,rgba(79,195,255,0.06),var(--card));
   border-radius:var(--radius);
   border:1px solid var(--border);
-  padding:24px;
+  padding:26px;
   margin-bottom:var(--gap);
   transition:all var(--transition);
   backdrop-filter:blur(18px);
@@ -64,70 +73,61 @@ main{
 
 .section:hover{
   transform:translateY(-4px);
-  box-shadow:0 0 25px rgba(255,255,255,0.15);
+  box-shadow:0 0 35px rgba(79,195,255,0.25);
 }
 
 .section h2{
   font-size:18px;
   font-weight:800;
-  margin-bottom:16px;
+  margin-bottom:18px;
   display:flex;
   align-items:center;
   gap:8px;
 }
 
-/* CODE BLOCK */
+/* CODE */
 .codespre{
-  background:#0f0f18;
-  color:#eaeaea;
+  background:#070c1f;
+  color:#e8f4ff;
   border-radius:10px;
-  padding:14px;
+  padding:16px;
   font-size:13px;
-  line-height:1.6;
+  line-height:1.7;
   overflow-x:auto;
-  border:1px solid var(--border);
-  margin-bottom:14px;
-  word-break:break-all;
+  border:1px solid rgba(79,195,255,0.25);
+  margin-bottom:16px;
 }
 
-/* BUTTONS */
+/* BUTTON */
 .btn{
-  background:linear-gradient(135deg,#ffffff,#dcdcdc);
+  background:linear-gradient(135deg,#4fc3ff,#2f8cff);
   color:#000;
   border:none;
-  padding:10px 18px;
-  border-radius:8px;
-  font-weight:700;
+  padding:11px 20px;
+  border-radius:9px;
+  font-weight:800;
   cursor:pointer;
   transition:all 0.3s ease;
 }
 
 .btn:hover{
-  transform:scale(1.05);
-  box-shadow:0 0 20px rgba(255,255,255,0.3);
-}
-
-.btn.secondary{
-  background:transparent;
-  color:var(--text);
-  border:1px solid var(--border);
+  transform:scale(1.06);
+  box-shadow:0 0 25px var(--accent-glow);
 }
 
 /* COPY STATUS */
 .copied{
-  margin-left:12px;
+  margin-left:14px;
   font-size:13px;
-  color:#4cff8f;
+  color:#7dffb3;
   opacity:0;
   transition:opacity 0.3s ease;
 }
-
 .copied.show{opacity:1}
 
-/* MOBILE SAFETY */
+/* MOBILE */
 @media (hover:none){
-  .section:hover,
-  .btn:hover{
+  .section:hover,.btn:hover{
     transform:none;
     box-shadow:none;
   }
@@ -139,38 +139,38 @@ main{
 <main>
 
   <div class="title">Puffer Panel Installer</div>
+  <div class="subtitle">
+    Fast • Secure • Beginner-Friendly Setup
+  </div>
 
-  <!-- VIDEO -->
   <div class="section">
-    <h2>🎥 Tutorial</h2>
-    <button class="btn secondary" onclick="window.open('','_blank')">
-      Watch YouTube Video
+    <h2>🎥 Watch & Learn</h2>
+    <button class="btn" onclick="window.open('','_blank')">
+      Open YouTube Tutorial
     </button>
   </div>
 
-  <!-- INSTALL -->
   <div class="section">
-    <h2>🔧 Install Panel</h2>
+    <h2>🚀 Install in One Command</h2>
 
     <pre class="codespre" id="installCmd">
 bash <(curl -sSL https://raw.githubusercontent.com/KSWarrior/moh-codes/refs/heads/main/pufferpanel/ks-install.sh)
     </pre>
 
     <button class="btn" onclick="copyCmd()">Copy Command</button>
-    <span class="copied" id="copiedTxt">Copied!</span>
+    <span class="copied" id="copiedTxt">Copied ✓</span>
   </div>
 
 </main>
 
 <script>
 function copyCmd(){
-  const pre = document.getElementById("installCmd");
-  const copied = document.getElementById("copiedTxt");
-  const text = pre.textContent.trim();
+  const text = document.getElementById("installCmd").textContent.trim();
+  const tag = document.getElementById("copiedTxt");
 
   navigator.clipboard.writeText(text).then(()=>{
-    copied.classList.add("show");
-    setTimeout(()=>copied.classList.remove("show"),2000);
+    tag.classList.add("show");
+    setTimeout(()=>tag.classList.remove("show"),2000);
   });
 }
 </script>
