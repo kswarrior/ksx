@@ -1,53 +1,27 @@
 [
-
   {
-
     "name": "Pterodactyl Panel",
-
     "url": "https://ksx.pages.dev/minecraft/hosting/make-own/pterodactyl.html",
-
     "logo": "https://example.com/pterodactyl.png"
-
   },
-
   {
-
     "name": "Puffer Panel",
-
     "url": "https://ksx.pages.dev/minecraft/hosting/make-own/puffer.html",
-
     "logo": "https://example.com/puffer.png"
-
   },
-
   {
-
     "name": "Free VPS Hosting List",
-
     "url": "https://free-vps.example.com",
-
     "logo": "https://example.com/vps.png"
-
   },
-
   {
-
     "name": "Free Minecraft Hosting List",
-
     "url": "https://free-vps.example.com",
-
     "logo": "https://example.com/vps.png"
-
   },
-
   {
-
     "name": "Cloudflare",
-
     "url": "https://cloudflare.com",
-
     "logo": "https://example.com/cloudflare.png"
-
   }
-
 ]
