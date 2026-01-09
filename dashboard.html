@@ -277,6 +277,20 @@ body{
   from{ opacity:0; transform:translateX(40px);}
   to{ opacity:1; transform:translateX(0);}
 }
+
+/* Always show sidebar on desktop */
+@media (min-width: 768px) {
+  body {
+    /* Make sidebar open by default on desktop */
+    left: 0;
+  }
+  #sidebar {
+    left: 0 !important; /* Force sidebar open */
+  }
+  #frame {
+    transform: translateX(220px);
+  }
+}
 </style>
 </head>
 
