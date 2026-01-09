@@ -43,145 +43,66 @@ html, body {
   z-index: 1000;
 }
 
-/* LOGO */
-.logo {
-  width: 38px;
-  height: 38px;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  overflow: hidden;
-}
-.logo img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
+/* LOGO & TITLE */
+.logo { width: 38px; height: 38px; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+.logo img { width: 100%; height: 100%; object-fit: cover; }
+.owner-name { font-size: 15px; font-weight: 900; white-space: nowrap; flex: 1; }
 
-/* TITLE */
-.owner-name {
-  font-size: 15px;
-  font-weight: 900;
-  white-space: nowrap;
-  flex: 1;
-}
-
-/* ICON BUTTONS */
+/* BUTTONS */
 .btn-icon, #hamburger {
-  width: 38px;
-  height: 38px;
-  background: transparent;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  color: #fff;
-  cursor: pointer;
-  font-size: 20px;
-  display: grid;
-  place-items: center;
+  width: 38px; height: 38px; background: transparent; border: 1px solid var(--border);
+  border-radius: 8px; color: #fff; cursor: pointer; font-size: 20px;
+  display: grid; place-items: center;
 }
 #hamburger { font-size: 26px; }
-.btn-icon:hover, #hamburger:hover {
-  background: var(--hover);
-}
+.btn-icon:hover, #hamburger:hover { background: var(--hover); }
 
 /* SEARCH */
 #searchBox {
-  flex: 1;
-  max-width: 300px;
-  padding: 8px 12px;
-  background: #121218;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  color: #fff;
-  outline: none;
-  opacity: 0;
-  width: 0;
-  transition: all 0.25s ease;
+  flex: 1; max-width: 300px; padding: 8px 12px; background: #121218;
+  border: 1px solid var(--border); border-radius: 8px; color: #fff; outline: none;
+  opacity: 0; width: 0; transition: all 0.25s ease;
 }
-#topbar.search-active #searchBox {
-  width: 100%;
-  max-width: 400px;
-  opacity: 1;
-}
+#topbar.search-active #searchBox { width: 100%; max-width: 400px; opacity: 1; }
 #topbar.search-active #searchIcon { display: none; }
 
 /* SUGGESTIONS */
 #suggestBox {
-  position: fixed;
-  top: 60px;
-  left: 12px;
-  right: 12px;
-  max-width: 520px;
-  margin: 0 auto;
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  list-style: none;
-  padding: 6px 0;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.4);
-  display: none;
-  z-index: 900;
-  max-height: 300px;
-  overflow-y: auto;
+  position: fixed; top: 60px; left: 12px; right: 12px; max-width: 520px; margin: 0 auto;
+  background: var(--panel); border: 1px solid var(--border); border-radius: 8px;
+  list-style: none; padding: 6px 0; box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+  display: none; z-index: 900; max-height: 300px; overflow-y: auto;
 }
 #suggestBox li {
-  padding: 10px 16px;
-  cursor: pointer;
-  border-radius: 0;
+  padding: 10px 16px; cursor: pointer;
 }
-#suggestBox li:hover,
-#suggestBox li.active {
-  background: var(--hover);
-}
+#suggestBox li:hover, #suggestBox li.active { background: var(--hover); }
 
 /* SIDEBAR */
 #sidebar {
-  position: fixed;
-  top: 56px;
-  left: -200px;
-  width: 200px;
-  height: calc(100% - 56px);
+  position: fixed; top: 56px; left: -200px; width: 200px; height: calc(100% - 56px);
   background: linear-gradient(180deg, rgba(20,20,25,0.85), rgba(5,5,8,0.95));
   backdrop-filter: blur(20px) saturate(160%);
   -webkit-backdrop-filter: blur(20px) saturate(160%);
-  padding: 16px 0;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
+  padding: 16px 0; display: flex; flex-direction: column; gap: 4px;
   box-shadow: inset -1px 0 0 rgba(255,255,255,.05), 8px 0 30px rgba(0,0,0,.6);
-  transition: left 0.35s cubic-bezier(0.22, 1, 0.36, 1);
-  z-index: 800;
+  transition: left 0.35s cubic-bezier(0.22, 1, 0.36, 1); z-index: 800;
 }
 body.sidebar-open #sidebar { left: 0; }
-
 #sidebar a {
-  display: block;
-  padding: 12px 20px;
-  color: var(--text);
-  text-decoration: none;
-  border-radius: 0;
+  display: block; padding: 12px 20px; color: var(--text); text-decoration: none;
   transition: background 0.2s;
 }
-#sidebar a:hover {
-  background: var(--hover);
-}
+#sidebar a:hover { background: var(--hover); }
 
 /* FRAME */
 #frame {
-  position: fixed;
-  top: 56px;
-  left: 0;
-  width: 100%;
-  height: calc(100% - 56px);
-  border: none;
-  background: #fff;
+  position: fixed; top: 56px; left: 0; width: 100%; height: calc(100% - 56px);
+  border: none; background: #fff;
   transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
 }
-
-/* Desktop sidebar push */
 @media (min-width: 720px) {
-  body.sidebar-open #frame {
-    transform: translateX(200px);
-  }
+  body.sidebar-open #frame { transform: translateX(200px); }
 }
 </style>
 </head>
@@ -199,71 +120,61 @@ body.sidebar-open #sidebar { left: 0; }
 <ul id="suggestBox"></ul>
 
 <nav id="sidebar">
-  <a onclick="loadInFrame('dashboard.html', 'Dashboard')">Dashboard</a>
-  <a onclick="loadInFrame('social.html', 'Social Media')">Social Media</a>
-  <a onclick="loadInFrame('about.html', 'About')">About</a>
+  <a onclick="loadInFrame('dashboard.html')">Dashboard</a>
+  <a onclick="loadInFrame('social.html')">Social Media</a>
+  <a onclick="loadInFrame('about.html')">About</a>
 </nav>
 
 <iframe id="frame" src="dashboard.html"></iframe>
 
 <script>
-// Elements
-const topbar = document.getElementById("topbar");
-const searchIcon = document.getElementById("searchIcon");
+const frame = document.getElementById("frame");
 const searchBox = document.getElementById("searchBox");
 const suggestBox = document.getElementById("suggestBox");
+const searchIcon = document.getElementById("searchIcon");
 const hamburger = document.getElementById("hamburger");
-const frame = document.getElementById("frame");
+const topbar = document.getElementById("topbar");
 
-// Config
 const RECENT_KEY = "ks-web-recent";
 const MAX_RECENT = 5;
 let searchData = [];
 
-// Load search index
+// Load search data
 fetch("/search-data.json")
   .then(r => r.ok ? r.json() : [])
   .then(data => searchData = data)
   .catch(() => searchData = []);
 
-// === Recent Pages Management ===
-function getRecent() {
-  try {
-    return JSON.parse(localStorage.getItem(RECENT_KEY)) || [];
-  } catch { return []; }
-}
+// === ONLY save to recent when opened via SEARCH ===
+function saveToRecent(name, url) {
+  if (!url) return;
 
-function saveRecent(name, url) {
-  if (!url || url === frame.src) return; // Avoid duplicates & same page
-
-  let recent = getRecent();
+  let recent = JSON.parse(localStorage.getItem(RECENT_KEY) || "[]");
   recent = recent.filter(item => item.url !== url);
   recent.unshift({ name, url, time: Date.now() });
-
-  if (recent.length > MAX_RECENT) recent.pop();
+  recent = recent.slice(0, MAX_RECENT);
   localStorage.setItem(RECENT_KEY, JSON.stringify(recent));
 }
 
-// === Load Page into Frame ===
-function loadInFrame(url, fallbackName = null) {
-  if (frame.src.endsWith(url)) return; // Prevent reload
+// === Load page (used by sidebar & search) ===
+function loadInFrame(url, nameFromSearch = null) {
+  if (frame.src.endsWith(url)) return;
 
   frame.src = url;
 
-  // Find name from search data or use fallback
-  const page = searchData.find(p => p.url === url);
-  const name = page?.name || fallbackName || url.split('/').pop().replace('.html', '').replace('-', ' ');
-
-  saveRecent(name, url);
-
-  // Close mobile menu & search
+  // Close UI
   document.body.classList.remove("sidebar-open");
   topbar.classList.remove("search-active");
   suggestBox.style.display = "none";
   searchBox.value = "";
+
+  // ONLY save if opened via search (nameFromSearch exists)
+  if (nameFromSearch) {
+    saveToRecent(nameFromSearch, url);
+  }
 }
 
-// === Search Functionality ===
+// === Search Logic ===
 let activeIndex = -1;
 
 searchBox.oninput = () => {
@@ -280,13 +191,12 @@ searchBox.oninput = () => {
   if (!results.length) return;
 
   suggestBox.innerHTML = results
-    .map(item => `<li data-url="${item.url}">${item.name}</li>`)
+    .map(item => `<li data-url="${item.url}" data-name="${item.name}">${item.name}</li>`)
     .join("");
 
   suggestBox.style.display = "block";
 };
 
-// Keyboard navigation
 searchBox.onkeydown = (e) => {
   const items = [...suggestBox.children];
   if (!items.length) return;
@@ -299,7 +209,8 @@ searchBox.onkeydown = (e) => {
     activeIndex = (activeIndex - 1 + items.length) % items.length;
   } else if (e.key === "Enter" && activeIndex >= 0) {
     e.preventDefault();
-    loadInFrame(items[activeIndex].dataset.url);
+    const item = items[activeIndex];
+    loadInFrame(item.dataset.url, item.dataset.name);
     return;
   }
 
@@ -307,13 +218,14 @@ searchBox.onkeydown = (e) => {
   if (activeIndex >= 0) items[activeIndex].classList.add("active");
 };
 
-// Click suggestion
 suggestBox.onclick = (e) => {
   const li = e.target.closest("li");
-  if (li) loadInFrame(li.dataset.url);
+  if (li) {
+    loadInFrame(li.dataset.url, li.dataset.name);
+  }
 };
 
-// === UI Controls ===
+// UI Controls
 searchIcon.onclick = () => {
   topbar.classList.add("search-active");
   searchBox.focus();
@@ -323,20 +235,12 @@ hamburger.onclick = () => {
   document.body.classList.toggle("sidebar-open");
 };
 
-// Close search/suggestions when clicking outside
 document.addEventListener("click", (e) => {
   if (!topbar.contains(e.target) && !suggestBox.contains(e.target)) {
     topbar.classList.remove("search-active");
     suggestBox.style.display = "none";
     searchBox.value = "";
   }
-});
-
-// Optional: Save current page on load (for direct access)
-window.addEventListener("load", () => {
-  const current = frame.src.split('/').pop();
-  const page = searchData.find(p => p.url.endsWith(current));
-  if (page) saveRecent(page.name, page.url);
 });
 </script>
 
