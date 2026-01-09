@@ -167,8 +167,8 @@ html, body {
 #sidebar {
   position: fixed;
   top: 56px;
-  left: -220px;
-  width: 220px;
+  left: -175px;
+  width: 175px;
   height: calc(100% - 56px);
   background: var(--glass);
   backdrop-filter: blur(20px) saturate(160%);
@@ -188,7 +188,7 @@ body.sidebar-open #sidebar { left: 0; }
   padding: 14px 24px;
   color: var(--text);
   text-decoration: none;
-  font-size: 15px;
+  font-size: 14px;
   transition: all 0.25s ease;
   border-left: 3px solid transparent;
 }
@@ -229,9 +229,9 @@ body.sidebar-open #sidebar { left: 0; }
 <ul id="suggestBox" role="listbox" aria-label="Search suggestions"></ul>
 
 <nav id="sidebar" aria-label="Main navigation">
-  <a onclick="loadInFrame('dashboard.html')">🏠 Dashboard</a>
-  <a onclick="loadInFrame('social.html')">🌐 Social Media</a>
-  <a onclick="loadInFrame('about.html')">ℹ️ About</a>
+  <a onclick="loadInFrame('dashboard.html')">Dashboard</a>
+  <a onclick="loadInFrame('social.html')">Social Media</a>
+  <a onclick="loadInFrame('about.html')">About</a>
 </nav>
 
 <iframe id="frame" src="dashboard.html" title="Main content"></iframe>
