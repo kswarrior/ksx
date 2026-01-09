@@ -15,8 +15,11 @@
   }
 
   h2{
-    margin-bottom:15px;
-    font-size:20px;
+    margin:25px 0 15px;
+    font-size:18px;
+    display:flex;
+    align-items:center;
+    gap:8px;
   }
 
   ul{
@@ -42,7 +45,7 @@
   }
 
   .name{
-    font-size:15px;
+    font-size:14px;
   }
 
   .time{
@@ -53,28 +56,72 @@
   .empty{
     color:#888;
     font-size:14px;
+    cursor:default;
+  }
+
+  .badge{
+    font-size:11px;
+    padding:3px 6px;
+    background:#2563eb;
+    border-radius:6px;
   }
 </style>
 </head>
 
 <body>
 
-<h2>🕒 Recent Pages</h2>
+<!-- ================= Updates & News (KS) ================= -->
+<h2>📰 Updates & News (KS)</h2>
+<ul>
+  <li onclick="openPage('updates.html')">
+    <span class="name">KS Panel v2.1 Released</span>
+    <span class="badge">NEW</span>
+  </li>
+  <li onclick="openPage('changelog.html')">
+    <span class="name">Bug fixes & performance update</span>
+    <span class="time">2 days ago</span>
+  </li>
+</ul>
+
+<!-- ================= Recent (Users) ================= -->
+<h2>🕒 Recent (Users)</h2>
 <ul id="recentList"></ul>
 
+<!-- ================= Highlighted (KS) ================= -->
+<h2>⭐ Highlighted (KS)</h2>
+<ul>
+  <li onclick="openPage('dashboard.html')">
+    <span class="name">Main Dashboard</span>
+  </li>
+  <li onclick="openPage('server-manage.html')">
+    <span class="name">Server Manager</span>
+  </li>
+  <li onclick="openPage('file-manager.html')">
+    <span class="name">File Manager</span>
+  </li>
+</ul>
+
+<!-- ================= Favourite (Users) ================= -->
+<h2>❤️ Favourite (Users)</h2>
+<ul id="favList"></ul>
+
 <script>
+/* ================= Recent ================= */
 const RECENT_KEY = "ls-web-recent";
-const list = document.getElementById("recentList");
+const FAV_KEY = "ls-web-fav";
+
+const recentList = document.getElementById("recentList");
+const favList = document.getElementById("favList");
 
 function loadRecent() {
   const recent = JSON.parse(localStorage.getItem(RECENT_KEY)) || [];
 
   if (!recent.length) {
-    list.innerHTML = `<li class="empty">No recent pages</li>`;
+    recentList.innerHTML = `<li class="empty">No recent pages</li>`;
     return;
   }
 
-  list.innerHTML = recent.map(item => `
+  recentList.innerHTML = recent.slice(0,5).map(item => `
     <li onclick="openPage('${item.url}')">
       <span class="name">${item.name}</span>
       <span class="time">${timeAgo(item.time)}</span>
@@ -82,8 +129,24 @@ function loadRecent() {
   `).join("");
 }
 
+/* ================= Favourite ================= */
+function loadFav(){
+  const fav = JSON.parse(localStorage.getItem(FAV_KEY)) || [];
+
+  if (!fav.length){
+    favList.innerHTML = `<li class="empty">No favourite pages</li>`;
+    return;
+  }
+
+  favList.innerHTML = fav.map(item => `
+    <li onclick="openPage('${item.url}')">
+      <span class="name">${item.name}</span>
+    </li>
+  `).join("");
+}
+
+/* ================= Helpers ================= */
 function openPage(url){
-  // load inside parent iframe
   parent.document.getElementById("frame").src = url;
 }
 
@@ -96,6 +159,7 @@ function timeAgo(time){
 }
 
 loadRecent();
+loadFav();
 </script>
 
 </body>
