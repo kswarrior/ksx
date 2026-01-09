@@ -64,30 +64,23 @@ html, body {
   flex: 1;
 }
 
-/* BUTTONS */
-.btn-icon, #hamburger {
-  width: 40px; height: 40px;
-  background: transparent;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  color: var(--text);
-  cursor: pointer;
-  font-size: 20px;
-  display: grid;
-  place-items: center;
-  transition: all 0.2s ease;
-}
-#hamburger { font-size: 26px; }
-.btn-icon:hover, #hamburger:hover {
-  background: var(--hover);
-  border-color: var(--accent);
+/* SEARCH CONTAINER - NEW DESIGN */
+.search-container {
+  position: relative;
+  width: 40px; /* Initial collapsed width (just icon) */
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
 }
 
-/* SEARCH */
+#topbar.search-active .search-container {
+  width: 320px; /* Expanded width */
+  max-width: 60vw;
+}
+
 #searchBox {
-  flex: 1;
-  max-width: 300px;
-  padding: 10px 14px;
+  width: 100%;
+  height: 40px;
+  padding: 0 14px 0 44px; /* Left padding for icon */
   background: rgba(18, 18, 24, 0.9);
   border: 1px solid var(--border);
   border-radius: 10px;
@@ -95,15 +88,51 @@ html, body {
   font-size: 14px;
   outline: none;
   opacity: 0;
-  width: 0;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: opacity 0.3s ease 0.1s;
 }
+
 #topbar.search-active #searchBox {
-  width: 100%;
-  max-width: 420px;
   opacity: 1;
 }
-#topbar.search-active #searchIcon { display: none; }
+
+/* Search Icon - Now inside the bar on the left */
+#searchTrigger {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  color: var(--text);
+  font-size: 20px;
+  z-index: 2;
+  transition: color 0.2s ease;
+}
+
+#searchTrigger:hover {
+  color: var(--accent);
+}
+
+/* HAMBURGER */
+#hamburger {
+  width: 40px; height: 40px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text);
+  cursor: pointer;
+  font-size: 26px;
+  display: grid;
+  place-items: center;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+#hamburger:hover {
+  background: var(--hover);
+  border-color: var(--accent);
+}
 
 /* SUGGESTIONS */
 #suggestBox {
@@ -134,7 +163,7 @@ html, body {
   background: var(--hover);
 }
 
-/* SIDEBAR */
+/* SIDEBAR & FRAME (unchanged but polished) */
 #sidebar {
   position: fixed;
   top: 56px;
@@ -169,7 +198,6 @@ body.sidebar-open #sidebar { left: 0; }
   padding-left: 28px;
 }
 
-/* FRAME */
 #frame {
   position: fixed;
   top: 56px;
@@ -193,8 +221,13 @@ body.sidebar-open #sidebar { left: 0; }
 <div id="topbar">
   <div class="logo"><img src="/image/ks-logo.webp" alt="KS Logo"></div>
   <div class="owner-name">❰🔹❰❰ 𝑲𝑺 𝑾𝒂𝒓𝒓𝒊𝒐𝒓 ❱❱🔹❱</div>
-  <button class="btn-icon" id="searchIcon" aria-label="Search">🔍</button>
-  <input id="searchBox" type="text" placeholder="Search pages..." aria-label="Search pages">
+
+  <!-- NEW SEARCH DESIGN -->
+  <div class="search-container">
+    <div id="searchTrigger" aria-label="Search">🔍</div>
+    <input id="searchBox" type="text" placeholder="Search pages..." aria-label="Search pages">
+  </div>
+
   <button id="hamburger" aria-label="Menu">☰</button>
 </div>
 
@@ -204,7 +237,6 @@ body.sidebar-open #sidebar { left: 0; }
   <a onclick="loadInFrame('dashboard.html')">🏠 Dashboard</a>
   <a onclick="loadInFrame('social.html')">🌐 Social Media</a>
   <a onclick="loadInFrame('about.html')">ℹ️ About</a>
-  <!-- Add more links here as needed -->
 </nav>
 
 <iframe id="frame" src="dashboard.html" title="Main content"></iframe>
@@ -213,7 +245,7 @@ body.sidebar-open #sidebar { left: 0; }
 const frame = document.getElementById("frame");
 const searchBox = document.getElementById("searchBox");
 const suggestBox = document.getElementById("suggestBox");
-const searchIcon = document.getElementById("searchIcon");
+const searchTrigger = document.getElementById("searchTrigger");
 const hamburger = document.getElementById("hamburger");
 const topbar = document.getElementById("topbar");
 
@@ -230,44 +262,35 @@ fetch("/search-data.json")
     searchData = [];
   });
 
-// Save to recent (only when opened via search)
+// Save to recent
 function saveToRecent(name, url) {
   if (!name || !url) return;
 
   let recent = JSON.parse(localStorage.getItem(RECENT_KEY) || "[]");
-
-  // Remove duplicates
   recent = recent.filter(item => item.url !== url);
-
-  // Add new entry
   recent.unshift({ name, url, time: Date.now() });
-
-  // Limit to 5 (automatically removes oldest)
   recent = recent.slice(0, MAX_RECENT);
-
   localStorage.setItem(RECENT_KEY, JSON.stringify(recent));
 }
 
-// Load page into iframe
+// Load page
 function loadInFrame(url, nameFromSearch = null) {
   const fullUrl = url.startsWith("http") ? url : url;
   if (frame.src === new URL(fullUrl, location.href).href) return;
 
   frame.src = fullUrl;
 
-  // Close all overlays
   document.body.classList.remove("sidebar-open");
   topbar.classList.remove("search-active");
   suggestBox.style.display = "none";
   searchBox.value = "";
 
-  // Save to recent only if from search
   if (nameFromSearch) {
     saveToRecent(nameFromSearch, fullUrl);
   }
 }
 
-// Search functionality
+// Search suggestions
 let activeIndex = -1;
 
 function updateSuggestions() {
@@ -282,7 +305,7 @@ function updateSuggestions() {
 
   const results = searchData
     .filter(item => item.name && item.name.toLowerCase().includes(query))
-    .slice(0, 10); // Increased to 10 for better UX
+    .slice(0, 10);
 
   if (results.length === 0) {
     suggestBox.innerHTML = '<li style="color:var(--muted);padding:12px 18px;">No results found</li>';
@@ -320,6 +343,7 @@ searchBox.addEventListener("keydown", (e) => {
     topbar.classList.remove("search-active");
     suggestBox.style.display = "none";
     searchBox.value = "";
+    searchBox.blur();
     return;
   }
 
@@ -334,18 +358,15 @@ suggestBox.addEventListener("click", (e) => {
   }
 });
 
-// UI Controls
-searchIcon.addEventListener("click", () => {
+// Activate search on icon click
+searchTrigger.addEventListener("click", (e) => {
+  e.stopPropagation();
   topbar.classList.add("search-active");
   searchBox.focus();
   updateSuggestions();
 });
 
-hamburger.addEventListener("click", () => {
-  document.body.classList.toggle("sidebar-open");
-});
-
-// Close overlays when clicking outside
+// Close when clicking outside
 document.addEventListener("click", (e) => {
   if (!topbar.contains(e.target) && !suggestBox.contains(e.target)) {
     topbar.classList.remove("search-active");
@@ -354,10 +375,12 @@ document.addEventListener("click", (e) => {
   }
 });
 
-// Prevent search close when clicking inside suggest box
 suggestBox.addEventListener("click", (e) => e.stopPropagation());
 
-// Optional: Close sidebar on wider screens when clicking content
+hamburger.addEventListener("click", () => {
+  document.body.classList.toggle("sidebar-open");
+});
+
 frame.addEventListener("load", () => {
   if (window.innerWidth >= 768) {
     document.body.classList.remove("sidebar-open");
