@@ -200,7 +200,9 @@ body{
   font-size:12px;
   color:var(--muted);
 }
-
+name {
+   font-size:14px;
+}
 /* ------------------------------
    HIGHLIGHTED CARDS
 --------------------------------*/
@@ -407,7 +409,7 @@ function renderList(key, containerId, showTime=false){
   data.forEach(item=>{
     const div = document.createElement("div");
     div.className="list-item";
-    div.innerHTML=`<span>${item.name}</span>${showTime?`<span class="time">${timeAgo(item.time)}</span>`:""}`;
+    div.innerHTML=`<span class="name">${item.name}</span>${showTime?`<span class="time">${timeAgo(item.time)}</span>`:""}`;
     div.onclick=()=>parent.loadInFrame(item.url);
     el.appendChild(div);
   });
