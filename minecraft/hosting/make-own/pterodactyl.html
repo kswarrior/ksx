@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">  
+<head>  
+  <meta charset="UTF-8" />  
+  <meta name="viewport" content="width=device-width, initial-scale=1" />  
+  <title>KS Warrior Dashboard</title>  
+  <style>  
+  /* Reset */
+  * {
+    box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+          background-color: #fff;
+            color: #333;
+              overflow-x: hidden;
+                user-select: none;
+                }
+                
+.container {  
+  padding: 15px;  
+  animation: fadeIn 0.8s ease-in-out;  
+}  @keyframes fadeIn {
+from { opacity: 0; transform: translateY(20px); }
+to { opacity: 1; transform: translateY(0); }
+}
+
+#installer-name {
+text-align: center;
+font-size: 2.2rem;
+font-weight: 900;
+background: linear-gradient(90deg, #1a1abf, #1a73e8);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+text-shadow: 0 2px 10px rgba(26, 115, 232, 0.3);
+margin-bottom: 2.5rem;
+animation: popIn 0.8s ease-in-out;
+}
+
+@keyframes popIn {
+0% {
+opacity: 0;
+transform: scale(0.9) translateY(-20px);
+}
+100% {
+opacity: 1;
+transform: scale(1) translateY(0);
+}
+}
+
+.section {
+margin-bottom: 2rem;
+background: #f9fbff;
+border-left: 3px solid blue;
+border-right: 3px solid blue;
+border-radius: 10px;
+padding: 1.5rem;
+transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.section:hover {
+transform: translateY(-3px);
+box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}
+
+.section h2 {
+font-size: 1.25rem;
+margin-bottom: 1rem;
+color: #2c3e50;
+display: flex;
+align-items: center;
+gap: 0.5rem;
+}
+
+.codespre {
+background-color: #1e1e2f;
+color: #f1f1f1;
+padding: 10px;
+border-radius: 8px;
+font-size: 12px;
+overflow-x: auto;
+margin-bottom: 1rem;
+font-family: monospace;
+transition: background 0.3s;
+}
+
+pre:hover {
+background-color: #2a2a3d;
+}
+
+.copybutton {
+background: linear-gradient(to right, #1a73e8, #4285f4);
+border: none;
+color: white;
+padding: 0.6rem 1.2rem;
+border-radius: 6px;
+font-size: 1rem;
+font-weight: 500;
+cursor: pointer;
+transition: background 0.3s, transform 0.2s;
+}
+
+#youtubevideo {
+background: linear-gradient(to right, #1a73e8, #4285f4);
+border: none;
+color: white;
+padding: 0.6rem 1.2rem;
+border-radius: 6px;
+font-size: 1rem;
+font-weight: 500;
+cursor: pointer;
+transition: background 0.3s, transform 0.2s;
+}
+
+button:hover {
+background: linear-gradient(to right, #1669c1, #357ae8);
+transform: scale(1.03);
+}
+
+.copied {
+display: inline-block;
+margin-left: 1rem;
+color: #34a853;
+font-weight: bold;
+opacity: 0;
+transform: translateY(-5px);
+transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.copied.visible {
+opacity: 1;
+transform: translateY(0);
+}
+</style>
+
+</head>  
+<body>  <main>  
+  <div class="container">  
+  <h1 id="installer-name" >Pterodactyl Installer</h1>    <div class="section">  
+    <button id="youtubevideo" onclick="window.location.href=''">YouTube Video</button></span>  
+  </div>    <div class="section">  
+    <h2>🔧 Install Panel</h2>  
+    <pre class="codespre" id="panelCmd">bash <(curl -sSL https://ksweb.vercel.app/code/moh/pterodactyl/panel)</pre>  
+    <button class="copybutton" onclick="copyToClipboard('panelCmd', this)">Copy</button>  
+    <span class="copied">Copied!</span>  
+  </div>    <div class="section">  
+    <h2>🛰️ Install Wings</h2>  
+    <pre class="codespre" id="wingsCmd">bash <(curl -sSL https://ksweb.vercel.app/code/moh/pterodactyl/wings)</pre>  
+    <button class="copybutton" onclick="copyToClipboard('wingsCmd', this)">Copy</button>  
+    <span class="copied">Copied!</span>  
+  </div>  </div>  <script src="script.js"></script>  </main>    <script>  
+    function copyToClipboard(preId, button) {  
+  const pre = document.getElementById(preId);  
+  const copiedSpan = button.nextElementSibling;  
+  
+  if (!pre) return;  
+  
+  const text = pre.textContent.trim();  
+  
+  navigator.clipboard.writeText(text).then(() => {  
+    if (copiedSpan && copiedSpan.classList.contains('copied')) {  
+      copiedSpan.classList.add('visible');  
+      setTimeout(() => {  
+        copiedSpan.classList.remove('visible');  
+      }, 2000);  
+    }  
+  }).catch(err => {  
+    console.error("Copy failed:", err);  
+  });  
+}  
+  </script>
+  </body>  
+</html>
