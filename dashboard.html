@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+  body{
+    margin:0;
+    padding:20px;
+    font-family: Arial, sans-serif;
+    background:#0e0e11;
+    color:#fff;
+  }
+
+  h2{
+    margin-bottom:15px;
+    font-size:20px;
+  }
+
+  ul{
+    list-style:none;
+    padding:0;
+    margin:0;
+  }
+
+  li{
+    padding:12px 14px;
+    margin-bottom:10px;
+    background:#1a1a22;
+    border-radius:8px;
+    cursor:pointer;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    transition:0.2s;
+  }
+
+  li:hover{
+    background:#232333;
+  }
+
+  .name{
+    font-size:15px;
+  }
+
+  .time{
+    font-size:12px;
+    color:#aaa;
+  }
+
+  .empty{
+    color:#888;
+    font-size:14px;
+  }
+</style>
+</head>
+
+<body>
+
+<h2>🕒 Recent Pages</h2>
+<ul id="recentList"></ul>
+
+<script>
+const RECENT_KEY = "ls-web-recent";
+const list = document.getElementById("recentList");
+
+function loadRecent() {
+  const recent = JSON.parse(localStorage.getItem(RECENT_KEY)) || [];
+
+  if (!recent.length) {
+    list.innerHTML = `<li class="empty">No recent pages</li>`;
+    return;
+  }
+
+  list.innerHTML = recent.map(item => `
+    <li onclick="openPage('${item.url}')">
+      <span class="name">${item.name}</span>
+      <span class="time">${timeAgo(item.time)}</span>
+    </li>
+  `).join("");
+}
+
+function openPage(url){
+  // load inside parent iframe
+  parent.document.getElementById("frame").src = url;
+}
+
+function timeAgo(time){
+  const diff = Math.floor((Date.now() - time) / 1000);
+  if (diff < 60) return "Just now";
+  if (diff < 3600) return Math.floor(diff/60) + " min ago";
+  if (diff < 86400) return Math.floor(diff/3600) + " hr ago";
+  return Math.floor(diff/86400) + " day ago";
+}
+
+loadRecent();
+</script>
+
+</body>
+</html>
