@@ -22,7 +22,17 @@
 
   {
 
-    "name": "Free VPS List",
+    "name": "Free VPS Hosting List",
+
+    "url": "https://free-vps.example.com",
+
+    "logo": "https://example.com/vps.png"
+
+  },
+
+  {
+
+    "name": "Free Minecraft Hosting List",
 
     "url": "https://free-vps.example.com",
 
