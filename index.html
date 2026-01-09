@@ -96,25 +96,7 @@ html, body {
 }
 
 /* Search Icon - Now inside the bar on the left */
-#searchTrigger {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 40px;
-  height: 40px;
-  display: grid;
-  place-items: center;
-  cursor: pointer;
-  color: var(--text);
-  font-size: 20px;
-  z-index: 2;
-  transition: color 0.2s ease;
-  user-select: none;
-}
 
-#searchTrigger:hover {
-  color: var(--accent);
-}
 
 /* HAMBURGER */
 #hamburger {
@@ -131,7 +113,32 @@ html, body {
   flex-shrink: 0;
 }
 #hamburger:hover {
-  background: var(--hover);
+  background: var#searchTrigger {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  color: var(--text);
+  font-size: 20px;
+  z-index: 2;
+  transition: color 0.2s ease;
+
+  /* 🔥 FIX tap / click color */
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+  user-select: none;
+}
+
+#searchTrigger:hover,
+#searchTrigger:active,
+#searchTrigger:focus {
+  color: var(--accent);
+  outline: none;
+}(--hover);
   border-color: var(--accent);
 }
 
