@@ -222,8 +222,47 @@ const frame = document.getElementById("frame");
 let searchData = [], activeIndex = -1;
 frame.src = "dashboard.html";
 
-fetch("/search-data.json").then(r=>r.json()).then(d=>searchData=d);
+/* ============================
+   RECENT STORAGE CONFIG
+============================ */
+const RECENT_KEY = "ls-web-recent";
+const MAX_RECENT = 5;
 
+function getRecent() {
+  return JSON.parse(localStorage.getItem(RECENT_KEY)) || [];
+}
+
+function saveRecent(name, url) {
+  let recent = getRecent();
+
+  // remove duplicate if exists
+  recent = recent.filter(item => item.url !== url);
+
+  // add newest on top
+  recent.unshift({
+    name,
+    url,
+    time: Date.now()
+  });
+
+  // limit to 5 items
+  if (recent.length > MAX_RECENT) {
+    recent = recent.slice(0, MAX_RECENT);
+  }
+
+  localStorage.setItem(RECENT_KEY, JSON.stringify(recent));
+}
+
+/* ============================
+   LOAD SEARCH DATA
+============================ */
+fetch("/search-data.json")
+  .then(r => r.json())
+  .then(d => searchData = d);
+
+/* ============================
+   UI EVENTS
+============================ */
 searchIcon.onclick = () => {
   topbar.classList.add("search-active");
   searchBox.focus();
@@ -233,55 +272,78 @@ hamburger.onclick = () => {
   document.body.classList.toggle("sidebar-open");
 };
 
-document.addEventListener("click", e=>{
-  if(!topbar.contains(e.target)){
+document.addEventListener("click", e => {
+  if (!topbar.contains(e.target)) {
     topbar.classList.remove("search-active");
-    suggestBox.style.display="none";
+    suggestBox.style.display = "none";
   }
 });
 
-function loadInFrame(url){
+/* ============================
+   FRAME LOADER + RECENT SAVE
+============================ */
+function loadInFrame(url) {
   frame.src = url;
+
+  // save recent page
+  const page = searchData.find(i => i.url === url);
+  if (page) saveRecent(page.name, page.url);
+
   document.body.classList.remove("sidebar-open");
-  suggestBox.style.display="none";
+  suggestBox.style.display = "none";
 }
 
+/* ============================
+   SEARCH INPUT
+============================ */
 searchBox.oninput = () => {
   const q = searchBox.value.toLowerCase().trim();
-  if(!q){suggestBox.style.display="none";return;}
+  if (!q) {
+    suggestBox.style.display = "none";
+    return;
+  }
 
   const results = searchData.filter(i =>
     i.name?.toLowerCase().includes(q)
   );
 
-  if(!results.length){suggestBox.style.display="none";return;}
+  if (!results.length) {
+    suggestBox.style.display = "none";
+    return;
+  }
 
-  suggestBox.innerHTML = results.slice(0,8)
-    .map((x,i)=>`<li data-url="${x.url}">${x.name}</li>`)
+  suggestBox.innerHTML = results.slice(0, 8)
+    .map(x => `<li data-url="${x.url}">${x.name}</li>`)
     .join("");
 
   activeIndex = -1;
   suggestBox.style.display = "block";
 };
 
+/* ============================
+   KEYBOARD NAVIGATION
+============================ */
 searchBox.onkeydown = e => {
   const items = [...suggestBox.children];
-  if(!items.length) return;
+  if (!items.length) return;
 
-  if(e.key==="ArrowDown") activeIndex=(activeIndex+1)%items.length;
-  if(e.key==="ArrowUp") activeIndex=(activeIndex-1+items.length)%items.length;
+  if (e.key === "ArrowDown") activeIndex = (activeIndex + 1) % items.length;
+  if (e.key === "ArrowUp") activeIndex = (activeIndex - 1 + items.length) % items.length;
 
-  if(e.key==="Enter" && items[activeIndex]){
+  if (e.key === "Enter" && items[activeIndex]) {
     loadInFrame(items[activeIndex].dataset.url);
   }
 
-  items.forEach(i=>i.classList.remove("active"));
+  items.forEach(i => i.classList.remove("active"));
   items[activeIndex]?.classList.add("active");
 };
 
+/* ============================
+   CLICK ON SUGGESTION
+============================ */
 suggestBox.onclick = e => {
   const li = e.target.closest("li");
-  if(li) loadInFrame(li.dataset.url);
+  if (li) loadInFrame(li.dataset.url);
 };
 </script>
 
