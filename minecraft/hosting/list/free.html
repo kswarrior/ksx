@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>KS Warrior Dashboard</title>
+  <style>
+    .section-title {
+  text-align: center;
+  font-size: 2em;
+  color: #1d2ddc;
+  margin-bottom: 30px;
+  transition: color 0.3s ease;
+}
+
+.section-title:hover {
+  color: #0f1ac9;
+}
+
+.filter-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 25px;
+}
+
+#searchInput {
+  width: 300px;
+}
+
+.filter {
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background: #eef1ff
+  font-size: 14px;
+  min-width: 100px;
+  transition: border 0.3s, box-shadow 0.3s;
+}
+
+.filter:focus {
+  border-color: #1d2ddc;
+  box-shadow: 0 0 0 3px rgba(29, 45, 220, 0.2);
+  outline: none;
+}
+
+.hosting-list {
+  padding: 5px;
+  display: grid;
+  gap: 18px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.hosting-box {
+  background: #eef1ff;
+  border-left: 5px solid #1d2ddc;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 0px;
+}
+
+.hosting-box:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+}
+
+.hosting-box h3 {
+  margin: 0 0 8px;
+  color: #111;
+  font-size: 18px;
+  transition: color 0.3s ease;
+}
+
+.hosting-box p {
+  margin: 4px 0;
+  font-size: 14px;
+  color: #333;
+  line-height: 1.4;
+}
+
+.tag {
+  display: inline-block;
+  width: 45px;
+  margin-top: 8px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  background: #1d2ddc;
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+  transition: background 0.3s ease;
+}
+
+.tag:hover {
+  background: #0f1ac9;
+}
+
+.tag.red {
+  background: #dc3545;
+}
+
+.tag.red:hover {
+  background: #b52a37;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.visit {
+  margin-top: 10px;
+  padding: 10px 16px;
+  background-color: #1d2ddc;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+
+  display: flex;
+  align-items: center;   /* vertical center */
+  justify-content: center; /* horizontal center */
+  text-align: center;
+  text-decoration: none;  /* removes underline */
+}
+
+.visit:hover {
+  background-color: #0f1ac9;
+  transform: scale(1.05);
+}
+
+.visit:active {
+  transform: scale(0.98);
+    }
+  </style>
+</head>
+<body>
+
+<main>
+  <br>
+  <h1 class="section-title">Free Hosting List</h1>
+  
+  <div class="filter-container">
+  <input id="searchInput" class="filter" type="text" placeholder="Search hosting name">
+
+  <select id="uptimeFilter" class="filter">
+    <option value="">Uptime</option>
+    <option value="24/7">Yes</option>
+    <option value="non-24/7">No</option>
+  </select>
+
+  <select id="locationFilter" class="filter">
+    <option value="">Location</option>
+    <option value="india">India</option>
+    <option value="usa">USA</option>
+    <option value="eu">Europe</option>
+  </select>
+
+  <select id="ramFilter" class="filter">
+    <option value="">RAM</option>
+    <option value="2">2GB</option>
+    <option value="4">4GB</option>
+    <option value="6">6GB</option>
+    <option value="8">8GB</option>
+  </select>
+</div>
+
+<div class="hosting-list">
+
+<div class="hosting-list">
+
+<div class="hosting-box">
+  <h3>Free Game Host</h3>
+  <p><b>RAM:</b> 4GB</p>
+  <p><b>CPU:</b> 200%</p>
+  <p><b>Disk:</b> 6GB</p>
+  <p><b>Location:</b> Europe</p>
+  <p><b>Uptime:</b> <b class="tag">24/7</b></p>
+  <a class="visit" href="https://panel.freegamehost.xyz/" target="_blank">Visit</a>
+</div>
+
+<div class="hosting-box">
+  <h3>Embotic</h3>
+  <p><b>RAM:</b> 6GB</p>
+  <p><b>CPU:</b> 250%</p>
+  <p><b>Disk:</b> 5GB</p>
+  <p><b>Location:</b> France</p>
+  <p><b>Uptime:</b> <b class="tag">24/7</b></p>
+  <a class="visit" href="https://dash.embotic.xyz/register?ref=kPYKyYk4" target="_blank">Visit</a>
+</div>
+  
+<div class="hosting-box">
+  <h3>Elementiamc</h3>
+  <p><b>RAM:</b> 2GB</p>
+  <p><b>CPU:</b> 150%</p>
+  <p><b>Disk:</b> 5GB</p>
+  <p><b>Location:</b> France</p>
+  <p><b>Uptime:</b> <b class="tag">24/7</b></p>
+  <a class="visit" href="https://dash.elementiamc.xyz/" target="_blank">Visit</a>
+</div>
+  
+<div class="hosting-box">
+  <h3>Spinex Cloud</h3>
+  <p><b>RAM:</b> 2GB</p>
+  <p><b>CPU:</b> 100%</p>
+  <p><b>Disk:</b> 5GB</p>
+  <p><b>Location:</b> India</p>
+  <p><b>Uptime:</b> <b class="tag">24/7</b></p>
+  <a class="visit" href="https://dash.spinex.cloud/" target="_blank">Visit</a>
+</div>
+  
+<div class="hosting-box">
+  <h3>Free Minecraft Host</h3>
+  <p><b>RAM:</b> 8GB</p>
+  <p><b>CPU:</b> 200%</p>
+  <p><b>Disk:</b> 10GB</p>
+  <p><b>Location:</b> Germany</p>
+  <p><b>Uptime:</b> <b class="tag">24/7</b></p>
+  <a class="visit" href="https://billing.freeminecrafthost.com/auth/register" target="_blank">Visit</a>
+</div>
+  
+<div class="hosting-box">
+  <h3>Creeper Cloud</h3>
+  <p><b>RAM:</b> 2GB</p>
+  <p><b>CPU:</b> 80%</p>
+  <p><b>Disk:</b> 5GB</p>
+  <p><b>Location:</b> India, Singapore, Germany</p>
+  <p><b>Uptime:</b> <b class="tag">24/7</b></p>
+  <a class="visit" href="https://deploy.creepercloud.io/join/tC087rrSi2dHLWJ5" target="_blank">Visit</a>
+</div>
+  
+<div class="hosting-box">
+  <h3>Vertex Hosting</h3>
+  <p><b>RAM:</b> 4GB</p>
+  <p><b>CPU:</b> unlimited</p>
+  <p><b>Disk:</b> 8GB</p>
+  <p><b>Location:</b> Germany</p>
+  <p><b>Uptime:</b> <b class="tag">24/7</b></p>
+  <a class="visit" href="https://dash.vertexhosting.co.uk/" target="_blank">Visit</a>
+</div>
+
+<div class="hosting-box">
+  <h3>Play Hosting</h3>
+  <p><b>RAM:</b> 3GB</p>
+  <p><b>CPU:</b> 200%</p>
+  <p><b>Disk:</b> 10GB</p>
+  <p><b>Location:</b> Unknown</p>
+  <p><b>Uptime:</b> <b class="tag red">24/7</b></p>
+  <a class="visit" href="https://play.hosting/" target="_blank">Visit</a>
+</div>
+
+<div class="hosting-box">
+  <h3>Spaceify</h3>
+  <p><b>RAM:</b> 3GB</p>
+  <p><b>CPU:</b> 100%</p>
+  <p><b>Disk:</b> 10GB</p>
+  <p><b>Location:</b> Singapore, Germany, France</p>
+  <p><b>Uptime:</b> <b class="tag red">24/7</b></p>
+  <a class="visit" href="https://client.spaceify.eu/" target="_blank">Visit</a>
+</div>
+
+<div class="hosting-box">
+  <h3>Seedloaf</h3>
+  <p><b>RAM:</b> 4GB</p>
+  <p><b>CPU:</b> 200%</p>
+  <p><b>Disk:</b> 6GB</p>
+  <p><b>Location:</b> Canada</p>
+  <p><b>Uptime:</b> <b class="tag red">24/7</b></p>
+  <a class="visit" href="https://seedloaf.com/" target="_blank">Visit</a>
+</div>
+
+<div class="hosting-box">
+  <h3>Gaming4Free</h3>
+  <p><b>RAM:</b> 2GB</p>
+  <p><b>CPU:</b> 100%</p>
+  <p><b>Disk:</b> 5GB</p>
+  <p><b>Location:</b> Germany</p>
+  <p><b>Uptime:</b> <b class="tag green">24/7</b></p>
+  <a class="visit" href="https://panel.gaming4free.net/" target="_blank">Visit</a>
+</div>
+
+<div class="hosting-box">
+  <h3>MooNodes</h3>
+  <p><b>RAM:</b> 6GB</p>
+  <p><b>CPU:</b> 125%</p>
+  <p><b>Disk:</b> 30GB</p>
+  <p><b>Location:</b> Europe</p>
+  <p><b>Uptime:</b> <b class="tag green">24/7</b></p>
+  <a class="visit" href="https://moonodes.net/" target="_blank">Visit</a>
+</div>
+
+<div class="hosting-box">
+  <h3>HidenCloud</h3>
+  <p><b>RAM:</b> 2.5GB</p>
+  <p><b>CPU:</b> 150%</p>
+  <p><b>Disk:</b> 10GB</p>
+  <p><b>Location:</b> USA, Germany, Spain, Mexico, Singapore</p>
+  <p><b>Uptime:</b> <b class="tag green">24/7</b></p>
+  <a class="visit" href="https://www.hidencloud.com" target="_blank">Visit</a>
+</div>
+
+<div class="hosting-box">
+  <h3>AxentHost</h3>
+  <p><b>RAM:</b> 2GB</p>
+  <p><b>CPU:</b> 100%</p>
+  <p><b>Disk:</b> 5GB</p>
+  <p><b>Location:</b> USA, Germany</p>
+  <p><b>Uptime:</b> <b class="tag green">24/7</b></p>
+  <a class="visit" href="https://axenthost.com/" target="_blank">Visit</a>
+</div>
+
+<div class="hosting-box">
+  <h3>MCServerHost</h3>
+  <p><b>RAM:</b> 4GB</p>
+  <p><b>CPU:</b> 200%</p>
+  <p><b>Disk:</b> 10GB</p>
+  <p><b>Location:</b> Belgium, Germany, USA</p>
+  <p><b>Uptime:</b> <b class="tag red">24/7</b></p>
+  <a class="visit" href="https://www.mcserverhost.com/?aff=abuhassan" target="_blank">Visit</a>
+</div>
+
+<div class="hosting-box">
+  <h3>HikariNode</h3>
+  <p><b>RAM:</b> 3GB</p>
+  <p><b>CPU:</b> 200%</p>
+  <p><b>Disk:</b> 10GB</p>
+  <p><b>Location:</b> Belgium, Germany, USA</p>
+  <p><b>Uptime:</b> <b class="tag green">24/7</b></p>
+  <a class="visit" href="https://hikarinode.com" target="_blank">Visit</a>
+</div>
+
+<div class="hosting-box">
+  <h3>MineStrator</h3>
+  <p><b>RAM:</b> 4GB</p>
+  <p><b>CPU:</b> 100%</p>
+  <p><b>Disk:</b> 4GB</p>
+  <p><b>Location:</b> France</p>
+  <p><b>Uptime:</b> <b class="tag red">24/7</b></p>
+  <a class="visit" href="https://minestrator.com" target="_blank">Visit</a>
+</div>
+
+<div class="hosting-box">
+  <h3>Servertux</h3>
+  <p><b>RAM:</b> 1GB</p>
+  <p><b>CPU:</b> 200%</p>
+  <p><b>Disk:</b> 30GB</p>
+  <p><b>Location:</b> France</p>
+  <p><b>Uptime:</b> <b class="tag green">24/7</b></p>
+  <a class="visit" href="https://servertux.net" target="_blank">Visit</a>
+</div>
+
+<div class="hosting-box">
+  <h3>Server Pro</h3>
+  <p><b>RAM:</b> 2GB</p>
+  <p><b>CPU:</b> 100%</p>
+  <p><b>Disk:</b> 5GB</p>
+  <p><b>Location:</b> France, Canada</p>
+  <p><b>Uptime:</b> <b class="tag red">24/7</b></p>
+  <a class="visit" href="https://server.pro" target="_blank">Visit</a>
+</div>
+
+<div class="hosting-box">
+  <h3>Aternos</h3>
+  <p><b>RAM:</b> 2GB</p>
+  <p><b>CPU:</b> 100%</p>
+  <p><b>Disk:</b> 10GB</p>
+  <p><b>Location:</b> Germany</p>
+  <p><b>Uptime:</b> <b class="tag red">24/7</b></p>
+  <a class="visit" href="https://aternos.org" target="_blank">Visit</a>
+</div>
+
+<div class="hosting-box">
+  <h3>Minefort</h3>
+  <p><b>RAM:</b> 2GB</p>
+  <p><b>CPU:</b> 100%</p>
+  <p><b>Disk:</b> 20GB</p>
+  <p><b>Location:</b> Germany</p>
+  <p><b>Uptime:</b> <b class="tag red">24/7</b></p>
+  <a class="visit" href="https://minefort.com/" target="_blank">Visit</a>
+</div>
+
+<div class="hosting-box">
+  <h3>Minehut</h3>
+  <p><b>RAM:</b> 2GB</p>
+  <p><b>CPU:</b> 200%</p>
+  <p><b>Disk:</b> 20GB</p>
+  <p><b>Location:</b> Germany</p>
+  <p><b>Uptime:</b> <b class="tag red">24/7</b></p>
+  <a class="visit" href="https://app.minehut.com/" target="_blank">Visit</a>
+</div>
+
+<div class="hosting-box">
+  <h3>ScalaCube</h3>
+  <p><b>RAM:</b> 6GB</p>
+  <p><b>CPU:</b> 100%</p>
+  <p><b>Disk:</b> 30GB</p>
+  <p><b>Location:</b> India, Singapore, Poland, Germany, France, USA</p>
+  <p><b>Uptime:</b> <b class="tag red">24/7</b></p>
+  <a class="visit" href="https://scalacube.com" target="_blank">Visit</a>
+</div>
+
+<div class="hosting-box">
+  <h3>Eternal Host</h3>
+  <p><b>RAM:</b> 6GB</p>
+  <p><b>CPU:</b> 100%</p>
+  <p><b>Disk:</b> 25GB</p>
+  <p><b>Location:</b> Finland, Germany</p>
+  <p><b>Uptime:</b> <b class="tag green">24/7</b></p>
+  <a class="visit" href="https://eternalhosting.cloud/" target="_blank">Visit</a>
+</div>
+
+<div class="hosting-box">
+  <h3>Falix</h3>
+  <p><b>RAM:</b> 4GB</p>
+  <p><b>CPU:</b> 100%</p>
+  <p><b>Disk:</b> 10GB</p>
+  <p><b>Location:</b> Germany</p>
+  <p><b>Uptime:</b> <b class="tag green">24/7</b></p>
+  <a class="visit" href="https://falixnodes.net/" target="_blank">Visit</a>
+</div>
+
+<div class="hosting-box">
+  <h3>MagmaNode</h3>
+  <p><b>RAM:</b> 2GB</p>
+  <p><b>CPU:</b> 150%</p>
+  <p><b>Disk:</b> 5GB</p>
+  <p><b>Location:</b> Germany</p>
+  <p><b>Uptime:</b> <b class="tag red">24/7</b></p>
+  <a class="visit" href="https://magmanode.com/order" target="_blank">Visit</a>
+</div>
+
+<div class="hosting-box">
+  <h3>Minekeep</h3>
+  <p><b>RAM:</b> 1GB</p>
+  <p><b>CPU:</b> 100%</p>
+  <p><b>Disk:</b> 10GB</p>
+  <p><b>Location:</b> Germany</p>
+  <p><b>Uptime:</b> <b class="tag red">24/7</b></p>
+  <a class="visit" href="https://minekeep.net/" target="_blank">Visit</a>
+</div>
+
+<div class="hosting-box">
+  <h3>AxentHost</h3>
+  <p><b>RAM:</b> 2GB</p>
+  <p><b>CPU:</b> 100%</p>
+  <p><b>Disk:</b> 5GB</p>
+  <p><b>Location:</b> Germany, USA</p>
+  <p><b>Uptime:</b> <b class="tag green">24/7</b></p>
+  <a class="visit" href="https://axenthost.com/" target="_blank">Visit</a>
+</div>
+
+<div class="hosting-box">
+  <h3>GameServerGratis</h3>
+  <p><b>RAM:</b> 3GB</p>
+  <p><b>CPU:</b> 100%</p>
+  <p><b>Disk:</b> 10GB</p>
+  <p><b>Location:</b> Germany</p>
+  <p><b>Uptime:</b> <b class="tag red">24/7</b></p>
+  <a class="visit" href="https://gameserver.gratis/order/minecraft" target="_blank">Visit</a>
+</div>
+
+<div class="hosting-box">
+  <h3>Ruxtix</h3>
+  <p><b>RAM:</b> 2GB</p>
+  <p><b>CPU:</b> 125%</p>
+  <p><b>Disk:</b> 5GB</p>
+  <p><b>Location:</b> Germany, USA</p>
+  <p><b>Uptime:</b> <b class="tag green">24/7</b></p>
+  <a class="visit" href="https://rustix.me/" target="_blank">Visit</a>
+</div>
+
+<div class="hosting-box">
+  <h3>FreeMCServer</h3>
+  <p><b>RAM:</b> 1.5GB</p>
+  <p><b>CPU:</b> 100%</p>
+  <p><b>Disk:</b> 10GB</p>
+  <p><b>Location:</b> Germany, USA, France</p>
+  <p><b>Uptime:</b> <b class="tag red">24/7</b></p>
+  <a class="visit" href="https://freemcserver.net/" target="_blank">Visit</a>
+</div>
+
+<div class="hosting-box">
+  <h3>HyperHub</h3>
+  <p><b>RAM:</b> 2GB</p>
+  <p><b>CPU:</b> 100%</p>
+  <p><b>Disk:</b> 10GB</p>
+  <p><b>Location:</b> Netherlands</p>
+  <p><b>Uptime:</b> <b class="tag green">24/7</b></p>
+  <a class="visit" href="https://hyper-hub.nl/auth" target="_blank">Visit</a>
+</div>
+
+<div class="hosting-box">
+  <h3>Host2Play</h3>
+  <p><b>RAM:</b> 3GB</p>
+  <p><b>CPU:</b> 100%</p>
+  <p><b>Disk:</b> 2GB</p>
+  <p><b>Location:</b> Germany, Britain, Sweden, India</p>
+  <p><b>Uptime:</b> <b class="tag red">24/7</b></p>
+  <a class="visit" href="https://host2play.gratis/" target="_blank">Visit</a>
+</div>
+
+<div class="hosting-box">
+  <h3>Freezehost</h3>
+  <p><b>RAM:</b> 2GB</p>
+  <p><b>CPU:</b> 125%</p>
+  <p><b>Disk:</b> 10GB</p>
+  <p><b>Location:</b> Netherlands</p>
+  <p><b>Uptime:</b> <b class="tag green">24/7</b></p>
+  <a class="visit" href="https://freezehost.pro/" target="_blank">Visit</a>
+</div>
+
+  </div>
+</div>
+</main>
+  <script>
+      const searchInput = document.getElementById("searchInput");
+  const uptimeFilter = document.getElementById("uptimeFilter");
+  const locationFilter = document.getElementById("locationFilter");
+  const ramFilter = document.getElementById("ramFilter");
+  const hostingBoxes = document.querySelectorAll(".hosting-box");
+
+  function normalize(text) {
+    return text.toLowerCase().trim();
+  }
+
+  function matchesRAM(box, ramValue) {
+    if (!ramValue) return true;
+    const ramText = box.querySelector("p:nth-of-type(1)").innerText;
+    return ramText.includes(`${ramValue}GB`);
+  }
+
+  function matchesUptime(box, uptimeValue) {
+  if (!uptimeValue) return true;
+
+  const uptimeTag = box.querySelector("p:nth-of-type(5) .tag");
+
+  if (!uptimeTag) return false;
+
+  const isRed = uptimeTag.classList.contains("red");
+
+  if (uptimeValue === "24/7") {
+    return !isRed; // must not have 'red' class = 24/7
+  } else if (uptimeValue === "non-24/7") {
+    return isRed; // must have 'red' class = not 24/7
+  }
+
+  return true;
+  }
+
+  function matchesLocation(box, locationValue) {
+    if (!locationValue) return true;
+    const locationText = box.querySelector("p:nth-of-type(4)").innerText.toLowerCase();
+    return locationText.includes(locationValue);
+  }
+
+  function matchesSearch(box, query) {
+    const name = box.querySelector("h3").innerText.toLowerCase();
+    return name.includes(query);
+  }
+
+  function applyFilters() {
+    const query = normalize(searchInput.value);
+    const selectedUptime = uptimeFilter.value;
+    const selectedLocation = locationFilter.value;
+    const selectedRAM = ramFilter.value;
+
+    hostingBoxes.forEach((box) => {
+      const visible =
+        matchesSearch(box, query) &&
+        matchesUptime(box, selectedUptime) &&
+        matchesLocation(box, selectedLocation) &&
+        matchesRAM(box, selectedRAM);
+
+      box.style.display = visible ? "block" : "none";
+    });
+  }
+
+  searchInput.addEventListener("input", applyFilters);
+  uptimeFilter.addEventListener("change", applyFilters);
+  locationFilter.addEventListener("change", applyFilters);
+  ramFilter.addEventListener("change", applyFilters);
+
+  </script>
+  </body>
+    </html>
+  
