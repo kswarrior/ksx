@@ -28,26 +28,58 @@ body{
   gap:18px;
 }
 
-/* ===== News ===== */
+/* ===== News Slider ===== */
 .news{
   background:linear-gradient(135deg,#1b1b2f,#161622);
-  border-radius:14px;
-  padding:18px;
+  border-radius:16px;
+  padding:16px;
+  overflow:hidden;
 }
 
-.news h2{
-  margin:0 0 12px;
-  font-size:17px;
+.news-header{
+  font-size:16px;
+  margin-bottom:12px;
+  opacity:.9;
 }
 
-.news-item{
-  padding:10px 0;
+/* Slider frame */
+.news-slider{
+  position:relative;
+  width:100%;
+  height:90px;
+  overflow:hidden;
+}
+
+/* Moving track */
+.news-track{
   display:flex;
-  justify-content:space-between;
-  border-bottom:1px solid #242433;
+  width:100%;
+  height:100%;
+  transition:transform .6s cubic-bezier(.4,0,.2,1);
 }
 
-.news-item:last-child{border:none}
+/* Single slide */
+.news-slide{
+  min-width:100%;
+  height:100%;
+  background:#12121a;
+  border-radius:12px;
+  padding:16px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+
+.news-title{
+  font-size:18px;
+  font-weight:600;
+  margin-bottom:4px;
+}
+
+.news-desc{
+  font-size:13px;
+  color:var(--muted);
+}
 
 /* ===== Two Columns ===== */
 .grid{
@@ -120,17 +152,25 @@ body{
 <div class="dashboard">
 
   <!-- Updates -->
-  <section class="news">
-    <h2>📰 Updates & News</h2>
-    <div class="news-item">
-      <span>KS Panel v2.1 Released</span>
-      <span class="time">Today</span>
+<section class="news">
+  <div class="news-header">
+    📰 Updates & News
+  </div>
+
+  <div class="news-slider">
+    <div class="news-track" id="newsTrack">
+      <div class="news-slide">
+        <div class="news-title">KS Panel v2.4 Released</div>
+        <div class="news-desc">Major UI polish, faster server actions and stability fixes</div>
+      </div>
+
+      <div class="news-slide">
+        <div class="news-title">Security & Stability Improvements</div>
+        <div class="news-desc">Improved authentication, safer file handling and bug fixes</div>
+      </div>
     </div>
-    <div class="news-item">
-      <span>Security & stability improvements</span>
-      <span class="time">2 days ago</span>
-    </div>
-  </section>
+  </div>
+</section>
 
   <!-- Recent + Favourite -->
   <div class="grid">
@@ -167,7 +207,17 @@ body{
   </section>
 
 </div>
+<script>
+const track = document.getElementById("newsTrack");
+const slides = track.children;
+let index = 0;
 
+/* Auto slide every 1.5s */
+setInterval(() => {
+  index = (index + 1) % slides.length;
+  track.style.transform = `translateX(-${index * 100}%)`;
+}, 1500);
+</script>
 <script>
 const RECENT_KEY="ls-web-recent";
 const FAV_KEY="ls-web-fav";
