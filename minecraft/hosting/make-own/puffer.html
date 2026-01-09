@@ -9,7 +9,6 @@
 :root{
   --bg:#0b1020;
   --card:rgba(22,28,55,0.9);
-  --soft:rgba(32,40,80,0.95);
   --border:rgba(255,255,255,0.14);
   --text:#ffffff;
   --muted:#cfd7ff;
@@ -30,7 +29,7 @@ body{
 }
 
 main{
-  max-width:980px;
+  max-width:1000px;
   margin:auto;
   padding:26px 16px;
   animation:fadeUp 0.8s ease;
@@ -41,7 +40,6 @@ main{
   to{opacity:1;transform:translateY(0)}
 }
 
-/* TITLE */
 .title{
   text-align:center;
   font-size:32px;
@@ -60,7 +58,6 @@ main{
   font-size:14px;
 }
 
-/* SECTION */
 .section{
   background:linear-gradient(145deg,rgba(79,195,255,0.06),var(--card));
   border-radius:var(--radius);
@@ -79,13 +76,19 @@ main{
 .section h2{
   font-size:18px;
   font-weight:800;
-  margin-bottom:18px;
+  margin-bottom:14px;
   display:flex;
   align-items:center;
   gap:8px;
 }
 
-/* CODE */
+.section p{
+  font-size:14px;
+  line-height:1.7;
+  color:var(--muted);
+  margin-bottom:10px;
+}
+
 .codespre{
   background:#070c1f;
   color:#e8f4ff;
@@ -98,7 +101,6 @@ main{
   margin-bottom:16px;
 }
 
-/* BUTTON */
 .btn{
   background:linear-gradient(135deg,#4fc3ff,#2f8cff);
   color:#000;
@@ -108,6 +110,7 @@ main{
   font-weight:800;
   cursor:pointer;
   transition:all 0.3s ease;
+  margin-right:10px;
 }
 
 .btn:hover{
@@ -115,7 +118,6 @@ main{
   box-shadow:0 0 25px var(--accent-glow);
 }
 
-/* COPY STATUS */
 .copied{
   margin-left:14px;
   font-size:13px;
@@ -125,7 +127,6 @@ main{
 }
 .copied.show{opacity:1}
 
-/* MOBILE */
 @media (hover:none){
   .section:hover,.btn:hover{
     transform:none;
@@ -138,20 +139,63 @@ main{
 <body>
 <main>
 
-  <div class="title">Puffer Panel Installer</div>
+  <div class="title">Puffer Panel</div>
   <div class="subtitle">
-    Fast • Secure • Beginner-Friendly Setup
+    Modern • Lightweight • Open-Source Game Server Panel
   </div>
 
+  <!-- ABOUT -->
   <div class="section">
-    <h2>🎥 Watch & Learn</h2>
+    <h2>ℹ️ About Puffer Panel</h2>
+    <p>
+      Puffer Panel is a free and open-source game server management panel designed
+      to make hosting servers simple and efficient.
+    </p>
+    <p>
+      It supports Minecraft, Discord bots, and many other game servers while
+      providing a clean web interface for managing files, users, and resources.
+    </p>
+  </div>
+
+  <!-- ADVANTAGES / DISADVANTAGES -->
+  <div class="section">
+    <h2>⚖️ Advantages & Disadvantages</h2>
+
+    <p><strong>✅ Advantages:</strong></p>
+    <p>• Open-source and completely free</p>
+    <p>• Lightweight and fast performance</p>
+    <p>• Easy to install and beginner-friendly</p>
+    <p>• Supports multiple game servers</p>
+
+    <p style="margin-top:12px;"><strong>❌ Disadvantages:</strong></p>
+    <p>• UI is simpler compared to premium panels</p>
+    <p>• Requires basic Linux knowledge</p>
+    <p>• Fewer built-in automation features</p>
+  </div>
+
+  <!-- PORTS -->
+  <div class="section">
+    <h2>🌐 Default Ports & Important Info</h2>
+    <p>• Panel Web Port: <strong>8080</strong> (can be changed)</p>
+    <p>• Uses Docker for server isolation</p>
+    <p>• Recommended OS: Ubuntu 20.04 / 22.04</p>
+    <p>• Make sure required ports are open in firewall</p>
+  </div>
+
+  <!-- LINKS -->
+  <div class="section">
+    <h2>🔗 Useful Links</h2>
+    <button class="btn" onclick="window.open('https://pufferpanel.com','_blank')">
+      Official Website
+    </button>
     <button class="btn" onclick="window.open('','_blank')">
-      Open YouTube Tutorial
+      YouTube Tutorial
     </button>
   </div>
 
+  <!-- INSTALL -->
   <div class="section">
-    <h2>🚀 Install in One Command</h2>
+    <h2>🚀 Install Command</h2>
 
     <pre class="codespre" id="installCmd">
 bash <(curl -sSL https://raw.githubusercontent.com/KSWarrior/moh-codes/refs/heads/main/pufferpanel/ks-install.sh)
@@ -167,7 +211,6 @@ bash <(curl -sSL https://raw.githubusercontent.com/KSWarrior/moh-codes/refs/head
 function copyCmd(){
   const text = document.getElementById("installCmd").textContent.trim();
   const tag = document.getElementById("copiedTxt");
-
   navigator.clipboard.writeText(text).then(()=>{
     tag.classList.add("show");
     setTimeout(()=>tag.classList.remove("show"),2000);
