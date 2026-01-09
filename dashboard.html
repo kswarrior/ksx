@@ -61,7 +61,6 @@ body{
   padding:var(--gap);
   backdrop-filter: blur(20px);
   border:1px solid var(--border);
-  box-shadow: var(--glow), 0 15px 50px rgba(0,0,0,0.7);
   animation:floatIn 1.2s ease-out;
   overflow:hidden;
 }
@@ -81,13 +80,13 @@ body{
   border-radius:999px;
   font-size:13px;
   font-weight:600;
-  box-shadow:0 0 15px var(--accent-glow);
+  box-shadow:0 0 10px var(--accent-glow);
 }
 .news-slider{
-  height:140px;
+  height:150px;
   overflow:hidden;
   position:relative;
-  border-radius:18px;
+  border-radius:15px;
   background:rgba(255,255,255,0.03);
 }
 .news-track{
@@ -105,13 +104,13 @@ body{
   border:1px solid var(--border);
 }
 .news-title{
-  font-size:22px;
-  font-weight:800;
+  font-size:20px;
+  font-weight:900;
   margin-bottom:10px;
   letter-spacing:-0.5px;
 }
 .news-desc{
-  font-size:15px;
+  font-size:14px;
   color:var(--muted);
 }
 .news-dots{
@@ -122,11 +121,11 @@ body{
   flex-wrap:wrap;
 }
 .news-dots i{
-  width:11px;
-  height:11px;
+  width:8px;
+  height:8px;
   border-radius:50%;
   background:rgba(255,255,255,0.2);
-  transition:all 0.4s ease;
+  transition:all 0.8s ease;
 }
 .news-dots i.active{
   background:var(--accent);
@@ -150,18 +149,16 @@ body{
   padding:var(--gap);
   backdrop-filter: blur(20px);
   border:1px solid var(--border);
-  box-shadow: var(--glow), 0 15px 50px rgba(0,0,0,0.7);
   transition:all var(--transition);
   animation:floatIn 1.4s ease-out;
   overflow:hidden; /* Prevent overflow */
 }
 .panel:hover{
   transform:translateY(-10px);
-  box-shadow:0 25px 60px rgba(0,0,0,0.8), var(--glow);
 }
 .panel h2{
   margin-bottom:20px;
-  font-size:21px;
+  font-size:16px;
   font-weight:700;
 }
 
