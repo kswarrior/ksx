@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MC Java Launcher - Android & PC</title>
+<style>
+  :root {
+    --accent:#1d2ddc;
+    --accent-dark:#0f1ac9;
+    --card:#ffffff;
+    --muted:#6b7280;
+    --glass: rgba(255,255,255,0.7);
+  }
+
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial;
+    background: linear-gradient(180deg,#eef2ff 0%, #f9fbff 100%);
+    display:flex;
+    flex-direction: column;
+    align-items:center;
+    padding:28px;
+    color:#0f1724;
+  }
+
+  h1 {
+    font-size: 25px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #1a26d0;
+    letter-spacing: 0.5px;
+  }
+
+  .filter {
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    background: #eef1ff;
+    font-size: 14px;
+    width: 275px;
+    margin-bottom: 25px;
+    transition: border 0.3s, box-shadow 0.3s;
+  }
+
+  .launcher-list{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:25px;
+  }
+
+  .launcher-card{
+    width:280px;
+    border-radius:14px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.75), var(--card));
+    box-shadow:0 10px 30px rgba(16,24,40,0.08);
+    padding:22px;
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+    overflow:hidden;
+    backdrop-filter: blur(6px);
+    border:1px solid rgba(29,45,220,0.06);
+    transition: transform .3s ease, box-shadow .3s ease;
+  }
+
+  .launcher-card:hover{
+    transform: translateY(-6px);
+    box-shadow:0 14px 35px rgba(29,45,220,0.15);
+  }
+
+  .top-row{
+    display:flex;
+    gap:12px;
+    align-items:center;
+  }
+
+  .launcher-logo{
+    width:80px;
+    height:80px;
+    border-radius:16px;
+    background: linear-gradient(135deg,var(--accent),var(--accent-dark));
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-shadow:0 8px 20px rgba(29,45,220,0.18), inset 0 -6px 18px rgba(255,255,255,0.12);
+  }
+
+  .launcher-logo img{
+    width:60%;
+    height:60%;
+    object-fit:contain;
+    border-radius:8px;
+  }
+
+  .launcher-name{
+    font-size:18px;
+    font-weight:700;
+    color:#071034;
+    margin:0;
+    letter-spacing:0.2px;
+  }
+
+  .launcher-stat{
+    display:flex;
+    gap:4px;
+    margin-top:4px;
+  }
+  .launcher-stat svg{width:16px; height:16px;}
+
+  .launcher-info{
+    font-size:13px;
+    line-height:1.4;
+    color:#283248;
+    background: linear-gradient(180deg, rgba(29,45,220,0.02), rgba(29,45,220,0.01));
+    border-radius:10px;
+    padding:10px;
+    border:1px solid rgba(15,26,201,0.025);
+  }
+
+  .download-btn{
+    display:block;
+    width:100%;
+    padding:12px;
+    margin-top:10px;
+    font-weight:700;
+    font-size:14px;
+    text-align:center;
+    color:#fff;
+    background: linear-gradient(180deg,var(--accent),var(--accent-dark));
+    border:none;
+    border-radius:12px;
+    cursor:pointer;
+    box-shadow:0 10px 28px rgba(29,45,220,0.14);
+    transition: transform .14s ease, box-shadow .3s ease;
+  }
+
+  .download-btn:hover{
+    transform:scale(1.05);
+    box-shadow:0 10px 30px rgba(29,45,220,0.3);
+  }
+
+  @media (max-width:600px){
+    .launcher-card{width:100%;}
+    .top-row{flex-direction:row; align-items:center;}
+  }
+</style>
+</head>
+<body>
+
+<h1>Minecraft Java Launcher For Android & PC</h1>
+
+<input type="text" id="launcherFilter" class="filter" placeholder="Search launcher by name">
+
+<div class="launcher-list">
+
+<!-- TLauncher -->
+<div class="launcher-card">
+  <div class="top-row">
+    <div class="launcher-logo">
+      <img src="tlauncher.png" alt="TLauncher Logo">
+    </div>
+    <div>
+      <div class="launcher-name">TLauncher</div>
+      <div class="launcher-stat">
+        <!-- Stars -->
+        <svg viewBox="0 0 24 24"><path fill="#ffd54a" d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.79 1.402 8.168L12 18.896 4.664 23.158l1.402-8.168L.132 9.2l8.2-1.192z"/></svg>
+        <svg viewBox="0 0 24 24"><path fill="#ffd54a" d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.79 1.402 8.168L12 18.896 4.664 23.158l1.402-8.168L.132 9.2l8.2-1.192z"/></svg>
+        <svg viewBox="0 0 24 24"><path fill="#ffd54a" d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.79 1.402 8.168L12 18.896 4.664 23.158l1.402-8.168L.132 9.2l8.2-1.192z"/></svg>
+        <svg viewBox="0 0 24 24"><path fill="#ffd54a" d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.79 1.402 8.168L12 18.896 4.664 23.158l1.402-8.168L.132 9.2l8.2-1.192z"/></svg>
+        <svg viewBox="0 0 24 24"><path fill="#ddd" d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.79 1.402 8.168L12 18.896 4.664 23.158l1.402-8.168L.132 9.2l8.2-1.192z"/></svg>
+        <span style="display:inline-block; background:#ddd; color:#000; font-size:11px; font-weight:bold; padding:4px 8px; border-radius:4px; margin-left:5px;">PC</span>
+      </div>
+    </div>
+  </div>
+  <ul class="launcher-info">
+    <li>Play Minecraft: Java Edition on PC.</li>
+    <li>Supports all Minecraft versions, including snapshots.</li>
+    <li>Easy mod and modpack management (Forge, Fabric, OptiFine).</li>
+    <li>Automatic account login and premium account support.</li>
+    <li>Performance optimizations and multiplayer server compatibility.</li>
+  </ul>
+  <a href="https://tlauncher.org/en/" target="_blank">
+    <button class="download-btn">Download</button>
+  </a>
+</div>
+
+<!-- MultiMC -->
+<div class="launcher-card">
+  <div class="top-row">
+    <div class="launcher-logo">
+      <img src="multimc.png" alt="MultiMC Logo">
+    </div>
+    <div>
+      <div class="launcher-name">MultiMC</div>
+      <div class="launcher-stat">
+        <!-- Stars -->
+        <svg viewBox="0 0 24 24"><path fill="#ffd54a" d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.79 1.402 8.168L12 18.896 4.664 23.158l1.402-8.168L.132 9.2l8.2-1.192z"/></svg>
+        <svg viewBox="0 0 24 24"><path fill="#ffd54a" d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.79 1.402 8.168L12 18.896 4.664 23.158l1.402-8.168L.132 9.2l8.2-1.192z"/></svg>
+        <svg viewBox="0 0 24 24"><path fill="#ffd54a" d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.79 1.402 8.168L12 18.896 4.664 23.158l1.402-8.168L.132 9.2l8.2-1.192z"/></svg>
+        <svg viewBox="0 0 24 24"><path fill="#ffd54a" d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.79 1.402 8.168L12 18.896 4.664 23.158l1.402-8.168L.132 9.2l8.2-1.192z"/></svg>
+        <svg viewBox="0 0 24 24"><path fill="#ffd54a" d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.79 1.402 8.168L12 18.896 4.664 23.158l1.402-8.168L.132 9.2l8.2-1.192z"/></svg>
+        <span style="display:inline-block; background:#ddd; color:#000; font-size:11px; font-weight:bold; padding:4px 8px; border-radius:4px; margin-left:5px;">PC</span>
+      </div>
+    </div>
+  </div>
+  <ul class="launcher-info">
+    <li>Open-source launcher for PC.</li>
+    <li>Supports multiple instances and versions.</li>
+    <li>Easy mod management.</li>
+    <li>Lightweight and stable.</li>
+    <li>Premium account support.</li>
+  </ul>
+  <a href="https://multimc.org/" target="_blank">
+    <button class="download-btn">Download</button>
+  </a>
+</div>
+
+<!-- GDLauncher -->
+<div class="launcher-card">
+  <div class="top-row">
+    <div class="launcher-logo">
+      <img src="gdlauncher.png" alt="GDLauncher Logo">
+    </div>
+    <div>
+      <div class="launcher-name">GDLauncher</div>
+      <div class="launcher-stat">
+        <!-- Stars -->
+        <svg viewBox="0 0 24 24"><path fill="#ffd54a" d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.79 1.402 8.168L12 18.896 4.664 23.158l1.402-8.168L.132 9.2l8.2-1.192z"/></svg>
+        <svg viewBox="0 0 24 24"><path fill="#ffd54a" d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.79 1.402 8.168L12 18.896 4.664 23.158l1.402-8.168L.132 9.2l8.2-1.192z"/></svg>
+        <svg viewBox="0 0 24 24"><path fill="#ffd54a" d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.79 1.402 8.168L12 18.896 4.664 23.158l1.402-8.168L.132 9.2l8.2-1.192z"/></svg>
+        <svg viewBox="0 0 24 24"><path fill="#ffd54a" d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.79 1.402 8.168L12 18.896 4.664 23.158l1.402-8.168L.132 9.2l8.2-1.192z"/></svg>
+        <svg viewBox="0 0 24 24"><path fill="#ddd" d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.79 1.402 8.168L12 18.896 4.664 23.158l1.402-8.168L.132 9.2l8.2-1.192z"/></svg>
+        <span style="display:inline-block; background:#ddd; color:#000; font-size:11px; font-weight:bold; padding:4px 8px; border-radius:4px; margin-left:5px;">PC</span>
+      </div>
+    </div>
+  </div>
+  <ul class="launcher-info">
+    <li>Modern launcher with clean interface.</li>
+    <li>Supports modpacks and multiple versions.</li>
+    <li>Cloud saves and easy account management.</li>
+    <li>Open-source and lightweight.</li>
+    <li>Performance optimizations for Minecraft.</li>
+  </ul>
+  <a href="https://gdevs.io/" target="_blank">
+    <button class="download-btn">Download</button>
+  </a>
+</div>
+
+<!-- ATLauncher -->
+<div class="launcher-card">
+  <div class="top-row">
+    <div class="launcher-logo">
+      <img src="atlauncher.png" alt="ATLauncher Logo">
+    </div>
+    <div>
+      <div class="launcher-name">ATLauncher</div>
+      <div class="launcher-stat">
+        <!-- Stars -->
+        <svg viewBox="0 0 24 24"><path fill="#ffd54a" d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.79 1.402 8.168L12 18.896 4.664 23.158l1.402-8.168L.132 9.2l8.2-1.192z"/></svg>
+        <svg viewBox="0 0 24 24"><path fill="#ffd54a" d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.79 1.402 8.168L12 18.896 4.664 23.158l1.402-8.168L.132 9.2l8.2-1.192z"/></svg>
+        <svg viewBox="0 0 24 24"><path fill="#ffd54a" d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.79 1.402 8.168L12 18.896 4.664 23.158l1.402-8.168L.132 9.2l8.2-1.192z"/></svg>
+        <svg viewBox="0 0 24 24"><path fill="#ffd54a" d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.79 1.402 8.168L12 18.896 4.664 23.158l1.402-8.168L.132 9.2l8.2-1.192z"/></svg>
+        <svg viewBox="0 0 24 24"><path fill="#ddd" d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.79 1.402 8.168L12 18.896 4.664 23.158l1.402-8.168L.132 9.2l8.2-1.192z"/></svg>
+        <span style="display:inline-block; background:#ddd; color:#000; font-size:11px; font-weight:bold; padding:4px 8px; border-radius:4px; margin-left:5px;">PC</span>
+      </div>
+    </div>
+  </div>
+  <ul class="launcher-info">
+    <li>Launcher focused on modpacks for Minecraft.</li>
+    <li>Easy installation and management of modded instances.</li>
+    <li>Supports all Minecraft versions.</li>
+    <li>Lightweight and simple interface.</li>
+    <li>Open-source and free.</li>
+  </ul>
+  <a href="https://www.atlauncher.com/" target="_blank">
+    <button class="download-btn">Download</button>
+  </a>
+</div>
+
+<!-- Prism Launcher -->
+<div class="launcher-card">
+  <div class="top-row">
+    <div class="launcher-logo">
+      <img src="prismlauncher.png" alt="Prism Launcher Logo">
+    </div>
+    <div>
+      <div class="launcher-name">Prism Launcher</div>
+      <div class="launcher-stat">
+        <!-- Stars -->
+        <svg viewBox="0 0 24 24"><path fill="#ffd54a" d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.79 1.402 8.168L12 18.896 4.664 23.158l1.402-8.168L.132 9.2l8.2-1.192z"/></svg>
+        <svg viewBox="0 0 24 24"><path fill="#ffd54a" d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.79 1.402 8.168L12 18.896 4.664 23.158l1.402-8.168L.132 9.2l8.2-1.192z"/></svg>
+        <svg viewBox="0 0 24 24"><path fill="#ffd54a" d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.79 1.402 8.168L12 18.896 4.664 23.158l1.402-8.168L.132 9.2l8.2-1.192z"/></svg>
+        <svg viewBox="0 0 24 24"><path fill="#ffd54a" d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.79 1.402 8.168L12 18.896 4.664 23.158l1.402-8.168L.132 9.2l8.2-1.192z"/></svg>
+        <svg viewBox="0 0 24 24"><path fill="#ddd" d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.79 1.402 8.168L12 18.896 4.664 23.158l1.402-8.168L.132 9.2l8.2-1.192z"/></svg>
+        <span style="display:inline-block; background:#ddd; color:#000; font-size:11px; font-weight:bold; padding:4px 8px; border-radius:4px; margin-left:5px;">PC</span>
+      </div>
+    </div>
+  </div>
+  <ul class="launcher-info">
+    <li>Supports all Minecraft versions and multiple instances.</li>
+    <li>Open-source launcher for modded and vanilla Minecraft.</li>
+    <li>Highly customizable and lightweight.</li>
+    <li>Supports modpacks and Forge/Fabric.</li>
+    <li>Cloud save and easy account management.</li>
+  </ul>
+  <a href="https://prismlauncher.org/" target="_blank">
+    <button class="download-btn">Download</button>
+  </a>
+</div>
+
+
+  <!-- Card 1 -->
+  <div class="launcher-card">
+    <div class="top-row">
+      <div class="launcher-logo">
+        <img src="xGQ6lZy.png" alt="Launcher Logo">
+      </div>
+      <div>
+        <div class="launcher-name">Fold Craft Launcher</div>
+        <div class="launcher-stat">
+          <svg viewBox="0 0 24 24"><path fill="#ffd54a" d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.79 1.402 8.168L12 18.896 4.664 23.158l1.402-8.168L.132 9.2l8.2-1.192z"/></svg>
+          <svg viewBox="0 0 24 24"><path fill="#ffd54a" d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.79 1.402 8.168L12 18.896 4.664 23.158l1.402-8.168L.132 9.2l8.2-1.192z"/></svg>
+          <svg viewBox="0 0 24 24"><path fill="#ffd54a" d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.79 1.402 8.168L12 18.896 4.664 23.158l1.402-8.168L.132 9.2l8.2-1.192z"/></svg>
+          <svg viewBox="0 0 24 24"><path fill="#ffd54a" d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.79 1.402 8.168L12 18.896 4.664 23.158l1.402-8.168L.132 9.2l8.2-1.192z"/></svg>
+          <svg viewBox="0 0 24 24"><path fill="#ddd" d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.79 1.402 8.168L12 18.896 4.664 23.158l1.402-8.168L.132 9.2l8.2-1.192z"/></svg>
+          <span style="display:inline-block; background:#ddd; color:#000; font-size:11px; font-weight:bold; padding:4px 8px; border-radius:4px; margin-left:5px;">Android</span>
+        </div>
+      </div>
+    </div>
+    <ul class="launcher-info">
+  <li>Full support for mods, shaders, and resource packs.</li>
+  <li>Customizable controls and launcher themes.</li>
+  <li>Performance optimizations for smoother gameplay.</li>
+  <li>Supports Forge, Fabric, LiteLoader, and OptiFine.</li>
+  <li>PvP-friendly features and easy ModPack management.</li>
+</ul>
+    <a href="https://fcl-team.github.io/pages/download.html" target="_blank">
+  <button class="download-btn">Download</button>
+</a>
+  </div>
+
+  <!-- Card 2 -->
+  <div class="launcher-card">
+    <div class="top-row">
+      <div class="launcher-logo">
+        <img src="xGQ6lZy.png" alt="Launcher Logo">
+      </div>
+      <div>
+        <div class="launcher-name">Mojo Launcher</div>
+        <div class="launcher-stat">
+          <svg viewBox="0 0 24 24"><path fill="#ffd54a" d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.79 1.402 8.168L12 18.896 4.664 23.158l1.402-8.168L.132 9.2l8.2-1.192z"/></svg>
+          <svg viewBox="0 0 24 24"><path fill="#ffd54a" d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.79 1.402 8.168L12 18.896 4.664 23.158l1.402-8.168L.132 9.2l8.2-1.192z"/></svg>
+          <svg viewBox="0 0 24 24"><path fill="#ffd54a" d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.79 1.402 8.168L12 18.896 4.664 23.158l1.402-8.168L.132 9.2l8.2-1.192z"/></svg>
+          <svg viewBox="0 0 24 24"><path fill="#ddd" d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.79 1.402 8.168L12 18.896 4.664 23.158l1.402-8.168L.132 9.2l8.2-1.192z"/></svg>
+          <svg viewBox="0 0 24 24"><path fill="#ddd" d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.79 1.402 8.168L12 18.896 4.664 23.158l1.402-8.168L.132 9.2l8.2-1.192z"/></svg>
+          <span style="display:inline-block; background:#ddd; color:#000; font-size:11px; font-weight:bold; padding:4px 8px; border-radius:4px; margin-left:5px;">Android</span>
+        </div>
+      </div>
+    </div>
+    <ul class="launcher-info">
+  <li>Supports Forge and Fabric mod loaders.</li>
+  <li>Access all Minecraft versions, including snapshots.</li>
+  <li>Modpack support (CurseForge & Modrinth).</li>
+  <li>Open-source and regularly updated.</li>
+  <li>Compatible with multiplayer servers and optimized for mobile.</li>
+</ul>
+    <a href="https://play.google.com/store/apps/details?id=git.artdeell.mojo&hl=en" target="_blank">
+  <button class="download-btn">Download</button>
+</a>
+  </div>
+  
+  <div class="launcher-card">
+  <div class="top-row">
+    <div class="launcher-logo">
+      <img src="pojavlauncher.png" alt="PojavLauncher Logo">
+    </div>
+    <div>
+      <div class="launcher-name">PojavLauncher</div>
+      <div class="launcher-stat">
+        <svg viewBox="0 0 24 24"><path fill="#ffd54a" d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.79 1.402 8.168L12 18.896 4.664 23.158l1.402-8.168L.132 9.2l8.2-1.192z"/></svg>
+        <svg viewBox="0 0 24 24"><path fill="#ffd54a" d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.79 1.402 8.168L12 18.896 4.664 23.158l1.402-8.168L.132 9.2l8.2-1.192z"/></svg>
+        <svg viewBox="0 0 24 24"><path fill="#ffd54a" d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.79 1.402 8.168L12 18.896 4.664 23.158l1.402-8.168L.132 9.2l8.2-1.192z"/></svg>
+        <svg viewBox="0 0 24 24"><path fill="#ddd" d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.79 1.402 8.168L12 18.896 4.664 23.158l1.402-8.168L.132 9.2l8.2-1.192z"/></svg>
+        <svg viewBox="0 0 24 24"><path fill="#ddd" d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.79 1.402 8.168L12 18.896 4.664 23.158l1.402-8.168L.132 9.2l8.2-1.192z"/></svg>
+        <span style="display:inline-block; background:#ddd; color:#000; font-size:11px; font-weight:bold; padding:4px 8px; border-radius:4px; margin-left:5px;">Android</span>
+      </div>
+    </div>
+  </div>
+  <ul class="launcher-info">
+    <li>Run Minecraft: Java Edition on Android.</li>
+    <li>Supports Forge, Fabric, and various mod loaders.</li>
+    <li>Access all Minecraft versions including snapshots.</li>
+    <li>Open-source and actively developed.</li>
+    <li>Compatible with multiplayer servers and optimized for mobile.</li>
+  </ul>
+  <a href="https://pojavlauncher.en.softonic.com/android" target="_blank">
+    <button class="download-btn">Download</button>
+  </a>
+</div>
+
+<div class="launcher-card">
+  <div class="top-row">
+    <div class="launcher-logo">
+      <img src="zalithlauncher.png" alt="Zalith Launcher Logo">
+    </div>
+    <div>
+      <div class="launcher-name">Zalith Launcher</div>
+      <div class="launcher-stat">
+        <svg viewBox="0 0 24 24"><path fill="#ffd54a" d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.79 1.402 8.168L12 18.896 4.664 23.158l1.402-8.168L.132 9.2l8.2-1.192z"/></svg>
+        <svg viewBox="0 0 24 24"><path fill="#ffd54a" d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.79 1.402 8.168L12 18.896 4.664 23.158l1.402-8.168L.132 9.2l8.2-1.192z"/></svg>
+        <svg viewBox="0 0 24 24"><path fill="#ffd54a" d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.79 1.402 8.168L12 18.896 4.664 23.158l1.402-8.168L.132 9.2l8.2-1.192z"/></svg>
+        <svg viewBox="0 0 24 24"><path fill="#ddd" d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.79 1.402 8.168L12 18.896 4.664 23.158l1.402-8.168L.132 9.2l8.2-1.192z"/></svg>
+        <svg viewBox="0 0 24 24"><path fill="#ddd" d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.79 1.402 8.168L12 18.896 4.664 23.158l1.402-8.168L.132 9.2l8.2-1.192z"/></svg>
+        <span style="display:inline-block; background:#ddd; color:#000; font-size:11px; font-weight:bold; padding:4px 8px; border-radius:4px; margin-left:5px;">Android</span>
+      </div>
+    </div>
+  </div>
+  <ul class="launcher-info">
+    <li>Fork of PojavLauncher with a redesigned interface.</li>
+    <li>Supports Forge, Fabric, and other mod loaders.</li>
+    <li>Access all Minecraft versions including snapshots.</li>
+    <li>Open-source and actively developed.</li>
+    <li>Optimized for better performance and multiplayer support.</li>
+  </ul>
+  <a href="https://github.com/ZalithLauncher/ZalithLauncher/releases" target="_blank">
+    <button class="download-btn">Download</button>
+  </a>
+</div>
+
+</div>
+
+<script>
+const filterInput = document.getElementById('launcherFilter');
+filterInput.addEventListener('input', () => {
+  const filterText = filterInput.value.toLowerCase();
+  document.querySelectorAll('.
