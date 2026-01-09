@@ -20,6 +20,11 @@
     "logo": "https://example.com/vps.png"
   },
   {
+    "name": "Minecraft Java Launcher",
+    "url": "/minecraft/game/java/launcher.html",
+    "logo": "https://example.com/vps.png"
+  },
+  {
     "name": "Free VPS Hosting List",
     "url": "/vps/hosting/list/free.html",
     "logo": "https://example.com/vps.png"
