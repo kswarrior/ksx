@@ -15,7 +15,7 @@
   --radius:16px;
 }
 
-*{box-sizing:border-box}
+*{ box-sizing:border-box; }
 
 body{
   margin:0;
@@ -34,7 +34,6 @@ body{
 
 /* ================= NEWS ================= */
 .news{
-  position:relative;
   background:linear-gradient(135deg,#1b1b2f,#161622);
   border-radius:var(--radius);
   padding:18px;
@@ -54,36 +53,34 @@ body{
   font-size:11px;
 }
 
-.news-slider{height:92px;overflow:hidden}
+.news-slider{ height:92px; overflow:hidden; }
 
 .news-track{
   display:flex;
-  transition:transform 1.2s cubic-bezier(.4,0,.2,1);
+  transition:transform 1s ease;
 }
 
 .news-slide{
   min-width:100%;
-  background:#12121a;
+  background:#141420;
   border-radius:14px;
   padding:16px;
 }
 
-.news-title{font-size:18px;font-weight:600}
-.news-desc{font-size:13px;color:var(--muted)}
+.news-title{ font-size:18px; font-weight:600; }
+.news-desc{ font-size:13px; color:var(--muted); }
 
 .news-dots{
   display:flex;
   gap:6px;
-  position:absolute;
-  right:16px;
-  bottom:12px;
+  justify-content:flex-end;
 }
 
 .news-dots i{
   width:7px;height:7px;border-radius:50%;
-  background:#3a3a4d;
+  background:#333;
 }
-.news-dots i.active{background:var(--accent)}
+.news-dots i.active{ background:var(--accent); }
 
 /* ================= GRID ================= */
 .grid{
@@ -91,97 +88,100 @@ body{
   grid-template-columns:1fr 1fr;
   gap:20px;
 }
-@media(max-width:800px){
-  .grid{grid-template-columns:1fr}
-}
+@media(max-width:800px){ .grid{grid-template-columns:1fr;} }
 
 .panel{
-  background:#15151d;
+  background:#141420;
   border-radius:var(--radius);
   padding:16px;
 }
 
-.panel h2{margin:0 0 14px}
+.panel h2{ margin-bottom:14px; }
 
 /* ================= LIST ================= */
 .list-item{
-  padding:12px 14px;
-  border-radius:12px;
   background:var(--soft);
-  margin-bottom:10px;
+  padding:12px;
+  border-radius:12px;
+  margin-bottom:8px;
   display:flex;
   justify-content:space-between;
+  cursor:pointer;
 }
+.list-item:hover{ background:#2a2a3a; }
+.time{ font-size:12px;color:var(--muted); }
 
-/* ================= HIGHLIGHT ================= */
-
-/* 🔥 ONLY ADDITION STARTS HERE */
-.highlight-wrapper{
-  height:140px;
+/* ================= HIGHLIGHT (VERTICAL) ================= */
+.highlight-slider{
+  height:90px;
   overflow:hidden;
   position:relative;
 }
 
-.highlight{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
-  gap:16px;
-  transition:transform 0.9s cubic-bezier(.4,0,.2,1);
+.highlight-track{
+  transition:transform 1s ease;
 }
-/* 🔥 ONLY ADDITION ENDS HERE */
 
 .h-card{
-  background:linear-gradient(135deg,#181824,#12121a);
-  border-radius:var(--radius);
+  background:#181828;
+  border-radius:14px;
   padding:18px;
+  margin-bottom:10px;
   cursor:pointer;
 }
+.h-card span{ font-size:13px;color:var(--muted); }
 
-.h-card span{
-  display:block;
-  margin-top:6px;
-  font-size:13px;
-  color:var(--muted);
-}
-
-.empty{color:#6b7280}
+.empty{ color:#6b7280;font-size:13px; }
 </style>
 </head>
 
 <body>
 <div class="dashboard">
 
+<!-- NEWS -->
 <section class="news">
   <div class="news-header">📰 Updates & News <span>NEW</span></div>
   <div class="news-slider">
     <div class="news-track" id="newsTrack">
       <div class="news-slide">
         <div class="news-title">KS Panel v2.4</div>
-        <div class="news-desc">UI polish, faster server actions</div>
+        <div class="news-desc">UI polish & performance boost</div>
       </div>
       <div class="news-slide">
         <div class="news-title">Security Improvements</div>
         <div class="news-desc">Safer auth & bug fixes</div>
       </div>
     </div>
-    <div class="news-dots" id="newsDots"></div>
   </div>
+  <div class="news-dots" id="newsDots"></div>
 </section>
 
+<!-- RECENT + FAV -->
 <div class="grid">
-  <section class="panel"><h2>🕒 Recent</h2><div id="recentList"></div></section>
-  <section class="panel"><h2>❤️ Favourite</h2><div id="favList"></div></section>
+  <section class="panel">
+    <h2>🕒 Recent</h2>
+    <div id="recentList"></div>
+  </section>
+  <section class="panel">
+    <h2>❤️ Favourite</h2>
+    <div id="favList"></div>
+  </section>
 </div>
 
+<!-- HIGHLIGHT -->
 <section class="panel">
   <h2>⭐ Highlighted</h2>
-
-  <!-- 🔥 WRAPPER ADDED -->
-  <div class="highlight-wrapper">
-    <div class="highlight" id="highlightTrack">
-      <div class="h-card">Dashboard<span>Overview</span></div>
-      <div class="h-card">Server<span>Control & status</span></div>
-      <div class="h-card">Files<span>Manage server files</span></div>
+  <div class="highlight-slider">
+    <div class="highlight-track" id="highlightTrack">
+      <div class="h-card" onclick="openPage('dashboard.html','Dashboard')">
+        Dashboard <span>Overview</span>
+      </div>
+      <div class="h-card" onclick="openPage('server.html','Server')">
+        Server <span>Control & status</span>
+      </div>
+      <div class="h-card" onclick="openPage('files.html','Files')">
+        Files <span>Manage server files</span>
+      </div>
     </div>
   </div>
 </section>
@@ -189,33 +189,58 @@ body{
 </div>
 
 <script>
-/* NEWS (unchanged) */
-const track=document.getElementById("newsTrack");
-const dotsWrap=document.getElementById("newsDots");
-const slides=[...track.children];
-let index=0;
-
-slides.forEach((_,i)=>{
+/* ===== NEWS ===== */
+let n=0;
+const nTrack=document.getElementById("newsTrack");
+const nDots=document.getElementById("newsDots");
+[...nTrack.children].forEach((_,i)=>{
   const d=document.createElement("i");
   if(i===0)d.classList.add("active");
-  dotsWrap.appendChild(d);
+  nDots.appendChild(d);
 });
-const dots=[...dotsWrap.children];
 setInterval(()=>{
-  index=(index+1)%slides.length;
-  track.style.transform=`translateX(-${index*100}%)`;
-  dots.forEach(d=>d.classList.remove("active"));
-  dots[index].classList.add("active");
+  n=(n+1)%nTrack.children.length;
+  nTrack.style.transform=`translateX(-${n*100}%)`;
+  [...nDots.children].forEach(d=>d.classList.remove("active"));
+  nDots.children[n].classList.add("active");
 },1800);
 
-/* 🔥 HIGHLIGHT UP/DOWN TRACK (ONLY NEW JS) */
+/* ===== HIGHLIGHT (VERTICAL) ===== */
+let h=0;
 const hTrack=document.getElementById("highlightTrack");
-let hDir=1;
 setInterval(()=>{
-  hTrack.style.transform=`translateY(${hDir*-40}px)`;
-  hDir*=-1;
-},2500);
-</script>
+  h=(h+1)%hTrack.children.length;
+  hTrack.style.transform=`translateY(-${h*100}px)`;
+},2000);
 
+/* ===== RECENT & FAV ===== */
+const RECENT="ls-recent",FAV="ls-fav";
+
+function openPage(url,name){
+  let r=JSON.parse(localStorage.getItem(RECENT)||"[]");
+  r.unshift({name,url,time:Date.now()});
+  localStorage.setItem(RECENT,JSON.stringify(r.slice(0,5)));
+}
+
+function timeAgo(t){
+  const d=(Date.now()-t)/1000;
+  if(d<60)return"Now";
+  if(d<3600)return Math.floor(d/60)+"m";
+  if(d<86400)return Math.floor(d/3600)+"h";
+  return Math.floor(d/86400)+"d";
+}
+
+function load(key,el,time){
+  const d=JSON.parse(localStorage.getItem(key)||"[]");
+  el.innerHTML=d.length?d.map(i=>`
+    <div class="list-item">
+      <span>${i.name}</span>
+      ${time?`<span class="time">${timeAgo(i.time)}</span>`:""}
+    </div>`).join(""):`<div class="empty">No data</div>`;
+}
+
+load(RECENT,document.getElementById("recentList"),true);
+load(FAV,document.getElementById("favList"),false);
+</script>
 </body>
 </html>
