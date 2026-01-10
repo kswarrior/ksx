@@ -74,7 +74,7 @@ main{
   background:var(--soft);
   cursor:pointer;
   transition:.3s;
-  width: 125px;
+  width: 175px;
 }
 
 #filterBtn:hover{
@@ -118,34 +118,40 @@ main{
 /* ===== ROW LIST ===== */
 .list{
   display:flex;
-  flex-direction:column;
-  gap:10px;
+  flex-wrap:wrap;      /* allow multiple cards in a row */
+  gap:15px;            /* spacing between cards */
+  justify-content:center;
   margin-top:10px;
 }
 
 .row{
-  background:var(--soft);
-  padding:14px 16px;
-  border-radius:12px;
-  margin-bottom:12px;
-
-  display:grid;
+  display:grid;                /* keep internal grid for row-top/specs/bottom */
   grid-template-columns:1fr auto;
   gap:12px;
   align-items:center;
 
+  background:var(--soft);
+  padding:14px 16px;
+  border-radius:12px;
   cursor:pointer;
-  transition:transform .35s ease, background .35s ease;
   border:1px solid var(--border);
-
-  position:relative;
   overflow:hidden;
+  position:relative;
   word-break:break-word;
+  transition:transform .35s ease, background .35s ease;
 
-  /* FLEXIBLE RESPONSIVE WIDTH */
-  flex:1 1 calc(33.333% - 15px); /* desktop 3 in a row */
+  /* responsive width */
+  flex:1 1 calc(33.333% - 15px); /* 3 per row desktop */
   min-width:260px;
-  max-width:100%;
+  max-width:400px;
+}
+
+@media(max-width:900px){
+  .row{flex:1 1 calc(50% - 15px);} /* 2 per row tablet */
+}
+
+@media(max-width:600px){
+  .row{flex:1 1 100%;} /* 1 per row mobile */
 }
 
 /* RESPONSIVE BREAKPOINTS */
