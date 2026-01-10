@@ -5,7 +5,7 @@
     "cpu": "100%",
     "disk": "8GB",
     "location": "France",
-    "uptime": "good",
+    "uptime": "danger",
     "link": "https://minestrator.com"
   },
   {
@@ -140,7 +140,7 @@
     "cpu": "100%",
     "disk": "10GB",
     "location": "Germany",
-    "uptime": "good",
+    "uptime": "danger",
     "link": "https://gameserver.gratis"
   },
   {
@@ -167,7 +167,7 @@
     "cpu": "100%",
     "disk": "5GB",
     "location": "Germany",
-    "uptime": "good",
+    "uptime": "danger",
     "link": "https://magmanode.com"
   },
   {
@@ -176,7 +176,7 @@
     "cpu": "100%",
     "disk": "10GB",
     "location": "Global",
-    "uptime": "good",
+    "uptime": "danger",
     "link": "https://freemcserver.net/"
   },
   {
@@ -239,7 +239,7 @@
     "cpu": "150%",
     "disk": "5GB",
     "location": "Europe, USA",
-    "uptime": "good",
+    "uptime": "danger",
     "link": "https://powerupstack.com"
   },
   {
@@ -293,7 +293,7 @@
     "cpu": "100%",
     "disk": "Unlimited (limited in practice)",
     "location": "Global (US, France, Singapore, etc.)",
-    "uptime": "good",
+    "uptime": "danger",
     "link": "https://server.pro/"
   },
   {
@@ -302,7 +302,7 @@
     "cpu": "100-150%",
     "disk": "Varies",
     "location": "Global",
-    "uptime": "good (stays on with players)",
+    "uptime": "danger",
     "link": "https://minekeep.net/"
   },
   {
@@ -311,7 +311,7 @@
     "cpu": "100-150%",
     "disk": "Varies",
     "location": "Global",
-    "uptime": "good",
+    "uptime": "danger",
     "link": "https://www.mcserverhost.com/"
   },
   {
@@ -320,7 +320,7 @@
     "cpu": "100%",
     "disk": "5GB+",
     "location": "Global",
-    "uptime": "good",
+    "uptime": "danger",
     "link": "https://ploudos.com/"
   },
   {
@@ -338,7 +338,7 @@
     "cpu": "100%",
     "disk": "Varies",
     "location": "Global",
-    "uptime": "good",
+    "uptime": "danger",
     "link": "https://seedloaf.com/"
   },
   {
