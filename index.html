@@ -408,9 +408,7 @@ frame.addEventListener("load", () => {
   if (!favs.some(item => item.url === url)) {
     favs.unshift({ name, url, time: Date.now() });
     localStorage.setItem(FAV_KEY, JSON.stringify(favs));
-    alert(`Saved "${name}" to Favorites ⭐`);
   } else {
-    alert(`"${name}" is already in Favorites ⭐`);
   }
 }
 
