@@ -213,6 +213,11 @@ body.sidebar-open #sidebar { left: 0; }
   background: #fff;
   transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
 }
+  #favButton:hover {
+  color: var(--accent);
+  transform: scale(1.2);
+  transition: transform 0.2s ease, color 0.2s ease;
+  }
 </style>
 </head>
 
@@ -222,6 +227,11 @@ body.sidebar-open #sidebar { left: 0; }
   <div class="logo"><img src="/image/ks-logo.webp" alt="Logo"></div>
   <div class="owner-name">❰🔹❰❰ 𝑲𝑺 𝑾𝒂𝒓𝒓𝒊𝒐𝒓 ❱❱🔹❱</div>
 
+  <!-- FAVOURITE BUTTON -->
+<div id="favButton" title="Add to Favorites" aria-label="Add to Favorites" style="cursor:pointer;font-size:20px;user-select:none;">
+  ⭐
+</div>
+  
   <!-- NEW SEARCH DESIGN -->
   <div class="search-container">
     <div id="searchTrigger" aria-label="Search">🔍</div>
@@ -387,6 +397,33 @@ frame.addEventListener("load", () => {
   }
 });
 </script>
+<script>
+  const FAV_KEY = "ks-web-fav";
+  
+  function saveToFavorites(name, url) {
+  if (!name || !url) return;
 
+  let favs = JSON.parse(localStorage.getItem(FAV_KEY) || "[]");
+  // Avoid duplicates
+  if (!favs.some(item => item.url === url)) {
+    favs.unshift({ name, url, time: Date.now() });
+    localStorage.setItem(FAV_KEY, JSON.stringify(favs));
+    alert(`Saved "${name}" to Favorites ⭐`);
+  } else {
+    alert(`"${name}" is already in Favorites ⭐`);
+  }
+}
+
+// Favorite button click
+const favButton = document.getElementById("favButton");
+favButton.addEventListener("click", () => {
+  // Get the current page name from iframe
+  const frameUrl = frame.src;
+  // You can use the iframe src as URL and find name from searchData if available
+  const found = searchData.find(item => new URL(item.url, location.href).href === frameUrl);
+  const pageName = found ? found.name : frameUrl;
+  saveToFavorites(pageName, frameUrl);
+});
+</script>
 </body>
 </html>
