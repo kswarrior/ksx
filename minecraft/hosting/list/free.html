@@ -135,16 +135,15 @@ main{
   align-items:center;
 
   cursor:pointer;
-  transition:all 0.4s ease;
+  transition:transform .35s ease, background .35s ease;
   border:1px solid var(--border);
 
   position:relative;
   overflow:hidden;
   word-break:break-word;
-  -webkit-tap-highlight-color:transparent;
 }
 
-/* Shine effect */
+/* Shine */
 .row::before{
   content:'';
   position:absolute;
@@ -158,7 +157,7 @@ main{
     rgba(255,255,255,0.15),
     transparent
   );
-  transition:left 0.7s ease;
+  transition:left .7s ease;
 }
 
 .row:hover::before{
@@ -167,7 +166,7 @@ main{
 
 .row:hover{
   background:var(--hover-card);
-  transform:translateX(8px) scale(1);
+  transform:translateX(clamp(4px, 2%, 12px));
 }
 
 .row-top{
