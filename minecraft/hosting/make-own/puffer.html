@@ -1,206 +1,252 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Puffer Panel – KS Dashboard</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Puffer Panel • KS Dashboard</title>
 
-<style>
-:root{
-  --bg:#000000;
-  --card:rgba(18,18,28,0.88);
-  --soft:rgba(28,28,40,0.95);
-  --border:rgba(255,255,255,0.12);
-  --text:#ffffff;
-  --muted:#aaaaaa;
-  --accent:#ffffff;
-  --radius:12px;
-  --gap:28px;
-  --transition:0.45s cubic-bezier(0.22,1,0.36,1);
-}
+  <meta name="color-scheme" content="dark"/>
+  <meta name="theme-color" content="#000000"/>
 
-*{box-sizing:border-box;margin:0;padding:0}
-body{
-  background:var(--bg);
-  color:var(--text);
-  font-family:system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
-  min-height:100vh;
-  overflow-x:hidden;
-  animation:bgPulse 18s ease-in-out infinite alternate;
-  -webkit-tap-highlight-color: transparent;
-  outline: none;
-  user-select: none;
-}
+  <style>
+    :root {
+      --bg: #000000;
+      --card: rgba(18, 18, 28, 0.92);
+      --soft: rgba(28, 28, 40, 0.96);
+      --border: rgba(255,255,255,0.11);
+      --text: #f8f9fa;
+      --muted: #a0a0b0;
+      --accent: #ffffff;
+      --success: #4ade80;
+      --radius: 12px;
+      --gap: 28px;
+      --transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    }
 
-@keyframes bgPulse{
-  from{background:#000}
-  to{background:#0a0a0a}
-}
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-main{
-  max-width:1100px;
-  margin:auto;
-  padding:var(--gap) 16px;
-  animation:fadeIn 0.9s ease;
-}
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      min-height: 100dvh;
+      line-height: 1.5;
+      overflow-x: hidden;
+      background: linear-gradient(135deg, #000 0%, #0a0a0f 100%);
+      animation: bgPulse 20s ease-in-out infinite alternate;
+    }
 
-@keyframes fadeIn{
-  from{opacity:0;transform:translateY(18px)}
-  to{opacity:1;transform:translateY(0)}
-}
+    @keyframes bgPulse {
+      from { background-position: 0% 50%; }
+      to   { background-position: 100% 50%; }
+    }
 
-/* TITLE */
-.title{
-  text-align:center;
-  font-size:30px;
-  font-weight:900;
-  margin-bottom:36px;
-  letter-spacing:-0.5px;
-}
+    main {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: var(--gap) 16px;
+      animation: fadeIn 0.8s ease-out;
+    }
 
-/* SECTION */
-.section{
-  background:var(--card);
-  border-radius:var(--radius);
-  border:1px solid var(--border);
-  padding:var(--gap);
-  margin-bottom:var(--gap);
-  backdrop-filter:blur(18px);
-  transition:all var(--transition);
-}
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
 
-.section h2{
-  font-size:18px;
-  font-weight:900;
-  margin-bottom:16px;
-  display:flex;
-  align-items:center;
-  gap:8px;
-}
+    .title {
+      text-align: center;
+      font-size: clamp(2rem, 6vw, 2.8rem);
+      font-weight: 900;
+      letter-spacing: -1px;
+      margin-bottom: 2.2rem;
+      background: linear-gradient(90deg, #f0f0f0, #ffffff, #e0e0e0);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-size: 200% auto;
+      animation: shine 6s linear infinite;
+    }
 
-.section p{
-  font-size:15px;
-  line-height:1.7;
-  color:var(--muted);
-  margin-bottom:10px;
-}
+    @keyframes shine {
+      to { background-position: 200% center; }
+    }
 
-/* CODE */
-.codespre{
-  background:#0d0d16;
-  color:#f2f2f2;
-  border-radius:10px;
-  padding:12px;
-  font-size:13px;
-  overflow-x:auto;
-  border:1px solid var(--border);
-  word-break:break-all;
-}
+    .section {
+      background: var(--card);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      padding: var(--gap);
+      margin-bottom: var(--gap);
+      backdrop-filter: blur(16px);
+      transition: var(--transition);
+    }
 
-/* BUTTON */
-.btn{
-  background:transparent;
-  color:var(--text);
-  border:1px solid var(--border);
-  padding:10px 18px;
-  border-radius:8px;
-  font-weight:700;
-  cursor:pointer;
-  transition:all 0.3s ease;
-  margin-top:10px;
-}
+    .section:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.45);
+    }
 
-.btn:hover{
-  background:rgba(255,255,255,0.08);
-}
+    .section h2 {
+      font-size: 1.25rem;
+      font-weight: 800;
+      margin-bottom: 1.1rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      letter-spacing: -0.3px;
+    }
 
-/* COPY STATUS */
-.copied{
-  margin-left:12px;
-  font-size:13px;
-  color:#7dffb3;
-  opacity:0;
-  transition:opacity 0.3s ease;
-}
-.copied.show{opacity:1}
+    .section p {
+      color: var(--muted);
+      font-size: 0.94rem;
+      line-height: 1.65;
+      margin-bottom: 0.7rem;
+    }
 
-/* MOBILE */
-@media (hover:none){
-  .section:hover,.btn:hover{
-    transform:none;
-    box-shadow:none;
-  }
-}
-</style>
+    .codespre {
+      background: #0a0a12;
+      color: #e0e0ff;
+      border-radius: 10px;
+      padding: 1rem;
+      font-family: 'JetBrains Mono', 'Consolas', monospace;
+      font-size: 0.86rem;
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      white-space: pre-wrap;
+      word-break: break-all;
+      user-select: text;
+    }
+
+    .btn {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 0.72rem 1.4rem;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.92rem;
+      cursor: pointer;
+      transition: var(--transition);
+      margin-top: 0.8rem;
+      margin-right: 0.6rem;
+    }
+
+    .btn:hover {
+      background: rgba(255,255,255,0.07);
+      border-color: rgba(255,255,255,0.3);
+      transform: translateY(-1px);
+    }
+
+    .btn:active {
+      transform: translateY(0);
+    }
+
+    .copied {
+      margin-left: 0.9rem;
+      font-size: 0.84rem;
+      color: var(--success);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      font-weight: 500;
+    }
+
+    .copied.show {
+      opacity: 1;
+    }
+
+    @media (max-width: 600px) {
+      main { padding: 1.5rem 12px; }
+      .section { padding: 1.5rem; }
+      .btn { width: 100%; margin: 0.5rem 0; }
+    }
+
+    /* Improve touch devices */
+    @media (hover: none) {
+      .section:hover,
+      .btn:hover {
+        transform: none;
+        box-shadow: none;
+      }
+    }
+  </style>
 </head>
-
 <body>
+
 <main>
 
   <div class="title">Puffer Panel</div>
 
-  <!-- 1. USEFUL LINKS -->
+  <!-- Useful Links -->
   <div class="section">
     <h2>🔗 Useful Links</h2>
     <button class="btn" onclick="window.open('https://pufferpanel.com','_blank')">Official Website</button>
-    <button class="btn" onclick="window.open('','_blank')">YouTube Tutorial</button>
+    <button class="btn" onclick="window.open('https://youtube.com/results?search_query=pufferpanel+tutorial','_blank')">YouTube Tutorials</button>
   </div>
 
-  <!-- 2. INSTALL -->
+  <!-- Install -->
   <div class="section">
-    <h2>🚀 Install Command</h2>
-    <pre class="codespre" id="installCmd">
-bash <(curl -sSL https://raw.githubusercontent.com/KSWarrior/moh-codes/refs/heads/main/pufferpanel/ks-install.sh)
-    </pre>
-    <button class="btn" onclick="copyCmd()">Copy Command</button>
-    <span class="copied" id="copiedTxt">Copied</span>
+    <h2>🚀 One-line Install</h2>
+    <pre class="codespre" id="installCmd">bash &lt;(curl -sSL https://raw.githubusercontent.com/KSWarrior/moh-codes/refs/heads/main/pufferpanel/ks-install.sh)</pre>
+    <button class="btn" onclick="copyInstallCmd()">Copy Command</button>
+    <span class="copied" id="copiedTxt">Copied ✓</span>
   </div>
 
-  <!-- 3. ABOUT -->
+  <!-- About -->
   <div class="section">
-    <h2>ℹ️ About Puffer Panel</h2>
-    <p>
-      Puffer Panel is a free and open-source game server management panel
-      designed to simplify hosting and controlling servers from a web interface.
-    </p>
-    <p>
-      It is lightweight, secure, and ideal for small to medium game server setups.
-    </p>
+    <h2>ℹ️ About PufferPanel</h2>
+    <p>PufferPanel is a free, open-source game server management panel.</p>
+    <p>Lightweight • Secure • Easy to use — perfect for small to medium hosting setups.</p>
   </div>
 
-  <!-- 4. ADV / DIS -->
+  <!-- Pros & Cons -->
   <div class="section">
     <h2>⚖️ Advantages & Disadvantages</h2>
     <p><strong>Advantages:</strong></p>
-    <p>• Free and open-source</p>
-    <p>• Lightweight and fast</p>
-    <p>• Easy installation</p>
-    <p>• Supports multiple games</p>
+    <ul style="padding-left:1.4rem;color:var(--muted);line-height:1.8;">
+      <li>Completely free & open-source</li>
+      <li>Very lightweight and fast</li>
+      <li>Quick & simple installation</li>
+      <li>Supports many popular games</li>
+    </ul>
 
-    <p style="margin-top:12px;"><strong>Disadvantages:</strong></p>
-    <p>• Simpler UI compared to premium panels</p>
-    <p>• Requires basic Linux knowledge</p>
-    <p>• Fewer automation features</p>
+    <p style="margin-top:1.4rem;"><strong>Disadvantages:</strong></p>
+    <ul style="padding-left:1.4rem;color:var(--muted);line-height:1.8;">
+      <li>Simpler interface than premium panels</li>
+      <li>Requires basic Linux knowledge</li>
+      <li>Fewer advanced automation features</li>
+    </ul>
   </div>
 
-  <!-- 5. PORTS -->
+  <!-- Important Info -->
   <div class="section">
-    <h2>🌐 Default Ports & Important Info</h2>
-    <p>• Web panel port: <strong>8080</strong></p>
-    <p>• Uses Docker for server isolation</p>
-    <p>• Recommended OS: Ubuntu 20.04 / 22.04</p>
-    <p>• Ensure firewall ports are open</p>
+    <h2>🌐 Default Ports & Important Notes</h2>
+    <p>• Panel web interface: <strong>8080</strong></p>
+    <p>• Uses Docker containers for server isolation</p>
+    <p>• Recommended OS: Ubuntu 20.04 / 22.04 / 24.04</p>
+    <p>• Don't forget to open necessary ports in firewall</p>
   </div>
 
 </main>
 
 <script>
-function copyCmd(){
+function copyInstallCmd() {
   const text = document.getElementById("installCmd").textContent.trim();
-  const tag = document.getElementById("copiedTxt");
-  navigator.clipboard.writeText(text).then(()=>{
-    tag.classList.add("show");
-    setTimeout(()=>tag.classList.remove("show"),2000);
+  const status = document.getElementById("copiedTxt");
+  
+  navigator.clipboard.writeText(text).then(() => {
+    status.textContent = "Copied ✓";
+    status.classList.add("show");
+    setTimeout(() => {
+      status.classList.remove("show");
+      setTimeout(() => status.textContent = "Copied ✓", 400);
+    }, 2200);
+  }).catch(() => {
+    status.textContent = "Copy failed :(";
+    status.classList.add("show");
+    setTimeout(() => status.classList.remove("show"), 2200);
   });
 }
 </script>
