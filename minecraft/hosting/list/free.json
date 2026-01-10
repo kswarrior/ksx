@@ -4,7 +4,7 @@
     "ram": 4,
     "cpu": "200%",
     "disk": "6GB",
-    "location": "Europe",
+    "location": "Europe, Canada, Germany",
     "uptime": "good",
     "link": "https://panel.freegamehost.xyz/"
   },
@@ -82,10 +82,10 @@
   },
   {
     "name": "HidenCloud",
-    "ram": 2.5,
+    "ram": 3,
     "cpu": "150%",
-    "disk": "10GB",
-    "location": "USA, Germany, Spain, Mexico, Singapore",
+    "disk": "15GB",
+    "location": "USA, Germany, Spain, Mexico, Singapore, France, India, Australia, UAE",
     "uptime": "good",
     "link": "https://www.hidencloud.com"
   },
@@ -160,5 +160,158 @@
     "location": "France, Canada",
     "uptime": "danger",
     "link": "https://server.pro"
+  },
+  {
+    "name": "MineStrator",
+    "ram": 4,
+    "cpu": "unknown",
+    "disk": "8GB",
+    "location": "France",
+    "uptime": "unknown",
+    "link": "https://minestrator.com"
+  },
+  {
+    "name": "Eternal Zero",
+    "ram": 6,
+    "cpu": "unknown",
+    "disk": "20GB",
+    "location": "Finland, Canada",
+    "uptime": "unknown",
+    "link": "https://eternalzero.cloud"
+  },
+  {
+    "name": "Hosting Mit Herz",
+    "ram": 3,
+    "cpu": "unknown",
+    "disk": "5GB",
+    "location": "Finland, Germany, USA",
+    "uptime": "unknown",
+    "link": "https://hostingmitherz.de"
+  },
+  {
+    "name": "VibeGames",
+    "ram": 4,
+    "cpu": "unknown",
+    "disk": "20GB",
+    "location": "Netherlands",
+    "uptime": "unknown",
+    "link": "https://vibegames.com"
+  },
+  {
+    "name": "DracoByte",
+    "ram": 4,
+    "cpu": "unknown",
+    "disk": "10GB",
+    "location": "USA, Finland",
+    "uptime": "unknown",
+    "link": "https://dracobyte.pro"
+  },
+  {
+    "name": "Freezehost",
+    "ram": 2,
+    "cpu": "unknown",
+    "disk": "10GB",
+    "location": "Finland",
+    "uptime": "unknown",
+    "link": "https://freezehost.pro"
+  },
+  {
+    "name": "Gameserver.gratis",
+    "ram": 3.1,
+    "cpu": "unknown",
+    "disk": "10GB",
+    "location": "Germany",
+    "uptime": "unknown",
+    "link": "https://gameserver.gratis"
+  },
+  {
+    "name": "Host2Play",
+    "ram": 3,
+    "cpu": "unknown",
+    "disk": "2GB",
+    "location": "Germany, Britain, Sweden, India, USA",
+    "uptime": "unknown",
+    "link": "https://host2play.gratis"
+  },
+  {
+    "name": "MagmaNode",
+    "ram": 2,
+    "cpu": "unknown",
+    "disk": "5GB",
+    "location": "Germany",
+    "uptime": "unknown",
+    "link": "https://magmanode.com"
+  },
+  {
+    "name": "Minekeep",
+    "ram": 1,
+    "cpu": "unknown",
+    "disk": "10GB",
+    "location": "Germany",
+    "uptime": "unknown",
+    "link": "https://minekeep.net"
+  },
+  {
+    "name": "Tick Hosting",
+    "ram": 8,
+    "cpu": "unknown",
+    "disk": "15GB",
+    "location": "Finland, USA",
+    "uptime": "unknown",
+    "link": "https://tickhosting.com"
+  },
+  {
+    "name": "CloudCode",
+    "ram": 6,
+    "cpu": "unknown",
+    "disk": "20GB",
+    "location": "Vietnam",
+    "uptime": "unknown",
+    "link": "https://void.cloudcode.site"
+  },
+  {
+    "name": "IceHost",
+    "ram": 4,
+    "cpu": "unknown",
+    "disk": "10GB",
+    "location": "Poland",
+    "uptime": "unknown",
+    "link": "https://icehost.pl"
+  },
+  {
+    "name": "OuiHeberg",
+    "ram": 8,
+    "cpu": "unknown",
+    "disk": "2GB",
+    "location": "USA, France",
+    "uptime": "unknown",
+    "link": "https://www.ouiheberg.com"
+  },
+  {
+    "name": "FreemcHosting",
+    "ram": 4,
+    "cpu": "unknown",
+    "disk": "15GB",
+    "location": "UK, Netherlands",
+    "uptime": "unknown",
+    "link": "https://client.freemchosting.com"
+  },
+  {
+    "name": "MCServerHost",
+    "ram": 4,
+    "cpu": "unknown",
+    "disk": "10GB",
+    "location": "USA, Belgium",
+    "uptime": "unknown",
+    "link": "https://www.mcserverhost.com"
+  },
+  {
+    "name": "Seedloaf",
+    "ram": 4,
+    "cpu": "unknown",
+    "disk": "6GB",
+    "location": "Canada",
+    "uptime": "unknown",
+    "link": "https://seedloaf.com"
   }
 ]
