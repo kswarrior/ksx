@@ -1,174 +1,215 @@
 <!DOCTYPE html>
-<html lang="en">  
-<head>  
-  <meta charset="UTF-8" />  
-  <meta name="viewport" content="width=device-width, initial-scale=1" />  
-  <title>KS Warrior Dashboard</title>  
-  <style>  
-  /* Reset */
-  * {
-    box-sizing: border-box;
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>KS Warrior • Pterodactyl Installer</title>
+
+  <meta name="color-scheme" content="light"/>
+
+  <style>
+    :root {
+      --primary: #1a73e8;
+      --primary-dark: #1557b0;
+      --primary-light: #4285f4;
+      --bg: #f6f9ff;
+      --card: #ffffff;
+      --text: #1f2937;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --radius: 10px;
+      --shadow: 0 6px 20px rgba(0,0,0,0.08);
+      --transition: all 0.3s ease;
     }
-    body {
+
+    * {
       margin: 0;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-          background-color: #fff;
-            color: #333;
-              overflow-x: hidden;
-                user-select: none;
-                }
-                
-.container {  
-  padding: 15px;  
-  animation: fadeIn 0.8s ease-in-out;  
-}  @keyframes fadeIn {
-from { opacity: 0; transform: translateY(20px); }
-to { opacity: 1; transform: translateY(0); }
-}
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-#installer-name {
-text-align: center;
-font-size: 2.2rem;
-font-weight: 900;
-background: linear-gradient(90deg, #1a1abf, #1a73e8);
--webkit-background-clip: text;
--webkit-text-fill-color: transparent;
-text-shadow: 0 2px 10px rgba(26, 115, 232, 0.3);
-margin-bottom: 2.5rem;
-animation: popIn 0.8s ease-in-out;
-}
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100dvh;
+      line-height: 1.6;
+    }
 
-@keyframes popIn {
-0% {
-opacity: 0;
-transform: scale(0.9) translateY(-20px);
-}
-100% {
-opacity: 1;
-transform: scale(1) translateY(0);
-}
-}
+    .container {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 2.5rem 1rem;
+    }
 
-.section {
-margin-bottom: 2rem;
-background: #f9fbff;
-border-left: 3px solid blue;
-border-right: 3px solid blue;
-border-radius: 10px;
-padding: 1.5rem;
-transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
+    #installer-name {
+      text-align: center;
+      font-size: clamp(2.1rem, 6vw, 3.2rem);
+      font-weight: 900;
+      background: linear-gradient(90deg, #1a73e8, #60a5fa, #1a73e8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-size: 200% auto;
+      animation: shine 5s linear infinite;
+      margin-bottom: 3rem;
+      letter-spacing: -1px;
+    }
 
-.section:hover {
-transform: translateY(-3px);
-box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-}
+    @keyframes shine {
+      to { background-position: 200% center; }
+    }
 
-.section h2 {
-font-size: 1.25rem;
-margin-bottom: 1rem;
-color: #2c3e50;
-display: flex;
-align-items: center;
-gap: 0.5rem;
-}
+    .section {
+      background: var(--card);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      padding: 1.8rem;
+      margin-bottom: 1.8rem;
+      box-shadow: var(--shadow);
+      transition: var(--transition);
+    }
 
-.codespre {
-background-color: #1e1e2f;
-color: #f1f1f1;
-padding: 10px;
-border-radius: 8px;
-font-size: 12px;
-overflow-x: auto;
-margin-bottom: 1rem;
-font-family: monospace;
-transition: background 0.3s;
-}
+    .section:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(26,115,232,0.15);
+    }
 
-pre:hover {
-background-color: #2a2a3d;
-}
+    .section h2 {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 1.1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
 
-.copybutton {
-background: linear-gradient(to right, #1a73e8, #4285f4);
-border: none;
-color: white;
-padding: 0.6rem 1.2rem;
-border-radius: 6px;
-font-size: 1rem;
-font-weight: 500;
-cursor: pointer;
-transition: background 0.3s, transform 0.2s;
-}
+    .codespre {
+      background: #0f172a;
+      color: #e2e8f0;
+      padding: 1rem;
+      border-radius: 8px;
+      font-family: 'JetBrains Mono', 'Consolas', monospace;
+      font-size: 0.9rem;
+      overflow-x: auto;
+      margin: 1rem 0;
+      border: 1px solid #1e293b;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
 
-#youtubevideo {
-background: linear-gradient(to right, #1a73e8, #4285f4);
-border: none;
-color: white;
-padding: 0.6rem 1.2rem;
-border-radius: 6px;
-font-size: 1rem;
-font-weight: 500;
-cursor: pointer;
-transition: background 0.3s, transform 0.2s;
-}
+    .btn {
+      background: linear-gradient(to right, var(--primary), var(--primary-light));
+      color: white;
+      border: none;
+      padding: 0.75rem 1.4rem;
+      border-radius: 8px;
+      font-size: 0.98rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
 
-button:hover {
-background: linear-gradient(to right, #1669c1, #357ae8);
-transform: scale(1.03);
-}
+    .btn:hover {
+      background: linear-gradient(to right, var(--primary-dark), #2b6cb0);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(26,115,232,0.3);
+    }
 
-.copied {
-display: inline-block;
-margin-left: 1rem;
-color: #34a853;
-font-weight: bold;
-opacity: 0;
-transform: translateY(-5px);
-transition: opacity 0.3s ease, transform 0.3s ease;
-}
+    .btn:active {
+      transform: translateY(0);
+    }
 
-.copied.visible {
-opacity: 1;
-transform: translateY(0);
-}
-</style>
+    .copied {
+      margin-left: 1rem;
+      color: #16a34a;
+      font-weight: 600;
+      opacity: 0;
+      transform: translateY(-4px);
+      transition: opacity 0.35s ease, transform 0.35s ease;
+    }
 
-</head>  
-<body>  <main>  
-  <div class="container">  
-  <h1 id="installer-name" >Pterodactyl Installer</h1>    <div class="section">  
-    <button id="youtubevideo" onclick="window.location.href=''">YouTube Video</button></span>  
-  </div>    <div class="section">  
-    <h2>🔧 Install Panel</h2>  
-    <pre class="codespre" id="panelCmd">bash <(curl -sSL https://ksweb.vercel.app/code/moh/pterodactyl/panel)</pre>  
-    <button class="copybutton" onclick="copyToClipboard('panelCmd', this)">Copy</button>  
-    <span class="copied">Copied!</span>  
-  </div>    <div class="section">  
-    <h2>🛰️ Install Wings</h2>  
-    <pre class="codespre" id="wingsCmd">bash <(curl -sSL https://ksweb.vercel.app/code/moh/pterodactyl/wings)</pre>  
-    <button class="copybutton" onclick="copyToClipboard('wingsCmd', this)">Copy</button>  
-    <span class="copied">Copied!</span>  
-  </div>  </div>  <script src="script.js"></script>  </main>    <script>  
-    function copyToClipboard(preId, button) {  
-  const pre = document.getElementById(preId);  
-  const copiedSpan = button.nextElementSibling;  
+    .copied.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .flex-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    @media (max-width: 600px) {
+      .container { padding: 1.5rem 1rem; }
+      .section { padding: 1.4rem; }
+      .btn { flex: 1; justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <h1 id="installer-name">Pterodactyl Installer</h1>
+
+  <!-- Quick Links -->
+  <div class="section">
+    <div class="flex-buttons">
+      <button class="btn" onclick="window.open('https://www.youtube.com/results?search_query=pterodactyl+panel+install+2024+2025','_blank')">
+        🎥 YouTube Tutorials
+      </button>
+      <button class="btn" onclick="window.open('https://pterodactyl.io/','_blank')">
+        🌐 Official Website
+      </button>
+    </div>
+  </div>
+
+  <!-- Install Panel -->
+  <div class="section">
+    <h2>🔧 Install Panel</h2>
+    <pre class="codespre" id="panelCmd">bash <(curl -sSL https://ksweb.vercel.app/code/moh/pterodactyl/panel)</pre>
+    <button class="btn" onclick="copyCommand('panelCmd', this)">📋 Copy Command</button>
+    <span class="copied">Copied!</span>
+  </div>
+
+  <!-- Install Wings -->
+  <div class="section">
+    <h2>🛰️ Install Wings</h2>
+    <pre class="codespre" id="wingsCmd">bash <(curl -sSL https://ksweb.vercel.app/code/moh/pterodactyl/wings)</pre>
+    <button class="btn" onclick="copyCommand('wingsCmd', this)">📋 Copy Command</button>
+    <span class="copied">Copied!</span>
+  </div>
+
+</div>
+
+<script>
+function copyCommand(preId, button) {
+  const pre = document.getElementById(preId);
+  const copied = button.nextElementSibling;
   
-  if (!pre) return;  
-  
-  const text = pre.textContent.trim();  
-  
-  navigator.clipboard.writeText(text).then(() => {  
-    if (copiedSpan && copiedSpan.classList.contains('copied')) {  
-      copiedSpan.classList.add('visible');  
-      setTimeout(() => {  
-        copiedSpan.classList.remove('visible');  
-      }, 2000);  
-    }  
-  }).catch(err => {  
-    console.error("Copy failed:", err);  
-  });  
-}  
-  </script>
-  </body>  
+  if (!pre) return;
+
+  const text = pre.textContent.trim();
+
+  navigator.clipboard.writeText(text).then(() => {
+    copied.classList.add('visible');
+    setTimeout(() => copied.classList.remove('visible'), 2200);
+  }).catch(err => {
+    console.error('Clipboard error:', err);
+    copied.textContent = 'Copy failed!';
+    copied.classList.add('visible');
+    setTimeout(() => {
+      copied.classList.remove('visible');
+      copied.textContent = 'Copied!';
+    }, 2200);
+  });
+}
+</script>
+
+</body>
 </html>
