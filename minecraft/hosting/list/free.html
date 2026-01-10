@@ -185,16 +185,6 @@ main{
   </select>
 </div>
   
-<div class="table-head">
-  <p>Name</p>
-  <p>RAM</p>
-  <p>CPU</p>
-  <p>Disk</p>
-  <p>Location</p>
-  <p>Uptime</p>
-  <p>Link</p>
-</div>
-  
 <div class="stats" id="resultCount">Loading...</div>
 
 
@@ -259,7 +249,7 @@ function render(data){
         <div class="row-bottom">
           <div><b>Location:</b> ${h.location}</div>
           <span class="tag ${h.uptime}">
-            ${h.uptime === "good" ? "24/7" : "Not 24/7"}
+            ${h.uptime === "good" ? "24/7" : "24/7"}
           </span>
         </div>
 
