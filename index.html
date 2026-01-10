@@ -217,7 +217,8 @@ body.sidebar-open #sidebar { left: 0; }
 #favButton {
   cursor: pointer;
   color: var(--accent);
-  font-size: 20px;
+  font-size: 25px;
+  font-weight: 900;
   user-select: none;
   transition: transform 0.2s ease, color 0.2s ease;
 }
@@ -422,10 +423,10 @@ const isFavorite = (url) => getFavorites().some(item => new URL(item.url, locati
 const updateFavIcon = () => {
   const frameUrl = frame.src;
   if (isFavorite(frameUrl)) {
-    favButton.textContent = "⭐";
+    favButton.textContent = "✦";
     favButton.classList.add("filled");
   } else {
-    favButton.textContent = "☆";
+    favButton.textContent = "✧";
     favButton.classList.remove("filled");
   }
 };
