@@ -3,152 +3,212 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>KS Warrior - Free Game Hosting 2026</title>
+<title>KS Warrior • Free Game Hosting 2026</title>
+
+<meta name="color-scheme" content="dark"/>
+<meta name="theme-color" content="#000000"/>
 
 <style>
 :root{
-  --primary:#1d2ddc;
-  --primary-dark:#0f1ac9;
-  --bg:#f8f9ff;
-  --card:#ffffff;
-  --text:#111;
-  --text-light:#444;
+  --bg:#000000;
+  --card:rgba(18,18,28,0.94);
+  --soft:rgba(28,28,40,0.96);
+  --border:rgba(255,255,255,0.12);
+  --text:#f8f9fa;
+  --muted:#a0a0b0;
+  --accent:#ffffff;
+  --success:#4ade80;
+  --warning:#f59e0b;
+  --danger:#ef4444;
+  --radius:14px;
+  --gap:26px;
+  --transition:all .4s cubic-bezier(.22,1,.36,1);
 }
 
-*{box-sizing:border-box;margin:0;padding:0}
+*{margin:0;padding:0;box-sizing:border-box}
 
 body{
+  background:linear-gradient(135deg,#000 0%,#0a0a0f 100%);
+  color:var(--text);
   font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
-  background:linear-gradient(135deg,#eef1ff,#f8f9ff);
-  padding:20px 12px;
+  min-height:100dvh;
+  overflow-x:hidden;
 }
 
-.container{max-width:1400px;margin:auto}
+main{
+  max-width:1400px;
+  margin:auto;
+  padding:28px 14px;
+  animation:fadeIn .8s ease-out;
+}
 
-.section-title{
+@keyframes fadeIn{
+  from{opacity:0;transform:translateY(18px)}
+  to{opacity:1;transform:none}
+}
+
+.title{
   text-align:center;
-  font-size:clamp(1.8rem,5vw,2.6rem);
-  color:var(--primary);
-  margin:1.2em 0;
-  font-weight:800;
+  font-size:clamp(2rem,6vw,2.8rem);
+  font-weight:900;
+  letter-spacing:-1px;
+  margin-bottom:2.2rem;
+  background:linear-gradient(90deg,#e5e7eb,#fff,#d1d5db);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-size:200% auto;
+  animation:shine 6s linear infinite;
 }
+
+@keyframes shine{to{background-position:200% center}}
 
 .filters{
   display:flex;
   flex-wrap:wrap;
-  gap:12px;
+  gap:14px;
   justify-content:center;
-  margin-bottom:24px;
+  margin-bottom:22px;
 }
 
 .filter{
-  padding:10px 16px;
-  border:1px solid #d0d5ff;
+  background:var(--soft);
+  border:1px solid var(--border);
+  color:var(--text);
+  padding:12px 14px;
   border-radius:10px;
-  background:white;
   font-size:.95rem;
+  min-width:160px;
+  transition:var(--transition);
 }
 
-#searchInput{min-width:240px;max-width:420px;flex:1}
+.filter::placeholder{color:var(--muted)}
+.filter:focus{
+  outline:none;
+  border-color:rgba(255,255,255,.35);
+  background:rgba(255,255,255,.05);
+}
+
+#searchInput{flex:1;max-width:420px}
 
 .stats{
   text-align:center;
+  color:var(--muted);
   margin-bottom:20px;
-  color:#555;
+  font-size:.95rem;
 }
 
-.hosting-grid{
+.grid{
   display:grid;
   grid-template-columns:repeat(auto-fill,minmax(320px,1fr));
-  gap:22px;
+  gap:24px;
 }
 
-.hosting-card{
+.card{
   background:var(--card);
-  border-left:5px solid var(--primary);
-  border-radius:14px;
+  border:1px solid var(--border);
+  border-radius:var(--radius);
   padding:1.4rem;
-  box-shadow:0 4px 14px rgba(0,0,0,.08);
   display:flex;
   flex-direction:column;
-  gap:.5rem;
-  transition:.25s;
+  gap:.55rem;
+  backdrop-filter:blur(16px);
+  transition:var(--transition);
 }
 
-.hosting-card:hover{
+.card:hover{
   transform:translateY(-6px);
+  box-shadow:0 14px 34px rgba(0,0,0,.5);
 }
 
-.hosting-card h3{font-size:1.35rem}
+.card h3{
+  font-size:1.35rem;
+  font-weight:800;
+}
 
-.hosting-card p{color:var(--text-light);font-size:.95rem}
+.card p{
+  color:var(--muted);
+  font-size:.94rem;
+}
 
 .tag{
-  padding:4px 10px;
-  border-radius:6px;
-  font-size:.8rem;
-  font-weight:700;
+  align-self:flex-start;
+  margin-top:6px;
+  padding:5px 12px;
+  border-radius:999px;
+  font-size:.75rem;
+  font-weight:800;
 }
 
-.tag.good{background:#28a745;color:#fff}
-.tag.warning{background:#fd7e14;color:#fff}
-.tag.danger{background:#dc3545;color:#fff}
+.good{background:rgba(74,222,128,.15);color:var(--success)}
+.warning{background:rgba(245,158,11,.15);color:var(--warning)}
+.danger{background:rgba(239,68,68,.15);color:var(--danger)}
 
-.btn-visit{
+.btn{
   margin-top:auto;
-  padding:12px;
-  background:var(--primary);
-  color:white;
-  text-decoration:none;
-  border-radius:10px;
-  font-weight:700;
   text-align:center;
+  padding:12px;
+  border-radius:10px;
+  font-weight:800;
+  text-decoration:none;
+  color:var(--text);
+  border:1px solid var(--border);
+  transition:var(--transition);
 }
 
-.btn-visit:hover{background:var(--primary-dark)}
+.btn:hover{
+  background:rgba(255,255,255,.08);
+  border-color:rgba(255,255,255,.35);
+}
 
-.empty-state{
+.empty{
+  grid-column:1/-1;
   text-align:center;
-  padding:60px;
-  color:#777;
-  font-size:1.2rem;
+  padding:60px 20px;
+  color:var(--muted);
+  font-size:1.1rem;
+}
+
+@media(max-width:600px){
+  main{padding:22px 12px}
 }
 </style>
 </head>
 <body>
 
-<div class="container">
-<h1 class="section-title">Free Minecraft & Game Hosting 2026</h1>
+<main>
 
-<div class="filters">
-  <input id="searchInput" class="filter" placeholder="Search hosting name">
-  <select id="uptimeFilter" class="filter">
-    <option value="">All Uptime</option>
-    <option value="good">Stable 24/7</option>
-    <option value="warning">Questionable</option>
-    <option value="danger">Unreliable</option>
-  </select>
-  <select id="locationFilter" class="filter">
-    <option value="">All Locations</option>
-    <option value="india">India</option>
-    <option value="singapore">Singapore</option>
-    <option value="france">France</option>
-    <option value="germany">Germany</option>
-    <option value="usa">USA</option>
-    <option value="eu">Europe</option>
-  </select>
-  <select id="ramFilter" class="filter">
-    <option value="">All RAM</option>
-    <option value="1">≥ 1 GB</option>
-    <option value="2">≥ 2 GB</option>
-    <option value="4">≥ 4 GB</option>
-    <option value="6">≥ 6 GB</option>
-  </select>
-</div>
+  <div class="title">Free Minecraft & Game Hosting 2026</div>
 
-<div class="stats" id="resultCount">Loading...</div>
-<div class="hosting-grid" id="hostingList"></div>
-</div>
+  <div class="filters">
+    <input id="searchInput" class="filter" placeholder="Search hosting name">
+    <select id="uptimeFilter" class="filter">
+      <option value="">All Uptime</option>
+      <option value="good">Stable 24/7</option>
+      <option value="warning">Questionable</option>
+      <option value="danger">Unreliable</option>
+    </select>
+    <select id="locationFilter" class="filter">
+      <option value="">All Locations</option>
+      <option value="india">India</option>
+      <option value="singapore">Singapore</option>
+      <option value="france">France</option>
+      <option value="germany">Germany</option>
+      <option value="usa">USA</option>
+      <option value="eu">Europe</option>
+    </select>
+    <select id="ramFilter" class="filter">
+      <option value="">All RAM</option>
+      <option value="1">≥ 1 GB</option>
+      <option value="2">≥ 2 GB</option>
+      <option value="4">≥ 4 GB</option>
+      <option value="6">≥ 6 GB</option>
+    </select>
+  </div>
+
+  <div class="stats" id="resultCount">Loading...</div>
+  <div class="grid" id="hostingList"></div>
+
+</main>
 
 <script>
 const hostingList=document.getElementById("hostingList");
