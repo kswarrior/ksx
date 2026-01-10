@@ -78,6 +78,8 @@ main{
 }
 
 .row{
+  display:grid;
+  grid-template-columns: 1fr auto;
   gap:12px;
   padding:14px;
   border:1px solid var(--border);
@@ -90,25 +92,51 @@ main{
   background:rgba(255,255,255,.04);
 }
 
-.name{
-  font-weight:800;
+.row-top{
+  grid-column:1 / -1;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
 }
 
-.info {
+.name{
+  font-weight:800;
+  font-size:1rem;
+}
+
+.row-specs{
+  grid-column:1 / -1;
+  display:flex;
+  gap:16px;
+  color:var(--muted);
+  font-size:.9rem;
+}
+
+.row-bottom{
+  grid-column:1 / -1;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
 }
 
 .tag{
   padding:4px 10px;
   border-radius:999px;
   font-size:.75rem;
-  font-weight:800;
-  width:max-content;
+  font-weight:900;
 }
 
 .good{background:rgba(74,222,128,.15);color:var(--success)}
 .warning{background:rgba(245,158,11,.15);color:var(--warning)}
 .danger{background:rgba(239,68,68,.15);color:var(--danger)}
 
+@media(max-width:600px){
+  .row-specs{
+    flex-wrap:wrap;
+    gap:10px;
+  }
+}
+  
 .btn{
   text-decoration:none;
   padding:8px 12px;
@@ -123,14 +151,6 @@ main{
   background:rgba(255,255,255,.08);
 }
 
-/* ===== MOBILE ===== */
-@media(max-width:900px){
-  .table-head{display:none}
-  .row{
-    grid-template-columns:1fr 1fr;
-    row-gap:8px;
-  }
-}
 </style>
 </head>
 <body>
@@ -224,16 +244,25 @@ function render(data){
   data.forEach(h=>{
     hostingList.innerHTML+=`
       <div class="row">
-        <div class="name">${h.name}</div>
-        <a class="btn" href="${h.link}" target="_blank">Visit</a>
-        <br>
-      <div class"info">
-        <div>${h.ram} GB</div>
-        <div>${h.cpu}</div>
-        <div>${h.disk} GB</div>
-        <div>${h.location}</div>
-        <div><span class="tag ${h.uptime}">${h.uptime}</span></div>
-      </div>
+
+        <div class="row-top">
+          <div class="name">${h.name}</div>
+          <a class="btn" href="${h.link}" target="_blank">Visit</a>
+        </div>
+
+        <div class="row-specs">
+          <div><b>RAM:</b> ${h.ram} GB</div>
+          <div><b>CPU:</b> ${h.cpu}</div>
+          <div><b>DISK:</b> ${h.disk} GB</div>
+        </div>
+
+        <div class="row-bottom">
+          <div><b>Location:</b> ${h.location}</div>
+          <span class="tag ${h.uptime}">
+            ${h.uptime === "good" ? "24/7" : "Not 24/7"}
+          </span>
+        </div>
+
       </div>
     `;
   });
