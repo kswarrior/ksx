@@ -21,8 +21,7 @@
   --warning:#f59e0b;
   --danger:#ef4444;
   --radius:14px;
-  --gap:26px;
-  --transition:all .4s cubic-bezier(.22,1,.36,1);
+  --transition:all .35s ease;
 }
 
 *{margin:0;padding:0;box-sizing:border-box}
@@ -32,42 +31,27 @@ body{
   color:var(--text);
   font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
   min-height:100dvh;
-  overflow-x:hidden;
 }
 
 main{
   max-width:1400px;
   margin:auto;
   padding:28px 14px;
-  animation:fadeIn .8s ease-out;
-}
-
-@keyframes fadeIn{
-  from{opacity:0;transform:translateY(18px)}
-  to{opacity:1;transform:none}
 }
 
 .title{
   text-align:center;
-  font-size:clamp(2rem,6vw,2.8rem);
+  font-size:2.6rem;
   font-weight:900;
-  letter-spacing:-1px;
-  margin-bottom:2.2rem;
-  background:linear-gradient(90deg,#e5e7eb,#fff,#d1d5db);
-  -webkit-background-clip:text;
-  -webkit-text-fill-color:transparent;
-  background-size:200% auto;
-  animation:shine 6s linear infinite;
+  margin-bottom:2rem;
 }
-
-@keyframes shine{to{background-position:200% center}}
 
 .filters{
   display:flex;
   flex-wrap:wrap;
   gap:14px;
   justify-content:center;
-  margin-bottom:22px;
+  margin-bottom:20px;
 }
 
 .filter{
@@ -76,67 +60,63 @@ main{
   color:var(--text);
   padding:12px 14px;
   border-radius:10px;
-  font-size:.95rem;
   min-width:160px;
-  transition:var(--transition);
 }
-
-.filter::placeholder{color:var(--muted)}
-.filter:focus{
-  outline:none;
-  border-color:rgba(255,255,255,.35);
-  background:rgba(255,255,255,.05);
-}
-
-#searchInput{flex:1;max-width:420px}
 
 .stats{
   text-align:center;
   color:var(--muted);
-  margin-bottom:20px;
-  font-size:.95rem;
+  margin-bottom:14px;
 }
 
-.grid{
+/* ===== TABLE HEADER ===== */
+.table-head{
   display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(320px,1fr));
-  gap:24px;
+  grid-template-columns:2fr 1fr 1fr 1fr 1.2fr 1.2fr 1fr;
+  gap:12px;
+  padding:14px;
+  border:1px solid var(--border);
+  border-radius:12px;
+  background:var(--soft);
+  font-size:.85rem;
+  color:var(--muted);
+  font-weight:700;
 }
 
-.card{
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:var(--radius);
-  padding:1.4rem;
+/* ===== ROW LIST ===== */
+.list{
   display:flex;
   flex-direction:column;
-  gap:.55rem;
-  backdrop-filter:blur(16px);
+  gap:10px;
+  margin-top:10px;
+}
+
+.row{
+  display:grid;
+  grid-template-columns:2fr 1fr 1fr 1fr 1.2fr 1.2fr 1fr;
+  gap:12px;
+  padding:14px;
+  border:1px solid var(--border);
+  border-radius:12px;
+  background:var(--card);
+  align-items:center;
   transition:var(--transition);
 }
 
-.card:hover{
-  transform:translateY(-6px);
-  box-shadow:0 14px 34px rgba(0,0,0,.5);
+.row:hover{
+  background:rgba(255,255,255,.04);
 }
 
-.card h3{
-  font-size:1.35rem;
+.name{
   font-weight:800;
-}
-
-.card p{
-  color:var(--muted);
-  font-size:.94rem;
 }
 
 .tag{
-  align-self:flex-start;
-  margin-top:6px;
-  padding:5px 12px;
+  padding:4px 10px;
   border-radius:999px;
   font-size:.75rem;
   font-weight:800;
+  width:max-content;
 }
 
 .good{background:rgba(74,222,128,.15);color:var(--success)}
@@ -144,32 +124,26 @@ main{
 .danger{background:rgba(239,68,68,.15);color:var(--danger)}
 
 .btn{
-  margin-top:auto;
-  text-align:center;
-  padding:12px;
-  border-radius:10px;
-  font-weight:800;
   text-decoration:none;
-  color:var(--text);
+  padding:8px 12px;
+  border-radius:8px;
   border:1px solid var(--border);
-  transition:var(--transition);
+  color:var(--text);
+  font-size:.85rem;
+  text-align:center;
 }
 
 .btn:hover{
   background:rgba(255,255,255,.08);
-  border-color:rgba(255,255,255,.35);
 }
 
-.empty{
-  grid-column:1/-1;
-  text-align:center;
-  padding:60px 20px;
-  color:var(--muted);
-  font-size:1.1rem;
-}
-
-@media(max-width:600px){
-  main{padding:22px 12px}
+/* ===== MOBILE ===== */
+@media(max-width:900px){
+  .table-head{display:none}
+  .row{
+    grid-template-columns:1fr 1fr;
+    row-gap:8px;
+  }
 }
 </style>
 </head>
@@ -177,36 +151,48 @@ main{
 
 <main>
 
-  <div class="title">Free Minecraft & Game Hosting 2026</div>
+<div class="title">Free Minecraft & Game Hosting 2026</div>
 
-  <div class="filters">
-    <input id="searchInput" class="filter" placeholder="Search hosting name">
-    <select id="uptimeFilter" class="filter">
-      <option value="">All Uptime</option>
-      <option value="good">Stable 24/7</option>
-      <option value="warning">Questionable</option>
-      <option value="danger">Unreliable</option>
-    </select>
-    <select id="locationFilter" class="filter">
-      <option value="">All Locations</option>
-      <option value="india">India</option>
-      <option value="singapore">Singapore</option>
-      <option value="france">France</option>
-      <option value="germany">Germany</option>
-      <option value="usa">USA</option>
-      <option value="eu">Europe</option>
-    </select>
-    <select id="ramFilter" class="filter">
-      <option value="">All RAM</option>
-      <option value="1">≥ 1 GB</option>
-      <option value="2">≥ 2 GB</option>
-      <option value="4">≥ 4 GB</option>
-      <option value="6">≥ 6 GB</option>
-    </select>
-  </div>
+<div class="filters">
+  <input id="searchInput" class="filter" placeholder="Search hosting name">
+  <select id="uptimeFilter" class="filter">
+    <option value="">All Uptime</option>
+    <option value="good">Stable 24/7</option>
+    <option value="warning">Questionable</option>
+    <option value="danger">Unreliable</option>
+  </select>
+  <select id="locationFilter" class="filter">
+    <option value="">All Locations</option>
+    <option value="india">India</option>
+    <option value="singapore">Singapore</option>
+    <option value="france">France</option>
+    <option value="germany">Germany</option>
+    <option value="usa">USA</option>
+    <option value="eu">Europe</option>
+  </select>
+  <select id="ramFilter" class="filter">
+    <option value="">All RAM</option>
+    <option value="1">≥ 1 GB</option>
+    <option value="2">≥ 2 GB</option>
+    <option value="4">≥ 4 GB</option>
+    <option value="6">≥ 6 GB</option>
+  </select>
+</div>
 
-  <div class="stats" id="resultCount">Loading...</div>
-  <div class="grid" id="hostingList"></div>
+<div class="stats" id="resultCount">Loading...</div>
+
+<!-- HEADER BAR -->
+<div class="table-head">
+  <div>Name</div>
+  <div>RAM</div>
+  <div>CPU</div>
+  <div>Disk</div>
+  <div>Location</div>
+  <div>Uptime</div>
+  <div>Link</div>
+</div>
+
+<div class="list" id="hostingList"></div>
 
 </main>
 
@@ -249,29 +235,26 @@ function render(data){
   hostingList.innerHTML="";
   resultCount.textContent=`${data.length} hosting providers found`;
 
-  if(!data.length){
-    hostingList.innerHTML=`<div class="empty-state">No results found</div>`;
-    return;
-  }
-
   data.forEach(h=>{
     hostingList.innerHTML+=`
-    <div class="hosting-card">
-      <h3>${h.name}</h3>
-      <p><b>RAM:</b> ${h.ram} GB</p>
-      <p><b>CPU:</b> ${h.cpu}</p>
-      <p><b>Disk:</b> ${h.disk}</p>
-      <p><b>Location:</b> ${h.location}</p>
-      <span class="tag ${h.uptime}">
-        ${h.uptime==="good"?"Stable 24/7":h.uptime==="warning"?"Questionable":"Unreliable"}
-      </span>
-      <a class="btn-visit" href="${h.link}" target="_blank">Visit Panel →</a>
-    </div>`;
+      <div class="row">
+        <div class="name">${h.name}</div>
+        <div>${h.ram} GB</div>
+        <div>${h.cpu}</div>
+        <div>${h.disk}</div>
+        <div>${h.location}</div>
+        <div><span class="tag ${h.uptime}">
+          ${h.uptime==="good"?"Stable":"Warning"}
+        </span></div>
+        <a class="btn" href="${h.link}" target="_blank">Visit →</a>
+      </div>
+    `;
   });
 }
 
 [searchInput,uptimeFilter,locationFilter,ramFilter]
 .forEach(e=>e.addEventListener("input",filterRender));
 </script>
+
 </body>
 </html>
