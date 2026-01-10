@@ -3,86 +3,121 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>KS Warrior Dashboard - Free Hosting 2025/2026</title>
+  <title>KS Warrior - Free Game Hosting 2025/2026</title>
+  <meta name="description" content="List of the best free Minecraft and game server hosting providers in 2026"/>
+
   <style>
-    .section-title {
-      text-align: center;
-      font-size: 2.4em;
-      color: #1d2ddc;
-      margin: 25px 0 35px;
-      transition: color 0.3s ease;
+    :root {
+      --primary: #1d2ddc;
+      --primary-dark: #0f1ac9;
+      --bg: #f8f9ff;
+      --card: #ffffff;
+      --text: #111;
+      --text-light: #444;
+      --border: #e0e4ff;
     }
 
-    .section-title:hover {
-      color: #0f1ac9;
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
 
-    .filter-container {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      justify-content: center;
-      margin-bottom: 30px;
+    body {
+      font-family: system-ui, -apple-system, BlinkMacC, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #eef1ff 0%, #f8f9ff 100%);
+      color: var(--text);
+      line-height: 1.5;
+      min-height: 100vh;
+      padding: 20px 12px;
     }
 
-    .filter {
-      padding: 10px 14px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      background: #eef1ff;
-      font-size: 15px;
-      min-width: 110px;
-      transition: all 0.25s ease;
-    }
-
-    .filter:focus {
-      border-color: #1d2ddc;
-      box-shadow: 0 0 0 3px rgba(29, 45, 220, 0.18);
-      outline: none;
-    }
-
-    #searchInput {
-      width: 320px;
-      flex-grow: 1;
-      max-width: 400px;
-    }
-
-    .hosting-list {
-      padding: 0 10px;
-      display: grid;
-      gap: 20px;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    .container {
       max-width: 1400px;
       margin: 0 auto;
     }
 
-    .hosting-box {
-      background: #f8f9ff;
-      border-left: 5px solid #1d2ddc;
-      border-radius: 12px;
-      padding: 18px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    h1.section-title {
+      text-align: center;
+      font-size: clamp(1.8rem, 5vw, 2.6rem);
+      color: var(--primary);
+      margin: 1.2em 0 1.5em;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+      margin-bottom: 2.2rem;
+      padding: 0 10px;
+    }
+
+    .filter {
+      padding: 10px 16px;
+      border: 1px solid #d0d5ff;
+      border-radius: 10px;
+      background: white;
+      font-size: 0.95rem;
+      min-width: 120px;
+      transition: all 0.22s ease;
+    }
+
+    .filter:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(29, 45, 220, 0.15);
+    }
+
+    #searchInput {
+      flex: 1;
+      min-width: 240px;
+      max-width: 420px;
+    }
+
+    .stats {
+      text-align: center;
+      color: #555;
+      margin: 1rem 0 1.5rem;
+      font-size: 0.95rem;
+    }
+
+    .hosting-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 22px;
+      padding: 0 8px;
+    }
+
+    .hosting-card {
+      background: var(--card);
+      border-radius: 14px;
+      border-left: 5px solid var(--primary);
+      box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+      padding: 1.4rem;
       transition: all 0.28s ease;
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 0.6rem;
     }
 
-    .hosting-box:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 10px 24px rgba(0,0,0,0.1);
+    .hosting-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 28px rgba(0,0,0,0.12);
     }
 
-    .hosting-box h3 {
-      margin: 0 0 10px;
-      color: #111;
-      font-size: 1.35rem;
+    .hosting-card h3 {
+      margin: 0;
+      font-size: 1.38rem;
+      color: var(--text);
     }
 
-    .hosting-box p {
-      margin: 4px 0;
-      font-size: 0.95rem;
-      color: #333;
+    .hosting-card p {
+      margin: 0.3em 0;
+      color: var(--text-light);
+      font-size: 0.96rem;
     }
 
     .tag {
@@ -90,54 +125,43 @@
       padding: 5px 12px;
       border-radius: 6px;
       font-size: 0.82rem;
-      font-weight: bold;
-      margin-top: 6px;
-      min-width: 62px;
-      text-align: center;
+      font-weight: 700;
+      margin-top: 0.4em;
     }
 
-    .tag.good {
-      background: #28a745;
-      color: white;
-    }
+    .tag.good    { background: #28a745; color: white; }
+    .tag.warning { background: #fd7e14; color: white; }
+    .tag.danger  { background: #dc3545; color: white; }
 
-    .tag.warning {
-      background: #fd7e14;
-      color: white;
-    }
-
-    .tag.danger {
-      background: #dc3545;
-      color: white;
-    }
-
-    .visit {
+    .btn-visit {
       margin-top: auto;
-      padding: 11px 18px;
-      background-color: #1d2ddc;
+      padding: 12px 20px;
+      background: var(--primary);
       color: white;
       border: none;
-      border-radius: 8px;
-      font-size: 0.96rem;
-      font-weight: bold;
-      cursor: pointer;
-      transition: all 0.25s ease;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 0.98rem;
       text-align: center;
       text-decoration: none;
       display: block;
+      transition: all 0.25s ease;
     }
 
-    .visit:hover {
-      background-color: #0f1ac9;
+    .btn-visit:hover {
+      background: var(--primary-dark);
       transform: translateY(-2px);
     }
 
-    .visit:active {
-      transform: scale(0.97);
+    .empty-state {
+      text-align: center;
+      padding: 5rem 1rem;
+      color: #777;
+      font-size: 1.3rem;
     }
 
-    @media (max-width: 500px) {
-      .hosting-list {
+    @media (max-width: 520px) {
+      .hosting-grid {
         grid-template-columns: 1fr;
       }
       #searchInput {
@@ -148,16 +172,16 @@
 </head>
 <body>
 
-<main>
-  <h1 class="section-title">Free Minecraft & Game Hosting List</h1>
+<div class="container">
+  <h1 class="section-title">Free Minecraft & Game Hosting 2026</h1>
 
-  <div class="filter-container">
-    <input id="searchInput" class="filter" type="text" placeholder="Search hosting name..."/>
-
+  <div class="filters">
+    <input id="searchInput" class="filter" type="search" placeholder="Search hosting name..."/>
+    
     <select id="uptimeFilter" class="filter">
       <option value="">All Uptime</option>
       <option value="good">Stable 24/7</option>
-      <option value="warning">Questionable 24/7</option>
+      <option value="warning">Questionable</option>
       <option value="danger">Unreliable / Not 24/7</option>
     </select>
 
@@ -168,7 +192,7 @@
       <option value="germany">Germany</option>
       <option value="france">France</option>
       <option value="usa">USA</option>
-      <option value="eu">Europe (general)</option>
+      <option value="eu">Europe</option>
     </select>
 
     <select id="ramFilter" class="filter">
@@ -181,46 +205,123 @@
     </select>
   </div>
 
-  <div class="hosting-list" id="hostingList"></div>
-</main>
+  <div class="stats" id="resultCount">Loading hostings...</div>
+
+  <div class="hosting-grid" id="hostingList"></div>
+</div>
 
 <script>
-// ── DOM Elements ────────────────────────────────────────────────────────
-const hostingList     = document.getElementById("hostingList");
+// ── Data ────────────────────────────────────────────────────────────────
+const hostingListEl   = document.getElementById("hostingList");
+const resultCountEl   = document.getElementById("resultCount");
 const searchInput     = document.getElementById("searchInput");
 const uptimeFilter    = document.getElementById("uptimeFilter");
 const locationFilter  = document.getElementById("locationFilter");
 const ramFilter       = document.getElementById("ramFilter");
 
-// ── Global Data ─────────────────────────────────────────────────────────
-let hostings = [];
+let allHostings = [];
 
-// ── Load JSON Data ──────────────────────────────────────────────────────
-async function loadHostings(){
-  try{
-    const res = await fetch("free.json");
-    if(!res.ok) throw new Error("Failed to load free.json");
+// ── More flexible location matching ─────────────────────────────────────
+const locationKeywords = {
+  india:     ["india", "in", "mumbai", "bangalore", "delhi", "hyderabad"],
+  singapore: ["singapore", "sin", "sg"],
+  germany:   ["germany", "de", "frankfurt", "berlin", "nuremberg"],
+  france:    ["france", "paris", "fr"],
+  usa:       ["usa", "us", "united states", "new york", "los angeles", "dallas", "chicago"],
+  eu:        ["europe", "eu", "germany", "france", "netherlands", "finland", "spain", "uk", "poland"]
+};
 
-    hostings = await res.json();
-    renderCards(hostings);
-  }catch(err){
-    hostingList.innerHTML = `<p style="color:red">Failed to load hosting data</p>`;
+// ── Load data ───────────────────────────────────────────────────────────
+async function loadData() {
+  try {
+    // Option A: from separate file (recommended for real use)
+    // const res = await fetch("free-hostings-2026.json");
+    
+    // Option B: embedded data for quick testing / single-file version
+    const res = await fetch("data:application/json," + encodeURIComponent(JSON.stringify([
+      {
+        name: "FalixNodes",
+        ram: 4,
+        cpu: "Ryzen 9 5950X (shared)",
+        disk: "30–∞ GB NVMe",
+        location: "Germany, France, Singapore",
+        uptime: "good",
+        link: "https://falixnodes.net"
+      },
+      {
+        name: "Aternos",
+        ram: 1.5,
+        cpu: "Shared",
+        disk: "Unlimited (slow)",
+        location: "Europe + USA",
+        uptime: "warning",
+        link: "https://aternos.org"
+      },
+      {
+        name: "Minefort",
+        ram: 2,
+        cpu: "Shared",
+        disk: "10 GB",
+        location: "Singapore, Europe",
+        uptime: "warning",
+        link: "https://minefort.com"
+      },
+      {
+        name: "Server.pro (free tier)",
+        ram: 1,
+        cpu: "Shared",
+        disk: "5 GB",
+        location: "USA, Europe",
+        uptime: "danger",
+        link: "https://server.pro"
+      },
+      // Add more real hosts here...
+    ])));
+
+    if (!res.ok) throw new Error("Failed to load");
+    allHostings = await res.json();
+    filterAndRender();
+  } catch (err) {
+    hostingListEl.innerHTML = `<div class="empty-state">Failed to load hosting data 😓<br><small>${err.message}</small></div>`;
     console.error(err);
   }
 }
 
-// ── Render Cards ────────────────────────────────────────────────────────
-function renderCards(data) {
-  hostingList.innerHTML = "";
+// ── Filter & Render ─────────────────────────────────────────────────────
+function filterAndRender() {
+  const query = searchInput.value.toLowerCase().trim();
+  const uptime = uptimeFilter.value;
+  const locVal = locationFilter.value;
+  const minRam = ramFilter.value ? Number(ramFilter.value) : null;
 
-  if(data.length === 0){
-    hostingList.innerHTML = `<p>No results found</p>`;
+  const filtered = allHostings.filter(h => {
+    if (query && !h.name.toLowerCase().includes(query)) return false;
+    if (uptime && h.uptime !== uptime) return false;
+    
+    if (minRam !== null && h.ram < minRam) return false;
+
+    if (locVal) {
+      const locLower = h.location.toLowerCase();
+      const keywords = locationKeywords[locVal] || [locVal];
+      const match = keywords.some(kw => locLower.includes(kw));
+      if (!match) return false;
+    }
+
+    return true;
+  });
+
+  resultCountEl.textContent = `${filtered.length} hosting${filtered.length !== 1 ? 's' : ''} found`;
+
+  hostingListEl.innerHTML = "";
+
+  if (filtered.length === 0) {
+    hostingListEl.innerHTML = '<div class="empty-state">No matching free hostings found... 😕</div>';
     return;
   }
 
-  data.forEach(host => {
+  filtered.forEach(host => {
     const card = document.createElement("div");
-    card.className = "hosting-box";
+    card.className = "hosting-card";
 
     card.innerHTML = `
       <h3>${host.name}</h3>
@@ -230,61 +331,27 @@ function renderCards(data) {
       <p><b>Location:</b> ${host.location}</p>
       <p><b>Uptime:</b> 
         <span class="tag ${host.uptime}">
-          ${host.uptime === "good" 
-            ? "Stable 24/7" 
-            : host.uptime === "warning" 
-              ? "Questionable" 
-              : "Unreliable"}
+          ${host.uptime === "good" ? "Stable 24/7" : 
+            host.uptime === "warning" ? "Questionable" : "Unreliable"}
         </span>
       </p>
-      <a class="visit" href="${host.link}" target="_blank" rel="noopener noreferrer">
-        Visit Panel →
+      <a href="${host.link}" class="btn-visit" target="_blank" rel="noopener noreferrer">
+        Open Panel →
       </a>
     `;
 
-    hostingList.appendChild(card);
+    hostingListEl.appendChild(card);
   });
 }
 
-// ── Filtering Logic ─────────────────────────────────────────────────────
-function filterAndRender() {
-  const query       = searchInput.value.toLowerCase().trim();
-  const uptimeVal   = uptimeFilter.value;
-  const locationVal = locationFilter.value.toLowerCase();
-  const ramVal      = ramFilter.value ? Number(ramFilter.value) : null;
-
-  const filtered = hostings.filter(host => {
-
-    if (query && !host.name.toLowerCase().includes(query)) return false;
-    if (uptimeVal && host.uptime !== uptimeVal) return false;
-
-    if (locationVal) {
-      if (
-        locationVal === "eu" &&
-        !/europe|france|germany|belgium|netherlands|finland|spain/i.test(host.location)
-      ) return false;
-
-      if (locationVal !== "eu" &&
-          !host.location.toLowerCase().includes(locationVal)
-      ) return false;
-    }
-
-    if (ramVal !== null && host.ram < ramVal) return false;
-
-    return true;
-  });
-
-  renderCards(filtered);
-}
-
-// ── Event Listeners ─────────────────────────────────────────────────────
+// ── Events ──────────────────────────────────────────────────────────────
 searchInput.addEventListener("input", filterAndRender);
 uptimeFilter.addEventListener("change", filterAndRender);
 locationFilter.addEventListener("change", filterAndRender);
 ramFilter.addEventListener("change", filterAndRender);
 
-// ── Init ────────────────────────────────────────────────────────────────
-loadHostings();
+// ── Start ───────────────────────────────────────────────────────────────
+loadData();
 </script>
 </body>
 </html>
