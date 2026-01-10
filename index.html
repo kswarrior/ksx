@@ -218,6 +218,9 @@ body.sidebar-open #sidebar { left: 0; }
   transform: scale(1.2);
   transition: transform 0.2s ease, color 0.2s ease;
   }
+  #favButton.filled {
+    color: var(--accent); /* Blue color for filled star */
+  }
 </style>
 </head>
 
@@ -413,7 +416,7 @@ function isFavorite(url) {
 function updateFavIcon() {
   const frameUrl = frame.src;
   if (isFavorite(frameUrl)) {
-    favButton.textContent = "★"; // Filled star
+    favButton.textContent = "⭐"; // Filled star
   } else {
     favButton.textContent = "☆"; // Empty star
   }
