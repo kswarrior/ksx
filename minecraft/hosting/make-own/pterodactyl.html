@@ -3,23 +3,24 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>KS Warrior • Pterodactyl Installer</title>
+  <title>Pterodactyl Panel • KS Dashboard</title>
 
-  <meta name="color-scheme" content="light"/>
+  <meta name="color-scheme" content="dark"/>
+  <meta name="theme-color" content="#000000"/>
 
   <style>
     :root {
-      --primary: #1a73e8;
-      --primary-dark: #1557b0;
-      --primary-light: #4285f4;
-      --bg: #f6f9ff;
-      --card: #ffffff;
-      --text: #1f2937;
-      --muted: #64748b;
-      --border: #e2e8f0;
-      --radius: 10px;
-      --shadow: 0 6px 20px rgba(0,0,0,0.08);
-      --transition: all 0.3s ease;
+      --bg: #000000;
+      --card: rgba(18,18,28,0.92);
+      --soft: rgba(28,28,40,0.96);
+      --border: rgba(255,255,255,0.11);
+      --text: #f8f9fa;
+      --muted: #a0a0b0;
+      --accent: #ffffff;
+      --success: #4ade80;
+      --radius: 12px;
+      --gap: 28px;
+      --transition: all 0.4s cubic-bezier(0.22,1,0.36,1);
     }
 
     * {
@@ -29,30 +30,42 @@
     }
 
     body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: var(--bg);
+      background: linear-gradient(135deg, #000 0%, #0a0a0f 100%);
       color: var(--text);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       min-height: 100dvh;
-      line-height: 1.6;
+      overflow-x: hidden;
+      animation: bgPulse 20s ease-in-out infinite alternate;
     }
 
-    .container {
-      max-width: 920px;
+    @keyframes bgPulse {
+      from { background-position: 0% 50%; }
+      to   { background-position: 100% 50%; }
+    }
+
+    main {
+      max-width: 1080px;
       margin: 0 auto;
-      padding: 2.5rem 1rem;
+      padding: var(--gap) 16px;
+      animation: fadeIn 0.8s ease-out;
     }
 
-    #installer-name {
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .title {
       text-align: center;
-      font-size: clamp(2.1rem, 6vw, 3.2rem);
+      font-size: clamp(2rem, 6vw, 2.8rem);
       font-weight: 900;
-      background: linear-gradient(90deg, #1a73e8, #60a5fa, #1a73e8);
+      letter-spacing: -1px;
+      margin-bottom: 2.2rem;
+      background: linear-gradient(90deg,#f0f0f0,#ffffff,#e0e0e0);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-size: 200% auto;
-      animation: shine 5s linear infinite;
-      margin-bottom: 3rem;
-      letter-spacing: -1px;
+      animation: shine 6s linear infinite;
     }
 
     @keyframes shine {
@@ -63,149 +76,183 @@
       background: var(--card);
       border-radius: var(--radius);
       border: 1px solid var(--border);
-      padding: 1.8rem;
-      margin-bottom: 1.8rem;
-      box-shadow: var(--shadow);
+      padding: var(--gap);
+      margin-bottom: var(--gap);
+      backdrop-filter: blur(16px);
       transition: var(--transition);
     }
 
     .section:hover {
       transform: translateY(-4px);
-      box-shadow: 0 12px 32px rgba(26,115,232,0.15);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.45);
     }
 
     .section h2 {
-      font-size: 1.35rem;
-      font-weight: 700;
-      color: var(--primary);
+      font-size: 1.25rem;
+      font-weight: 800;
       margin-bottom: 1.1rem;
       display: flex;
       align-items: center;
-      gap: 0.6rem;
+      gap: 10px;
+      letter-spacing: -0.3px;
+    }
+
+    .section p {
+      color: var(--muted);
+      font-size: 0.94rem;
+      line-height: 1.65;
+      margin-bottom: 0.7rem;
     }
 
     .codespre {
-      background: #0f172a;
-      color: #e2e8f0;
+      background: #0a0a12;
+      color: #e0e0ff;
+      border-radius: 10px;
       padding: 1rem;
-      border-radius: 8px;
-      font-family: 'JetBrains Mono', 'Consolas', monospace;
-      font-size: 0.9rem;
+      font-family: "JetBrains Mono","Consolas",monospace;
+      font-size: 0.86rem;
       overflow-x: auto;
-      margin: 1rem 0;
-      border: 1px solid #1e293b;
+      border: 1px solid var(--border);
       white-space: pre-wrap;
       word-break: break-all;
+      user-select: text;
     }
 
     .btn {
-      background: linear-gradient(to right, var(--primary), var(--primary-light));
-      color: white;
-      border: none;
-      padding: 0.75rem 1.4rem;
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 0.72rem 1.4rem;
       border-radius: 8px;
-      font-size: 0.98rem;
-      font-weight: 600;
+      font-weight: 700;
+      font-size: 0.92rem;
       cursor: pointer;
       transition: var(--transition);
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
+      margin-top: 0.8rem;
+      margin-right: 0.6rem;
     }
 
     .btn:hover {
-      background: linear-gradient(to right, var(--primary-dark), #2b6cb0);
-      transform: translateY(-2px);
-      box-shadow: 0 6px 16px rgba(26,115,232,0.3);
-    }
-
-    .btn:active {
-      transform: translateY(0);
+      background: rgba(255,255,255,0.07);
+      border-color: rgba(255,255,255,0.3);
+      transform: translateY(-1px);
     }
 
     .copied {
-      margin-left: 1rem;
-      color: #16a34a;
-      font-weight: 600;
+      margin-left: 0.9rem;
+      font-size: 0.84rem;
+      color: var(--success);
       opacity: 0;
-      transform: translateY(-4px);
-      transition: opacity 0.35s ease, transform 0.35s ease;
+      transition: opacity 0.4s ease;
+      font-weight: 500;
     }
 
-    .copied.visible {
+    .copied.show {
       opacity: 1;
-      transform: translateY(0);
     }
 
-    .flex-buttons {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-      margin-top: 1rem;
+    ul {
+      padding-left: 1.4rem;
+      color: var(--muted);
+      line-height: 1.8;
     }
 
     @media (max-width: 600px) {
-      .container { padding: 1.5rem 1rem; }
-      .section { padding: 1.4rem; }
-      .btn { flex: 1; justify-content: center; }
+      main { padding: 1.5rem 12px; }
+      .section { padding: 1.5rem; }
+      .btn { width: 100%; margin: 0.5rem 0; }
+    }
+
+    @media (hover:none) {
+      .section:hover,
+      .btn:hover {
+        transform: none;
+        box-shadow: none;
+      }
     }
   </style>
 </head>
 <body>
 
-<div class="container">
+<main>
 
-  <h1 id="installer-name">Pterodactyl Installer</h1>
+  <div class="title">Pterodactyl Panel</div>
 
-  <!-- Quick Links -->
+  <!-- Useful Links -->
   <div class="section">
-    <div class="flex-buttons">
-      <button class="btn" onclick="window.open('https://www.youtube.com/results?search_query=pterodactyl+panel+install+2024+2025','_blank')">
-        🎥 YouTube Tutorials
-      </button>
-      <button class="btn" onclick="window.open('https://pterodactyl.io/','_blank')">
-        🌐 Official Website
-      </button>
-    </div>
+    <h2>🔗 Useful Links</h2>
+    <button class="btn" onclick="window.open('https://pterodactyl.io','_blank')">Official Website</button>
+    <button class="btn" onclick="window.open('https://youtube.com/results?search_query=pterodactyl+panel+install','_blank')">YouTube Tutorials</button>
   </div>
 
   <!-- Install Panel -->
   <div class="section">
-    <h2>🔧 Install Panel</h2>
-    <pre class="codespre" id="panelCmd">bash <(curl -sSL https://ksweb.vercel.app/code/moh/pterodactyl/panel)</pre>
-    <button class="btn" onclick="copyCommand('panelCmd', this)">📋 Copy Command</button>
-    <span class="copied">Copied!</span>
+    <h2>🚀 Install Pterodactyl Panel</h2>
+    <pre class="codespre" id="panelCmd">bash &lt;(curl -sSL https://ksweb.vercel.app/code/moh/pterodactyl/panel)</pre>
+    <button class="btn" onclick="copyCmd('panelCmd','panelCopied')">Copy Command</button>
+    <span class="copied" id="panelCopied">Copied ✓</span>
   </div>
 
   <!-- Install Wings -->
   <div class="section">
     <h2>🛰️ Install Wings</h2>
-    <pre class="codespre" id="wingsCmd">bash <(curl -sSL https://ksweb.vercel.app/code/moh/pterodactyl/wings)</pre>
-    <button class="btn" onclick="copyCommand('wingsCmd', this)">📋 Copy Command</button>
-    <span class="copied">Copied!</span>
+    <pre class="codespre" id="wingsCmd">bash &lt;(curl -sSL https://ksweb.vercel.app/code/moh/pterodactyl/wings)</pre>
+    <button class="btn" onclick="copyCmd('wingsCmd','wingsCopied')">Copy Command</button>
+    <span class="copied" id="wingsCopied">Copied ✓</span>
   </div>
 
-</div>
+  <!-- About -->
+  <div class="section">
+    <h2>ℹ️ About Pterodactyl</h2>
+    <p>Pterodactyl is a powerful open-source game server management panel.</p>
+    <p>It uses Docker for isolation and is trusted by professional hosting providers.</p>
+  </div>
+
+  <!-- Pros & Cons -->
+  <div class="section">
+    <h2>⚖️ Advantages & Disadvantages</h2>
+
+    <p><strong>Advantages:</strong></p>
+    <ul>
+      <li>Enterprise-grade performance</li>
+      <li>Docker-based isolation</li>
+      <li>Advanced permissions & roles</li>
+      <li>Large community support</li>
+    </ul>
+
+    <p style="margin-top:1.4rem;"><strong>Disadvantages:</strong></p>
+    <ul>
+      <li>More complex installation</li>
+      <li>Higher system requirements</li>
+      <li>Needs good Linux knowledge</li>
+    </ul>
+  </div>
+
+  <!-- Ports -->
+  <div class="section">
+    <h2>🌐 Default Ports & Important Info</h2>
+    <p>• Panel web port: <strong>80 / 443</strong></p>
+    <p>• Wings daemon: <strong>8080</strong></p>
+    <p>• Recommended OS: Ubuntu 20.04 / 22.04 / 24.04</p>
+    <p>• Always configure firewall & SSL</p>
+  </div>
+
+</main>
 
 <script>
-function copyCommand(preId, button) {
-  const pre = document.getElementById(preId);
-  const copied = button.nextElementSibling;
-  
-  if (!pre) return;
-
-  const text = pre.textContent.trim();
+function copyCmd(preId, statusId) {
+  const text = document.getElementById(preId).textContent.trim();
+  const status = document.getElementById(statusId);
 
   navigator.clipboard.writeText(text).then(() => {
-    copied.classList.add('visible');
-    setTimeout(() => copied.classList.remove('visible'), 2200);
-  }).catch(err => {
-    console.error('Clipboard error:', err);
-    copied.textContent = 'Copy failed!';
-    copied.classList.add('visible');
+    status.classList.add("show");
+    setTimeout(() => status.classList.remove("show"), 2200);
+  }).catch(() => {
+    status.textContent = "Copy failed";
+    status.classList.add("show");
     setTimeout(() => {
-      copied.classList.remove('visible');
-      copied.textContent = 'Copied!';
+      status.classList.remove("show");
+      status.textContent = "Copied ✓";
     }, 2200);
   });
 }
