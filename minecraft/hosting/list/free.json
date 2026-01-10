@@ -1,5 +1,14 @@
 [
   {
+    "name": "MineStrator",
+    "ram": 4,
+    "cpu": "100%",
+    "disk": "8GB",
+    "location": "France",
+    "uptime": "good",
+    "link": "https://minestrator.com"
+  },
+  {
     "name": "Free Game Host",
     "ram": 4,
     "cpu": "200%",
@@ -36,6 +45,78 @@
     "link": "https://falixnodes.net/"
   },
   {
+    "name": "Eternal Zero",
+    "ram": 6,
+    "cpu": "150%",
+    "disk": "20GB",
+    "location": "Finland, Canada",
+    "uptime": "good",
+    "link": "https://eternalzero.cloud"
+  },
+  {
+    "name": "DracoByte",
+    "ram": 4,
+    "cpu": "100%",
+    "disk": "10GB",
+    "location": "USA, Finland",
+    "uptime": "good",
+    "link": "https://dracobyte.pro"
+  },
+  {
+    "name": "Tick Hosting",
+    "ram": 8,
+    "cpu": "200%",
+    "disk": "15GB",
+    "location": "Finland, USA",
+    "uptime": "good",
+    "link": "https://tickhosting.com"
+  },
+  {
+    "name": "CloudCode",
+    "ram": 6,
+    "cpu": "100%",
+    "disk": "20GB",
+    "location": "Vietnam",
+    "uptime": "good",
+    "link": "https://void.cloudcode.site"
+  },
+  {
+    "name": "OuiHeberg",
+    "ram": 8,
+    "cpu": "100%",
+    "disk": "2GB",
+    "location": "USA, France",
+    "uptime": "good",
+    "link": "https://www.ouiheberg.com"
+  },
+  {
+    "name": "XServer GAMEs",
+    "ram": 4,
+    "cpu": "100%",
+    "disk": "5GB",
+    "location": "Japan",
+    "uptime": "good",
+    "link": "https://xserver.ne.jp/games/"
+  },
+  {
+    "name": "IceHost",
+    "ram": 4,
+    "cpu": "150%",
+    "disk": "10GB",
+    "location": "Poland",
+    "uptime": "good",
+    "link": "https://icehost.pl"
+  },
+  {
+    "name": "HidenCloud",
+    "ram": 3,
+    "cpu": "150%",
+    "disk": "15GB",
+    "location": "USA, Germany, Singapore, India, Australia, UAE",
+    "uptime": "good",
+    "link": "https://www.hidencloud.com"
+  },
+  {
     "name": "MooNodes",
     "ram": 6,
     "cpu": "125%",
@@ -45,22 +126,49 @@
     "link": "https://moonodes.net/"
   },
   {
-    "name": "HidenCloud",
-    "ram": 3,
-    "cpu": "150%",
-    "disk": "15GB",
-    "location": "USA, Germany, Singapore, India",
+    "name": "AxentHost",
+    "ram": 2,
+    "cpu": "100%",
+    "disk": "5GB",
+    "location": "USA, Germany",
     "uptime": "good",
-    "link": "https://www.hidencloud.com"
+    "link": "https://axenthost.com/"
   },
   {
-    "name": "Eternal Zero",
-    "ram": 4,
-    "cpu": "150%",
-    "disk": "20GB",
-    "location": "Finland, Canada",
+    "name": "Gameserver.gratis",
+    "ram": 3.1,
+    "cpu": "100%",
+    "disk": "10GB",
+    "location": "Germany",
     "uptime": "good",
-    "link": "https://eternalzero.cloud"
+    "link": "https://gameserver.gratis"
+  },
+  {
+    "name": "Hosting Mit Herz",
+    "ram": 3,
+    "cpu": "100%",
+    "disk": "5GB",
+    "location": "Finland, Germany, USA",
+    "uptime": "good",
+    "link": "https://hostingmitherz.de"
+  },
+  {
+    "name": "VibeGames",
+    "ram": 4,
+    "cpu": "120%",
+    "disk": "20GB",
+    "location": "Netherlands",
+    "uptime": "good",
+    "link": "https://vibegames.com"
+  },
+  {
+    "name": "MagmaNode",
+    "ram": 2,
+    "cpu": "100%",
+    "disk": "5GB",
+    "location": "Germany",
+    "uptime": "good",
+    "link": "https://magmanode.com"
   },
   {
     "name": "FreeMcServer.net",
@@ -72,13 +180,49 @@
     "link": "https://freemcserver.net/"
   },
   {
-    "name": "AxentHost",
+    "name": "Aternos",
+    "ram": 2.2,
+    "cpu": "100%",
+    "disk": "unlimited",
+    "location": "Germany",
+    "uptime": "danger",
+    "link": "https://aternos.org"
+  },
+  {
+    "name": "Minehut",
+    "ram": 2,
+    "cpu": "200%",
+    "disk": "unlimited",
+    "location": "USA",
+    "uptime": "danger",
+    "link": "https://minehut.com"
+  },
+  {
+    "name": "Nodebyte",
     "ram": 2,
     "cpu": "100%",
-    "disk": "5GB",
-    "location": "USA, Germany",
+    "disk": "3GB",
+    "location": "France",
     "uptime": "good",
-    "link": "https://axenthost.com/"
+    "link": "https://nodebyte.io"
+  },
+  {
+    "name": "Rustix",
+    "ram": 2,
+    "cpu": "100%",
+    "disk": "10GB",
+    "location": "Germany",
+    "uptime": "good",
+    "link": "https://rustix.co"
+  },
+  {
+    "name": "my-mc.link",
+    "ram": 6,
+    "cpu": "100%",
+    "disk": "unlimited",
+    "location": "USA",
+    "uptime": "good",
+    "link": "https://my-mc.link"
   },
   {
     "name": "HikariNode",
@@ -126,42 +270,6 @@
     "link": "https://creepercloud.io/"
   },
   {
-    "name": "Gameserver.gratis",
-    "ram": 3.1,
-    "cpu": "100%",
-    "disk": "10GB",
-    "location": "Germany",
-    "uptime": "good",
-    "link": "https://gameserver.gratis"
-  },
-  {
-    "name": "IceHost",
-    "ram": 4,
-    "cpu": "150%",
-    "disk": "10GB",
-    "location": "Poland",
-    "uptime": "good",
-    "link": "https://icehost.pl"
-  },
-  {
-    "name": "Aternos",
-    "ram": 2.1,
-    "cpu": "100%",
-    "disk": "unlimited",
-    "location": "Germany",
-    "uptime": "danger",
-    "link": "https://aternos.org"
-  },
-  {
-    "name": "Minehut",
-    "ram": 2,
-    "cpu": "200%",
-    "disk": "unlimited",
-    "location": "USA",
-    "uptime": "danger",
-    "link": "https://minehut.com"
-  },
-  {
     "name": "Squadnox",
     "ram": 3,
     "cpu": "100%",
@@ -169,33 +277,6 @@
     "location": "Global",
     "uptime": "good",
     "link": "https://squadnox.com/"
-  },
-  {
-    "name": "Hosting Mit Herz",
-    "ram": 3,
-    "cpu": "100%",
-    "disk": "5GB",
-    "location": "Germany, Finland",
-    "uptime": "good",
-    "link": "https://hostingmitherz.de"
-  },
-  {
-    "name": "VibeGames",
-    "ram": 4,
-    "cpu": "120%",
-    "disk": "20GB",
-    "location": "Netherlands",
-    "uptime": "good",
-    "link": "https://vibegames.com"
-  },
-  {
-    "name": "Tick Hosting",
-    "ram": 8,
-    "cpu": "200%",
-    "disk": "15GB",
-    "location": "Finland, USA",
-    "uptime": "good",
-    "link": "https://tickhosting.com"
   },
   {
     "name": "Vertex Hosting",
