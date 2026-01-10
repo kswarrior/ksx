@@ -41,7 +41,7 @@ main{
 
 .title{
   text-align:center;
-  font-size:2.6rem;
+  font-size: 20px;
   font-weight:900;
   margin-bottom:2rem;
 }
@@ -60,7 +60,7 @@ main{
   color:var(--text);
   padding:12px 14px;
   border-radius:10px;
-  min-width:160px;
+  min-width:100px;
 }
 
 .stats{
@@ -244,7 +244,7 @@ function render(data){
         <div>${h.disk}</div>
         <div>${h.location}</div>
         <div><span class="tag ${h.uptime}">
-          ${h.uptime==="good"?"Stable":"Warning"}
+          ${h.uptime==="good"?"24/7":"non-24/7"}
         </span></div>
         <a class="btn" href="${h.link}" target="_blank">Visit →</a>
       </div>
