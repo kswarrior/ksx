@@ -398,30 +398,50 @@ frame.addEventListener("load", () => {
 });
 </script>
 <script>
-  const FAV_KEY = "ks-web-fav";
-  
-  function saveToFavorites(name, url) {
-  if (!name || !url) return;
+const FAV_KEY = "ks-web-fav";
+const favButton = document.getElementById("favButton");
 
-  let favs = JSON.parse(localStorage.getItem(FAV_KEY) || "[]");
-  // Avoid duplicates
-  if (!favs.some(item => item.url === url)) {
-    favs.unshift({ name, url, time: Date.now() });
-    localStorage.setItem(FAV_KEY, JSON.stringify(favs));
+function getFavorites() {
+  return JSON.parse(localStorage.getItem(FAV_KEY) || "[]");
+}
+
+function isFavorite(url) {
+  const favs = getFavorites();
+  return favs.some(item => new URL(item.url, location.href).href === url);
+}
+
+function updateFavIcon() {
+  const frameUrl = frame.src;
+  if (isFavorite(frameUrl)) {
+    favButton.textContent = "★"; // Filled star
   } else {
+    favButton.textContent = "☆"; // Empty star
   }
 }
 
 // Favorite button click
-const favButton = document.getElementById("favButton");
 favButton.addEventListener("click", () => {
-  // Get the current page name from iframe
   const frameUrl = frame.src;
-  // You can use the iframe src as URL and find name from searchData if available
   const found = searchData.find(item => new URL(item.url, location.href).href === frameUrl);
   const pageName = found ? found.name : frameUrl;
-  saveToFavorites(pageName, frameUrl);
+
+  let favs = getFavorites();
+  if (isFavorite(frameUrl)) {
+    // Remove from favorites
+    favs = favs.filter(item => new URL(item.url, location.href).href !== frameUrl);
+  } else {
+    // Add to favorites
+    favs.unshift({ name: pageName, url: frameUrl, time: Date.now() });
+  }
+  localStorage.setItem(FAV_KEY, JSON.stringify(favs));
+  updateFavIcon();
 });
+
+// Update star when iframe loads
+frame.addEventListener("load", updateFavIcon);
+
+// Optional: update star on page load
+window.addEventListener("DOMContentLoaded", updateFavIcon);
 </script>
 </body>
 </html>
