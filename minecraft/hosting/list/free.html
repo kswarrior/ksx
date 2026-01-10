@@ -48,73 +48,64 @@ main{
   margin-bottom:2rem;
 }
 
-.filters{
+.search-bar{
   display:flex;
-  flex-wrap:wrap;
   gap:12px;
+  align-items:center;
   justify-content:center;
-  margin-bottom:24px;
+  position:relative;
 }
 
-/* Base filter style */
-.filter{
-  background:var(--soft);
-  border:1px solid var(--border);
-  color:var(--text);
+#searchInput{
+  flex:1;
+  min-width:260px;
+  max-width:450px;
   padding:12px 16px;
   border-radius:12px;
-  min-width:140px;
+  border:1px solid var(--border);
+  background:var(--soft);
+  color:var(--text);
+}
 
-  font-size:14px;
-  outline:none;
+#filterBtn{
+  padding:12px 16px;
+  border-radius:12px;
+  border:1px solid var(--border);
+  background:var(--soft);
   cursor:pointer;
-
-  transition:all 0.35s ease;
-  position:relative;
-  overflow:hidden;
-
-  -webkit-tap-highlight-color:transparent;
+  transition:.3s;
 }
 
-/* Input width fix */
-#searchInput{
-  min-width:320px;
-  max-width:450px;
-  flex:1;
-}
-
-/* Hover effect */
-.filter:hover{
+#filterBtn:hover{
   background:var(--hover-card);
-  transform:translateY(-2px) scale(1.03);
-  box-shadow:0 0 20px rgba(255,255,255,0.15);
 }
 
-/* Focus (keyboard + mobile) */
-.filter:focus{
-  border-color:var(--primary);
-  box-shadow:0 0 0 2px rgba(29,45,220,0.25);
+/* Filter wrapper */
+#filterWrapper{
+  position:relative;
+  display:none;
+  justify-content:center;
+  margin-top:12px;
 }
 
-/* Select arrow cleanup (modern look) */
-select.filter{
-  appearance:none;
-  background-image:
-    linear-gradient(45deg, transparent 50%, var(--text) 50%),
-    linear-gradient(135deg, var(--text) 50%, transparent 50%);
-  background-position:
-    calc(100% - 20px) 50%,
-    calc(100% - 15px) 50%;
-  background-size:5px 5px;
-  background-repeat:no-repeat;
-  padding-right:36px;
+/* ONE LINE ONLY */
+.filters-line{
+  display:flex;
+  gap:10px;
+  white-space:nowrap;   /* 🚨 important */
+  background:var(--card);
+  padding:12px;
+  border-radius:12px;
+  border:1px solid var(--border);
+  box-shadow:0 10px 30px rgba(0,0,0,.25);
 }
 
-/* Mobile optimization */
-@media(max-width:600px){
-  #searchInput{
-    min-width:100%;
-  }
+.filters-line select{
+  padding:10px 14px;
+  border-radius:10px;
+  border:1px solid var(--border);
+  background:var(--soft);
+  color:var(--text);
 }
 
 .stats{
@@ -247,38 +238,46 @@ select.filter{
 
 <div class="title">Free Minecraft Hosting</div>
 
-<div class="filters">
-  <input id="searchInput" class="filter" placeholder="Search hosting name">
-  <select id="uptimeFilter" class="filter">
-    <option value="">All Uptime</option>
-    <option value="good">Stable 24/7</option>
-    <option value="warning">Questionable</option>
-    <option value="danger">Unreliable</option>
-  </select>
-  <select id="locationFilter" class="filter">
-    <option value="">All Locations</option>
-    <option value="india">India</option>
-    <option value="singapore">Singapore</option>
-    <option value="france">France</option>
-    <option value="germany">Germany</option>
-    <option value="usa">USA</option>
-    <option value="eu">Europe</option>
-  </select>
-  <select id="ramFilter" class="filter">
-    <option value="">All RAM</option>
-    <option value="1">≥ 1 GB</option>
-    <option value="2">≥ 2 GB</option>
-    <option value="4">≥ 4 GB</option>
-    <option value="6">≥ 6 GB</option>
-  </select>
-</div>
+
   
 <div class="stats" id="resultCount">Loading...</div>
 
 
 <div class="list" id="hostingList"></div>
 
-</main>
+</ma<div class="search-bar">
+  <input id="searchInput" placeholder="Search hosting name">
+
+  <button id="filterBtn">⚙ Filters</button>
+</div>
+
+<div id="filterWrapper">
+  <div class="filters-line">
+    <select id="uptimeFilter">
+      <option value="">Uptime</option>
+      <option value="good">Stable</option>
+      <option value="warning">Questionable</option>
+      <option value="danger">Unreliable</option>
+    </select>
+
+    <select id="locationFilter">
+      <option value="">Location</option>
+      <option value="india">India</option>
+      <option value="singapore">Singapore</option>
+      <option value="france">France</option>
+      <option value="germany">Germany</option>
+      <option value="usa">USA</option>
+    </select>
+
+    <select id="ramFilter">
+      <option value="">RAM</option>
+      <option value="1">≥1 GB</option>
+      <option value="2">≥2 GB</option>
+      <option value="4">≥4 GB</option>
+      <option value="6">≥6 GB</option>
+    </select>
+  </div>
+</div>in>
 
 <script>
 const hostingList=document.getElementById("hostingList");
@@ -349,6 +348,32 @@ function render(data){
 [searchInput,uptimeFilter,locationFilter,ramFilter]
 .forEach(e=>e.addEventListener("input",filterRender));
 </script>
+<script>
+const btn = document.getElementById("filterBtn");
+const wrapper = document.getElementById("filterWrapper");
+const filters = wrapper.querySelector(".filters-line");
 
+btn.onclick = () => {
+  wrapper.style.display =
+    wrapper.style.display === "flex" ? "none" : "flex";
+
+  setTimeout(positionFilters, 0);
+};
+
+function positionFilters(){
+  const rect = filters.getBoundingClientRect();
+  const vw = window.innerWidth;
+
+  // If fits horizontally → show normally
+  if(rect.width + 40 < vw){
+    wrapper.style.justifyContent = "center";
+  }else{
+    // Otherwise still ONE LINE, but scrollable
+    filters.style.overflowX = "auto";
+  }
+}
+
+window.addEventListener("resize", positionFilters);
+</script>
 </body>
 </html>
