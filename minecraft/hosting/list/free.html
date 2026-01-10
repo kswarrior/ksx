@@ -241,12 +241,10 @@ function render(data){
         <div class="name">${h.name}</div>
         <div>${h.ram} GB</div>
         <div>${h.cpu}</div>
-        <div>${h.disk}</div>
+        <div>${h.disk} GB</div>
         <div>${h.location}</div>
-        <div><span class="tag ${h.uptime}">
-          ${h.uptime==="good"?"24/7":"non-24/7"}
-        </span></div>
-        <a class="btn" href="${h.link}" target="_blank">Visit →</a>
+        <div><span class="tag ${h.uptime}">${h.uptime}</span></div>
+        <a class="btn" href="${h.link}" target="_blank">Visit</a>
       </div>
     `;
   });
