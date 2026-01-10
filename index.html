@@ -213,14 +213,22 @@ body.sidebar-open #sidebar { left: 0; }
   background: #fff;
   transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
 }
-  #favButton:hover {
+ /* Favorite Button Hover & Filled */
+#favButton {
+  cursor: pointer;
+  font-size: 20px;
+  user-select: none;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+#favButton:hover {
   color: var(--accent);
   transform: scale(1.2);
-  transition: transform 0.2s ease, color 0.2s ease;
-  }
-  #favButton.filled {
-    color: var(--accent); /* Blue color for filled star */
-  }
+}
+
+#favButton.filled {
+  color: var(--accent); /* Blue color when added to favorites */
+}
 </style>
 </head>
 
@@ -404,31 +412,32 @@ frame.addEventListener("load", () => {
 const FAV_KEY = "ks-web-fav";
 const favButton = document.getElementById("favButton");
 
-function getFavorites() {
-  return JSON.parse(localStorage.getItem(FAV_KEY) || "[]");
-}
+// Get favorites from localStorage
+const getFavorites = () => JSON.parse(localStorage.getItem(FAV_KEY) || "[]");
 
-function isFavorite(url) {
-  const favs = getFavorites();
-  return favs.some(item => new URL(item.url, location.href).href === url);
-}
+// Check if a URL is in favorites
+const isFavorite = (url) => getFavorites().some(item => new URL(item.url, location.href).href === url);
 
-function updateFavIcon() {
+// Update star icon and color
+const updateFavIcon = () => {
   const frameUrl = frame.src;
   if (isFavorite(frameUrl)) {
-    favButton.textContent = "⭐"; // Filled star
+    favButton.textContent = "⭐";
+    favButton.classList.add("filled");
   } else {
-    favButton.textContent = "☆"; // Empty star
+    favButton.textContent = "☆";
+    favButton.classList.remove("filled");
   }
-}
+};
 
-// Favorite button click
+// Add or remove current iframe page from favorites
 favButton.addEventListener("click", () => {
   const frameUrl = frame.src;
   const found = searchData.find(item => new URL(item.url, location.href).href === frameUrl);
   const pageName = found ? found.name : frameUrl;
 
   let favs = getFavorites();
+
   if (isFavorite(frameUrl)) {
     // Remove from favorites
     favs = favs.filter(item => new URL(item.url, location.href).href !== frameUrl);
@@ -436,14 +445,19 @@ favButton.addEventListener("click", () => {
     // Add to favorites
     favs.unshift({ name: pageName, url: frameUrl, time: Date.now() });
   }
+
   localStorage.setItem(FAV_KEY, JSON.stringify(favs));
   updateFavIcon();
+
+  // Optional: small "pop" animation
+  favButton.style.transform = "scale(1.4)";
+  setTimeout(() => favButton.style.transform = "", 150);
 });
 
 // Update star when iframe loads
 frame.addEventListener("load", updateFavIcon);
 
-// Optional: update star on page load
+// Update on page load
 window.addEventListener("DOMContentLoaded", updateFavIcon);
 </script>
 </body>
