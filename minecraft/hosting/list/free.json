@@ -13,18 +13,9 @@
     "ram": 6,
     "cpu": "250%",
     "disk": "5GB",
-    "location": "France",
+    "location": "France, UK",
     "uptime": "good",
-    "link": "https://dash.embotic.xyz/register?ref=kPYKyYk4"
-  },
-  {
-    "name": "Spinex Cloud",
-    "ram": 2,
-    "cpu": "100%",
-    "disk": "5GB",
-    "location": "India",
-    "uptime": "good",
-    "link": "https://dash.spinex.cloud/"
+    "link": "https://dash.embotic.xyz/"
   },
   {
     "name": "Free Minecraft Host",
@@ -33,43 +24,16 @@
     "disk": "10GB",
     "location": "Germany",
     "uptime": "good",
-    "link": "https://billing.freeminecrafthost.com/auth/register"
+    "link": "https://freeminecrafthost.com/"
   },
   {
-    "name": "Creeper Cloud",
-    "ram": 2,
-    "cpu": "80%",
-    "disk": "5GB",
-    "location": "India, Singapore, Germany",
-    "uptime": "good",
-    "link": "https://deploy.creepercloud.io/join/tC087rrSi2dHLWJ5"
-  },
-  {
-    "name": "Vertex Hosting",
+    "name": "FalixNodes",
     "ram": 4,
-    "cpu": "unlimited",
-    "disk": "8GB",
-    "location": "Germany",
-    "uptime": "good",
-    "link": "https://dash.vertexhosting.co.uk/"
-  },
-  {
-    "name": "Play Hosting",
-    "ram": 3,
-    "cpu": "200%",
-    "disk": "10GB",
-    "location": "Unknown",
-    "uptime": "danger",
-    "link": "https://play.hosting/"
-  },
-  {
-    "name": "Spaceify",
-    "ram": 3,
     "cpu": "100%",
     "disk": "10GB",
-    "location": "Singapore, Germany, France",
-    "uptime": "danger",
-    "link": "https://client.spaceify.eu/"
+    "location": "Germany, USA",
+    "uptime": "good",
+    "link": "https://falixnodes.net/"
   },
   {
     "name": "MooNodes",
@@ -85,9 +49,27 @@
     "ram": 3,
     "cpu": "150%",
     "disk": "15GB",
-    "location": "USA, Germany, Spain, Mexico, Singapore, France, India, Australia, UAE",
+    "location": "USA, Germany, Singapore, India",
     "uptime": "good",
     "link": "https://www.hidencloud.com"
+  },
+  {
+    "name": "Eternal Zero",
+    "ram": 4,
+    "cpu": "150%",
+    "disk": "20GB",
+    "location": "Finland, Canada",
+    "uptime": "good",
+    "link": "https://eternalzero.cloud"
+  },
+  {
+    "name": "FreeMcServer.net",
+    "ram": 1.7,
+    "cpu": "100%",
+    "disk": "10GB",
+    "location": "Global",
+    "uptime": "good",
+    "link": "https://freemcserver.net/"
   },
   {
     "name": "AxentHost",
@@ -103,215 +85,125 @@
     "ram": 3,
     "cpu": "200%",
     "disk": "10GB",
-    "location": "Belgium, Germany, USA",
+    "location": "Germany, USA",
     "uptime": "good",
     "link": "https://hikarinode.com"
   },
   {
-    "name": "Falix",
+    "name": "PowerupStack",
+    "ram": 3,
+    "cpu": "150%",
+    "disk": "5GB",
+    "location": "Europe, USA",
+    "uptime": "good",
+    "link": "https://powerupstack.com"
+  },
+  {
+    "name": "ScalaCube",
     "ram": 4,
     "cpu": "100%",
     "disk": "10GB",
-    "location": "Germany",
+    "location": "Global",
     "uptime": "good",
-    "link": "https://falixnodes.net/"
-  },
-  {
-    "name": "ScalaCube (free tier)",
-    "ram": 6,
-    "cpu": "100%",
-    "disk": "30GB",
-    "location": "India, Singapore, Poland, Germany, France, USA",
-    "uptime": "danger",
     "link": "https://scalacube.com"
   },
   {
-    "name": "Eternal Host",
-    "ram": 6,
+    "name": "Minefort",
+    "ram": 2,
     "cpu": "100%",
-    "disk": "25GB",
-    "location": "Finland, Germany",
+    "disk": "5GB",
+    "location": "Global",
     "uptime": "good",
-    "link": "https://eternalhosting.cloud/"
+    "link": "https://minefort.com"
   },
   {
-    "name": "Minehut",
+    "name": "Creeper Cloud",
     "ram": 2,
-    "cpu": "200%",
-    "disk": "20GB",
+    "cpu": "80%",
+    "disk": "5GB",
+    "location": "India, Singapore, Germany",
+    "uptime": "good",
+    "link": "https://creepercloud.io/"
+  },
+  {
+    "name": "Gameserver.gratis",
+    "ram": 3.1,
+    "cpu": "100%",
+    "disk": "10GB",
     "location": "Germany",
-    "uptime": "danger",
-    "link": "https://app.minehut.com/"
+    "uptime": "good",
+    "link": "https://gameserver.gratis"
+  },
+  {
+    "name": "IceHost",
+    "ram": 4,
+    "cpu": "150%",
+    "disk": "10GB",
+    "location": "Poland",
+    "uptime": "good",
+    "link": "https://icehost.pl"
   },
   {
     "name": "Aternos",
-    "ram": 2,
+    "ram": 2.1,
     "cpu": "100%",
-    "disk": "10GB",
+    "disk": "unlimited",
     "location": "Germany",
     "uptime": "danger",
     "link": "https://aternos.org"
   },
   {
-    "name": "Server Pro",
+    "name": "Minehut",
     "ram": 2,
+    "cpu": "200%",
+    "disk": "unlimited",
+    "location": "USA",
+    "uptime": "danger",
+    "link": "https://minehut.com"
+  },
+  {
+    "name": "Squadnox",
+    "ram": 3,
     "cpu": "100%",
     "disk": "5GB",
-    "location": "France, Canada",
-    "uptime": "danger",
-    "link": "https://server.pro"
-  },
-  {
-    "name": "MineStrator",
-    "ram": 4,
-    "cpu": "unknown",
-    "disk": "8GB",
-    "location": "France",
-    "uptime": "unknown",
-    "link": "https://minestrator.com"
-  },
-  {
-    "name": "Eternal Zero",
-    "ram": 6,
-    "cpu": "unknown",
-    "disk": "20GB",
-    "location": "Finland, Canada",
-    "uptime": "unknown",
-    "link": "https://eternalzero.cloud"
+    "location": "Global",
+    "uptime": "good",
+    "link": "https://squadnox.com/"
   },
   {
     "name": "Hosting Mit Herz",
     "ram": 3,
-    "cpu": "unknown",
+    "cpu": "100%",
     "disk": "5GB",
-    "location": "Finland, Germany, USA",
-    "uptime": "unknown",
+    "location": "Germany, Finland",
+    "uptime": "good",
     "link": "https://hostingmitherz.de"
   },
   {
     "name": "VibeGames",
     "ram": 4,
-    "cpu": "unknown",
+    "cpu": "120%",
     "disk": "20GB",
     "location": "Netherlands",
-    "uptime": "unknown",
+    "uptime": "good",
     "link": "https://vibegames.com"
-  },
-  {
-    "name": "DracoByte",
-    "ram": 4,
-    "cpu": "unknown",
-    "disk": "10GB",
-    "location": "USA, Finland",
-    "uptime": "unknown",
-    "link": "https://dracobyte.pro"
-  },
-  {
-    "name": "Freezehost",
-    "ram": 2,
-    "cpu": "unknown",
-    "disk": "10GB",
-    "location": "Finland",
-    "uptime": "unknown",
-    "link": "https://freezehost.pro"
-  },
-  {
-    "name": "Gameserver.gratis",
-    "ram": 3.1,
-    "cpu": "unknown",
-    "disk": "10GB",
-    "location": "Germany",
-    "uptime": "unknown",
-    "link": "https://gameserver.gratis"
-  },
-  {
-    "name": "Host2Play",
-    "ram": 3,
-    "cpu": "unknown",
-    "disk": "2GB",
-    "location": "Germany, Britain, Sweden, India, USA",
-    "uptime": "unknown",
-    "link": "https://host2play.gratis"
-  },
-  {
-    "name": "MagmaNode",
-    "ram": 2,
-    "cpu": "unknown",
-    "disk": "5GB",
-    "location": "Germany",
-    "uptime": "unknown",
-    "link": "https://magmanode.com"
-  },
-  {
-    "name": "Minekeep",
-    "ram": 1,
-    "cpu": "unknown",
-    "disk": "10GB",
-    "location": "Germany",
-    "uptime": "unknown",
-    "link": "https://minekeep.net"
   },
   {
     "name": "Tick Hosting",
     "ram": 8,
-    "cpu": "unknown",
+    "cpu": "200%",
     "disk": "15GB",
     "location": "Finland, USA",
-    "uptime": "unknown",
+    "uptime": "good",
     "link": "https://tickhosting.com"
   },
   {
-    "name": "CloudCode",
-    "ram": 6,
-    "cpu": "unknown",
-    "disk": "20GB",
-    "location": "Vietnam",
-    "uptime": "unknown",
-    "link": "https://void.cloudcode.site"
-  },
-  {
-    "name": "IceHost",
+    "name": "Vertex Hosting",
     "ram": 4,
-    "cpu": "unknown",
-    "disk": "10GB",
-    "location": "Poland",
-    "uptime": "unknown",
-    "link": "https://icehost.pl"
-  },
-  {
-    "name": "OuiHeberg",
-    "ram": 8,
-    "cpu": "unknown",
-    "disk": "2GB",
-    "location": "USA, France",
-    "uptime": "unknown",
-    "link": "https://www.ouiheberg.com"
-  },
-  {
-    "name": "FreemcHosting",
-    "ram": 4,
-    "cpu": "unknown",
-    "disk": "15GB",
-    "location": "UK, Netherlands",
-    "uptime": "unknown",
-    "link": "https://client.freemchosting.com"
-  },
-  {
-    "name": "MCServerHost",
-    "ram": 4,
-    "cpu": "unknown",
-    "disk": "10GB",
-    "location": "USA, Belgium",
-    "uptime": "unknown",
-    "link": "https://www.mcserverhost.com"
-  },
-  {
-    "name": "Seedloaf",
-    "ram": 4,
-    "cpu": "unknown",
-    "disk": "6GB",
-    "location": "Canada",
-    "uptime": "unknown",
-    "link": "https://seedloaf.com"
+    "cpu": "unlimited",
+    "disk": "8GB",
+    "location": "Germany",
+    "uptime": "good",
+    "link": "https://vertexhosting.co.uk/"
   }
 ]
