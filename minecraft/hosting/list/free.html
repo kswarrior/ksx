@@ -239,12 +239,15 @@ function render(data){
     hostingList.innerHTML+=`
       <div class="row">
         <div class="name">${h.name}</div>
+        <a class="btn" href="${h.link}" target="_blank">Visit</a>
+        <br>
+      <div class"info">
         <div>${h.ram} GB</div>
         <div>${h.cpu}</div>
         <div>${h.disk} GB</div>
         <div>${h.location}</div>
         <div><span class="tag ${h.uptime}">${h.uptime}</span></div>
-        <a class="btn" href="${h.link}" target="_blank">Visit</a>
+      </div>
       </div>
     `;
   });
