@@ -286,5 +286,77 @@
     "location": "Germany",
     "uptime": "good",
     "link": "https://vertexhosting.co.uk/"
+  },
+  {
+    "name": "Server.pro",
+    "ram": 1,
+    "cpu": "100%",
+    "disk": "Unlimited (limited in practice)",
+    "location": "Global (US, France, Singapore, etc.)",
+    "uptime": "good",
+    "link": "https://server.pro/"
+  },
+  {
+    "name": "MineKeep",
+    "ram": "Varies (starts low, upgradable)",
+    "cpu": "100-150%",
+    "disk": "Varies",
+    "location": "Global",
+    "uptime": "good (stays on with players)",
+    "link": "https://minekeep.net/"
+  },
+  {
+    "name": "MCServerHost",
+    "ram": 4,
+    "cpu": "100-150%",
+    "disk": "Varies",
+    "location": "Global",
+    "uptime": "good",
+    "link": "https://www.mcserverhost.com/"
+  },
+  {
+    "name": "PloudOS",
+    "ram": 2.5,
+    "cpu": "100%",
+    "disk": "5GB+",
+    "location": "Global",
+    "uptime": "good",
+    "link": "https://ploudos.com/"
+  },
+  {
+    "name": "WiseHosting (Free Tier)",
+    "ram": "Limited (trial-like)",
+    "cpu": "100%",
+    "disk": "Varies",
+    "location": "Global",
+    "uptime": "good",
+    "link": "https://wisehosting.com/"
+  },
+  {
+    "name": "Seedloaf",
+    "ram": "Varies (community-driven)",
+    "cpu": "100%",
+    "disk": "Varies",
+    "location": "Global",
+    "uptime": "good",
+    "link": "https://seedloaf.com/"  // Note: Emerging/community-mentioned option
+  },
+  {
+    "name": "Oracle Cloud Free Tier (Self-Setup)",
+    "ram": 24,
+    "cpu": "4 cores",
+    "disk": "200GB",
+    "location": "Global (multiple regions)",
+    "uptime": "excellent (always-on)",
+    "link": "https://www.oracle.com/cloud/free/"
+  },
+  {
+    "name": "Godlike Host (Free Trial/Options)",
+    "ram": "Varies (trial)",
+    "cpu": "High (Ryzen)",
+    "disk": "Varies",
+    "location": "Global",
+    "uptime": "good",
+    "link": "https://godlike.host/"
   }
 ]
