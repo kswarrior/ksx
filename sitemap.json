@@ -4,87 +4,69 @@
     "icon": "⛏️",
     "sections": [
       {
-        "title": "Hosting",
+        "title": "Make Your Own Hosting Panel",
         "pages": [
-          { "name": "Free Hosting List", "url": "/minecraft/hosting/free.html" },
-          { "name": "24/7 Hosting", "url": "/minecraft/hosting/247.html" },
-          { "name": "Premium Hosting", "url": "/minecraft/hosting/premium.html" }
+          {
+            "name": "Pterodactyl Panel",
+            "url": "/minecraft/hosting/make-own/pterodactyl.html",
+            "logo": "https://example.com/pterodactyl.png"
+          },
+          {
+            "name": "Puffer Panel",
+            "url": "/minecraft/hosting/make-own/puffer.html",
+            "logo": "https://example.com/puffer.png"
+          },
+          {
+            "name": "Skyport Panel",
+            "url": "/minecraft/hosting/make-own/skyport.html",
+            "logo": "https://example.com/puffer.png"
+          }
         ]
       },
       {
-        "title": "Servers",
+        "title": "Hosting Lists",
         "pages": [
-          { "name": "Create Server", "url": "/minecraft/server/create.html" },
-          { "name": "Server Tools", "url": "/minecraft/server/tools.html" },
-          { "name": "Server Bots", "url": "/minecraft/server/bots.html" }
+          {
+            "name": "Free Minecraft Hosting List",
+            "url": "/minecraft/hosting/list/free.html",
+            "logo": "https://example.com/vps.png"
+          }
         ]
       },
       {
-        "title": "Plugins & Mods",
+        "title": "Game",
         "pages": [
-          { "name": "Essential Plugins", "url": "/minecraft/plugins/essential.html" },
-          { "name": "Bedrock Addons", "url": "/minecraft/addons/bedrock.html" }
+          {
+            "name": "Minecraft Java Launcher",
+            "url": "/minecraft/game/java/launcher.html",
+            "logo": "https://example.com/vps.png"
+          }
         ]
       }
     ]
   },
-
   {
-    "category": "VPS & Hosting",
+    "category": "VPS & Network",
     "icon": "🖥️",
     "sections": [
       {
-        "title": "Free VPS",
+        "title": "VPS Hosting",
         "pages": [
-          { "name": "Free VPS List", "url": "/vps/free.html" },
-          { "name": "Always On VPS", "url": "/vps/247.html" }
+          {
+            "name": "Free VPS Hosting List",
+            "url": "/vps/hosting/list/free.html",
+            "logo": "https://example.com/vps.png"
+          }
         ]
       },
       {
-        "title": "Panels",
+        "title": "Network Services",
         "pages": [
-          { "name": "KS Panel", "url": "/vps/panels/ks-panel.html" },
-          { "name": "Pterodactyl", "url": "/vps/panels/pterodactyl.html" }
-        ]
-      }
-    ]
-  },
-
-  {
-    "category": "Games",
-    "icon": "🎮",
-    "sections": [
-      {
-        "title": "Mobile Games",
-        "pages": [
-          { "name": "Pokemon Unite", "url": "/games/mobile/pokemon-unite.html" },
-          { "name": "Mobile Legends", "url": "/games/mobile/mobile-legends.html" }
-        ]
-      },
-      {
-        "title": "PC Games",
-        "pages": [
-          { "name": "Minecraft Java", "url": "/games/pc/minecraft-java.html" }
-        ]
-      }
-    ]
-  },
-
-  {
-    "category": "Website & Tools",
-    "icon": "🌐",
-    "sections": [
-      {
-        "title": "Website Tools",
-        "pages": [
-          { "name": "SEO Tools", "url": "/tools/seo.html" },
-          { "name": "Speed Test", "url": "/tools/speed.html" }
-        ]
-      },
-      {
-        "title": "AI",
-        "pages": [
-          { "name": "KS AI", "url": "/ai/index.html" }
+          {
+            "name": "Cloudflare",
+            "url": "https://cloudflare.com",
+            "logo": "https://example.com/cloudflare.png"
+          }
         ]
       }
     ]
