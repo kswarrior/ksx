@@ -31,6 +31,7 @@ html,body{
   height:100%;
   touch-action:none;
   cursor:grab;
+  background:var(--bg);
 }
 
 /* General node */
@@ -38,19 +39,19 @@ html,body{
   rx:14;
   stroke:rgba(255,255,255,.15);
   stroke-width:1.2;
-  transition: transform .2s ease, fill .25s ease;
+  transition: transform .2s ease, fill .25s ease, filter .25s ease;
 }
 
 /* Hover effect */
 .node:hover{
   transform:scale(1.05);
-  filter:drop-shadow(0 0 10px rgba(255,255,255,.2));
+  filter:drop-shadow(0 0 12px rgba(255,255,255,.3));
 }
 
 /* Category node style */
 .node.category{
   fill:var(--category);
-  stroke-width:1.8;
+  stroke-width:2;
   stroke:rgba(255,255,255,.3);
 }
 
@@ -58,7 +59,7 @@ html,body{
 .node.section{
   fill:var(--section);
   stroke:rgba(255,255,255,.2);
-  stroke-width:1.4;
+  stroke-width:1.6;
 }
 
 /* Page node style */
@@ -70,10 +71,10 @@ html,body{
 /* Labels */
 .label{
   font-weight:700;
-  font-size:13px;
+  font-size:14px;
   fill:var(--text);
   pointer-events:none;
-  text-shadow:0 0 2px rgba(0,0,0,.6);
+  text-shadow:0 0 3px rgba(0,0,0,.7);
 }
 
 /* Links */
@@ -81,6 +82,7 @@ html,body{
   stroke:var(--line);
   stroke-width:1.2;
   stroke-dasharray:4 4;
+  transition: stroke 0.3s ease;
 }
 
 /* Animations */
@@ -90,13 +92,26 @@ html,body{
 }
 
 @keyframes fadeIn{
-  from{ opacity:0; transform:translateY(8px) scale(.97);}
+  from{ opacity:0; transform:translateY(10px) scale(.95);}
   to{ opacity:1; transform:translateY(0) scale(1);}
 }
 
 /* Optimistic hover effects for mobile */
 @media (hover: none){
   .node:hover{ transform:none; filter:none; }
+}
+
+/* Hint text */
+.hint{
+  position:absolute;
+  bottom:12px;
+  left:50%;
+  transform:translateX(-50%);
+  color:var(--text);
+  font-size:12px;
+  opacity:.6;
+  pointer-events:none;
+  user-select:none;
 }
 </style>
 </head>
@@ -114,25 +129,22 @@ const svg = document.getElementById("map");
 const viewport = document.getElementById("viewport");
 
 let scale = 1;
-let panX = 40;
-let panY = 40;
+let panX = 0;
+let panY = 0;
 let isPanning = false;
 let startX, startY;
 
-/* zoom */
+/* --- Zoom --- */
 svg.addEventListener("wheel", e=>{
   e.preventDefault();
-
   const rect = svg.getBoundingClientRect();
-  const mx = e.clientX - rect.left; // mouse x inside SVG
-  const my = e.clientY - rect.top;  // mouse y inside SVG
+  const mx = e.clientX - rect.left;
+  const my = e.clientY - rect.top;
 
-  const zoomIntensity = 0.1;
+  const zoomIntensity = 0.15;
   const delta = (e.deltaY > 0 ? -1 : 1) * zoomIntensity;
+  const newScale = Math.min(Math.max(0.2, scale + delta), 4);
 
-  const newScale = Math.min(Math.max(0.2, scale + delta), 3);
-
-  // adjust pan so zoom is centered on mouse
   panX -= (mx - panX) * (newScale/scale - 1);
   panY -= (my - panY) * (newScale/scale - 1);
 
@@ -140,7 +152,7 @@ svg.addEventListener("wheel", e=>{
   update();
 },{ passive:false });
 
-/* pan */
+/* --- Pan --- */
 svg.addEventListener("pointerdown", e=>{
   isPanning = true;
   startX = e.clientX - panX;
@@ -168,19 +180,23 @@ function update(){
   );
 }
 
-/* load sitemap */
+/* --- Load Sitemap --- */
 fetch("sitemap.json")
 .then(r=>r.json())
 .then(data=>{
-  let x = 80;
-  const gapX = 420;
+  // Dynamically calculate spacing based on screen size
+  const screenW = window.innerWidth;
+  const screenH = window.innerHeight;
+
+  let x = 60;  // start x
+  const gapX = Math.max(350, screenW/4); // gap between categories
 
   data.forEach((cat,ci)=>{
     let y = 80;
 
     const catNode = node(x,y,260,64,cat.icon+" "+cat.category,"category",ci);
 
-    let sy = y + 130;
+    let sy = y + 120;
 
     cat.sections.forEach((sec,si)=>{
       line(x+130,y+64,x+130,sy);
@@ -192,9 +208,9 @@ fetch("sitemap.json")
       sec.pages.forEach((p,pi)=>{
         line(x+130,sy+54,x+420,py+23);
 
-        const page = node(x+420,py,300,46,p.name,"page",ci+si+pi);
-        page.style.cursor="pointer";
-        page.addEventListener("click",()=>location.href=p.url);
+        const pageNode = node(x+420,py,300,46,p.name,"page",ci+si+pi);
+        pageNode.style.cursor="pointer";
+        pageNode.addEventListener("click",()=>location.href=p.url);
 
         py += 68;
       });
@@ -205,10 +221,11 @@ fetch("sitemap.json")
     x += gapX;
   });
 
-  update();
+  // Fit all nodes to screen initially
+  fitToScreen();
 });
 
-/* helpers */
+/* --- Helpers --- */
 function node(x,y,w,h,text,type,delay){
   const g = svgEl("g");
   g.classList.add("fade-in");
@@ -242,9 +259,27 @@ function line(x1,y1,x2,y2){
   viewport.appendChild(l);
 }
 
-function svgEl(n){
-  return document.createElementNS("http://www.w3.org/2000/svg",n);
+function svgEl(tag){
+  return document.createElementNS("http://www.w3.org/2000/svg",tag);
 }
+
+/* --- Fit all nodes to screen --- */
+function fitToScreen(){
+  const bbox = viewport.getBBox();
+  const svgW = svg.clientWidth;
+  const svgH = svg.clientHeight;
+
+  const scaleX = svgW / (bbox.width + 160);
+  const scaleY = svgH / (bbox.height + 160);
+  scale = Math.min(scaleX, scaleY, 1);
+
+  panX = (svgW - bbox.width*scale)/2 - bbox.x*scale;
+  panY = (svgH - bbox.height*scale)/2 - bbox.y*scale;
+  update();
+}
+
+/* --- Update on resize --- */
+window.addEventListener("resize", fitToScreen);
 </script>
 
 </body>
