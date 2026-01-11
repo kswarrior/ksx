@@ -2,146 +2,166 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>KS Sitemap</title>
+<title>KS Visual Sitemap</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
-:root{
-  --bg:#000;
-  --card:rgba(18,18,28,.9);
-  --soft:rgba(28,28,40,.9);
-  --hover:rgba(40,40,55,.95);
-  --text:#fff;
-  --muted:#aaa;
-  --border:rgba(255,255,255,.12);
-  --radius:14px;
-  --gap:28px;
-  --transition:.45s cubic-bezier(.22,1,.36,1);
-}
-
-*{box-sizing:border-box;margin:0;padding:0}
-body{
-  background:var(--bg);
-  color:var(--text);
+html,body{
+  margin:0;
+  height:100%;
+  background:#000;
+  overflow:hidden;
   font-family:system-ui,-apple-system,sans-serif;
-  user-select: none;
-  -webkit-tap-highlight-color: transparent;
 }
 
-.container{
-  max-width:1200px;
-  margin:auto;
-  padding:32px 16px;
+#map{
+  width:100%;
+  height:100%;
+  cursor:grab;
 }
 
-h1{
-  font-size:28px;
-  font-weight:900;
+.node{
+  fill:#12121c;
+  stroke:rgba(255,255,255,.15);
+  stroke-width:1.2;
+  rx:12;
 }
 
-.category{
-  margin-top:50px;
-}
+.node.category{ fill:#1f1f35 }
+.node.section{ fill:#191928 }
+.node.page{ fill:#12121c }
 
-.category-title{
-  font-size:22px;
-  font-weight:900;
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
-
-.section{
-  margin-top:22px;
-}
-
-.section-title{
-  font-size:15px;
-  color:var(--muted);
-  margin-bottom:12px;
+.label{
+  fill:#fff;
+  font-size:13px;
   font-weight:700;
-  text-transform:uppercase;
-  letter-spacing:.08em;
+  pointer-events:none;
 }
 
-.page-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
-  gap:var(--gap);
+.link{
+  stroke:rgba(255,255,255,.15);
+  stroke-width:1;
 }
 
-.page-card{
-  background:var(--card);
-  padding:18px;
-  border-radius:var(--radius);
-  border:1px solid var(--border);
-  cursor:pointer;
-  transition:all var(--transition);
-}
-.page-card:hover{
-  background:var(--hover);
-  transform:translateY(-6px) scale(1.04);
-}
-
-.page-name{
-  font-size:15px;
-  font-weight:800;
-}
-.page-url{
-  margin-top:6px;
-  font-size:11px;
-  color:#777;
-  word-break:break-all;
+.node:hover{
+  fill:#2b2b45;
 }
 </style>
 </head>
 
 <body>
-<div class="container">
-  <h1>🗺 KS Website Sitemap</h1>
 
-  <div id="sitemap"></div>
-</div>
+<svg id="map">
+  <g id="viewport"></g>
+</svg>
 
 <script>
+const svg = document.getElementById("map");
+const viewport = document.getElementById("viewport");
+
+let scale = 1;
+let panX = 0;
+let panY = 0;
+let isPanning = false;
+let startX, startY;
+
+svg.addEventListener("wheel", e => {
+  e.preventDefault();
+  scale += e.deltaY * -0.001;
+  scale = Math.min(Math.max(.4, scale), 2.5);
+  updateTransform();
+});
+
+svg.addEventListener("mousedown", e=>{
+  isPanning = true;
+  startX = e.clientX - panX;
+  startY = e.clientY - panY;
+  svg.style.cursor = "grabbing";
+});
+
+svg.addEventListener("mouseup", ()=>{
+  isPanning = false;
+  svg.style.cursor = "grab";
+});
+
+svg.addEventListener("mousemove", e=>{
+  if(!isPanning) return;
+  panX = e.clientX - startX;
+  panY = e.clientY - startY;
+  updateTransform();
+});
+
+function updateTransform(){
+  viewport.setAttribute("transform", `translate(${panX},${panY}) scale(${scale})`);
+}
+
 fetch("sitemap.json")
 .then(r=>r.json())
 .then(data=>{
-  const root = document.getElementById("sitemap");
+  let x = 100;
+  let y = 100;
+  const gapX = 340;
+  const gapY = 140;
 
   data.forEach(cat=>{
-    const c = document.createElement("div");
-    c.className = "category";
-    c.innerHTML = `
-      <div class="category-title">${cat.icon} ${cat.category}</div>
-    `;
+    const catNode = createNode(x,y,220,60,cat.icon+" "+cat.category,"category");
+
+    let sy = y + 120;
 
     cat.sections.forEach(sec=>{
-      const s = document.createElement("div");
-      s.className = "section";
-      s.innerHTML = `<div class="section-title">${sec.title}</div>`;
+      drawLine(x+110,y+60,x+110,sy);
+      const secNode = createNode(x,sy,220,52,sec.title,"section");
 
-      const grid = document.createElement("div");
-      grid.className = "page-grid";
+      let py = sy + 100;
 
       sec.pages.forEach(p=>{
-        const card = document.createElement("div");
-        card.className = "page-card";
-        card.onclick = ()=>location.href=p.url;
-        card.innerHTML = `
-          <div class="page-name">${p.name}</div>
-          <div class="page-url">${p.url}</div>
-        `;
-        grid.appendChild(card);
+        drawLine(x+110,sy+52,x+360,py+26);
+        const pageNode = createNode(x+360,py,260,46,p.name,"page");
+        pageNode.addEventListener("click",()=>location.href=p.url);
+        py += 70;
       });
 
-      s.appendChild(grid);
-      c.appendChild(s);
+      sy += gapY + sec.pages.length*60;
     });
 
-    root.appendChild(c);
+    x += gapX;
   });
+
+  updateTransform();
 });
+
+function createNode(x,y,w,h,text,type){
+  const g = document.createElementNS("http://www.w3.org/2000/svg","g");
+
+  const r = document.createElementNS("http://www.w3.org/2000/svg","rect");
+  r.setAttribute("x",x);
+  r.setAttribute("y",y);
+  r.setAttribute("width",w);
+  r.setAttribute("height",h);
+  r.setAttribute("class","node "+type);
+
+  const t = document.createElementNS("http://www.w3.org/2000/svg","text");
+  t.setAttribute("x",x+14);
+  t.setAttribute("y",y+h/2+5);
+  t.setAttribute("class","label");
+  t.textContent = text;
+
+  g.appendChild(r);
+  g.appendChild(t);
+  viewport.appendChild(g);
+  return g;
+}
+
+function drawLine(x1,y1,x2,y2){
+  const l = document.createElementNS("http://www.w3.org/2000/svg","line");
+  l.setAttribute("x1",x1);
+  l.setAttribute("y1",y1);
+  l.setAttribute("x2",x2);
+  l.setAttribute("y2",y2);
+  l.setAttribute("class","link");
+  viewport.appendChild(l);
+}
 </script>
+
 </body>
 </html>
