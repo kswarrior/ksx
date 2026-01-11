@@ -233,19 +233,19 @@ body.sidebar-open #sidebar { left: 0; }
 }
 
 s-icon {
-  
+  border: 1px solid var(--border);
 }
   
 s-category {
-  
+  font-size: 14px;
 }
 
 s-title {
-  
+  font-size: 13px;
 }
 
 s-page {
-  
+  font-size: 12px;
 }
 </style>
 </head>
@@ -395,14 +395,14 @@ function updateSuggestions() {
     `;
 
     Object.entries(data.titles).forEach(([title, pages]) => {
-      html += `<li class="s-title">   ${title}</li>`;
+      html += `<li class="s-title">${title}</li>`;
 
       pages.forEach(p => {
         html += `
           <li class="s-page" tabindex="0" role="option"
               data-url="${p.url}"
               data-name="${p.name}">
-                  ${p.name}
+              ${p.name}
           </li>
         `;
       });
