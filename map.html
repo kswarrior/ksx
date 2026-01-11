@@ -7,12 +7,17 @@
 
 <style>
 :root{
-  --bg:#0a0a1f;
-  --category:#3a3aff;
-  --section:#1f1f3d;
-  --page:#121224;
-  --text:#ffffff;
-  --line:rgba(255,255,255,.12);
+  --bg: #0a0a1f;
+  --category: #3a3aff;
+  --category-gradient: linear-gradient(135deg, #3a3aff, #2a2acc);
+  --section: #1f1f3d;
+  --section-gradient: linear-gradient(135deg, #1f1f3d, #15152b);
+  --page: #121224;
+  --page-gradient: linear-gradient(135deg, #121224, #0a0a18);
+  --text: #ffffff;
+  --line: rgba(255,255,255,.15);
+  --shadow: rgba(0,0,0,.3);
+  --highlight: rgba(255,255,255,.1);
 }
 
 /* Reset & body */
@@ -31,87 +36,91 @@ html,body{
   height:100%;
   touch-action:none;
   cursor:grab;
-  background:var(--bg);
 }
 
 /* General node */
 .node{
-  rx:14;
-  stroke:rgba(255,255,255,.15);
-  stroke-width:1.2;
-  transition: transform .2s ease, fill .25s ease, filter .25s ease;
+  rx:16;
+  ry:16;
+  stroke:none;
+  transition: transform .3s ease-out, filter .3s ease;
+  filter: drop-shadow(0 4px 8px var(--shadow));
 }
 
 /* Hover effect */
 .node:hover{
-  transform:scale(1.05);
-  filter:drop-shadow(0 0 12px rgba(255,255,255,.3));
+  transform: translateY(-2px) scale(1.02);
+  filter: drop-shadow(0 6px 12px var(--shadow)) brightness(1.05);
 }
 
 /* Category node style */
 .node.category{
-  fill:var(--category);
-  stroke-width:2;
-  stroke:rgba(255,255,255,.3);
+  fill: url(#category-gradient);
 }
 
-/* Section / Title style */
+/* Section node style */
 .node.section{
-  fill:var(--section);
-  stroke:rgba(255,255,255,.2);
-  stroke-width:1.6;
+  fill: url(#section-gradient);
 }
 
 /* Page node style */
 .node.page{
-  fill:var(--page);
-  stroke:rgba(255,255,255,.15);
+  fill: url(#page-gradient);
 }
 
 /* Labels */
 .label{
-  font-weight:700;
+  font-weight:600;
   font-size:14px;
   fill:var(--text);
   pointer-events:none;
-  text-shadow:0 0 3px rgba(0,0,0,.7);
+  text-shadow:0 1px 2px var(--shadow);
+  dominant-baseline: middle;
 }
 
 /* Links */
 .link{
   stroke:var(--line);
-  stroke-width:1.2;
-  stroke-dasharray:4 4;
-  transition: stroke 0.3s ease;
+  stroke-width:1.5;
+  stroke-linecap: round;
+  stroke-dasharray: 3 3;
+  transition: stroke .2s ease;
 }
 
 /* Animations */
 .fade-in{
   opacity:0;
-  animation:fadeIn .6s ease forwards;
+  animation:fadeIn .8s ease-out forwards;
 }
 
 @keyframes fadeIn{
-  from{ opacity:0; transform:translateY(10px) scale(.95);}
+  from{ opacity:0; transform:translateY(12px) scale(.95);}
   to{ opacity:1; transform:translateY(0) scale(1);}
+}
+
+/* Hint */
+.hint{
+  position:fixed;
+  bottom:20px;
+  left:50%;
+  transform:translateX(-50%);
+  background:rgba(0,0,0,.4);
+  color:#ddd;
+  padding:6px 16px;
+  border-radius:20px;
+  font-size:13px;
+  pointer-events:none;
+  opacity:0.8;
 }
 
 /* Optimistic hover effects for mobile */
 @media (hover: none){
-  .node:hover{ transform:none; filter:none; }
+  .node:hover{ transform:none; filter: drop-shadow(0 4px 8px var(--shadow)); }
 }
 
-/* Hint text */
-.hint{
-  position:absolute;
-  bottom:12px;
-  left:50%;
-  transform:translateX(-50%);
-  color:var(--text);
-  font-size:12px;
-  opacity:.6;
-  pointer-events:none;
-  user-select:none;
+/* Smooth transitions */
+#viewport{
+  transition: transform 0.1s ease-out;
 }
 </style>
 </head>
@@ -119,190 +128,239 @@ html,body{
 <body>
 
 <svg id="map">
+  <defs>
+    <linearGradient id="category-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3a3aff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2a2acc;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="section-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1f1f3d;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#15152b;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="page-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#121224;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0a0a18;stop-opacity:1" />
+    </linearGradient>
+  </defs>
   <g id="viewport"></g>
 </svg>
 
-<div class="hint">Drag • Zoom • Tap pages</div>
+<div class="hint">Drag • Pinch to Zoom • Tap pages</div>
 
 <script>
 const svg = document.getElementById("map");
 const viewport = document.getElementById("viewport");
 
-/* --- Current values --- */
 let scale = 1;
-let panX = 0;
-let panY = 0;
-
-/* --- Target values for smooth animation --- */
-let targetScale = 1;
-let targetPanX = 0;
-let targetPanY = 0;
-
+let panX = 40;
+let panY = 40;
 let isPanning = false;
 let startX, startY;
+let velocityX = 0;
+let velocityY = 0;
+let lastPanX, lastPanY;
+let animationFrame;
 
-/* --- Zoom --- */
-let lastTouchDist = null;
+// Inertia settings
+const friction = 0.92;
+const minVelocity = 0.1;
 
-/* --- Smooth animation loop --- */
-function update(){
-  scale += (targetScale - scale) * 0.2;
-  panX += (targetPanX - panX) * 0.2;
-  panY += (targetPanY - panY) * 0.2;
-
-  viewport.setAttribute(
-    "transform",
-    `translate(${panX},${panY}) scale(${scale})`
-  );
-
-  requestAnimationFrame(update);
+// Update function with requestAnimationFrame
+function update() {
+  if (animationFrame) cancelAnimationFrame(animationFrame);
+  animationFrame = requestAnimationFrame(() => {
+    viewport.setAttribute(
+      "transform",
+      `translate(${panX},${panY}) scale(${scale})`
+    );
+  });
 }
-update(); // start animation loop
 
-/* --- Touch pinch zoom --- */
-svg.addEventListener("touchmove", e => {
-  if (e.touches.length === 2) {
-    e.preventDefault();
+// Inertia animation
+function applyInertia() {
+  if (Math.abs(velocityX) < minVelocity && Math.abs(velocityY) < minVelocity) return;
 
-    const [t1, t2] = e.touches;
-    const dx = t2.clientX - t1.clientX;
-    const dy = t2.clientY - t1.clientY;
-    const dist = Math.hypot(dx, dy);
+  panX += velocityX;
+  panY += velocityY;
+  velocityX *= friction;
+  velocityY *= friction;
 
-    if (lastTouchDist) {
-      const zoomFactor = dist / lastTouchDist;
-      const rect = svg.getBoundingClientRect();
+  update();
+  requestAnimationFrame(applyInertia);
+}
 
-      // Center of the pinch
-      const mx = (t1.clientX + t2.clientX)/2 - rect.left;
-      const my = (t1.clientY + t2.clientY)/2 - rect.top;
+/* zoom */
+svg.addEventListener("wheel", e => {
+  e.preventDefault();
 
-      const newScale = Math.min(Math.max(0.2, targetScale * zoomFactor), 4);
+  const rect = svg.getBoundingClientRect();
+  const mx = (e.clientX - rect.left) / scale - panX / scale;
+  const my = (e.clientY - rect.top) / scale - panY / scale;
 
-      targetPanX -= (mx - targetPanX) * (newScale/targetScale - 1);
-      targetPanY -= (my - targetPanY) * (newScale/targetScale - 1);
-      targetScale = newScale;
-    }
+  const zoomIntensity = 0.12;
+  const delta = Math.exp((e.deltaY > 0 ? -1 : 1) * zoomIntensity);
 
-    lastTouchDist = dist;
+  const newScale = Math.min(Math.max(0.25, scale * delta), 4);
+
+  panX = (e.clientX - rect.left) - mx * newScale;
+  panY = (e.clientY - rect.top) - my * newScale;
+
+  scale = newScale;
+  update();
+}, { passive: false });
+
+/* pan */
+svg.addEventListener("pointerdown", e => {
+  isPanning = true;
+  startX = e.clientX - panX;
+  startY = e.clientY - panY;
+  velocityX = 0;
+  velocityY = 0;
+  lastPanX = panX;
+  lastPanY = panY;
+  svg.setPointerCapture(e.pointerId);
+  svg.style.cursor = "grabbing";
+});
+
+svg.addEventListener("pointerup", e => {
+  isPanning = false;
+  svg.style.cursor = "grab";
+
+  // Calculate velocity
+  velocityX = panX - lastPanX;
+  velocityY = panY - lastPanY;
+
+  if (Math.abs(velocityX) > minVelocity || Math.abs(velocityY) > minVelocity) {
+    applyInertia();
   }
 });
 
-svg.addEventListener("touchend", e => {
-  if (e.touches.length < 2) lastTouchDist = null;
+svg.addEventListener("pointermove", e => {
+  if (!isPanning) return;
+  lastPanX = panX;
+  lastPanY = panY;
+  panX = e.clientX - startX;
+  panY = e.clientY - startY;
+  update();
 });
 
-/* --- Pan --- */
-svg.addEventListener("pointerdown", e=>{
-  isPanning = true;
-  startX = e.clientX - targetPanX;
-  startY = e.clientY - targetPanY;
-  svg.setPointerCapture(e.pointerId);
-  svg.style.cursor="grabbing";
+// Touch pinch zoom
+let initialDistance = 0;
+let initialScale = 1;
+let initialPanX = 0;
+let initialPanY = 0;
+
+svg.addEventListener("touchstart", e => {
+  if (e.touches.length === 2) {
+    isPanning = false;
+    initialDistance = getTouchDistance(e.touches);
+    initialScale = scale;
+    initialPanX = panX;
+    initialPanY = panY;
+  }
 });
 
-svg.addEventListener("pointerup", ()=>{
-  isPanning=false;
-  svg.style.cursor="grab";
+svg.addEventListener("touchmove", e => {
+  if (e.touches.length === 2) {
+    e.preventDefault();
+    const currentDistance = getTouchDistance(e.touches);
+    const zoomFactor = currentDistance / initialDistance;
+    scale = initialScale * zoomFactor;
+
+    // Center zoom between fingers
+    const midX = (e.touches[0].clientX + e.touches[1].clientX) / 2;
+    const midY = (e.touches[0].clientY + e.touches[1].clientY) / 2;
+    const rect = svg.getBoundingClientRect();
+    panX = initialPanX + (midX - rect.left) * (1 - zoomFactor);
+    panY = initialPanY + (midY - rect.top) * (1 - zoomFactor);
+
+    update();
+  }
 });
 
-svg.addEventListener("pointermove", e=>{
-  if(!isPanning) return;
-  targetPanX = e.clientX - startX;
-  targetPanY = e.clientY - startY;
-});
+function getTouchDistance(touches) {
+  const dx = touches[0].clientX - touches[1].clientX;
+  const dy = touches[0].clientY - touches[1].clientY;
+  return Math.sqrt(dx * dx + dy * dy);
+}
 
-/* --- Load Sitemap --- */
+/* load sitemap */
 fetch("sitemap.json")
-.then(r=>r.json())
-.then(data=>{
-  const screenW = window.innerWidth;
-  const screenH = window.innerHeight;
+  .then(r => r.json())
+  .then(data => {
+    let x = 100;
+    const gapX = 480;
 
-  let x = 60;
-  const gapX = Math.max(350, screenW/4);
+    data.forEach((cat, ci) => {
+      let y = 100;
 
-  data.forEach((cat,ci)=>{
-    let y = 80;
-    const catNode = node(x,y,260,64,cat.icon+" "+cat.category,"category",ci);
+      const catNode = node(x, y, 280, 70, cat.icon + " " + cat.category, "category", ci);
 
-    let sy = y + 120;
-    cat.sections.forEach((sec,si)=>{
-      line(x+130,y+64,x+130,sy);
-      const secNode = node(x,sy,260,54,sec.title,"section",ci+si);
+      let sy = y + 150;
 
-      let py = sy + 90;
-      sec.pages.forEach((p,pi)=>{
-        line(x+130,sy+54,x+420,py+23);
-        const pageNode = node(x+420,py,300,46,p.name,"page",ci+si+pi);
-        pageNode.style.cursor="pointer";
-        pageNode.addEventListener("click",()=>location.href=p.url);
-        py += 68;
+      cat.sections.forEach((sec, si) => {
+        line(x + 140, y + 70, x + 140, sy);
+
+        const secNode = node(x, sy, 280, 60, sec.title, "section", ci + si);
+
+        let py = sy + 100;
+
+        sec.pages.forEach((p, pi) => {
+          line(x + 140, sy + 60, x + 440, py + 25);
+
+          const page = node(x + 440, py, 320, 50, p.name, "page", ci + si + pi);
+          page.style.cursor = "pointer";
+          page.addEventListener("click", () => location.href = p.url);
+
+          py += 76;
+        });
+
+        sy = py + 30;
       });
 
-      sy = py + 20;
+      x += gapX;
     });
 
-    x += gapX;
+    update();
   });
 
-  fitToScreen();
-});
-
-/* --- Helpers --- */
-function node(x,y,w,h,text,type,delay){
+/* helpers */
+function node(x, y, w, h, text, type, delay) {
   const g = svgEl("g");
   g.classList.add("fade-in");
-  g.style.animationDelay = delay*40+"ms";
+  g.style.animationDelay = delay * 50 + "ms";
 
   const r = svgEl("rect");
-  r.setAttribute("x",x);
-  r.setAttribute("y",y);
-  r.setAttribute("width",w);
-  r.setAttribute("height",h);
-  r.setAttribute("class","node "+type);
+  r.setAttribute("x", x);
+  r.setAttribute("y", y);
+  r.setAttribute("width", w);
+  r.setAttribute("height", h);
+  r.setAttribute("class", "node " + type);
 
   const t = svgEl("text");
-  t.setAttribute("x",x+16);
-  t.setAttribute("y",y+h/2+5);
-  t.setAttribute("class","label");
-  t.textContent=text;
+  t.setAttribute("x", x + 20);
+  t.setAttribute("y", y + h / 2);
+  t.setAttribute("class", "label");
+  t.textContent = text;
 
-  g.append(r,t);
+  g.append(r, t);
   viewport.appendChild(g);
   return g;
 }
 
-function line(x1,y1,x2,y2){
+function line(x1, y1, x2, y2) {
   const l = svgEl("line");
-  l.setAttribute("x1",x1);
-  l.setAttribute("y1",y1);
-  l.setAttribute("x2",x2);
-  l.setAttribute("y2",y2);
-  l.setAttribute("class","link");
+  l.setAttribute("x1", x1);
+  l.setAttribute("y1", y1);
+  l.setAttribute("x2", x2);
+  l.setAttribute("y2", y2);
+  l.setAttribute("class", "link");
   viewport.appendChild(l);
 }
 
-function svgEl(tag){
-  return document.createElementNS("http://www.w3.org/2000/svg",tag);
+function svgEl(n) {
+  return document.createElementNS("http://www.w3.org/2000/svg", n);
 }
-
-/* --- Fit all nodes to screen --- */
-function fitToScreen(){
-  const bbox = viewport.getBBox();
-  const svgW = svg.clientWidth;
-  const svgH = svg.clientHeight;
-
-  const scaleX = svgW / (bbox.width + 160);
-  const scaleY = svgH / (bbox.height + 160);
-  targetScale = Math.min(scaleX, scaleY, 1);
-
-  targetPanX = (svgW - bbox.width*targetScale)/2 - bbox.x*targetScale;
-  targetPanY = (svgH - bbox.height*targetScale)/2 - bbox.y*targetScale;
-}
-
-/* --- Update on resize --- */
-window.addEventListener("resize", fitToScreen);
 </script>
 
 </body>
