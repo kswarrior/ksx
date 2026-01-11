@@ -291,7 +291,7 @@ body.sidebar-open #sidebar { left: 0; }
 
 /* small dot before title */
 .s-title::before {
-  content: "» ";
+  content: "❯  |";
   position: absolute;
   left: 14px;
   color: var(--accent);
@@ -309,13 +309,6 @@ body.sidebar-open #sidebar { left: 0; }
   position: relative;
 }
 
-.s-page::before {
-  content: "• ";
-  position: absolute;
-  left: 14px;
-  opacity: 0.6;
-}
-
 /* hover + keyboard */
 .s-page:hover,
 .s-page.active {
@@ -329,7 +322,7 @@ body.sidebar-open #sidebar { left: 0; }
 
 /* left highlight bar */
 .s-page::before {
-  content: "";
+  content: "•  |";
   position: absolute;
   left: 30px;
   top: 8px;
