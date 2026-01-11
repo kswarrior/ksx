@@ -6,45 +6,101 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
+:root{
+  --bg:#05050a;
+  --card:#14142a;
+  --card2:#1c1c3a;
+  --accent:#7c7cff;
+  --line:rgba(255,255,255,.18);
+  --text:#ffffff;
+}
+
 html,body{
   margin:0;
+  width:100%;
   height:100%;
-  background:#000;
+  background:radial-gradient(circle at top,#0b0b20,#000);
   overflow:hidden;
-  font-family:system-ui,-apple-system,sans-serif;
+  font-family:system-ui,-apple-system,Segoe UI,sans-serif;
 }
 
 #map{
   width:100%;
   height:100%;
+  touch-action:none;
   cursor:grab;
 }
 
 .node{
-  fill:#12121c;
+  fill:var(--card);
   stroke:rgba(255,255,255,.15);
   stroke-width:1.2;
-  rx:12;
+  rx:14;
+  transition:
+    transform .25s ease,
+    fill .25s ease,
+    filter .25s ease;
 }
 
-.node.category{ fill:#1f1f35 }
-.node.section{ fill:#191928 }
-.node.page{ fill:#12121c }
+.node.category{
+  fill:linear-gradient(135deg,#2b2b6a,#1b1b3d);
+}
+
+.node.section{
+  fill:var(--card2);
+}
+
+.node.page{
+  fill:#121224;
+}
+
+.node:hover{
+  fill:#2e2e60;
+  filter:drop-shadow(0 0 12px rgba(124,124,255,.45));
+  transform:scale(1.03);
+}
 
 .label{
-  fill:#fff;
+  fill:var(--text);
   font-size:13px;
   font-weight:700;
   pointer-events:none;
 }
 
 .link{
-  stroke:rgba(255,255,255,.15);
-  stroke-width:1;
+  stroke:var(--line);
+  stroke-width:1.1;
+  stroke-dasharray:6 6;
+  animation:dash 18s linear infinite;
 }
 
-.node:hover{
-  fill:#2b2b45;
+@keyframes dash{
+  to{ stroke-dashoffset:-200; }
+}
+
+/* smooth appear */
+.fade-in{
+  animation:fadeIn .6s ease forwards;
+  opacity:0;
+}
+
+@keyframes fadeIn{
+  from{ opacity:0; transform:translateY(12px) scale(.96); }
+  to{ opacity:1; transform:none; }
+}
+
+/* mobile hint */
+.hint{
+  position:fixed;
+  bottom:14px;
+  left:50%;
+  transform:translateX(-50%);
+  font-size:12px;
+  color:#aaa;
+  background:rgba(0,0,0,.45);
+  padding:6px 12px;
+  border-radius:20px;
+  backdrop-filter:blur(6px);
 }
 </style>
 </head>
@@ -55,111 +111,130 @@ html,body{
   <g id="viewport"></g>
 </svg>
 
+<div class="hint">Drag • Zoom • Tap pages</div>
+
 <script>
 const svg = document.getElementById("map");
 const viewport = document.getElementById("viewport");
 
 let scale = 1;
-let panX = 0;
-let panY = 0;
+let panX = 40;
+let panY = 40;
 let isPanning = false;
 let startX, startY;
 
-svg.addEventListener("wheel", e => {
+/* zoom */
+svg.addEventListener("wheel", e=>{
   e.preventDefault();
-  scale += e.deltaY * -0.001;
-  scale = Math.min(Math.max(.4, scale), 2.5);
-  updateTransform();
-});
+  const delta = e.deltaY * -0.0012;
+  scale = Math.min(Math.max(.45, scale + delta), 2.8);
+  update();
+},{ passive:false });
 
-svg.addEventListener("mousedown", e=>{
+/* pan */
+svg.addEventListener("pointerdown", e=>{
   isPanning = true;
   startX = e.clientX - panX;
   startY = e.clientY - panY;
-  svg.style.cursor = "grabbing";
+  svg.setPointerCapture(e.pointerId);
+  svg.style.cursor="grabbing";
 });
 
-svg.addEventListener("mouseup", ()=>{
-  isPanning = false;
-  svg.style.cursor = "grab";
+svg.addEventListener("pointerup", ()=>{
+  isPanning=false;
+  svg.style.cursor="grab";
 });
 
-svg.addEventListener("mousemove", e=>{
+svg.addEventListener("pointermove", e=>{
   if(!isPanning) return;
   panX = e.clientX - startX;
   panY = e.clientY - startY;
-  updateTransform();
+  update();
 });
 
-function updateTransform(){
-  viewport.setAttribute("transform", `translate(${panX},${panY}) scale(${scale})`);
+function update(){
+  viewport.setAttribute(
+    "transform",
+    `translate(${panX},${panY}) scale(${scale})`
+  );
 }
 
+/* load sitemap */
 fetch("sitemap.json")
 .then(r=>r.json())
 .then(data=>{
-  let x = 100;
-  let y = 100;
-  const gapX = 340;
-  const gapY = 140;
+  let x = 80;
+  const gapX = 420;
 
-  data.forEach(cat=>{
-    const catNode = createNode(x,y,220,60,cat.icon+" "+cat.category,"category");
+  data.forEach((cat,ci)=>{
+    let y = 80;
 
-    let sy = y + 120;
+    const catNode = node(x,y,260,64,cat.icon+" "+cat.category,"category",ci);
 
-    cat.sections.forEach(sec=>{
-      drawLine(x+110,y+60,x+110,sy);
-      const secNode = createNode(x,sy,220,52,sec.title,"section");
+    let sy = y + 130;
 
-      let py = sy + 100;
+    cat.sections.forEach((sec,si)=>{
+      line(x+130,y+64,x+130,sy);
 
-      sec.pages.forEach(p=>{
-        drawLine(x+110,sy+52,x+360,py+26);
-        const pageNode = createNode(x+360,py,260,46,p.name,"page");
-        pageNode.addEventListener("click",()=>location.href=p.url);
-        py += 70;
+      const secNode = node(x,sy,260,54,sec.title,"section",ci+si);
+
+      let py = sy + 90;
+
+      sec.pages.forEach((p,pi)=>{
+        line(x+130,sy+54,x+420,py+23);
+
+        const page = node(x+420,py,300,46,p.name,"page",ci+si+pi);
+        page.style.cursor="pointer";
+        page.addEventListener("click",()=>location.href=p.url);
+
+        py += 68;
       });
 
-      sy += gapY + sec.pages.length*60;
+      sy = py + 20;
     });
 
     x += gapX;
   });
 
-  updateTransform();
+  update();
 });
 
-function createNode(x,y,w,h,text,type){
-  const g = document.createElementNS("http://www.w3.org/2000/svg","g");
+/* helpers */
+function node(x,y,w,h,text,type,delay){
+  const g = svgEl("g");
+  g.classList.add("fade-in");
+  g.style.animationDelay = delay*40+"ms";
 
-  const r = document.createElementNS("http://www.w3.org/2000/svg","rect");
+  const r = svgEl("rect");
   r.setAttribute("x",x);
   r.setAttribute("y",y);
   r.setAttribute("width",w);
   r.setAttribute("height",h);
   r.setAttribute("class","node "+type);
 
-  const t = document.createElementNS("http://www.w3.org/2000/svg","text");
-  t.setAttribute("x",x+14);
+  const t = svgEl("text");
+  t.setAttribute("x",x+16);
   t.setAttribute("y",y+h/2+5);
   t.setAttribute("class","label");
-  t.textContent = text;
+  t.textContent=text;
 
-  g.appendChild(r);
-  g.appendChild(t);
+  g.append(r,t);
   viewport.appendChild(g);
   return g;
 }
 
-function drawLine(x1,y1,x2,y2){
-  const l = document.createElementNS("http://www.w3.org/2000/svg","line");
+function line(x1,y1,x2,y2){
+  const l = svgEl("line");
   l.setAttribute("x1",x1);
   l.setAttribute("y1",y1);
   l.setAttribute("x2",x2);
   l.setAttribute("y2",y2);
   l.setAttribute("class","link");
   viewport.appendChild(l);
+}
+
+function svgEl(n){
+  return document.createElementNS("http://www.w3.org/2000/svg",n);
 }
 </script>
 
