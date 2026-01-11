@@ -291,7 +291,7 @@ body.sidebar-open #sidebar { left: 0; }
 
 /* small dot before title */
 .s-title::before {
-  content: "•";
+  content: "» ";
   position: absolute;
   left: 14px;
   color: var(--accent);
@@ -307,6 +307,13 @@ body.sidebar-open #sidebar { left: 0; }
   border-radius: 8px;
   transition: all 0.2s ease;
   position: relative;
+}
+
+.s-page::before {
+  content: "• ";
+  position: absolute;
+  left: 14px;
+  opacity: 0.6;
 }
 
 /* hover + keyboard */
