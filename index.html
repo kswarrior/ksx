@@ -231,6 +231,22 @@ body.sidebar-open #sidebar { left: 0; }
 #favButton.filled {
   color: var(--accent); /* Blue color when added to favorites */
 }
+
+s-icon {
+  
+}
+  
+s-category {
+  
+}
+
+s-title {
+  
+}
+
+s-page {
+  
+}
 </style>
 </head>
 
@@ -379,14 +395,14 @@ function updateSuggestions() {
     `;
 
     Object.entries(data.titles).forEach(([title, pages]) => {
-      html += `<li class="s-title">${title}</li>`;
+      html += `<li class="s-title">   ${title}</li>`;
 
       pages.forEach(p => {
         html += `
           <li class="s-page" tabindex="0" role="option"
               data-url="${p.url}"
               data-name="${p.name}">
-            ${p.name}
+                  ${p.name}
           </li>
         `;
       });
