@@ -135,22 +135,41 @@ let isPanning = false;
 let startX, startY;
 
 /* --- Zoom --- */
-svg.addEventListener("wheel", e=>{
-  e.preventDefault();
-  const rect = svg.getBoundingClientRect();
-  const mx = e.clientX - rect.left;
-  const my = e.clientY - rect.top;
+let lastTouchDist = null;
 
-  const zoomIntensity = 0.15;
-  const delta = (e.deltaY > 0 ? -1 : 1) * zoomIntensity;
-  const newScale = Math.min(Math.max(0.2, scale + delta), 4);
+/* --- Touch pinch zoom --- */
+svg.addEventListener("touchmove", e => {
+  if (e.touches.length === 2) {
+    e.preventDefault();
 
-  panX -= (mx - panX) * (newScale/scale - 1);
-  panY -= (my - panY) * (newScale/scale - 1);
+    const [t1, t2] = e.touches;
+    const dx = t2.clientX - t1.clientX;
+    const dy = t2.clientY - t1.clientY;
+    const dist = Math.hypot(dx, dy);
 
-  scale = newScale;
-  update();
-},{ passive:false });
+    if (lastTouchDist) {
+      const zoomFactor = dist / lastTouchDist;
+      const rect = svg.getBoundingClientRect();
+
+      // Center of the pinch
+      const mx = (t1.clientX + t2.clientX)/2 - rect.left;
+      const my = (t1.clientY + t2.clientY)/2 - rect.top;
+
+      const newScale = Math.min(Math.max(0.2, scale * zoomFactor), 4);
+      panX -= (mx - panX) * (newScale/scale - 1);
+      panY -= (my - panY) * (newScale/scale - 1);
+      scale = newScale;
+
+      update();
+    }
+
+    lastTouchDist = dist;
+  }
+});
+
+svg.addEventListener("touchend", e => {
+  if (e.touches.length < 2) lastTouchDist = null;
+});
 
 /* --- Pan --- */
 svg.addEventListener("pointerdown", e=>{
