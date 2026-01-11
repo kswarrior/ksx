@@ -478,7 +478,7 @@ function updateSuggestions() {
 
   if (matched.length === 0) {
     suggestBox.innerHTML =
-      `<li style="color:var(--muted);padding:12px 18px;">No results found</li>`;
+      `<li style="background: var(--glass);backdrop-filter: blur(20px) saturate(160%);-webkit-backdrop-filter: blur(20px) saturate(160%);;padding:12px 18px;">No results found</li>`;
     suggestBox.style.display = "block";
     return;
   }
