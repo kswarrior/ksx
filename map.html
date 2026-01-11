@@ -2,374 +2,255 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>KS Visual Sitemap • Modern</title>
+<title>KS Visual Sitemap • Stable</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
-  :root {
-    --bg: #0a0014;
-    --accent: #8a3eff;
-    --accent-dark: #682db8;
-    --card: #1e1338;
-    --card-hover: #2a1a4e;
-    --text: #f5efff;
-    --text-light: #d0bfff;
-    --line: rgba(138,62,255,0.28);
-    --glow: rgba(138,62,255,0.22);
-    --shadow: 0 14px 40px rgba(0,0,0,0.6);
-  }
+:root {
+  --bg:#0a0014;
+  --accent:#8a3eff;
+  --card:#1e1338;
+  --text:#f5efff;
+  --line:rgba(138,62,255,.28);
+  --shadow:0 14px 40px rgba(0,0,0,.6);
+}
 
-  html, body {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    background: var(--bg);
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    color: var(--text);
-    overflow: hidden;
-    background-image: 
-      radial-gradient(circle at 15% 25%, rgba(138,62,255,0.11) 0%, transparent 45%),
-      radial-gradient(circle at 85% 75%, rgba(220,120,255,0.08) 0%, transparent 50%);
-  }
+html,body{
+  margin:0;
+  height:100%;
+  background:var(--bg);
+  color:var(--text);
+  overflow:hidden;
+  font-family:system-ui;
+}
 
-  #map {
-    width: 100%;
-    height: 100%;
-    touch-action: none;
-    overflow: visible;          /* ← Very important! */
-  }
+svg{
+  width:100%;
+  height:100%;
+  touch-action:none;
+  cursor:grab;
+}
 
-  #viewport {
-    will-change: transform;
-    transition: transform 0.18s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  }
+/* ───────── Nodes ───────── */
+.node{
+  rx:18;
+  ry:18;
+  filter:drop-shadow(var(--shadow));
+}
 
-  .node {
-    rx: 20;
-    ry: 20;
-    stroke: none;
-    filter: drop-shadow(var(--shadow));
-    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1.2);
-  }
+.node.category{ fill:#8a3eff; }
+.node.section{ fill:#2a1a4e; }
+.node.page{
+  fill:#35226e;
+  cursor:pointer;
+}
 
-  .node:hover {
-    transform: translateY(-14px) scale(1.06);
-    filter: drop-shadow(0 28px 56px rgba(0,0,0,0.7)) brightness(1.15);
-  }
+/* no CSS transform on SVG hover */
+.node.page:hover{
+  filter:drop-shadow(0 20px 50px rgba(0,0,0,.8)) brightness(1.15);
+}
 
-  .node.category   { fill: url(#cat-grad); }
-  .node.section    { fill: url(#sec-grad); }
-  .node.page       { 
-    fill: url(#page-grad); 
-    cursor: pointer; 
-  }
+.label{
+  pointer-events:none;
+  font-weight:600;
+  fill:#fff;
+}
 
-  .label {
-    font-weight: 600;
-    fill: var(--text);
-    text-shadow: 0 2px 10px rgba(0,0,0,0.75);
-    pointer-events: none;
-    letter-spacing: 0.4px;
-    dominant-baseline: central;
-  }
+.label.category{ font-size:18px; font-weight:800; }
+.label.section{ font-size:15px; opacity:.9; }
+.label.page{ font-size:14px; opacity:.85; }
 
-  .label.category   { font-size: 19px; font-weight: 800; }
-  .label.section    { font-size: 16px; fill: var(--text-light); }
-  .label.page       { font-size: 14px; fill: #e0d4ff; }
+/* ───────── Lines ───────── */
+.link{
+  stroke:var(--line);
+  stroke-width:2.5;
+  stroke-linecap:round;
+}
 
-  .link {
-    stroke: var(--line);
-    stroke-width: 2.8;
-    stroke-linecap: round;
-    opacity: 0.65;
-    transition: stroke 0.45s ease, opacity 0.45s ease;
-  }
-
-  .node:hover ~ .link,
-  .link:hover {
-    stroke: var(--accent);
-    opacity: 0.98;
-  }
-
-  .fade-in {
-    opacity: 0;
-    transform: translateY(40px) scale(0.88);
-    animation: appear 1s cubic-bezier(0.34, 1.56, 0.64, 1.2) forwards;
-  }
-
-  @keyframes appear {
-    to { opacity:1; transform:none; }
-  }
-
-  .hint {
-    position: fixed;
-    bottom: 28px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(25,15,60,0.7);
-    backdrop-filter: blur(12px);
-    color: #e0d0ff;
-    padding: 12px 32px;
-    border-radius: 60px;
-    font-size: 15px;
-    border: 1px solid rgba(138,62,255,0.3);
-    box-shadow: 0 6px 24px rgba(0,0,0,0.55);
-    pointer-events: none;
-    z-index: 100;
-  }
+/* ───────── Hint ───────── */
+.hint{
+  position:fixed;
+  bottom:20px;
+  left:50%;
+  transform:translateX(-50%);
+  background:rgba(25,15,60,.75);
+  backdrop-filter:blur(12px);
+  padding:10px 24px;
+  border-radius:40px;
+  font-size:14px;
+  pointer-events:none;
+}
 </style>
 </head>
+
 <body>
 
-<svg id="map" overflow="visible">
-  <defs>
-    <linearGradient id="cat-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#8a3eff"/>
-      <stop offset="100%" stop-color="#682db8"/>
-    </linearGradient>
-    
-    <linearGradient id="sec-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#2a1a4e"/>
-      <stop offset="100%" stop-color="#1e1338"/>
-    </linearGradient>
-    
-    <linearGradient id="page-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#35226e"/>
-      <stop offset="100%" stop-color="#241749"/>
-    </linearGradient>
-  </defs>
-
+<svg id="svg">
   <g id="viewport"></g>
 </svg>
 
-<div class="hint">Drag to pan • Scroll/Pinch to zoom • Click pages to open</div>
+<div class="hint">Drag • Scroll / Pinch to zoom • Tap page to open</div>
 
 <script>
-// ────────────────────────────────────────────────
-const svg = document.getElementById("map");
-const viewport = document.getElementById("viewport");
+const svg = document.getElementById("svg");
+const view = document.getElementById("viewport");
 
+/* ───────── State ───────── */
 let scale = 1;
 let panX = 80;
 let panY = 80;
-let isDragging = false;
-let startX, startY;
-let velX = 0, velY = 0;
-let lastX, lastY;
 
-// ─── Update transform ───────────────────────────
-function updateTransform() {
-  viewport.setAttribute("transform", `translate(${panX}, ${panY}) scale(${scale})`);
+let dragging = false;
+let lastX = 0, lastY = 0;
+let velX = 0, velY = 0;
+
+/* ───────── Transform ───────── */
+function update(){
+  view.setAttribute(
+    "transform",
+    `translate(${panX},${panY}) scale(${scale})`
+  );
 }
 
-// ─── Inertia / momentum ─────────────────────────
-const friction = 0.935;
-function applyInertia() {
-  if (Math.abs(velX) < 0.2 && Math.abs(velY) < 0.2) return;
-
+/* ───────── Inertia ───────── */
+function inertia(){
+  velX *= .92;
+  velY *= .92;
   panX += velX;
   panY += velY;
-  velX *= friction;
-  velY *= friction;
-
-  updateTransform();
-  requestAnimationFrame(applyInertia);
+  update();
+  if(Math.abs(velX) > .1 || Math.abs(velY) > .1){
+    requestAnimationFrame(inertia);
+  }
 }
 
-// ─── Wheel zoom (desktop) ───────────────────────
-svg.addEventListener("wheel", e => {
-  e.preventDefault();
-
-  const rect = svg.getBoundingClientRect();
-  const mx = (e.clientX - rect.left) / scale - panX / scale; // world coord under mouse
-  const my = (e.clientY - rect.top)  / scale - panY / scale;
-
-  const zoomSpeed = Math.pow(1.35, -e.deltaY * 0.0012); // smoother feel
-  scale *= zoomSpeed;
-  scale = Math.min(Math.max(0.22, scale), 6);
-
-  // Keep point under cursor fixed
-  panX = e.clientX - rect.left - mx * scale;
-  panY = e.clientY - rect.top  - my * scale;
-
-  updateTransform();
-}, { passive: false });
-
-// ─── Pan (mouse + touch) ────────────────────────
-svg.addEventListener("pointerdown", e => {
-  isDragging = true;
-  startX = e.clientX - panX;
-  startY = e.clientY - panY;
+/* ───────── Drag ───────── */
+svg.addEventListener("pointerdown", e=>{
+  dragging = true;
+  lastX = e.clientX;
+  lastY = e.clientY;
   velX = velY = 0;
-  lastX = panX;
-  lastY = panY;
   svg.setPointerCapture(e.pointerId);
   svg.style.cursor = "grabbing";
 });
 
-svg.addEventListener("pointerup pointercancel", () => {
-  isDragging = false;
+svg.addEventListener("pointermove", e=>{
+  if(!dragging) return;
+  const dx = e.clientX - lastX;
+  const dy = e.clientY - lastY;
+  panX += dx;
+  panY += dy;
+  velX = dx;
+  velY = dy;
+  lastX = e.clientX;
+  lastY = e.clientY;
+  update();
+});
+
+svg.addEventListener("pointerup", ()=>{
+  dragging = false;
   svg.style.cursor = "grab";
-  if (Math.abs(velX) > 1.2 || Math.abs(velY) > 1.2) {
-    applyInertia();
-  }
+  inertia();
 });
 
-svg.addEventListener("pointermove", e => {
-  if (!isDragging) return;
+/* ───────── Wheel Zoom ───────── */
+svg.addEventListener("wheel", e=>{
+  e.preventDefault();
+  const rect = svg.getBoundingClientRect();
+  const mx = (e.clientX - rect.left - panX) / scale;
+  const my = (e.clientY - rect.top  - panY) / scale;
 
-  const newX = e.clientX - startX;
-  const newY = e.clientY - startY;
+  const delta = Math.exp(-e.deltaY * 0.0012);
+  const newScale = Math.min(5, Math.max(.25, scale * delta));
 
-  velX = (newX - lastX) * 1.4;  // boost momentum feeling
-  velY = (newY - lastY) * 1.4;
+  panX -= mx * (newScale - scale);
+  panY -= my * (newScale - scale);
+  scale = newScale;
+  update();
+},{passive:false});
 
-  lastX = panX = newX;
-  lastY = panY = newY;
+/* ───────── Pinch Zoom ───────── */
+let pinchStart = 0, pinchScale = 1;
 
-  updateTransform();
-});
-
-// ─── Pinch zoom (mobile) ────────────────────────
-let initialPinchDist = 0;
-let initialScale = 1;
-let initialPanX, initialPanY;
-
-svg.addEventListener("touchstart", e => {
-  if (e.touches.length === 2) {
-    e.preventDefault();
-    initialPinchDist = Math.hypot(
+svg.addEventListener("touchstart", e=>{
+  if(e.touches.length === 2){
+    pinchStart = Math.hypot(
       e.touches[0].clientX - e.touches[1].clientX,
       e.touches[0].clientY - e.touches[1].clientY
     );
-    initialScale = scale;
-    initialPanX = panX;
-    initialPanY = panY;
+    pinchScale = scale;
   }
-});
+},{passive:false});
 
-svg.addEventListener("touchmove", e => {
-  if (e.touches.length !== 2) return;
+svg.addEventListener("touchmove", e=>{
+  if(e.touches.length !== 2) return;
   e.preventDefault();
-
-  const currDist = Math.hypot(
+  const d = Math.hypot(
     e.touches[0].clientX - e.touches[1].clientX,
     e.touches[0].clientY - e.touches[1].clientY
   );
+  scale = Math.min(5, Math.max(.25, pinchScale * d / pinchStart));
+  update();
+},{passive:false});
 
-  const factor = currDist / initialPinchDist;
-  const newScale = initialScale * factor;
-  scale = Math.min(Math.max(0.22, newScale), 6);
+/* ───────── Render Sitemap ───────── */
+fetch("sitemap.json").then(r=>r.json()).then(data=>{
+  let x = 180;
 
-  const midX = (e.touches[0].clientX + e.touches[1].clientX) / 2;
-  const midY = (e.touches[0].clientY + e.touches[1].clientY) / 2;
-  const rect = svg.getBoundingClientRect();
+  data.forEach(cat=>{
+    node(x,120,360,100,cat.category,"category");
+    let sy = 260;
 
-  // Much better pinch centering
-  panX = initialPanX + (midX - rect.left) * (1 - factor) * (initialScale / scale);
-  panY = initialPanY + (midY - rect.top)  * (1 - factor) * (initialScale / scale);
+    cat.sections.forEach(sec=>{
+      line(x+180,220,x+180,sy);
+      node(x,sy,360,80,sec.title,"section");
+      let py = sy + 120;
 
-  updateTransform();
-}, { passive: false });
-
-// ─── Sitemap rendering ──────────────────────────
-fetch("sitemap.json")
-  .then(r => r.json())
-  .then(data => {
-    let colX = 180;
-    const colGap = 620;
-
-    data.forEach((category, catIdx) => {
-      const catY = 180;
-      node(colX, catY, 360, 100, (category.icon || "★") + "  " + category.category, "category", catIdx * 0.06);
-
-      let sectionY = catY + 220;
-
-      category.sections.forEach((section, secIdx) => {
-        line(colX + 180, catY + 100, colX + 180, sectionY - 40);
-
-        node(colX, sectionY, 360, 84, section.title, "section", (catIdx + secIdx) * 0.09);
-
-        let leftY = sectionY + 130;
-        let rightY = sectionY + 130;
-
-        section.pages.forEach((page, pageIdx) => {
-          const isLeft = pageIdx % 2 === 0;
-          const pageX = isLeft ? colX - 480 : colX + 820;
-          const pageY = isLeft ? leftY : rightY;
-
-          line(
-            colX + (isLeft ? 0 : 360),
-            (isLeft ? leftY : rightY) + 30,
-            pageX + (isLeft ? 320 : 0),
-            pageY + 30
-          );
-
-          const pageGroup = node(pageX, pageY, 320, 72, page.name, "page", (catIdx + secIdx + pageIdx) * 0.07);
-          pageGroup.style.cursor = "pointer";
-          pageGroup.addEventListener("click", () => window.open(page.url, "_blank"));
-
-          if (isLeft) leftY += 100;
-          else        rightY += 100;
-        });
-
-        sectionY = Math.max(leftY, rightY) + 80;
+      sec.pages.forEach(p=>{
+        const px = Math.random() > .5 ? x-420 : x+460;
+        line(x+(px<x?0:360), py+36, px+(px<x?300:0), py+36);
+        const g = node(px,py,300,72,p.name,"page");
+        g.addEventListener("click",()=>window.open(p.url,"_blank"));
+        py += 96;
       });
-
-      colX += colGap;
+      sy = py + 40;
     });
-
-    // Gentle initial zoom out for large sitemaps
-    setTimeout(() => {
-      scale = 0.85;
-      panX = 120;
-      panY = 100;
-      updateTransform();
-    }, 400);
-
-    updateTransform();
-  })
-  .catch(err => {
-    console.error("Failed to load sitemap.json", err);
-    viewport.innerHTML = '<text x="50%" y="50%" font-size="24" fill="#f66" text-anchor="middle">Failed to load sitemap.json</text>';
+    x += 640;
   });
+  update();
+});
 
-// ─── Helpers ────────────────────────────────────
-function node(x, y, w, h, text, type, delay = 0) {
-  const g = svgEl("g");
-  g.classList.add("fade-in");
-  g.style.animationDelay = (delay * 1200) + "ms";
+/* ───────── Helpers ───────── */
+function node(x,y,w,h,t,type){
+  const g = el("g");
+  const r = el("rect");
+  r.setAttribute("x",x); r.setAttribute("y",y);
+  r.setAttribute("width",w); r.setAttribute("height",h);
+  r.classList.add("node",type);
 
-  const r = svgEl("rect");
-  r.setAttribute("x", x);
-  r.setAttribute("y", y);
-  r.setAttribute("width", w);
-  r.setAttribute("height", h);
-  r.classList.add("node", type);
+  const tx = el("text");
+  tx.setAttribute("x",x+24);
+  tx.setAttribute("y",y+h/2+5);
+  tx.classList.add("label",type);
+  tx.textContent = t;
 
-  const t = svgEl("text");
-  t.setAttribute("x", x + 28);
-  t.setAttribute("y", y + h/2);
-  t.classList.add("label", type);
-  t.textContent = text;
-
-  g.append(r, t);
-  viewport.appendChild(g);
+  g.append(r,tx);
+  view.appendChild(g);
   return g;
 }
 
-function line(x1, y1, x2, y2) {
-  const l = svgEl("line");
-  l.setAttribute("x1", x1);
-  l.setAttribute("y1", y1);
-  l.setAttribute("x2", x2);
-  l.setAttribute("y2", y2);
+function line(x1,y1,x2,y2){
+  const l = el("line");
+  l.setAttribute("x1",x1);
+  l.setAttribute("y1",y1);
+  l.setAttribute("x2",x2);
+  l.setAttribute("y2",y2);
   l.classList.add("link");
-  viewport.appendChild(l);
+  view.appendChild(l);
 }
 
-function svgEl(tag) {
-  return document.createElementNS("http://www.w3.org/2000/svg", tag);
+function el(n){
+  return document.createElementNS("http://www.w3.org/2000/svg",n);
 }
 </script>
 </body>
