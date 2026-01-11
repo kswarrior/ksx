@@ -276,16 +276,31 @@ const RECENT_KEY = "ks-web-recent";
 const MAX_RECENT = 5;
 let searchData = [];
 
-// Load search index
-fetch("/search-data.json")
+/* Load sitemap.json and flatten it */
+fetch("/sitemap.json")
   .then(r => r.ok ? r.json() : [])
-  .then(data => { searchData = data; })
+  .then(data => {
+    const flat = [];
+
+    data.forEach(category => {
+      (category.sections || []).forEach(section => {
+        (section.pages || []).forEach(page => {
+          flat.push({
+            name: page.name,
+            url: page.url
+          });
+        });
+      });
+    });
+
+    searchData = flat;
+  })
   .catch(err => {
-    console.warn("Failed to load search-data.json:", err);
+    console.warn("Failed to load sitemap.json:", err);
     searchData = [];
   });
 
-// Save to recent
+/* Save to recent */
 function saveToRecent(name, url) {
   if (!name || !url) return;
 
@@ -296,7 +311,7 @@ function saveToRecent(name, url) {
   localStorage.setItem(RECENT_KEY, JSON.stringify(recent));
 }
 
-// Load page
+/* Load page */
 function loadInFrame(url, nameFromSearch = null) {
   const fullUrl = url.startsWith("http") ? url : url;
   if (frame.src === new URL(fullUrl, location.href).href) return;
@@ -313,7 +328,7 @@ function loadInFrame(url, nameFromSearch = null) {
   }
 }
 
-// Search suggestions
+/* Search suggestions */
 let activeIndex = -1;
 
 function updateSuggestions() {
@@ -331,13 +346,20 @@ function updateSuggestions() {
     .slice(0, 10);
 
   if (results.length === 0) {
-    suggestBox.innerHTML = '<li style="color:var(--muted);padding:12px 18px;">No results found</li>';
+    suggestBox.innerHTML =
+      '<li style="color:var(--muted);padding:12px 18px;">No results found</li>';
     suggestBox.style.display = "block";
     return;
   }
 
   suggestBox.innerHTML = results
-    .map(item => `<li tabindex="0" role="option" data-url="${item.url}" data-name="${item.name}">${item.name}</li>`)
+    .map(item =>
+      `<li tabindex="0" role="option"
+           data-url="${item.url}"
+           data-name="${item.name}">
+        ${item.name}
+      </li>`
+    )
     .join("");
 
   suggestBox.style.display = "block";
@@ -381,7 +403,7 @@ suggestBox.addEventListener("click", (e) => {
   }
 });
 
-// Activate search on icon click
+/* Activate search */
 searchTrigger.addEventListener("click", (e) => {
   e.stopPropagation();
   topbar.classList.add("search-active");
@@ -389,7 +411,7 @@ searchTrigger.addEventListener("click", (e) => {
   updateSuggestions();
 });
 
-// Close when clicking outside
+/* Close search on outside click */
 document.addEventListener("click", (e) => {
   if (!topbar.contains(e.target) && !suggestBox.contains(e.target)) {
     topbar.classList.remove("search-active");
