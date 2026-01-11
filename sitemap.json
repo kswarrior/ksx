@@ -4,7 +4,7 @@
     "icon": "⛏️",
     "sections": [
       {
-        "title": "Make Your Own Hosting Panel",
+        "title": "Make Hosting",
         "pages": [
           {
             "name": "Pterodactyl Panel",
@@ -24,10 +24,10 @@
         ]
       },
       {
-        "title": "Hosting Lists",
+        "title": "Hosting",
         "pages": [
           {
-            "name": "Free Minecraft Hosting List",
+            "name": "Free Hosting List",
             "url": "/minecraft/hosting/list/free.html",
             "logo": "https://example.com/vps.png"
           }
@@ -37,7 +37,7 @@
         "title": "Game",
         "pages": [
           {
-            "name": "Minecraft Java Launcher",
+            "name": "Java Launcher",
             "url": "/minecraft/game/java/launcher.html",
             "logo": "https://example.com/vps.png"
           }
@@ -46,26 +46,16 @@
     ]
   },
   {
-    "category": "VPS & Network",
+    "category": "VPS",
     "icon": "🖥️",
     "sections": [
       {
         "title": "VPS Hosting",
         "pages": [
           {
-            "name": "Free VPS Hosting List",
+            "name": "Free Hosting List",
             "url": "/vps/hosting/list/free.html",
             "logo": "https://example.com/vps.png"
-          }
-        ]
-      },
-      {
-        "title": "Network Services",
-        "pages": [
-          {
-            "name": "Cloudflare",
-            "url": "https://cloudflare.com",
-            "logo": "https://example.com/cloudflare.png"
           }
         ]
       }
