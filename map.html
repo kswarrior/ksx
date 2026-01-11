@@ -128,14 +128,36 @@ html,body{
 const svg = document.getElementById("map");
 const viewport = document.getElementById("viewport");
 
+/* --- Current values --- */
 let scale = 1;
 let panX = 0;
 let panY = 0;
+
+/* --- Target values for smooth animation --- */
+let targetScale = 1;
+let targetPanX = 0;
+let targetPanY = 0;
+
 let isPanning = false;
 let startX, startY;
 
 /* --- Zoom --- */
 let lastTouchDist = null;
+
+/* --- Smooth animation loop --- */
+function update(){
+  scale += (targetScale - scale) * 0.2;
+  panX += (targetPanX - panX) * 0.2;
+  panY += (targetPanY - panY) * 0.2;
+
+  viewport.setAttribute(
+    "transform",
+    `translate(${panX},${panY}) scale(${scale})`
+  );
+
+  requestAnimationFrame(update);
+}
+update(); // start animation loop
 
 /* --- Touch pinch zoom --- */
 svg.addEventListener("touchmove", e => {
@@ -155,12 +177,11 @@ svg.addEventListener("touchmove", e => {
       const mx = (t1.clientX + t2.clientX)/2 - rect.left;
       const my = (t1.clientY + t2.clientY)/2 - rect.top;
 
-      const newScale = Math.min(Math.max(0.2, scale * zoomFactor), 4);
-      panX -= (mx - panX) * (newScale/scale - 1);
-      panY -= (my - panY) * (newScale/scale - 1);
-      scale = newScale;
+      const newScale = Math.min(Math.max(0.2, targetScale * zoomFactor), 4);
 
-      update();
+      targetPanX -= (mx - targetPanX) * (newScale/targetScale - 1);
+      targetPanY -= (my - targetPanY) * (newScale/targetScale - 1);
+      targetScale = newScale;
     }
 
     lastTouchDist = dist;
@@ -174,8 +195,8 @@ svg.addEventListener("touchend", e => {
 /* --- Pan --- */
 svg.addEventListener("pointerdown", e=>{
   isPanning = true;
-  startX = e.clientX - panX;
-  startY = e.clientY - panY;
+  startX = e.clientX - targetPanX;
+  startY = e.clientY - targetPanY;
   svg.setPointerCapture(e.pointerId);
   svg.style.cursor="grabbing";
 });
@@ -187,50 +208,35 @@ svg.addEventListener("pointerup", ()=>{
 
 svg.addEventListener("pointermove", e=>{
   if(!isPanning) return;
-  panX = e.clientX - startX;
-  panY = e.clientY - startY;
-  update();
+  targetPanX = e.clientX - startX;
+  targetPanY = e.clientY - startY;
 });
-
-function update(){
-  viewport.setAttribute(
-    "transform",
-    `translate(${panX},${panY}) scale(${scale})`
-  );
-}
 
 /* --- Load Sitemap --- */
 fetch("sitemap.json")
 .then(r=>r.json())
 .then(data=>{
-  // Dynamically calculate spacing based on screen size
   const screenW = window.innerWidth;
   const screenH = window.innerHeight;
 
-  let x = 60;  // start x
-  const gapX = Math.max(350, screenW/4); // gap between categories
+  let x = 60;
+  const gapX = Math.max(350, screenW/4);
 
   data.forEach((cat,ci)=>{
     let y = 80;
-
     const catNode = node(x,y,260,64,cat.icon+" "+cat.category,"category",ci);
 
     let sy = y + 120;
-
     cat.sections.forEach((sec,si)=>{
       line(x+130,y+64,x+130,sy);
-
       const secNode = node(x,sy,260,54,sec.title,"section",ci+si);
 
       let py = sy + 90;
-
       sec.pages.forEach((p,pi)=>{
         line(x+130,sy+54,x+420,py+23);
-
         const pageNode = node(x+420,py,300,46,p.name,"page",ci+si+pi);
         pageNode.style.cursor="pointer";
         pageNode.addEventListener("click",()=>location.href=p.url);
-
         py += 68;
       });
 
@@ -240,7 +246,6 @@ fetch("sitemap.json")
     x += gapX;
   });
 
-  // Fit all nodes to screen initially
   fitToScreen();
 });
 
@@ -290,11 +295,10 @@ function fitToScreen(){
 
   const scaleX = svgW / (bbox.width + 160);
   const scaleY = svgH / (bbox.height + 160);
-  scale = Math.min(scaleX, scaleY, 1);
+  targetScale = Math.min(scaleX, scaleY, 1);
 
-  panX = (svgW - bbox.width*scale)/2 - bbox.x*scale;
-  panY = (svgH - bbox.height*scale)/2 - bbox.y*scale;
-  update();
+  targetPanX = (svgW - bbox.width*targetScale)/2 - bbox.x*targetScale;
+  targetPanY = (svgH - bbox.height*targetScale)/2 - bbox.y*targetScale;
 }
 
 /* --- Update on resize --- */
