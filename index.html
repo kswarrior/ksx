@@ -334,7 +334,8 @@ body.sidebar-open #sidebar { left: 0; }
   transition: opacity 0.2s ease;
 }
 
-.s-page:hover {
+.s-page:hover::before,
+.s-page.active::before {
   opacity: 1;
 }
 
