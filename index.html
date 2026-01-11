@@ -276,16 +276,24 @@ const RECENT_KEY = "ks-web-recent";
 const MAX_RECENT = 5;
 let searchData = [];
 
-/* Load sitemap.json and flatten it */
+/* Load sitemap.json (icon → category → title → pages) */
 fetch("/sitemap.json")
   .then(r => r.ok ? r.json() : [])
   .then(data => {
-    const flat = [];
+    const list = [];
 
-    data.forEach(category => {
-      (category.sections || []).forEach(section => {
-        (section.pages || []).forEach(page => {
-          flat.push({
+    data.forEach(cat => {
+      const category = cat.category;
+      const icon = cat.icon || "";
+
+      (cat.sections || []).forEach(sec => {
+        const title = sec.title;
+
+        (sec.pages || []).forEach(page => {
+          list.push({
+            icon,
+            category,
+            title,
             name: page.name,
             url: page.url
           });
@@ -293,7 +301,7 @@ fetch("/sitemap.json")
       });
     });
 
-    searchData = flat;
+    searchData = list;
   })
   .catch(err => {
     console.warn("Failed to load sitemap.json:", err);
@@ -333,35 +341,59 @@ let activeIndex = -1;
 
 function updateSuggestions() {
   const query = searchBox.value.trim().toLowerCase();
+  suggestBox.innerHTML = "";
   suggestBox.style.display = "none";
   activeIndex = -1;
 
-  if (!query || searchData.length === 0) {
-    suggestBox.innerHTML = "";
-    return;
-  }
+  if (!query || searchData.length === 0) return;
 
-  const results = searchData
-    .filter(item => item.name && item.name.toLowerCase().includes(query))
-    .slice(0, 10);
+  const matched = searchData.filter(item =>
+    item.name.toLowerCase().includes(query) ||
+    item.title.toLowerCase().includes(query) ||
+    item.category.toLowerCase().includes(query)
+  );
 
-  if (results.length === 0) {
+  if (matched.length === 0) {
     suggestBox.innerHTML =
-      '<li style="color:var(--muted);padding:12px 18px;">No results found</li>';
+      `<li style="color:var(--muted);padding:12px 18px;">No results found</li>`;
     suggestBox.style.display = "block";
     return;
   }
 
-  suggestBox.innerHTML = results
-    .map(item =>
-      `<li tabindex="0" role="option"
-           data-url="${item.url}"
-           data-name="${item.name}">
-        ${item.name}
-      </li>`
-    )
-    .join("");
+  /* Build tree: icon + category → title → pages */
+  const tree = {};
+  matched.forEach(i => {
+    tree[i.category] ??= { icon: i.icon, titles: {} };
+    tree[i.category].titles[i.title] ??= [];
+    tree[i.category].titles[i.title].push(i);
+  });
 
+  let html = "";
+
+  Object.entries(tree).forEach(([category, data]) => {
+    html += `
+      <li class="s-category">
+        <span class="s-icon">${data.icon}</span>
+        <span>${category}</span>
+      </li>
+    `;
+
+    Object.entries(data.titles).forEach(([title, pages]) => {
+      html += `<li class="s-title">${title}</li>`;
+
+      pages.forEach(p => {
+        html += `
+          <li class="s-page" tabindex="0" role="option"
+              data-url="${p.url}"
+              data-name="${p.name}">
+            ${p.name}
+          </li>
+        `;
+      });
+    });
+  });
+
+  suggestBox.innerHTML = html;
   suggestBox.style.display = "block";
 }
 
