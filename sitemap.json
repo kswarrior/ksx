@@ -1,0 +1,92 @@
+[
+  {
+    "category": "Minecraft",
+    "icon": "⛏️",
+    "sections": [
+      {
+        "title": "Hosting",
+        "pages": [
+          { "name": "Free Hosting List", "url": "/minecraft/hosting/free.html" },
+          { "name": "24/7 Hosting", "url": "/minecraft/hosting/247.html" },
+          { "name": "Premium Hosting", "url": "/minecraft/hosting/premium.html" }
+        ]
+      },
+      {
+        "title": "Servers",
+        "pages": [
+          { "name": "Create Server", "url": "/minecraft/server/create.html" },
+          { "name": "Server Tools", "url": "/minecraft/server/tools.html" },
+          { "name": "Server Bots", "url": "/minecraft/server/bots.html" }
+        ]
+      },
+      {
+        "title": "Plugins & Mods",
+        "pages": [
+          { "name": "Essential Plugins", "url": "/minecraft/plugins/essential.html" },
+          { "name": "Bedrock Addons", "url": "/minecraft/addons/bedrock.html" }
+        ]
+      }
+    ]
+  },
+
+  {
+    "category": "VPS & Hosting",
+    "icon": "🖥️",
+    "sections": [
+      {
+        "title": "Free VPS",
+        "pages": [
+          { "name": "Free VPS List", "url": "/vps/free.html" },
+          { "name": "Always On VPS", "url": "/vps/247.html" }
+        ]
+      },
+      {
+        "title": "Panels",
+        "pages": [
+          { "name": "KS Panel", "url": "/vps/panels/ks-panel.html" },
+          { "name": "Pterodactyl", "url": "/vps/panels/pterodactyl.html" }
+        ]
+      }
+    ]
+  },
+
+  {
+    "category": "Games",
+    "icon": "🎮",
+    "sections": [
+      {
+        "title": "Mobile Games",
+        "pages": [
+          { "name": "Pokemon Unite", "url": "/games/mobile/pokemon-unite.html" },
+          { "name": "Mobile Legends", "url": "/games/mobile/mobile-legends.html" }
+        ]
+      },
+      {
+        "title": "PC Games",
+        "pages": [
+          { "name": "Minecraft Java", "url": "/games/pc/minecraft-java.html" }
+        ]
+      }
+    ]
+  },
+
+  {
+    "category": "Website & Tools",
+    "icon": "🌐",
+    "sections": [
+      {
+        "title": "Website Tools",
+        "pages": [
+          { "name": "SEO Tools", "url": "/tools/seo.html" },
+          { "name": "Speed Test", "url": "/tools/speed.html" }
+        ]
+      },
+      {
+        "title": "AI",
+        "pages": [
+          { "name": "KS AI", "url": "/ai/index.html" }
+        ]
+      }
+    ]
+  }
+]
