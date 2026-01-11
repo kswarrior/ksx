@@ -11,7 +11,7 @@
   --sun:#ffb703;
   --planet:#6d7cff;
   --moon:#ffffff;
-  --orbit:rgba(255,255,255,.12);
+  --orbit:rgba(255,255,255,.14);
 }
 
 *{box-sizing:border-box}
@@ -21,7 +21,7 @@ body{
   overflow:hidden;
   background:radial-gradient(circle at center,#0b1030,#02040b);
   font-family:system-ui;
-  color:white;
+  color:#fff;
 }
 
 /* MAP */
@@ -31,6 +31,7 @@ body{
   position:relative;
   touch-action:none;
 }
+
 #world{
   position:absolute;
   left:50%;
@@ -45,11 +46,11 @@ body{
 
 /* SUN */
 .sun{
-  width:200px;
-  height:200px;
+  width:220px;
+  height:220px;
   border-radius:50%;
   background:radial-gradient(circle,#ffd166,#ff9f1c);
-  box-shadow:0 0 80px rgba(255,183,3,.9);
+  box-shadow:0 0 90px rgba(255,183,3,.9);
   display:flex;
   align-items:center;
   justify-content:center;
@@ -58,21 +59,26 @@ body{
   font-size:20px;
 }
 
-/* PLANET ORBIT */
-.planet-orbit{
+/* ORBITS */
+.orbit{
   position:absolute;
-  border:1px dashed var(--orbit);
   border-radius:50%;
+  border:1px dashed var(--orbit);
+  animation:spin linear infinite;
 }
+
+.spin-slow{ animation-duration:80s }
+.spin-mid{ animation-duration:50s }
+.spin-fast{ animation-duration:30s }
 
 /* PLANET */
 .planet{
   position:absolute;
-  width:110px;
-  height:110px;
+  width:120px;
+  height:120px;
   border-radius:50%;
   background:radial-gradient(circle,#9aa8ff,#4a5cff);
-  box-shadow:0 0 35px rgba(109,124,255,.9);
+  box-shadow:0 0 40px rgba(109,124,255,.9);
   display:flex;
   align-items:center;
   justify-content:center;
@@ -82,18 +88,11 @@ body{
   padding:10px;
 }
 
-/* MOON ORBIT */
-.moon-orbit{
-  position:absolute;
-  border:1px dotted rgba(255,255,255,.2);
-  border-radius:50%;
-}
-
 /* MOON */
 .moon{
   position:absolute;
-  width:44px;
-  height:44px;
+  width:46px;
+  height:46px;
   border-radius:50%;
   background:radial-gradient(circle,#fff,#ccc);
   box-shadow:0 0 14px white;
@@ -108,14 +107,10 @@ body{
 }
 .moon:hover{
   transform:scale(1.3);
-  box-shadow:0 0 25px var(--planet);
+  box-shadow:0 0 26px var(--planet);
 }
 
-/* ROTATION */
-.spin-slow{animation:spin 70s linear infinite}
-.spin-mid{animation:spin 45s linear infinite}
-.spin-fast{animation:spin 25s linear infinite}
-
+/* ANIMATION */
 @keyframes spin{
   from{transform:rotate(0deg)}
   to{transform:rotate(360deg)}
@@ -130,51 +125,53 @@ body{
 </div>
 
 <script>
-const map=document.getElementById("map");
-const world=document.getElementById("world");
+const map = document.getElementById("map");
+const world = document.getElementById("world");
 
-/* CAMERA STATE */
-let scale=0.45;            // 🌍 EARTH VIEW DEFAULT
-let dx=0,dy=0;
-let startX,startY,drag=false;
-let lastDist=null;
+/* CAMERA */
+let scale = 0.4;
+let dx = 0, dy = 0;
+let dragging = false;
+let sx = 0, sy = 0;
+let lastDist = null;
 
-/* UPDATE */
 function update(){
-  world.style.transform=
+  world.style.transform =
     `translate(${dx}px,${dy}px) scale(${scale})`;
 }
 
-/* MOUSE PAN */
-map.onmousedown=e=>{
-  drag=true;
-  startX=e.clientX-dx;
-  startY=e.clientY-dy;
-};
-window.onmouseup=()=>drag=false;
-window.onmousemove=e=>{
-  if(!drag)return;
-  dx=e.clientX-startX;
-  dy=e.clientY-startY;
+/* DRAG */
+map.addEventListener("mousedown",e=>{
+  dragging=true;
+  sx=e.clientX-dx;
+  sy=e.clientY-dy;
+});
+window.addEventListener("mouseup",()=>dragging=false);
+window.addEventListener("mousemove",e=>{
+  if(!dragging)return;
+  dx=e.clientX-sx;
+  dy=e.clientY-sy;
   update();
-};
+});
 
-/* WHEEL ZOOM */
-map.onwheel=e=>{
-  e.preventDefault();
-  scale+=e.deltaY*-0.001;
-  scale=Math.min(Math.max(.25,scale),2);
-  update();
-};
-
-/* PINCH ZOOM */
+/* TOUCH DRAG */
+map.addEventListener("touchstart",e=>{
+  if(e.touches.length===1){
+    sx=e.touches[0].clientX-dx;
+    sy=e.touches[0].clientY-dy;
+  }
+});
 map.addEventListener("touchmove",e=>{
+  if(e.touches.length===1){
+    dx=e.touches[0].clientX-sx;
+    dy=e.touches[0].clientY-sy;
+    update();
+  }
   if(e.touches.length===2){
     e.preventDefault();
     const dxT=e.touches[0].clientX-e.touches[1].clientX;
     const dyT=e.touches[0].clientY-e.touches[1].clientY;
     const dist=Math.hypot(dxT,dyT);
-
     if(lastDist){
       scale+=(dist-lastDist)*0.002;
       scale=Math.min(Math.max(.25,scale),2);
@@ -183,8 +180,15 @@ map.addEventListener("touchmove",e=>{
     lastDist=dist;
   }
 },{passive:false});
-
 map.addEventListener("touchend",()=>lastDist=null);
+
+/* WHEEL ZOOM */
+map.addEventListener("wheel",e=>{
+  e.preventDefault();
+  scale+=e.deltaY*-0.001;
+  scale=Math.min(Math.max(.25,scale),2);
+  update();
+},{passive:false});
 
 /* LOAD DATA */
 fetch("sitemap.json")
@@ -192,8 +196,8 @@ fetch("sitemap.json")
 .then(build);
 
 function build(data){
-  const spacing=1300;
-  let x=-(data.length-1)*spacing/2;
+  const spacing = 1800;
+  let x = -(data.length-1)*spacing/2;
 
   data.forEach(cat=>{
     const sys=document.createElement("div");
@@ -203,55 +207,55 @@ function build(data){
 
     const sun=document.createElement("div");
     sun.className="sun";
-    sun.innerHTML=cat.icon+"<br>"+cat.category;
+    sun.innerHTML=`${cat.icon}<br>${cat.category}`;
     sys.appendChild(sun);
 
     cat.sections.forEach((sec,i)=>{
-      const orbitSize=380+i*220;
+      const size=420+i*260;
 
-      const pOrbit=document.createElement("div");
-      pOrbit.className="planet-orbit spin-slow";
-      pOrbit.style.width=orbitSize+"px";
-      pOrbit.style.height=orbitSize+"px";
-      pOrbit.style.left=100-orbitSize/2+"px";
-      pOrbit.style.top=100-orbitSize/2+"px";
+      const orbit=document.createElement("div");
+      orbit.className="orbit spin-slow";
+      orbit.style.width=size+"px";
+      orbit.style.height=size+"px";
+      orbit.style.left=110-size/2+"px";
+      orbit.style.top=110-size/2+"px";
 
       const planet=document.createElement("div");
       planet.className="planet";
-      planet.style.left=orbitSize/2-55+"px";
-      planet.style.top="-55px";
       planet.textContent=sec.title;
+      planet.style.left=size/2-60+"px";
+      planet.style.top="-60px";
 
       sec.pages.forEach((p,j)=>{
-        const mOrbitSize=120+(j*70);
+        const mSize=140+j*90;
+
         const mOrbit=document.createElement("div");
-        mOrbit.className="moon-orbit spin-fast";
-        mOrbit.style.width=mOrbitSize+"px";
-        mOrbit.style.height=mOrbitSize+"px";
-        mOrbit.style.left=55-mOrbitSize/2+"px";
-        mOrbit.style.top=55-mOrbitSize/2+"px";
+        mOrbit.className="orbit spin-fast";
+        mOrbit.style.width=mSize+"px";
+        mOrbit.style.height=mSize+"px";
+        mOrbit.style.left=60-mSize/2+"px";
+        mOrbit.style.top=60-mSize/2+"px";
 
         const moon=document.createElement("div");
         moon.className="moon";
         moon.textContent=p.name;
+        moon.style.left=mSize/2-23+"px";
+        moon.style.top="-23px";
         moon.onclick=()=>location.href=p.url;
-
-        moon.style.left=mOrbitSize/2-22+"px";
-        moon.style.top="-22px";
 
         mOrbit.appendChild(moon);
         planet.appendChild(mOrbit);
       });
 
-      pOrbit.appendChild(planet);
-      sys.appendChild(pOrbit);
+      orbit.appendChild(planet);
+      sys.appendChild(orbit);
     });
 
     world.appendChild(sys);
     x+=spacing;
   });
 
-  update(); // initial earth-view
+  update();
 }
 </script>
 
