@@ -122,8 +122,21 @@ let startX, startY;
 /* zoom */
 svg.addEventListener("wheel", e=>{
   e.preventDefault();
-  const delta = e.deltaY * -0.0012;
-  scale = Math.min(Math.max(.45, scale + delta), 2.8);
+
+  const rect = svg.getBoundingClientRect();
+  const mx = e.clientX - rect.left; // mouse x inside SVG
+  const my = e.clientY - rect.top;  // mouse y inside SVG
+
+  const zoomIntensity = 0.1;
+  const delta = (e.deltaY > 0 ? -1 : 1) * zoomIntensity;
+
+  const newScale = Math.min(Math.max(0.2, scale + delta), 3);
+
+  // adjust pan so zoom is centered on mouse
+  panX -= (mx - panX) * (newScale/scale - 1);
+  panY -= (my - panY) * (newScale/scale - 1);
+
+  scale = newScale;
   update();
 },{ passive:false });
 
