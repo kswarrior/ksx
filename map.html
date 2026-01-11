@@ -2,256 +2,185 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>KS Visual Sitemap • Stable</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Website Sitemap</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-:root {
-  --bg:#0a0014;
-  --accent:#8a3eff;
-  --card:#1e1338;
-  --text:#f5efff;
-  --line:rgba(138,62,255,.28);
-  --shadow:0 14px 40px rgba(0,0,0,.6);
+:root{
+  --bg:#0b0f1a;
+  --card:#141a2b;
+  --soft:#1b2340;
+  --accent:#6d7cff;
+  --text:#ffffff;
+  --muted:#aab0d6;
 }
 
-html,body{
+*{box-sizing:border-box}
+
+body{
   margin:0;
-  height:100%;
   background:var(--bg);
   color:var(--text);
+  font-family:system-ui,-apple-system,Segoe UI,Roboto;
+}
+
+header{
+  padding:20px;
+  text-align:center;
+  font-size:22px;
+  font-weight:700;
+  background:linear-gradient(90deg,var(--accent),#9c6bff);
+}
+
+#sitemap{
+  padding:20px;
+  display:grid;
+  gap:24px;
+}
+
+/* CATEGORY */
+.category{
+  background:var(--card);
+  border-radius:16px;
   overflow:hidden;
-  font-family:system-ui;
+  box-shadow:0 20px 40px rgba(0,0,0,.35);
+  animation:fadeUp .6s ease both;
 }
 
-svg{
-  width:100%;
-  height:100%;
-  touch-action:none;
-  cursor:grab;
+.cat-header{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:16px 20px;
+  font-size:18px;
+  font-weight:700;
+  background:var(--soft);
 }
 
-/* ───────── Nodes ───────── */
-.node{
-  rx:18;
-  ry:18;
-  filter:drop-shadow(var(--shadow));
+.cat-icon{
+  font-size:22px;
 }
 
-.node.category{ fill:#8a3eff; }
-.node.section{ fill:#2a1a4e; }
-.node.page{
-  fill:#35226e;
-  cursor:pointer;
+/* SECTION */
+.section{
+  padding:16px 20px;
 }
 
-/* no CSS transform on SVG hover */
-.node.page:hover{
-  filter:drop-shadow(0 20px 50px rgba(0,0,0,.8)) brightness(1.15);
-}
-
-.label{
-  pointer-events:none;
-  font-weight:600;
-  fill:#fff;
-}
-
-.label.category{ font-size:18px; font-weight:800; }
-.label.section{ font-size:15px; opacity:.9; }
-.label.page{ font-size:14px; opacity:.85; }
-
-/* ───────── Lines ───────── */
-.link{
-  stroke:var(--line);
-  stroke-width:2.5;
-  stroke-linecap:round;
-}
-
-/* ───────── Hint ───────── */
-.hint{
-  position:fixed;
-  bottom:20px;
-  left:50%;
-  transform:translateX(-50%);
-  background:rgba(25,15,60,.75);
-  backdrop-filter:blur(12px);
-  padding:10px 24px;
-  border-radius:40px;
+.section-title{
   font-size:14px;
-  pointer-events:none;
+  color:var(--muted);
+  font-weight:600;
+  margin-bottom:10px;
+}
+
+/* PAGES */
+.pages{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+  gap:12px;
+}
+
+.page{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:12px 14px;
+  background:#10162a;
+  border-radius:12px;
+  text-decoration:none;
+  color:var(--text);
+  transition:.25s ease;
+}
+
+.page:hover{
+  transform:translateY(-3px) scale(1.02);
+  background:#192150;
+}
+
+.page img{
+  width:34px;
+  height:34px;
+  object-fit:contain;
+  border-radius:8px;
+  background:#000;
+  padding:4px;
+}
+
+.page span{
+  font-size:14px;
+  font-weight:600;
+}
+
+/* ANIMATION */
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(20px)}
+  to{opacity:1;transform:none}
+}
+
+/* MOBILE */
+@media(max-width:600px){
+  header{font-size:18px}
+  .pages{grid-template-columns:1fr}
 }
 </style>
 </head>
 
 <body>
 
-<svg id="svg">
-  <g id="viewport"></g>
-</svg>
-
-<div class="hint">Drag • Scroll / Pinch to zoom • Tap page to open</div>
+<header>🌐 Website Sitemap</header>
+<div id="sitemap"></div>
 
 <script>
-const svg = document.getElementById("svg");
-const view = document.getElementById("viewport");
+fetch("sitemap.json")
+  .then(res => res.json())
+  .then(data => renderSitemap(data))
+  .catch(err => {
+    document.getElementById("sitemap").innerHTML =
+      "<p style='color:red'>Failed to load sitemap.json</p>";
+    console.error(err);
+  });
 
-/* ───────── State ───────── */
-let scale = 1;
-let panX = 80;
-let panY = 80;
-
-let dragging = false;
-let lastX = 0, lastY = 0;
-let velX = 0, velY = 0;
-
-/* ───────── Transform ───────── */
-function update(){
-  view.setAttribute(
-    "transform",
-    `translate(${panX},${panY}) scale(${scale})`
-  );
-}
-
-/* ───────── Inertia ───────── */
-function inertia(){
-  velX *= .92;
-  velY *= .92;
-  panX += velX;
-  panY += velY;
-  update();
-  if(Math.abs(velX) > .1 || Math.abs(velY) > .1){
-    requestAnimationFrame(inertia);
-  }
-}
-
-/* ───────── Drag ───────── */
-svg.addEventListener("pointerdown", e=>{
-  dragging = true;
-  lastX = e.clientX;
-  lastY = e.clientY;
-  velX = velY = 0;
-  svg.setPointerCapture(e.pointerId);
-  svg.style.cursor = "grabbing";
-});
-
-svg.addEventListener("pointermove", e=>{
-  if(!dragging) return;
-  const dx = e.clientX - lastX;
-  const dy = e.clientY - lastY;
-  panX += dx;
-  panY += dy;
-  velX = dx;
-  velY = dy;
-  lastX = e.clientX;
-  lastY = e.clientY;
-  update();
-});
-
-svg.addEventListener("pointerup", ()=>{
-  dragging = false;
-  svg.style.cursor = "grab";
-  inertia();
-});
-
-/* ───────── Wheel Zoom ───────── */
-svg.addEventListener("wheel", e=>{
-  e.preventDefault();
-  const rect = svg.getBoundingClientRect();
-  const mx = (e.clientX - rect.left - panX) / scale;
-  const my = (e.clientY - rect.top  - panY) / scale;
-
-  const delta = Math.exp(-e.deltaY * 0.0012);
-  const newScale = Math.min(5, Math.max(.25, scale * delta));
-
-  panX -= mx * (newScale - scale);
-  panY -= my * (newScale - scale);
-  scale = newScale;
-  update();
-},{passive:false});
-
-/* ───────── Pinch Zoom ───────── */
-let pinchStart = 0, pinchScale = 1;
-
-svg.addEventListener("touchstart", e=>{
-  if(e.touches.length === 2){
-    pinchStart = Math.hypot(
-      e.touches[0].clientX - e.touches[1].clientX,
-      e.touches[0].clientY - e.touches[1].clientY
-    );
-    pinchScale = scale;
-  }
-},{passive:false});
-
-svg.addEventListener("touchmove", e=>{
-  if(e.touches.length !== 2) return;
-  e.preventDefault();
-  const d = Math.hypot(
-    e.touches[0].clientX - e.touches[1].clientX,
-    e.touches[0].clientY - e.touches[1].clientY
-  );
-  scale = Math.min(5, Math.max(.25, pinchScale * d / pinchStart));
-  update();
-},{passive:false});
-
-/* ───────── Render Sitemap ───────── */
-fetch("sitemap.json").then(r=>r.json()).then(data=>{
-  let x = 180;
+function renderSitemap(data){
+  const root = document.getElementById("sitemap");
 
   data.forEach(cat=>{
-    node(x,120,360,100,cat.category,"category");
-    let sy = 260;
+    const catDiv = document.createElement("div");
+    catDiv.className = "category";
+
+    catDiv.innerHTML = `
+      <div class="cat-header">
+        <span class="cat-icon">${cat.icon || "📁"}</span>
+        <span>${cat.category}</span>
+      </div>
+    `;
 
     cat.sections.forEach(sec=>{
-      line(x+180,220,x+180,sy);
-      node(x,sy,360,80,sec.title,"section");
-      let py = sy + 120;
+      const secDiv = document.createElement("div");
+      secDiv.className = "section";
+
+      secDiv.innerHTML = `<div class="section-title">${sec.title}</div>`;
+      const pagesDiv = document.createElement("div");
+      pagesDiv.className = "pages";
 
       sec.pages.forEach(p=>{
-        const px = Math.random() > .5 ? x-420 : x+460;
-        line(x+(px<x?0:360), py+36, px+(px<x?300:0), py+36);
-        const g = node(px,py,300,72,p.name,"page");
-        g.addEventListener("click",()=>window.open(p.url,"_blank"));
-        py += 96;
+        const a = document.createElement("a");
+        a.className = "page";
+        a.href = p.url;
+        a.innerHTML = `
+          <img src="${p.logo}" alt="">
+          <span>${p.name}</span>
+        `;
+        pagesDiv.appendChild(a);
       });
-      sy = py + 40;
+
+      secDiv.appendChild(pagesDiv);
+      catDiv.appendChild(secDiv);
     });
-    x += 640;
+
+    root.appendChild(catDiv);
   });
-  update();
-});
-
-/* ───────── Helpers ───────── */
-function node(x,y,w,h,t,type){
-  const g = el("g");
-  const r = el("rect");
-  r.setAttribute("x",x); r.setAttribute("y",y);
-  r.setAttribute("width",w); r.setAttribute("height",h);
-  r.classList.add("node",type);
-
-  const tx = el("text");
-  tx.setAttribute("x",x+24);
-  tx.setAttribute("y",y+h/2+5);
-  tx.classList.add("label",type);
-  tx.textContent = t;
-
-  g.append(r,tx);
-  view.appendChild(g);
-  return g;
-}
-
-function line(x1,y1,x2,y2){
-  const l = el("line");
-  l.setAttribute("x1",x1);
-  l.setAttribute("y1",y1);
-  l.setAttribute("x2",x2);
-  l.setAttribute("y2",y2);
-  l.classList.add("link");
-  view.appendChild(l);
-}
-
-function el(n){
-  return document.createElementNS("http://www.w3.org/2000/svg",n);
 }
 </script>
+
 </body>
 </html>
