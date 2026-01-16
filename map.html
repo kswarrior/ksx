@@ -1,251 +1,186 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>KS Solar Sitemap</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8">
+  <title>Website Map</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<style>
-:root{
-  --bg:#02040b;
-  --sun:#ffb703;
-  --planet:#6d7cff;
-  --moon:#ffffff;
-  --orbit:rgba(255,255,255,.18);
-}
+  <style>
+    :root {
+      --bg: #0b0b0f;
+      --card: #12121a;
+      --border: #1f1f2e;
+      --text: #eaeaf0;
+      --muted: #a1a1b3;
+      --accent: #7c7cff;
+      --hover: #9b9bff;
+    }
 
-*{box-sizing:border-box}
+    * {
+      box-sizing: border-box;
+      font-family: "Segoe UI", system-ui, sans-serif;
+    }
 
-body{
-  margin:0;
-  overflow:hidden;
-  background:radial-gradient(circle at center,#0b1030,#02040b);
-  font-family:system-ui;
-  color:white;
-}
+    body {
+      margin: 0;
+      background: radial-gradient(circle at top, #12121a, #07070a);
+      color: var(--text);
+      padding: 30px;
+    }
 
-/* MAP */
-#map{
-  width:100vw;
-  height:100vh;
-  position:relative;
-  touch-action:none;
-}
-#world{
-  position:absolute;
-  left:50%;
-  top:50%;
-  transform-origin:0 0;
-}
+    h1 {
+      text-align: center;
+      margin-bottom: 40px;
+      font-size: 2.4rem;
+      letter-spacing: 1px;
+      color: var(--accent);
+    }
 
-/* SYSTEM */
-.system{ position:absolute }
+    .category {
+      margin-bottom: 40px;
+    }
 
-/* SUN */
-.sun{
-  width:260px;
-  height:260px;
-  border-radius:50%;
-  background:radial-gradient(circle,#ffd166,#ff9f1c);
-  box-shadow:0 0 120px rgba(255,183,3,.95);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
-  font-weight:900;
-  font-size:22px;
-}
+    .category-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+    }
 
-/* ORBITS */
-.orbit{
-  position:absolute;
-  border-radius:50%;
-  border:1px dashed var(--orbit);
-  animation:spin linear infinite;
-}
-.spin-slow{animation-duration:90s}
-.spin-fast{animation-duration:35s}
+    .icon {
+      font-size: 2rem;
+    }
 
-/* PLANET */
-.planet{
-  position:absolute;
-  width:150px;
-  height:150px;
-  border-radius:50%;
-  background:radial-gradient(circle,#9aa8ff,#4a5cff);
-  box-shadow:0 0 55px rgba(109,124,255,.95);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
-  font-size:15px;
-  font-weight:900;
-  padding:14px;
-}
+    .sections {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
 
-/* MOON */
-.moon{
-  position:absolute;
-  width:64px;
-  height:64px;
-  border-radius:50%;
-  background:radial-gradient(circle,#fff,#dcdcdc);
-  box-shadow:0 0 20px white;
-  cursor:pointer;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
-  font-size:10px;
-  font-weight:800;
-  padding:6px;
-}
-.moon:hover{
-  transform:scale(1.35);
-  box-shadow:0 0 35px var(--planet);
-}
+    .section {
+      background: linear-gradient(180deg, var(--card), #0c0c14);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
 
-/* ANIMATION */
-@keyframes spin{
-  from{transform:rotate(0deg)}
-  to{transform:rotate(360deg)}
-}
-</style>
+    .section:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 14px 40px rgba(0,0,0,0.8);
+    }
+
+    .section-title {
+      font-size: 1.1rem;
+      margin-bottom: 12px;
+      color: var(--hover);
+      border-bottom: 1px dashed var(--border);
+      padding-bottom: 6px;
+    }
+
+    .page {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px;
+      border-radius: 10px;
+      text-decoration: none;
+      color: var(--text);
+      transition: background .2s ease;
+    }
+
+    .page:hover {
+      background: rgba(124,124,255,0.1);
+    }
+
+    .page img {
+      width: 26px;
+      height: 26px;
+      border-radius: 6px;
+      background: #000;
+      object-fit: cover;
+    }
+
+    .page-name {
+      font-size: 0.95rem;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 60px;
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+  </style>
 </head>
-
 <body>
 
-<div id="map">
-  <div id="world"></div>
-</div>
+  <h1>🌐 Website Map</h1>
 
-<script>
-const map=document.getElementById("map");
-const world=document.getElementById("world");
+  <div id="map"></div>
 
-/* CAMERA */
-let scale=.38, dx=0, dy=0, drag=false, sx=0, sy=0, lastDist=null;
-function update(){
-  world.style.transform=`translate(${dx}px,${dy}px) scale(${scale})`;
-}
+  <footer>
+    © 2026 • KS Warrior • Site Map
+  </footer>
 
-/* PAN */
-map.onmousedown=e=>{drag=true;sx=e.clientX-dx;sy=e.clientY-dy;}
-window.onmouseup=()=>drag=false;
-window.onmousemove=e=>{
-  if(!drag)return;
-  dx=e.clientX-sx; dy=e.clientY-sy; update();
-};
+  <script>
+    fetch("sitemap.json")
+      .then(res => res.json())
+      .then(data => renderMap(data))
+      .catch(err => {
+        document.getElementById("map").innerHTML =
+          "<p style='color:red;text-align:center'>Failed to load sitemap.json</p>";
+        console.error(err);
+      });
 
-/* ZOOM */
-map.onwheel=e=>{
-  e.preventDefault();
-  scale+=e.deltaY*-0.001;
-  scale=Math.min(Math.max(.25,scale),2);
-  update();
-},{passive:false});
+    function renderMap(data) {
+      const container = document.getElementById("map");
 
-/* TOUCH */
-map.addEventListener("touchmove",e=>{
-  if(e.touches.length===1){
-    dx=e.touches[0].clientX-sx;
-    dy=e.touches[0].clientY-sy;
-    update();
-  }
-  if(e.touches.length===2){
-    e.preventDefault();
-    const d=Math.hypot(
-      e.touches[0].clientX-e.touches[1].clientX,
-      e.touches[0].clientY-e.touches[1].clientY
-    );
-    if(lastDist){
-      scale+=(d-lastDist)*0.002;
-      scale=Math.min(Math.max(.25,scale),2);
-      update();
-    }
-    lastDist=d;
-  }
-},{passive:false});
-map.addEventListener("touchend",()=>lastDist=null);
+      data.forEach(category => {
+        const catDiv = document.createElement("div");
+        catDiv.className = "category";
 
-/* LOAD JSON */
-fetch("sitemap.json")
-.then(r=>r.json())
-.then(build);
+        catDiv.innerHTML = `
+          <div class="category-header">
+            <span class="icon">${category.icon}</span>
+            <span>${category.category}</span>
+          </div>
+        `;
 
-function build(data){
-  const spacing=2100;
-  let x=-(data.length-1)*spacing/2;
+        const sectionsDiv = document.createElement("div");
+        sectionsDiv.className = "sections";
 
-  data.forEach(cat=>{
-    const sys=document.createElement("div");
-    sys.className="system";
-    sys.style.left=x+"px";
+        category.sections.forEach(section => {
+          const secDiv = document.createElement("div");
+          secDiv.className = "section";
 
-    const sun=document.createElement("div");
-    sun.className="sun";
-    sun.innerHTML=`${cat.icon}<br>${cat.category}`;
-    sys.appendChild(sun);
+          secDiv.innerHTML = `
+            <div class="section-title">${section.title}</div>
+          `;
 
-    cat.sections.forEach((sec,i)=>{
-      const pSize=520+i*300;
+          section.pages.forEach(page => {
+            const a = document.createElement("a");
+            a.className = "page";
+            a.href = page.url;
 
-      const pOrbit=document.createElement("div");
-      pOrbit.className="orbit spin-slow";
-      pOrbit.style.width=pSize+"px";
-      pOrbit.style.height=pSize+"px";
-      pOrbit.style.left=130-pSize/2+"px";
-      pOrbit.style.top=130-pSize/2+"px";
+            a.innerHTML = `
+              <img src="${page.logo}" alt="">
+              <span class="page-name">${page.name}</span>
+            `;
 
-      const planet=document.createElement("div");
-      planet.className="planet";
-      planet.textContent=sec.title;
-      planet.style.left=pSize/2-75+"px";
-      planet.style.top="-75px";
+            secDiv.appendChild(a);
+          });
 
-      /* ONE MOON ORBIT PER SECTION */
-      if(sec.pages?.length){
-        const mSize=260;
-
-        const mOrbit=document.createElement("div");
-        mOrbit.className="orbit spin-fast";
-        mOrbit.style.width=mSize+"px";
-        mOrbit.style.height=mSize+"px";
-        mOrbit.style.left=75-mSize/2+"px";
-        mOrbit.style.top=75-mSize/2+"px";
-
-        const step=360/sec.pages.length;
-
-        sec.pages.forEach((p,idx)=>{
-          const moon=document.createElement("div");
-          moon.className="moon";
-          moon.textContent=p.name;
-
-          /* OPEN URL FROM JSON */
-          moon.onclick=()=>window.location.href=p.url;
-
-          moon.style.left="50%";
-          moon.style.top="0";
-          moon.style.transform=
-            `rotate(${idx*step}deg) translateX(${mSize/2}px)`;
-
-          mOrbit.appendChild(moon);
+          sectionsDiv.appendChild(secDiv);
         });
 
-        planet.appendChild(mOrbit);
-      }
-
-      pOrbit.appendChild(planet);
-      sys.appendChild(pOrbit);
-    });
-
-    world.appendChild(sys);
-    x+=spacing;
-  });
-
-  update();
-}
-</script>
+        catDiv.appendChild(sectionsDiv);
+        container.appendChild(catDiv);
+      });
+    }
+  </script>
 
 </body>
 </html>
