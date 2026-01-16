@@ -6,6 +6,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
+/* =========================
+   GLOBAL BASE
+========================= */
+
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   background:
@@ -13,7 +21,29 @@ body {
   color: #e8e8f0;
   font-family: system-ui, sans-serif;
   overflow-x: hidden;
+  perspective: 1200px;
 }
+
+/* Floating cosmic glow */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(127,127,255,0.08), transparent 40%),
+    radial-gradient(circle at 80% 60%, rgba(127,127,255,0.06), transparent 45%);
+  animation: floatBG 18s linear infinite;
+  z-index: -1;
+}
+
+@keyframes floatBG {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-30px); }
+}
+
+/* =========================
+   HEADER
+========================= */
 
 h1 {
   text-align: center;
@@ -21,7 +51,12 @@ h1 {
   font-size: 2.6rem;
   letter-spacing: 2px;
   color: #7f7fff;
+  text-shadow: 0 0 20px rgba(127,127,255,.4);
 }
+
+/* =========================
+   MAP LAYOUT
+========================= */
 
 .map {
   max-width: 1200px;
@@ -29,20 +64,51 @@ h1 {
   padding-bottom: 60px;
 }
 
+/* =========================
+   CATEGORY (MAIN NODE)
+========================= */
+
 .category {
   position: relative;
-  margin: 60px 0;
-  padding-left: 40px;
+  margin: 70px 0;
+  padding-left: 50px;
+  opacity: 0;
+  transform: translateY(40px);
+  animation: reveal .9s ease forwards;
 }
 
+.category:nth-child(1){animation-delay:.1s}
+.category:nth-child(2){animation-delay:.25s}
+.category:nth-child(3){animation-delay:.4s}
+
+@keyframes reveal {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Animated vertical connector (SVG-like) */
 .category::before {
   content: "";
   position: absolute;
-  left: 12px;
+  left: 16px;
   top: 0;
   bottom: 0;
-  width: 2px;
-  background: linear-gradient(#7f7fff, transparent);
+  width: 3px;
+  background: linear-gradient(
+    180deg,
+    transparent,
+    #7f7fff,
+    transparent
+  );
+  animation: pulseLine 2.5s ease-in-out infinite;
+}
+
+@keyframes pulseLine {
+  0% { opacity: .3 }
+  50% { opacity: 1 }
+  100% { opacity: .3 }
 }
 
 .category-title {
@@ -55,39 +121,80 @@ h1 {
 
 .category-title span {
   font-size: 2.2rem;
+  filter: drop-shadow(0 0 10px rgba(127,127,255,.6));
 }
+
+/* =========================
+   SECTION (SUB NODE)
+========================= */
 
 .section {
-  margin-left: 40px;
+  margin-left: 50px;
   margin-bottom: 30px;
   position: relative;
+  transition: transform .3s ease;
 }
 
+.section:hover {
+  transform: translateX(8px);
+}
+
+/* Horizontal animated connector */
 .section::before {
   content: "";
   position: absolute;
-  left: -28px;
-  top: 10px;
-  width: 20px;
+  left: -34px;
+  top: 12px;
+  width: 24px;
   height: 2px;
-  background: #4a4aff;
+  background: linear-gradient(
+    90deg,
+    #4a4aff,
+    transparent
+  );
+  animation: flow 1.8s linear infinite;
+}
+
+@keyframes flow {
+  0% { opacity: .2 }
+  50% { opacity: 1 }
+  100% { opacity: .2 }
 }
 
 .section-title {
   font-size: 1.1rem;
   color: #9a9aff;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
+  position: relative;
 }
+
+.section-title::after {
+  content: "";
+  display: block;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #7f7fff, transparent);
+  transition: width .35s ease;
+}
+
+.section:hover .section-title::after {
+  width: 140px;
+}
+
+/* =========================
+   PAGE CARDS (3D TILT)
+========================= */
 
 .pages {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 14px;
 }
 
+/* 3D Tilt card */
 .page {
   position: relative;
-  padding: 10px 16px;
+  padding: 10px 18px;
   background: rgba(20,20,40,0.6);
   border: 1px solid rgba(120,120,255,0.25);
   border-radius: 999px;
@@ -96,38 +203,83 @@ h1 {
   font-size: 0.9rem;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   backdrop-filter: blur(6px);
-  transition: all .25s ease;
+  transform-style: preserve-3d;
+  transition:
+    transform .25s ease,
+    box-shadow .25s ease;
 }
 
-.page img {
-  width: 20px;
-  height: 20px;
-  border-radius: 4px;
-}
-
-.page::after {
+/* Glow layer */
+.page::before {
   content: "";
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  box-shadow: 0 0 0 rgba(127,127,255,0);
-  transition: box-shadow .25s ease;
+  background: radial-gradient(circle, rgba(127,127,255,.35), transparent 70%);
+  opacity: 0;
+  transition: opacity .3s ease;
 }
 
+/* Hover effects */
 .page:hover {
-  transform: translateY(-2px);
+  transform:
+    rotateX(8deg)
+    rotateY(-8deg)
+    translateY(-6px);
+  box-shadow:
+    0 20px 40px rgba(0,0,0,.6),
+    0 0 30px rgba(127,127,255,.6);
 }
 
-.page:hover::after {
-  box-shadow: 0 0 20px rgba(127,127,255,0.7);
+.page:hover::before {
+  opacity: 1;
 }
+
+/* Click feedback */
+.page:active {
+  transform: scale(.95);
+}
+
+/* Logo animation */
+.page img {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  transition: transform .25s ease;
+}
+
+.page:hover img {
+  transform: translateZ(12px) rotate(-5deg) scale(1.1);
+}
+
+/* =========================
+   FOOTER
+========================= */
 
 footer {
   text-align: center;
   color: #888;
   padding-bottom: 30px;
+  font-size: .85rem;
+}
+
+/* =========================
+   SCROLLBAR
+========================= */
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #050508;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(#7f7fff, #4a4aff);
+  border-radius: 4px;
 }
 </style>
 </head>
