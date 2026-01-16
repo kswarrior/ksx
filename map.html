@@ -1,186 +1,189 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Website Map</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<title>Site Map</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <style>
-    :root {
-      --bg: #0b0b0f;
-      --card: #12121a;
-      --border: #1f1f2e;
-      --text: #eaeaf0;
-      --muted: #a1a1b3;
-      --accent: #7c7cff;
-      --hover: #9b9bff;
-    }
+<style>
+body {
+  margin: 0;
+  background:
+    radial-gradient(circle at top, #0e0e1a, #050508);
+  color: #e8e8f0;
+  font-family: system-ui, sans-serif;
+  overflow-x: hidden;
+}
 
-    * {
-      box-sizing: border-box;
-      font-family: "Segoe UI", system-ui, sans-serif;
-    }
+h1 {
+  text-align: center;
+  padding: 40px 20px;
+  font-size: 2.6rem;
+  letter-spacing: 2px;
+  color: #7f7fff;
+}
 
-    body {
-      margin: 0;
-      background: radial-gradient(circle at top, #12121a, #07070a);
-      color: var(--text);
-      padding: 30px;
-    }
+.map {
+  max-width: 1200px;
+  margin: auto;
+  padding-bottom: 60px;
+}
 
-    h1 {
-      text-align: center;
-      margin-bottom: 40px;
-      font-size: 2.4rem;
-      letter-spacing: 1px;
-      color: var(--accent);
-    }
+.category {
+  position: relative;
+  margin: 60px 0;
+  padding-left: 40px;
+}
 
-    .category {
-      margin-bottom: 40px;
-    }
+.category::before {
+  content: "";
+  position: absolute;
+  left: 12px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(#7f7fff, transparent);
+}
 
-    .category-header {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-size: 1.8rem;
-      margin-bottom: 20px;
-    }
+.category-title {
+  font-size: 1.8rem;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 30px;
+}
 
-    .icon {
-      font-size: 2rem;
-    }
+.category-title span {
+  font-size: 2.2rem;
+}
 
-    .sections {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 20px;
-    }
+.section {
+  margin-left: 40px;
+  margin-bottom: 30px;
+  position: relative;
+}
 
-    .section {
-      background: linear-gradient(180deg, var(--card), #0c0c14);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 16px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-      transition: transform .2s ease, box-shadow .2s ease;
-    }
+.section::before {
+  content: "";
+  position: absolute;
+  left: -28px;
+  top: 10px;
+  width: 20px;
+  height: 2px;
+  background: #4a4aff;
+}
 
-    .section:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 14px 40px rgba(0,0,0,0.8);
-    }
+.section-title {
+  font-size: 1.1rem;
+  color: #9a9aff;
+  margin-bottom: 10px;
+}
 
-    .section-title {
-      font-size: 1.1rem;
-      margin-bottom: 12px;
-      color: var(--hover);
-      border-bottom: 1px dashed var(--border);
-      padding-bottom: 6px;
-    }
+.pages {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
 
-    .page {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 8px;
-      border-radius: 10px;
-      text-decoration: none;
-      color: var(--text);
-      transition: background .2s ease;
-    }
+.page {
+  position: relative;
+  padding: 10px 16px;
+  background: rgba(20,20,40,0.6);
+  border: 1px solid rgba(120,120,255,0.25);
+  border-radius: 999px;
+  text-decoration: none;
+  color: #fff;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  backdrop-filter: blur(6px);
+  transition: all .25s ease;
+}
 
-    .page:hover {
-      background: rgba(124,124,255,0.1);
-    }
+.page img {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+}
 
-    .page img {
-      width: 26px;
-      height: 26px;
-      border-radius: 6px;
-      background: #000;
-      object-fit: cover;
-    }
+.page::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: 0 0 0 rgba(127,127,255,0);
+  transition: box-shadow .25s ease;
+}
 
-    .page-name {
-      font-size: 0.95rem;
-    }
+.page:hover {
+  transform: translateY(-2px);
+}
 
-    footer {
-      text-align: center;
-      margin-top: 60px;
-      color: var(--muted);
-      font-size: 0.85rem;
-    }
-  </style>
+.page:hover::after {
+  box-shadow: 0 0 20px rgba(127,127,255,0.7);
+}
+
+footer {
+  text-align: center;
+  color: #888;
+  padding-bottom: 30px;
+}
+</style>
 </head>
+
 <body>
 
-  <h1>🌐 Website Map</h1>
+<h1>🌌 Network Map</h1>
+<div class="map" id="map"></div>
 
-  <div id="map"></div>
+<footer>KS Warrior • Neural Sitemap</footer>
 
-  <footer>
-    © 2026 • KS Warrior • Site Map
-  </footer>
+<script>
+fetch("sitemap.json")
+  .then(r => r.json())
+  .then(data => {
+    const map = document.getElementById("map");
 
-  <script>
-    fetch("sitemap.json")
-      .then(res => res.json())
-      .then(data => renderMap(data))
-      .catch(err => {
-        document.getElementById("map").innerHTML =
-          "<p style='color:red;text-align:center'>Failed to load sitemap.json</p>";
-        console.error(err);
-      });
+    data.forEach(cat => {
+      const catDiv = document.createElement("div");
+      catDiv.className = "category";
 
-    function renderMap(data) {
-      const container = document.getElementById("map");
+      catDiv.innerHTML = `
+        <div class="category-title">
+          <span>${cat.icon}</span>
+          ${cat.category}
+        </div>
+      `;
 
-      data.forEach(category => {
-        const catDiv = document.createElement("div");
-        catDiv.className = "category";
+      cat.sections.forEach(sec => {
+        const secDiv = document.createElement("div");
+        secDiv.className = "section";
 
-        catDiv.innerHTML = `
-          <div class="category-header">
-            <span class="icon">${category.icon}</span>
-            <span>${category.category}</span>
-          </div>
-        `;
+        secDiv.innerHTML = `<div class="section-title">${sec.title}</div>`;
 
-        const sectionsDiv = document.createElement("div");
-        sectionsDiv.className = "sections";
+        const pages = document.createElement("div");
+        pages.className = "pages";
 
-        category.sections.forEach(section => {
-          const secDiv = document.createElement("div");
-          secDiv.className = "section";
-
-          secDiv.innerHTML = `
-            <div class="section-title">${section.title}</div>
+        sec.pages.forEach(p => {
+          const a = document.createElement("a");
+          a.className = "page";
+          a.href = p.url;
+          a.innerHTML = `
+            <img src="${p.logo}">
+            ${p.name}
           `;
-
-          section.pages.forEach(page => {
-            const a = document.createElement("a");
-            a.className = "page";
-            a.href = page.url;
-
-            a.innerHTML = `
-              <img src="${page.logo}" alt="">
-              <span class="page-name">${page.name}</span>
-            `;
-
-            secDiv.appendChild(a);
-          });
-
-          sectionsDiv.appendChild(secDiv);
+          pages.appendChild(a);
         });
 
-        catDiv.appendChild(sectionsDiv);
-        container.appendChild(catDiv);
+        secDiv.appendChild(pages);
+        catDiv.appendChild(secDiv);
       });
-    }
-  </script>
+
+      map.appendChild(catDiv);
+    });
+  });
+</script>
 
 </body>
 </html>
