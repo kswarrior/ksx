@@ -42,6 +42,27 @@ body{background: #000000;font-family:Arial,sans-serif;-webkit-tap-highlight-colo
 }
 
 .social-logo{width:45px;height:45px;flex-shrink:0}
+  .svg-logo {
+  width: 45px;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.svg-logo svg {
+  width: 26px;
+  height: 26px;
+  fill: #fff;
+  opacity: 0.9;
+  transition: transform .25s ease, opacity .25s ease;
+}
+
+/* Hover polish */
+.social-card:hover .svg-logo svg {
+  transform: scale(1.15);
+  opacity: 1;
+}
 .social-content{display:flex;flex-direction:column}
 .social-stats h3{font-size:15px}
 .social-stats p{font-size:12px}
