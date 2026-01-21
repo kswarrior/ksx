@@ -119,6 +119,32 @@ html, body {
   color: var(--accent);
 }
 
+  .search-svg {
+  width: 18px;
+  height: 18px;
+  stroke: var(--muted);
+  stroke-width: 2.2;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition:
+    stroke 0.25s ease,
+    transform 0.25s ease,
+    filter 0.25s ease;
+}
+
+/* Hover effect */
+#searchTrigger:hover .search-svg {
+  stroke: var(--accent);
+  transform: scale(1.15);
+  filter: drop-shadow(0 0 6px rgba(59,130,246,0.6));
+}
+
+/* Active (search opened) */
+#topbar.search-active .search-svg {
+  stroke: var(--accent);
+}
+
 /* HAMBURGER */
 #hamburger {
   width: 40px; height: 40px;
@@ -369,7 +395,12 @@ body.sidebar-open #sidebar { left: 0; }
   
   <!-- NEW SEARCH DESIGN -->
   <div class="search-container">
-    <div id="searchTrigger" aria-label="Search">🔍</div>
+    <div id="searchTrigger" aria-label="Search">
+  <svg class="search-svg" viewBox="0 0 24 24" aria-hidden="true">
+    <circle cx="11" cy="11" r="7"></circle>
+    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+  </svg>
+</div>
     <input id="searchBox" type="text" placeholder="Search pages..." aria-label="Search pages">
   </div>
 
