@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>KS Warrior Logo</title>
+
+<style>
+  body {
+    margin: 0;
+    background: radial-gradient(circle, #050014, #000);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  svg {
+    width: 420px; /* resize logo here */
+  }
+</style>
+</head>
+<body>
+
+<svg viewBox="0 0 1200 1200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="textGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#6ff0ff"/>
+      <stop offset="100%" stop-color="#7a4cff"/>
+    </linearGradient>
+
+    <linearGradient id="swordGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#aef7ff"/>
+      <stop offset="100%" stop-color="#235bff"/>
+    </linearGradient>
+
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Sword -->
+  <g filter="url(#glow)">
+    <rect x="565" y="180" width="70" height="600" rx="20"
+          fill="url(#swordGrad)"/>
+    <polygon points="600,80 660,180 540,180"
+             fill="#aef7ff"/>
+    <rect x="500" y="380" width="200" height="50" rx="20"
+          fill="#3b63ff"/>
+  </g>
+
+  <!-- Text -->
+  <text x="600" y="720"
+        text-anchor="middle"
+        font-size="140"
+        font-weight="900"
+        font-family="Arial Black"
+        fill="url(#textGrad)"
+        filter="url(#glow)">
+    KS
+  </text>
+
+  <text x="600" y="860"
+        text-anchor="middle"
+        font-size="200"
+        font-weight="900"
+        font-family="Arial Black"
+        fill="url(#textGrad)"
+        filter="url(#glow)">
+    WARRIOR
+  </text>
+</svg>
+
+</body>
+</html>
