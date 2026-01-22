@@ -76,9 +76,16 @@ html, body {
   fill: url(#grad);
   filter: url(#glow);
   letter-spacing: 3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   animation: float 2.5s ease-in-out infinite;
 }
 
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
 /* Floating animation */
 @keyframes float {
   0%, 100% {
@@ -432,7 +439,6 @@ body.sidebar-open #sidebar { left: 0; }
   <div class="owner-wrap">
   <svg viewBox="0 0 600 80" class="owner-svg">
     <defs>
-      <!-- Gradient animation -->
       <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="0%">
         <stop offset="0%" stop-color="#00f0ff">
           <animate attributeName="offset" values="0;1" dur="3s" repeatCount="indefinite"/>
@@ -445,11 +451,10 @@ body.sidebar-open #sidebar { left: 0; }
         </stop>
       </linearGradient>
 
-      <!-- Glow -->
       <filter id="glow">
-        <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+        <feGaussianBlur stdDeviation="3" result="blur"/>
         <feMerge>
-          <feMergeNode in="coloredBlur"/>
+          <feMergeNode in="blur"/>
           <feMergeNode in="SourceGraphic"/>
         </feMerge>
       </filter>
