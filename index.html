@@ -667,11 +667,25 @@ const isFavorite = (url) => getFavorites().some(item => new URL(item.url, locati
 // Update star icon and color
 const updateFavIcon = () => {
   const frameUrl = frame.src;
+
+  // SVG icons as strings (no xmlns)
+  const filledStarSVG = `
+    <svg class="fav-svg" width="24" height="24" fill="gold" viewBox="0 0 24 24">
+      <path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.778 1.4 8.164L12 18.897l-7.334 3.855 1.4-8.164L.132 9.21l8.2-1.192z"/>
+    </svg>
+  `;
+
+  const emptyStarSVG = `
+    <svg class="fav-svg" width="24" height="24" fill="none" stroke="gold" stroke-width="2" viewBox="0 0 24 24">
+      <path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.778 1.4 8.164L12 18.897l-7.334 3.855 1.4-8.164L.132 9.21l8.2-1.192z"/>
+    </svg>
+  `;
+
   if (isFavorite(frameUrl)) {
-    favButton.textContent = "✦";
+    favButton.innerHTML = filledStarSVG;
     favButton.classList.add("filled");
   } else {
-    favButton.textContent = "✧";
+    favButton.innerHTML = emptyStarSVG;
     favButton.classList.remove("filled");
   }
 };
