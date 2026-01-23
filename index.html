@@ -414,6 +414,8 @@ body.sidebar-open #sidebar { left: 0; }
 document.addEventListener("DOMContentLoaded", () => {
 
   const frame = document.getElementById("frame");
+
+  // ---------- PAGE LOADER ----------
   const pageLoader = document.createElement("div");
   pageLoader.id = "pageLoader";
   pageLoader.innerHTML = `
@@ -428,6 +430,11 @@ document.addEventListener("DOMContentLoaded", () => {
     </div>
   `;
   document.body.appendChild(pageLoader);
+
+  // ---------- TOP LOADER ----------
+  const topLoader = document.createElement("div");
+  topLoader.id = "topLoader";
+  document.body.appendChild(topLoader);
 
   /* Loader CSS */
   const loaderCSS = document.createElement("style");
@@ -453,33 +460,49 @@ document.addEventListener("DOMContentLoaded", () => {
     .loader-box { display:flex; flex-direction:column; align-items:center; gap:14px; }
 
     .ks-loader text {
-  stroke: var(--accent);
-  stroke-width: 1.5;
-  stroke-dasharray: 100;
-  stroke-dashoffset: 100;
-  animation: ks-draw 2s cubic-bezier(0.65, 0, 0.35, 1) infinite alternate;
-  /* smoother easing & slightly longer for elegance */
-}
+      stroke: var(--accent);
+      stroke-width: 1.5;
+      stroke-dasharray: 100;
+      stroke-dashoffset: 100;
+      animation: ks-draw 2s cubic-bezier(0.65, 0, 0.35, 1) infinite alternate;
+    }
 
-@keyframes ks-draw {
-  0% {
-    stroke-dashoffset: 100;
-    fill: none;
-    opacity: 0.25; /* softer start */
-  }
-  40% {
-    stroke-dashoffset: 0;
-    fill: var(--accent);
-    opacity: 1;
-  }
-  100% {
-    stroke-dashoffset: 100;
-    fill: none;
-    opacity: 0.25; /* smooth fade-out */
-  }
-}
+    @keyframes ks-draw {
+      0% { stroke-dashoffset: 100; fill: none; opacity: 0.25; }
+      40% { stroke-dashoffset: 0; fill: var(--accent); opacity: 1; }
+      100% { stroke-dashoffset: 100; fill: none; opacity: 0.25; }
+    }
+
+    /* Top progress bar */
+    #topLoader {
+      position: fixed;
+      top: 56px;
+      left: 0;
+      width: 0%;
+      height: 3px;
+      background: var(--accent);
+      z-index: 1300;
+      transition: width 0.2s ease;
+    }
   `;
   document.head.appendChild(loaderCSS);
+
+  // ---------- TOP LOADER FUNCTIONS ----------
+  function startTopLoader() {
+    topLoader.style.width = "0%";
+    let width = 0;
+    const interval = setInterval(() => {
+      width += Math.random() * 10; // random increment for realistic feel
+      if (width < 90) topLoader.style.width = width + "%";
+    }, 150);
+    return interval;
+  }
+
+  function finishTopLoader(interval) {
+    clearInterval(interval);
+    topLoader.style.width = "100%";
+    setTimeout(() => { topLoader.style.width = "0%"; }, 300);
+  }
 
   /* ------------------------
      SINGLE loadInFrame
@@ -504,7 +527,10 @@ document.addEventListener("DOMContentLoaded", () => {
       saveToRecent(nameFromSearch, fullUrl);
     }
 
-    // Ensure minimum loader duration 2.5s
+    // Start top loader
+    const loaderInterval = startTopLoader();
+
+    // Ensure minimum loader duration 3.5s
     frame.addEventListener("load", function onLoad() {
       const elapsed = Date.now() - startTime;
       const remaining = Math.max(3500 - elapsed, 0);
@@ -513,6 +539,8 @@ document.addEventListener("DOMContentLoaded", () => {
         pageLoader.classList.remove("active");
         if (window.innerWidth >= 768) document.body.classList.remove("sidebar-open");
         if (typeof updateFavIcon === "function") updateFavIcon();
+
+        finishTopLoader(loaderInterval);
       }, remaining);
 
       frame.removeEventListener("load", onLoad);
@@ -521,7 +549,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 });
 </script>
-  
+
 <div id="topbar">
   <div class="logo"><img src="/image/ks-logo.webp" alt="Logo"></div>
   <div class="owner-name">❰🔹❰❰ 𝑲𝑺 𝑾𝒂𝒓𝒓𝒊𝒐𝒓 ❱❱🔹❱</div>
