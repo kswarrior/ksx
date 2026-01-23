@@ -422,7 +422,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <text x="50%" y="50%" text-anchor="middle" dominant-baseline="middle" 
           font-family="monospace" font-size="28" fill="none" stroke="var(--accent)" 
           stroke-width="1.5" stroke-dasharray="100" stroke-dashoffset="100">
-          KS
+          ❰🔹❰❰ 𝑲𝑺 𝑾𝒂𝒓𝒓𝒊𝒐𝒓 ❱❱🔹❱
         </text>
       </svg>
     </div>
@@ -457,40 +457,25 @@ document.addEventListener("DOMContentLoaded", () => {
   stroke-width: 1.5;
   stroke-dasharray: 100;
   stroke-dashoffset: 100;
-  fill: none;
-  opacity: 0.3;
-  filter: drop-shadow(0 0 6px var(--accent));
-  animation: ks-draw 1.8s ease-in-out infinite alternate, ks-pulse 2s ease-in-out infinite;
-  transform-origin: 50% 50%;
+  animation: ks-draw 1.5s ease forwards infinite alternate;
 }
 
 @keyframes ks-draw {
-  0% { stroke-dashoffset: 100; fill: none; opacity: 0.2; }
-  40% { stroke-dashoffset: 0; fill: var(--accent); opacity: 1; }
-  70% { stroke-dashoffset: 0; fill: var(--accent); opacity: 1; }
-  100% { stroke-dashoffset: 100; fill: none; opacity: 0.2; }
-}
-
-@keyframes ks-pulse {
-  0%, 100% { transform: scale(1) rotate(0deg); filter: drop-shadow(0 0 6px var(--accent)); }
-  50% { transform: scale(1.1) rotate(5deg); filter: drop-shadow(0 0 18px var(--accent)); }
-}
-
-/* Optional: subtle spinning background circle */
-.ks-loader::before {
-  content: '';
-  position: absolute;
-  width: 120px;
-  height: 40px;
-  border: 2px solid var(--accent);
-  border-radius: 50%;
-  animation: ks-spin 3s linear infinite;
-  opacity: 0.15;
-}
-
-@keyframes ks-spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    stroke-dashoffset: 100;
+    fill: none;
+    opacity: 0.3;
+  }
+  50% {
+    stroke-dashoffset: 0;
+    fill: var(--accent);
+    opacity: 1;
+  }
+  100% {
+    stroke-dashoffset: 100;
+    fill: none;
+    opacity: 0.3;
+  }
 }
   `;
   document.head.appendChild(loaderCSS);
