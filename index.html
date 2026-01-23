@@ -418,63 +418,53 @@ document.addEventListener("DOMContentLoaded", () => {
   pageLoader.id = "pageLoader";
   pageLoader.innerHTML = `
     <div class="loader-box">
-  <div class="spinner"></div>
-  <svg class="ks-loader" width="120" height="40" viewBox="0 0 120 40">
-    <text x="50%" y="50%" text-anchor="middle" dominant-baseline="middle" font-family="monospace" font-size="28" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="100" stroke-dashoffset="100">
-      KS
-    </text>
-  </svg>
-</div>
+      <svg class="ks-loader" width="120" height="40" viewBox="0 0 120 40">
+        <text x="50%" y="50%" text-anchor="middle" dominant-baseline="middle" 
+          font-family="monospace" font-size="28" fill="none" stroke="var(--accent)" 
+          stroke-width="1.5" stroke-dasharray="100" stroke-dashoffset="100">
+          KS
+        </text>
+      </svg>
+    </div>
   `;
   document.body.appendChild(pageLoader);
 
   /* Loader CSS */
   const loaderCSS = document.createElement("style");
   loaderCSS.innerHTML = `
-  #pageLoader {
-    position: fixed;
-    inset: 56px 0 0 0;
-    background: rgba(10, 10, 15, 0.92);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1200;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.25s ease;
-}
-#pageLoader.active {
-    opacity: 1;
-    pointer-events: all;
-}
-.loader-box { display:flex; flex-direction:column; align-items:center; gap:14px; }
+    #pageLoader {
+      position: fixed;
+      inset: 56px 0 0 0;
+      background: rgba(10, 10, 15, 0.92);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1200;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+    #pageLoader.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+    .loader-box { display:flex; flex-direction:column; align-items:center; gap:14px; }
 
-.spinner {
-    width: 42px;
-    height: 42px;
-    border: 3px solid rgba(59,130,246,0.2);
-    border-top-color: var(--accent);
-    border-radius: 50%;
-    animation: spin 0.9s linear infinite;
-}
+    .ks-loader text {
+      stroke: var(--accent);
+      stroke-width: 1.5;
+      stroke-dasharray: 100;
+      stroke-dashoffset: 100;
+      animation: ks-draw 1.5s ease forwards infinite alternate;
+    }
 
-.ks-loader text {
-    stroke: var(--accent);
-    stroke-width: 1.5;
-    stroke-dasharray: 100;
-    stroke-dashoffset: 100;
-    animation: ks-draw 1.5s ease forwards infinite alternate;
-}
-
-@keyframes spin { to { transform: rotate(360deg); } }
-
-@keyframes ks-draw {
-    0% { stroke-dashoffset: 100; fill: none; opacity: 0.3; }
-    50% { stroke-dashoffset: 0; fill: var(--accent); opacity: 1; }
-    100% { stroke-dashoffset: 100; fill: none; opacity: 0.3; }
-}
+    @keyframes ks-draw {
+      0% { stroke-dashoffset: 100; fill: none; opacity: 0.3; }
+      50% { stroke-dashoffset: 0; fill: var(--accent); opacity: 1; }
+      100% { stroke-dashoffset: 100; fill: none; opacity: 0.3; }
+    }
   `;
   document.head.appendChild(loaderCSS);
 
@@ -488,9 +478,9 @@ document.addEventListener("DOMContentLoaded", () => {
     if (frame.src === target) return;
 
     pageLoader.classList.add("active");
+    const startTime = Date.now();
 
-    // Small delay to ensure loader shows
-    setTimeout(() => { frame.src = fullUrl; }, 50);
+    frame.src = fullUrl;
 
     document.body.classList.remove("sidebar-open");
     document.getElementById("topbar").classList.remove("search-active");
@@ -500,18 +490,21 @@ document.addEventListener("DOMContentLoaded", () => {
     if (nameFromSearch) {
       saveToRecent(nameFromSearch, fullUrl);
     }
+
+    // Ensure minimum loader duration 2.5s
+    frame.addEventListener("load", function onLoad() {
+      const elapsed = Date.now() - startTime;
+      const remaining = Math.max(2500 - elapsed, 0);
+
+      setTimeout(() => {
+        pageLoader.classList.remove("active");
+        if (window.innerWidth >= 768) document.body.classList.remove("sidebar-open");
+        if (typeof updateFavIcon === "function") updateFavIcon();
+      }, remaining);
+
+      frame.removeEventListener("load", onLoad);
+    });
   };
-
-  /* ------------------------
-     HIDE LOADER ON LOAD
-  ------------------------ */
-  frame.addEventListener("load", () => {
-    pageLoader.classList.remove("active");
-
-    if (window.innerWidth >= 768) document.body.classList.remove("sidebar-open");
-
-    if (typeof updateFavIcon === "function") updateFavIcon();
-  });
 
 });
 </script>
