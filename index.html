@@ -410,122 +410,92 @@ body.sidebar-open #sidebar { left: 0; }
 
 <body>
 
-  <script>
-/* ------------------------
-   PAGE LOADING SYSTEM
------------------------- */
+<script>
+document.addEventListener("DOMContentLoaded", () => {
 
-const frame = document.getElementById("frame");
-const pageLoader = document.createElement("div");
-pageLoader.id = "pageLoader";
-pageLoader.innerHTML = `
-  <div class="loader-box">
-    <div class="spinner"></div>
-    <div class="loader-text">Loading…</div>
-  </div>
-`;
-document.body.appendChild(pageLoader);
+  const frame = document.getElementById("frame");
+  const pageLoader = document.createElement("div");
+  pageLoader.id = "pageLoader";
+  pageLoader.innerHTML = `
+    <div class="loader-box">
+      <div class="spinner"></div>
+      <div class="loader-text">Loading…</div>
+    </div>
+  `;
+  document.body.appendChild(pageLoader);
 
-/* CSS for loader dynamically (optional if not using <style>) */
-const loaderCSS = document.createElement("style");
-loaderCSS.innerHTML = `
-#pageLoader {
-  position: fixed;
-  inset: 56px 0 0 0;
-  background: rgba(10, 10, 15, 0.92);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1200;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.25s ease;
-}
-#pageLoader.active {
-  opacity: 1;
-  pointer-events: all;
-}
-.loader-box {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 14px;
-}
-.spinner {
-  width: 42px;
-  height: 42px;
-  border: 3px solid rgba(59,130,246,0.2);
-  border-top-color: var(--accent);
-  border-radius: 50%;
-  animation: spin 0.9s linear infinite;
-}
-.loader-text {
-  font-size: 14px;
-  font-weight: 700;
-  color: var(--accent);
-  letter-spacing: 0.4px;
-}
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-`;
-document.head.appendChild(loaderCSS);
-
-/* ------------------------
-   MODIFIED loadInFrame
------------------------- */
-function loadInFrame(url, nameFromSearch = null) {
-  const fullUrl = url.startsWith("http") ? url : url;
-  const target = new URL(fullUrl, location.href).href;
-
-  if (frame.src === target) return;
-
-  // SHOW loader instantly
-  pageLoader.classList.add("active");
-
-  // Reset iframe before loading to show loader immediately
-  frame.src = "about:blank";
-
-  // Small delay to ensure loader appears
-  setTimeout(() => {
-    frame.src = fullUrl;
-  }, 50);
-
-  document.body.classList.remove("sidebar-open");
-  document.getElementById("topbar").classList.remove("search-active");
-  document.getElementById("suggestBox").style.display = "none";
-  document.getElementById("searchBox").value = "";
-
-  if (nameFromSearch) {
-    saveToRecent(nameFromSearch, fullUrl);
+  /* Loader CSS */
+  const loaderCSS = document.createElement("style");
+  loaderCSS.innerHTML = `
+  #pageLoader {
+    position: fixed;
+    inset: 56px 0 0 0;
+    background: rgba(10, 10, 15, 0.92);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1200;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
   }
-}
+  #pageLoader.active {
+    opacity: 1;
+    pointer-events: all;
+  }
+  .loader-box { display:flex; flex-direction:column; align-items:center; gap:14px; }
+  .spinner {
+    width: 42px;
+    height: 42px;
+    border: 3px solid rgba(59,130,246,0.2);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.9s linear infinite;
+  }
+  .loader-text { font-size:14px; font-weight:700; color:var(--accent); letter-spacing:0.4px; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  `;
+  document.head.appendChild(loaderCSS);
 
-/* ------------------------
-   HIDE LOADER WHEN FRAME LOADED
------------------------- */
-frame.addEventListener("load", () => {
-  // Remove loader
-  pageLoader.classList.remove("active");
+  /* ------------------------
+     SINGLE loadInFrame
+  ------------------------ */
+  window.loadInFrame = function(url, nameFromSearch = null) {
+    const fullUrl = url.startsWith("http") ? url : url;
+    const target = new URL(fullUrl, location.href).href;
 
-  // Sidebar behavior for larger screens
-  if (window.innerWidth >= 768) {
+    if (frame.src === target) return;
+
+    pageLoader.classList.add("active");
+
+    // Small delay to ensure loader shows
+    setTimeout(() => { frame.src = fullUrl; }, 50);
+
     document.body.classList.remove("sidebar-open");
-  }
+    document.getElementById("topbar").classList.remove("search-active");
+    document.getElementById("suggestBox").style.display = "none";
+    document.getElementById("searchBox").value = "";
 
-  // Update favorite button
-  if (typeof updateFavIcon === "function") updateFavIcon();
-});
+    if (nameFromSearch) {
+      saveToRecent(nameFromSearch, fullUrl);
+    }
+  };
 
-/* ------------------------
-   OPTIONAL: Show loader if iframe navigates internally
------------------------- */
-frame.addEventListener("beforeunload", () => {
-  pageLoader.classList.add("active");
+  /* ------------------------
+     HIDE LOADER ON LOAD
+  ------------------------ */
+  frame.addEventListener("load", () => {
+    pageLoader.classList.remove("active");
+
+    if (window.innerWidth >= 768) document.body.classList.remove("sidebar-open");
+
+    if (typeof updateFavIcon === "function") updateFavIcon();
+  });
+
 });
-  </script>
+</script>
   
 <div id="topbar">
   <div class="logo"><img src="/image/ks-logo.webp" alt="Logo"></div>
