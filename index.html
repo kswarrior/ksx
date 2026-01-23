@@ -482,27 +482,27 @@ document.addEventListener("DOMContentLoaded", () => {
       height: 2px;
       background: var(--accent);
       z-index: 1300;
-      transition: width 1.5s ease;
+      transition: width 5s ease;
     }
   `;
   document.head.appendChild(loaderCSS);
 
   // ---------- TOP LOADER FUNCTIONS ----------
   function startTopLoader() {
-    topLoader.style.width = "0%";
-    let width = 0;
-    const interval = setInterval(() => {
-      width += Math.random() * 10; // random increment for realistic feel
-      if (width < 90) topLoader.style.width = width + "%";
-    }, 150);
-    return interval;
-  }
+  topLoader.style.width = "0%";
+  let width = 0;
+  const interval = setInterval(() => {
+    width += Math.random() * 2; // smaller increments for smoothness
+    if (width < 90) topLoader.style.width = width + "%";
+  }, 20); // faster updates for smooth animation
+  return interval;
+}
 
-  function finishTopLoader(interval) {
-    clearInterval(interval);
-    topLoader.style.width = "100%";
-    setTimeout(() => { topLoader.style.width = "0%"; }, 300);
-  }
+function finishTopLoader(interval) {
+  clearInterval(interval);
+  topLoader.style.width = "100%";
+  setTimeout(() => { topLoader.style.width = "0%"; }, 300);
+}
 
   /* ------------------------
      SINGLE loadInFrame
