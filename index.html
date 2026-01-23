@@ -418,9 +418,13 @@ document.addEventListener("DOMContentLoaded", () => {
   pageLoader.id = "pageLoader";
   pageLoader.innerHTML = `
     <div class="loader-box">
-      <div class="spinner"></div>
-      <div class="loader-text">Loading…</div>
-    </div>
+  <div class="spinner"></div>
+  <svg class="ks-loader" width="120" height="40" viewBox="0 0 120 40">
+    <text x="50%" y="50%" text-anchor="middle" dominant-baseline="middle" font-family="monospace" font-size="28" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="100" stroke-dashoffset="100">
+      KS
+    </text>
+  </svg>
+</div>
   `;
   document.body.appendChild(pageLoader);
 
@@ -440,22 +444,37 @@ document.addEventListener("DOMContentLoaded", () => {
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.25s ease;
-  }
-  #pageLoader.active {
+}
+#pageLoader.active {
     opacity: 1;
     pointer-events: all;
-  }
-  .loader-box { display:flex; flex-direction:column; align-items:center; gap:14px; }
-  .spinner {
+}
+.loader-box { display:flex; flex-direction:column; align-items:center; gap:14px; }
+
+.spinner {
     width: 42px;
     height: 42px;
     border: 3px solid rgba(59,130,246,0.2);
     border-top-color: var(--accent);
     border-radius: 50%;
     animation: spin 0.9s linear infinite;
-  }
-  .loader-text { font-size:14px; font-weight:700; color:var(--accent); letter-spacing:0.4px; }
-  @keyframes spin { to { transform: rotate(360deg); } }
+}
+
+.ks-loader text {
+    stroke: var(--accent);
+    stroke-width: 1.5;
+    stroke-dasharray: 100;
+    stroke-dashoffset: 100;
+    animation: ks-draw 1.5s ease forwards infinite alternate;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+@keyframes ks-draw {
+    0% { stroke-dashoffset: 100; fill: none; opacity: 0.3; }
+    50% { stroke-dashoffset: 0; fill: var(--accent); opacity: 1; }
+    100% { stroke-dashoffset: 100; fill: none; opacity: 0.3; }
+}
   `;
   document.head.appendChild(loaderCSS);
 
