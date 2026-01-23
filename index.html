@@ -457,16 +457,17 @@ document.addEventListener("DOMContentLoaded", () => {
   stroke-width: 1.5;
   stroke-dasharray: 100;
   stroke-dashoffset: 100;
-  animation: ks-draw 1.5s ease forwards infinite alternate;
+  animation: ks-draw 2s cubic-bezier(0.65, 0, 0.35, 1) infinite alternate;
+  /* smoother easing & slightly longer for elegance */
 }
 
 @keyframes ks-draw {
   0% {
     stroke-dashoffset: 100;
     fill: none;
-    opacity: 0.3;
+    opacity: 0.25; /* softer start */
   }
-  50% {
+  40% {
     stroke-dashoffset: 0;
     fill: var(--accent);
     opacity: 1;
@@ -474,7 +475,7 @@ document.addEventListener("DOMContentLoaded", () => {
   100% {
     stroke-dashoffset: 100;
     fill: none;
-    opacity: 0.3;
+    opacity: 0.25; /* smooth fade-out */
   }
 }
   `;
