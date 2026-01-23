@@ -507,7 +507,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Ensure minimum loader duration 2.5s
     frame.addEventListener("load", function onLoad() {
       const elapsed = Date.now() - startTime;
-      const remaining = Math.max(5000 - elapsed, 0);
+      const remaining = Math.max(3500 - elapsed, 0);
 
       setTimeout(() => {
         pageLoader.classList.remove("active");
