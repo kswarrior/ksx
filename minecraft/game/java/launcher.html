@@ -75,22 +75,40 @@ h1{
   flex-direction:column;
   gap:14px;
   border:1px solid var(--border);
-  transition:var(--transition);
+
+  position:relative;          /* REQUIRED */
+  overflow:hidden;            /* REQUIRED */
+
+  cursor:pointer;
+  transition:all 0.4s ease;
+  -webkit-tap-highlight-color: transparent;
 }
 
+/* Shine animation */
 .launcher-card::before{
   content:'';
   position:absolute;
-  top:0; left:-100%;
+  top:0;
+  left:-100%;
   width:50%;
   height:100%;
-  background:linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+  background:linear-gradient(
+    90deg,
+    transparent,
+    rgba(255,255,255,0.15),
+    transparent
+  );
   transition:left 0.7s ease;
 }
-.launcher-card:hover::before{ left:100%; }
+
+/* Hover effects */
+.launcher-card:hover::before{
+  left:100%;
+}
+
 .launcher-card:hover{
   background:var(--hover);
-  transform:translateX(10px) scale(1.03);
+  transform:translateY(-8px) scale(1.03); /* smoother for cards */
 }
 
 /* TOP */
