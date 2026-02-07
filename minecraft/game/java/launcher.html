@@ -79,10 +79,19 @@ h1{
   transition:var(--transition);
 }
 
+.launcher-card::before{
+  content:'';
+  position:absolute;
+  top:0; left:-100%;
+  width:50%;
+  height:100%;
+  background:linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+  transition:left 0.7s ease;
+}
+.launcher-card:hover::before{ left:100%; }
 .launcher-card:hover{
-  transform:translateY(-6px);
   background:var(--hover);
-  box-shadow:0 0 34px rgba(255,255,255,0.35);
+  transform:translateX(10px) scale(1.03);
 }
 
 /* TOP */
