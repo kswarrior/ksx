@@ -65,8 +65,6 @@
     "location": "USA",
     "link": "https://deepnote.com/"
   },
-
-  // **Genuine cloud providers with free VPS tiers / credits**
   {
     "name": "Oracle Cloud Free Tier",
     "ram": 24,
@@ -111,8 +109,6 @@
     "location": "Global",
     "link": "https://www.alibabacloud.com/free"
   },
-
-  // **Free or trial VPS/community providers**
   {
     "name": "FreeTierCloud",
     "ram": 1,
@@ -135,8 +131,6 @@
     "location": "Global",
     "link": "https://vpspromo.com/"
   },
-
-  // **Affordable paid VPS options (very solid and widely used)**
   {
     "name": "DigitalOcean (Free Credits)",
     "ram": 1,
