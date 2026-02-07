@@ -1,5 +1,14 @@
 [
   {
+    "name": "Stone Nodes",
+    "ram": 4,
+    "cpu": "100%",
+    "disk": "10GB",
+    "location": "unknown",
+    "uptime": "good",
+    "link": "https://discord.gg/p3KybkTsRu"
+  },
+  {
     "name": "MineStrator",
     "ram": 4,
     "cpu": "100%",
