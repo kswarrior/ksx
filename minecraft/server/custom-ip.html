@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Custom IP Address</title>
+
+<style>
+/* ===============================
+   VARIABLES
+================================*/
+:root{
+  --bg:#000000;
+  --card:rgba(18,18,28,0.85);
+  --soft:rgba(28,28,40,0.9);
+  --hover-card:rgba(40,40,55,0.95);
+  --text:#ffffff;
+  --muted:#aaaaaa;
+  --accent:#ffffff;
+  --accent-glow:rgba(255,255,255,0.4);
+  --border:rgba(255,255,255,0.12);
+  --glow:0 0 20px rgba(255,255,255,0.15);
+  --radius:12px;
+  --gap:28px;
+  --transition:0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+*{ box-sizing:border-box; margin:0; padding:0; }
+body{
+  font-family:system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  line-height:1.5;
+  overflow-x:hidden;
+  user-select:none;
+  -webkit-tap-highlight-color: transparent;
+  animation:bgPulse 18s ease-in-out infinite alternate;
+}
+
+@keyframes bgPulse {
+  0% { background:#000000; }
+  100% { background:#0a0a0a; }
+}
+
+/* ------------------------------
+   GENERAL HEADINGS
+--------------------------------*/
+h1.title{
+  font-size:28px;
+  font-weight:900;
+  text-align:center;
+  margin-top:40px;
+  margin-bottom:10px;
+}
+h1.my-name{
+  font-size:20px;
+  font-weight:600;
+  text-align:center;
+  margin-bottom:40px;
+  color:var(--muted);
+}
+h1.injoy{
+  font-size:22px;
+  font-weight:800;
+  text-align:center;
+  margin:40px 0 20px;
+}
+
+/* ------------------------------
+   CONTAINER
+--------------------------------*/
+.all-step{
+  max-width:960px;
+  margin:auto;
+  padding:0 16px 60px;
+  display:grid;
+  gap:var(--gap);
+}
+
+/* ------------------------------
+   STEP CARDS
+--------------------------------*/
+.step-one, .step-two{
+  background:var(--card);
+  border-radius:var(--radius);
+  padding:var(--gap);
+  border:1px solid var(--border);
+  backdrop-filter:blur(20px);
+  transition:all var(--transition);
+  cursor:default;
+  overflow:hidden;
+  position:relative;
+}
+.step-one:hover, .step-two:hover{
+  background:var(--hover-card);
+  transform:scale(1.02);
+}
+.step{
+  font-size:18px;
+  font-weight:900;
+  margin-bottom:12px;
+}
+.step pre{
+  font-family:inherit;
+  font-size:inherit;
+  display:inline-block;
+  background:var(--accent);
+  color:#000;
+  padding:4px 14px;
+  border-radius:999px;
+  box-shadow:0 0 10px var(--accent-glow);
+}
+.step p{
+  font-size:14px;
+  color:var(--muted);
+  margin-bottom:12px;
+}
+
+/* ------------------------------
+   IFRAME STYLING
+--------------------------------*/
+.link-one, .link-two{
+  border:none;
+  border-radius:8px;
+  background:rgba(0,0,0,0.05);
+  box-shadow:0 0 10px rgba(255,255,255,0.05);
+}
+
+/* ------------------------------
+   BUTTONS / LINKS
+--------------------------------*/
+a.discord{
+  display:inline-block;
+  text-align:center;
+  font-weight:700;
+  background:var(--accent);
+  color:#000;
+  padding:10px 24px;
+  border-radius:999px;
+  text-decoration:none;
+  box-shadow:0 0 10px var(--accent-glow);
+  transition:all 0.4s ease;
+  margin:20px auto 0;
+}
+a.discord:hover{
+  transform:scale(1.05);
+  box-shadow:0 0 25px var(--accent-glow);
+}
+
+/* ------------------------------
+   FOOTER TEXT
+--------------------------------*/
+.end{
+  text-align:center;
+  font-size:13px;
+  color:var(--muted);
+  margin-top:8px;
+}
+
+/* ------------------------------
+   RESPONSIVE
+--------------------------------*/
+@media(max-width:820px){
+  .all-step{ gap:20px; }
+  h1.title{ font-size:24px; }
+  h1.my-name{ font-size:18px; }
+  h1.injoy{ font-size:20px; }
+}
+</style>
+</head>
+<body>
+
+<h1 class="title">Custom IP Address</h1>
+<h1 class="my-name">KS Warrior</h1>
+
+<div class="all-step">
+
+  <!-- STEP 1 -->
+  <div class="step-one">
+    <h3 class="step"><pre>  Step {1}  </pre></h3>
+    <p>Paste your server IP in the search bar and search also copy IP Address</p>
+    <iframe class="link-one" height="300px" width="100%" src="https://check-host.net/"></iframe>
+  </div>
+
+  <!-- STEP 2 -->
+  <div class="step-two">
+    <h3 class="step"><pre>  Step {2}  </pre></h3>
+    <p>Fill all information</p>
+    <p>Click on create button</p>
+    <iframe class="link-two" height="455px" width="100%" src="https://shockbyte.com/es/subdomain-creator"></iframe>
+  </div>
+
+  <!-- ENJOY SECTION -->
+  <h1 class="injoy">Enjoy Custom IP</h1>
+  <a class="discord" href="https://zhhdy.com" target="_blank">Join Discord</a>
+  <p class="end">For more things like this</p>
+  <p class="end">Also support me</p>
+
+</div>
+
+<script>
+// Optional: smooth scroll to iframes or interactions can be added here
+</script>
+
+</body>
+</html>
