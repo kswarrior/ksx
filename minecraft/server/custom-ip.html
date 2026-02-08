@@ -6,9 +6,6 @@
 <title>Custom IP Address</title>
 
 <style>
-/* ===============================
-   VARIABLES
-================================*/
 :root{
   --bg:#000000;
   --card:rgba(18,18,28,0.85);
@@ -43,9 +40,6 @@ body{
   100% { background:#0a0a0a; }
 }
 
-/* ------------------------------
-   GENERAL HEADINGS
---------------------------------*/
 h1.title{
   font-size:28px;
   font-weight:900;
@@ -67,9 +61,6 @@ h1.injoy{
   margin:40px 0 20px;
 }
 
-/* ------------------------------
-   CONTAINER
---------------------------------*/
 .all-step{
   max-width:960px;
   margin:auto;
@@ -78,9 +69,6 @@ h1.injoy{
   gap:var(--gap);
 }
 
-/* ------------------------------
-   STEP CARDS
---------------------------------*/
 .step-one, .step-two{
   background:var(--card);
   border-radius:var(--radius);
@@ -117,14 +105,66 @@ h1.injoy{
   margin-bottom:12px;
 }
 
-/* ------------------------------
-   IFRAME STYLING
---------------------------------*/
-.link-one, .link-two{
+/* ---------- INPUT / BUTTON ---------- */
+input.ip-input{
+  width:calc(100% - 130px);
+  padding:10px 14px;
+  border-radius:8px;
+  border:none;
+  outline:none;
+  margin-right:10px;
+  font-size:16px;
+  background:rgba(255,255,255,0.05);
+  color:#fff;
+}
+button.ip-search{
+  padding:10px 20px;
+  font-size:16px;
   border:none;
   border-radius:8px;
-  background:rgba(0,0,0,0.05);
-  box-shadow:0 0 10px rgba(255,255,255,0.05);
+  background:var(--accent);
+  color:#000;
+  font-weight:700;
+  cursor:pointer;
+  transition:all 0.3s ease;
+}
+button.ip-search:hover{
+  transform:scale(1.05);
+  box-shadow:0 0 15px var(--accent-glow);
+}
+
+/* ---------- RESULT BOX ---------- */
+.result-box{
+  margin-top:20px;
+  background:rgba(255,255,255,0.05);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:16px;
+  color:#fff;
+}
+.result-box p{
+  margin:6px 0;
+  font-size:14px;
+}
+.label{
+  font-weight:700;
+  color:var(--accent);
+}
+.copy-btn{
+  background:var(--accent);
+  border:none;
+  border-radius:6px;
+  color:#000;
+  font-weight:700;
+  padding:2px 8px;
+  cursor:pointer;
+  margin-left:8px;
+  font-size:12px;
+  transition:all 0.3s ease;
+}
+.copy-btn:hover{
+  transform:scale(1.1);
+  box-shadow:0 0 8px var(--accent-glow);
 }
 
 /* ------------------------------
@@ -148,9 +188,6 @@ a.discord:hover{
   box-shadow:0 0 25px var(--accent-glow);
 }
 
-/* ------------------------------
-   FOOTER TEXT
---------------------------------*/
 .end{
   text-align:center;
   font-size:13px;
@@ -158,14 +195,13 @@ a.discord:hover{
   margin-top:8px;
 }
 
-/* ------------------------------
-   RESPONSIVE
---------------------------------*/
 @media(max-width:820px){
   .all-step{ gap:20px; }
   h1.title{ font-size:24px; }
   h1.my-name{ font-size:18px; }
   h1.injoy{ font-size:20px; }
+  input.ip-input{ width:100%; margin-bottom:10px; }
+  button.ip-search{ width:100%; }
 }
 </style>
 </head>
@@ -179,8 +215,12 @@ a.discord:hover{
   <!-- STEP 1 -->
   <div class="step-one">
     <h3 class="step"><pre>  Step {1}  </pre></h3>
-    <p>Paste your server IP in the search bar and search also copy IP Address</p>
-    <iframe class="link-one" height="300px" width="100%" src="https://check-host.net/"></iframe>
+    <p>Enter your server IP or domain:</p>
+    <div style="display:flex; flex-wrap:wrap;">
+      <input id="ipInput" class="ip-input" placeholder="e.g. aternos.org or 8.8.8.8">
+      <button class="ip-search" onclick="loadIPInfo()">Search</button>
+    </div>
+    <div id="result" class="result-box"></div>
   </div>
 
   <!-- STEP 2 -->
@@ -200,7 +240,71 @@ a.discord:hover{
 </div>
 
 <script>
-// Optional: smooth scroll to iframes or interactions can be added here
+const ipv4Regex = /^(?:(?:25[0-5]|2[0-4]\d|1?\d{1,2})\.){3}(?:25[0-5]|2[0-4]\d|1?\d{1,2})$/;
+const ipv6Regex = /^[0-9a-fA-F:]+$/;
+
+// resolve domain to IP using Google DNS
+async function resolveDomain(domain){
+  try{
+    const res = await fetch(`https://dns.google/resolve?name=${encodeURIComponent(domain)}&type=A`);
+    const data = await res.json();
+    if(data.Answer && data.Answer.length > 0){
+      const record = data.Answer.find(a=>a.type===1);
+      return record ? record.data : null;
+    }
+    return null;
+  }catch{
+    return null;
+  }
+}
+
+async function loadIPInfo(){
+  const input = document.getElementById("ipInput").value.trim();
+  const result = document.getElementById("result");
+
+  if(!input) return alert("Please enter an IP or domain");
+
+  result.innerHTML = "🔍 Fetching data...";
+
+  let targetIP = input;
+
+  if(ipv4Regex.test(input) || ipv6Regex.test(input)){
+    // Valid IP
+  }else{
+    const resolved = await resolveDomain(input);
+    if(!resolved){
+      result.innerHTML = "<p style='color:#b91c1c;font-weight:700;'>❌ Domain cannot be resolved.</p>";
+      return;
+    }
+    targetIP = resolved;
+  }
+
+  try{
+    const res = await fetch(`https://ipapi.co/${targetIP}/json/`);
+    const data = await res.json();
+    if(data.error){
+      result.innerHTML = `<p style='color:#b91c1c;font-weight:700;'>❌ ${data.reason || "Invalid IP Address"}</p>`;
+      return;
+    }
+
+    result.innerHTML = `
+      <p><span class="label">IP Address:</span> ${data.ip} <button class="copy-btn" onclick="copyToClipboard('${data.ip}')">Copy</button></p>
+      <p><span class="label">City:</span> ${data.city || 'N/A'}</p>
+      <p><span class="label">Region:</span> ${data.region || 'N/A'}</p>
+      <p><span class="label">Country:</span> ${data.country_name || 'N/A'}</p>
+      <p><span class="label">ISP:</span> ${data.org || 'N/A'}</p>
+      <p><span class="label">Timezone:</span> ${data.timezone || 'N/A'}</p>
+    `;
+  }catch(err){
+    result.innerHTML = `<p style='color:#b91c1c;font-weight:700;'>❌ Error: ${err.message}</p>`;
+  }
+}
+
+function copyToClipboard(text){
+  navigator.clipboard.writeText(text).then(()=>{
+    alert(`Copied: ${text}`);
+  });
+}
 </script>
 
 </body>
