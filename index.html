@@ -603,52 +603,81 @@ function finishTopLoader(interval) {
 
 <iframe id="frame" title="Main content"></iframe>
 <script>
-const LAST_PAGE_KEY = "ks-web-last-page";
+document.addEventListener("DOMContentLoaded", () => {
+  // --- ELEMENTS ---
+  const frame = document.getElementById("frame");
+  const topbar = document.getElementById("topbar");
+  const suggestBox = document.getElementById("suggestBox");
+  const searchBox = document.getElementById("searchBox");
 
-// Element references
-const frame = document.getElementById("frame");
-const topbar = document.getElementById("topbar");
-const suggestBox = document.getElementById("suggestBox");
-const searchBox = document.getElementById("searchBox");
-const pageLoader = document.getElementById("pageLoader");
+  // Page loader
+  const pageLoader = document.createElement("div");
+  pageLoader.id = "pageLoader";
+  pageLoader.innerHTML = `<div class="loader-box">Loading...</div>`;
+  document.body.appendChild(pageLoader);
 
-// Load page into iframe
-function loadInFrame(url, nameFromSearch = null) {
-  if (!url) return;
+  // Top loader
+  const topLoader = document.createElement("div");
+  topLoader.id = "topLoader";
+  document.body.appendChild(topLoader);
 
-  if (frame.getAttribute("data-current") === url) return;
+  function startTopLoader() {
+    topLoader.style.width = "0%";
+    let width = 0;
+    const interval = setInterval(() => {
+      width += Math.random() * 2;
+      if (width < 90) topLoader.style.width = width + "%";
+    }, 20);
+    return interval;
+  }
 
-  frame.setAttribute("data-current", url);
-  localStorage.setItem(LAST_PAGE_KEY, url);
+  function finishTopLoader(interval) {
+    clearInterval(interval);
+    topLoader.style.width = "100%";
+    setTimeout(() => (topLoader.style.width = "0%"), 300);
+  }
 
-  // UI reset
-  if (topbar) topbar.classList.remove("search-active");
-  if (suggestBox) suggestBox.style.display = "none";
-  if (searchBox) searchBox.value = "";
+  // --- LOAD FRAME FUNCTION ---
+  const LAST_PAGE_KEY = "ks-web-last-page";
+  window.loadInFrame = function(url, nameFromSearch = null) {
+    if (!url) return;
 
-  if (pageLoader) pageLoader.classList.add("active");
+    // Prevent reload
+    if (frame.getAttribute("data-current") === url) return;
+    frame.setAttribute("data-current", url);
 
-  const loaderInterval = startTopLoader?.();
-  const startTime = Date.now();
+    // Save last page
+    localStorage.setItem(LAST_PAGE_KEY, url);
 
-  frame.src = url;
+    // UI reset
+    document.body.classList.remove("sidebar-open");
+    topbar.classList.remove("search-active");
+    suggestBox.style.display = "none";
+    searchBox.value = "";
 
-  frame.onload = () => {
-    const elapsed = Date.now() - startTime;
-    const wait = Math.max(1200 - elapsed, 0);
+    // Show loader
+    pageLoader.classList.add("active");
+    const startTime = Date.now();
+    const loaderInterval = startTopLoader();
 
-    setTimeout(() => {
-      if (pageLoader) pageLoader.classList.remove("active");
-      finishTopLoader?.(loaderInterval);
-      updateFavIcon?.();
-    }, wait);
+    // Set iframe URL
+    frame.src = url;
+
+    // When iframe is loaded
+    frame.onload = () => {
+      const elapsed = Date.now() - startTime;
+      const wait = Math.max(1200 - elapsed, 0);
+      setTimeout(() => {
+        pageLoader.classList.remove("active");
+        finishTopLoader(loaderInterval);
+        if (typeof updateFavIcon === "function") updateFavIcon();
+      }, wait);
+
+      if (nameFromSearch) saveToRecent?.(nameFromSearch, url);
+    };
   };
 
-  if (nameFromSearch) saveToRecent?.(nameFromSearch, url);
-}
-
-// Restore last page
-document.addEventListener("DOMContentLoaded", () => {
+  // --- RESTORE LAST PAGE ---
   const lastPage = localStorage.getItem(LAST_PAGE_KEY);
   loadInFrame(lastPage || "dashboard.html");
 });
