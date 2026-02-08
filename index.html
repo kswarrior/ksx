@@ -589,7 +589,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // When iframe loads
     frame.onload = () => {
       const elapsed = Date.now() - startTime;
-      const wait = Math.max(3500 - elapsed, 0);
+      const wait = Math.max(2500 - elapsed, 0);
       setTimeout(() => {
         pageLoader.classList.remove("active");
         finishTopLoader(loaderInterval);
