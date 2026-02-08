@@ -664,26 +664,31 @@ function loadInFrame(url, nameFromSearch = null) {
   const fullUrl = url.startsWith("http") ? url : url;
   const resolvedUrl = new URL(fullUrl, location.href).href;
 
+  // Prevent reloading same page
   if (frame.src === resolvedUrl) return;
 
+  // Load page
   frame.src = fullUrl;
 
   // ✅ Save last opened page
   localStorage.setItem(LAST_PAGE_KEY, resolvedUrl);
 
+  // UI reset
   document.body.classList.remove("sidebar-open");
-  topbar.classList.remove("search-active");
-  suggestBox.style.display = "none";
-  searchBox.value = "";
+  if (topbar) topbar.classList.remove("search-active");
+  if (suggestBox) suggestBox.style.display = "none";
+  if (searchBox) searchBox.value = "";
 
+  // Save to recent search
   if (nameFromSearch) {
     saveToRecent(nameFromSearch, fullUrl);
   }
-  }
+}
 
-  document.addEventListener("DOMContentLoaded", () => {
+// ✅ Restore last page on refresh
+document.addEventListener("DOMContentLoaded", () => {
   const lastPage = localStorage.getItem(LAST_PAGE_KEY);
-  frame.src = lastPage ? lastPage : "dashboard.html";
+  frame.src = lastPage || "dashboard.html";
 });
   
 /* Search suggestions */
