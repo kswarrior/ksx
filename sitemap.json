@@ -55,6 +55,11 @@
             "name": "Custom IP",
             "url": "/minecraft/server/custom-ip.html",
             "logo": "https://example.com/ip.png"
+          },
+          {
+            "name": "Statics",
+            "url": "/minecraft/server/statics.html",
+            "logo": "https://example.com/statics.png"
           }
         ]
       }
