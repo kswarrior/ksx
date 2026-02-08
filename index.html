@@ -410,146 +410,6 @@ body.sidebar-open #sidebar { left: 0; }
 
 <body>
 
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-
-  const frame = document.getElementById("frame");
-
-  // ---------- PAGE LOADER ----------
-  const pageLoader = document.createElement("div");
-  pageLoader.id = "pageLoader";
-  pageLoader.innerHTML = `
-    <div class="loader-box">
-      <svg class="ks-loader" width="120" height="40" viewBox="0 0 120 40">
-        <text x="50%" y="50%" text-anchor="middle" dominant-baseline="middle" 
-          font-family="monospace" font-size="28" fill="none" stroke="var(--accent)" 
-          stroke-width="1.5" stroke-dasharray="100" stroke-dashoffset="100">
-          ❰🔹❰❰ 𝑲𝑺 ❱❱🔹❱
-        </text>
-      </svg>
-    </div>
-  `;
-  document.body.appendChild(pageLoader);
-
-  // ---------- TOP LOADER ----------
-  const topLoader = document.createElement("div");
-  topLoader.id = "topLoader";
-  document.body.appendChild(topLoader);
-
-  /* Loader CSS */
-  const loaderCSS = document.createElement("style");
-  loaderCSS.innerHTML = `
-    #pageLoader {
-      position: fixed;
-      inset: 56px 0 0 0;
-      background: rgba(10, 10, 15, 0.92);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 1200;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.25s ease;
-    }
-    #pageLoader.active {
-      opacity: 1;
-      pointer-events: all;
-    }
-    .loader-box { display:flex; flex-direction:column; align-items:center; gap:14px; }
-
-    .ks-loader text {
-      stroke: var(--accent);
-      stroke-width: 1.5;
-      stroke-dasharray: 100;
-      stroke-dashoffset: 100;
-      animation: ks-draw 2s cubic-bezier(0.65, 0, 0.35, 1) infinite alternate;
-    }
-
-    @keyframes ks-draw {
-      0% { stroke-dashoffset: 100; fill: none; opacity: 0.25; }
-      40% { stroke-dashoffset: 0; fill: var(--accent); opacity: 1; }
-      100% { stroke-dashoffset: 100; fill: none; opacity: 0.25; }
-    }
-
-    /* Top progress bar */
-    #topLoader {
-      position: fixed;
-      top: 56px;
-      left: 0;
-      width: 0%;
-      height: 2px;
-      background: var(--accent);
-      z-index: 1300;
-      transition: width 1.5s ease;
-    }
-  `;
-  document.head.appendChild(loaderCSS);
-
-  // ---------- TOP LOADER FUNCTIONS ----------
-  function startTopLoader() {
-  topLoader.style.width = "0%";
-  let width = 0;
-  const interval = setInterval(() => {
-    width += Math.random() * 2; // smaller increments for smoothness
-    if (width < 90) topLoader.style.width = width + "%";
-  }, 20); // faster updates for smooth animation
-  return interval;
-}
-
-function finishTopLoader(interval) {
-  clearInterval(interval);
-  topLoader.style.width = "100%";
-  setTimeout(() => { topLoader.style.width = "0%"; }, 300);
-}
-
-  /* ------------------------
-     SINGLE loadInFrame
-  ------------------------ */
-  window.loadInFrame = function(url, nameFromSearch = null) {
-    const fullUrl = url.startsWith("http") ? url : url;
-    const target = new URL(fullUrl, location.href).href;
-
-    if (frame.src === target) return;
-
-    pageLoader.classList.add("active");
-    const startTime = Date.now();
-
-    frame.src = fullUrl;
-
-    document.body.classList.remove("sidebar-open");
-    document.getElementById("topbar").classList.remove("search-active");
-    document.getElementById("suggestBox").style.display = "none";
-    document.getElementById("searchBox").value = "";
-
-    if (nameFromSearch) {
-      saveToRecent(nameFromSearch, fullUrl);
-    }
-
-    // Start top loader
-    const loaderInterval = startTopLoader();
-
-    // Ensure minimum loader duration 3.5s
-    frame.addEventListener("load", function onLoad() {
-      const elapsed = Date.now() - startTime;
-      const remaining = Math.max(3500 - elapsed, 0);
-
-      setTimeout(() => {
-        pageLoader.classList.remove("active");
-        if (window.innerWidth >= 768) document.body.classList.remove("sidebar-open");
-        if (typeof updateFavIcon === "function") updateFavIcon();
-
-        finishTopLoader(loaderInterval);
-      }, remaining);
-
-      frame.removeEventListener("load", onLoad);
-    });
-  };
-
-});
-</script>
-
 <div id="topbar">
   <div class="logo"><img src="/image/ks-logo.webp" alt="Logo"></div>
   <div class="owner-name">❰🔹❰❰ 𝑲𝑺 𝑾𝒂𝒓𝒓𝒊𝒐𝒓 ❱❱🔹❱</div>
@@ -610,17 +470,80 @@ document.addEventListener("DOMContentLoaded", () => {
   const suggestBox = document.getElementById("suggestBox");
   const searchBox = document.getElementById("searchBox");
 
-  // Page loader
+  // ---------- PAGE LOADER ----------
   const pageLoader = document.createElement("div");
   pageLoader.id = "pageLoader";
-  pageLoader.innerHTML = `<div class="loader-box">Loading...</div>`;
+  pageLoader.innerHTML = `
+    <div class="loader-box">
+      <svg class="ks-loader" width="120" height="40" viewBox="0 0 120 40">
+        <text x="50%" y="50%" text-anchor="middle" dominant-baseline="middle" 
+          font-family="monospace" font-size="28" fill="none" stroke="var(--accent)" 
+          stroke-width="1.5" stroke-dasharray="100" stroke-dashoffset="100">
+          ❰🔹❰❰ 𝑲𝑺 ❱❱🔹❱
+        </text>
+      </svg>
+    </div>
+  `;
   document.body.appendChild(pageLoader);
 
-  // Top loader
+  // ---------- TOP LOADER ----------
   const topLoader = document.createElement("div");
   topLoader.id = "topLoader";
   document.body.appendChild(topLoader);
 
+  // ---------- LOADER CSS ----------
+  const loaderCSS = document.createElement("style");
+  loaderCSS.innerHTML = `
+    #pageLoader {
+      position: fixed;
+      inset: 56px 0 0 0;
+      background: rgba(10, 10, 15, 0.92);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1200;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+    #pageLoader.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+    .loader-box {
+      display: flex; 
+      flex-direction: column; 
+      align-items: center; 
+      gap: 14px;
+    }
+    .ks-loader text {
+      stroke: var(--accent);
+      stroke-width: 1.5;
+      stroke-dasharray: 100;
+      stroke-dashoffset: 100;
+      animation: ks-draw 2s cubic-bezier(0.65, 0, 0.35, 1) infinite alternate;
+    }
+    @keyframes ks-draw {
+      0% { stroke-dashoffset: 100; fill: none; opacity: 0.25; }
+      40% { stroke-dashoffset: 0; fill: var(--accent); opacity: 1; }
+      100% { stroke-dashoffset: 100; fill: none; opacity: 0.25; }
+    }
+    #topLoader {
+      position: fixed;
+      top: 56px;
+      left: 0;
+      width: 0%;
+      height: 2px;
+      background: var(--accent);
+      z-index: 1300;
+      transition: width 1.5s ease;
+    }
+  `;
+  document.head.appendChild(loaderCSS);
+
+  // ---------- TOP LOADER FUNCTIONS ----------
   function startTopLoader() {
     topLoader.style.width = "0%";
     let width = 0;
@@ -634,28 +557,28 @@ document.addEventListener("DOMContentLoaded", () => {
   function finishTopLoader(interval) {
     clearInterval(interval);
     topLoader.style.width = "100%";
-    setTimeout(() => (topLoader.style.width = "0%"), 300);
+    setTimeout(() => { topLoader.style.width = "0%"; }, 300);
   }
 
-  // --- LOAD FRAME FUNCTION ---
+  // ---------- LOAD FRAME FUNCTION ----------
   const LAST_PAGE_KEY = "ks-web-last-page";
   window.loadInFrame = function(url, nameFromSearch = null) {
     if (!url) return;
 
-    // Prevent reload
+    // Prevent reload if already loaded
     if (frame.getAttribute("data-current") === url) return;
     frame.setAttribute("data-current", url);
 
     // Save last page
     localStorage.setItem(LAST_PAGE_KEY, url);
 
-    // UI reset
+    // Reset UI
     document.body.classList.remove("sidebar-open");
     topbar.classList.remove("search-active");
     suggestBox.style.display = "none";
     searchBox.value = "";
 
-    // Show loader
+    // Show page loader
     pageLoader.classList.add("active");
     const startTime = Date.now();
     const loaderInterval = startTopLoader();
@@ -663,7 +586,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Set iframe URL
     frame.src = url;
 
-    // When iframe is loaded
+    // When iframe loads
     frame.onload = () => {
       const elapsed = Date.now() - startTime;
       const wait = Math.max(1200 - elapsed, 0);
@@ -677,12 +600,11 @@ document.addEventListener("DOMContentLoaded", () => {
     };
   };
 
-  // --- RESTORE LAST PAGE ---
+  // ---------- RESTORE LAST PAGE ----------
   const lastPage = localStorage.getItem(LAST_PAGE_KEY);
   loadInFrame(lastPage || "dashboard.html");
 });
 </script>
-
 <script>
 const frame = document.getElementById("frame");
 const searchBox = document.getElementById("searchBox");
