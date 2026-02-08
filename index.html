@@ -661,34 +661,48 @@ function saveToRecent(name, url) {
 
 /* Load page */
 function loadInFrame(url, nameFromSearch = null) {
-  const fullUrl = url.startsWith("http") ? url : url;
-  const resolvedUrl = new URL(fullUrl, location.href).href;
+  if (!url) return;
 
-  // Prevent reloading same page
-  if (frame.src === resolvedUrl) return;
+  // Prevent same page reload
+  if (frame.getAttribute("data-current") === url) return;
 
-  // Load page
-  frame.src = fullUrl;
+  frame.setAttribute("data-current", url);
 
-  // ✅ Save last opened page
-  localStorage.setItem(LAST_PAGE_KEY, resolvedUrl);
+  // Save last page (RELATIVE URL)
+  localStorage.setItem(LAST_PAGE_KEY, url);
 
   // UI reset
   document.body.classList.remove("sidebar-open");
-  if (topbar) topbar.classList.remove("search-active");
-  if (suggestBox) suggestBox.style.display = "none";
-  if (searchBox) searchBox.value = "";
+  topbar.classList.remove("search-active");
+  suggestBox.style.display = "none";
+  searchBox.value = "";
 
-  // Save to recent search
-  if (nameFromSearch) {
-    saveToRecent(nameFromSearch, fullUrl);
-  }
+  // Loader ON
+  pageLoader.classList.add("active");
+  const loaderInterval = startTopLoader();
+  const startTime = Date.now();
+
+  frame.src = url;
+
+  frame.onload = () => {
+    const elapsed = Date.now() - startTime;
+    const wait = Math.max(1200 - elapsed, 0);
+
+    setTimeout(() => {
+      pageLoader.classList.remove("active");
+      finishTopLoader(loaderInterval);
+      if (typeof updateFavIcon === "function") updateFavIcon();
+    }, wait);
+  };
+
+  if (nameFromSearch) saveToRecent(nameFromSearch, url);
 }
+  
 
 // ✅ Restore last page on refresh
 document.addEventListener("DOMContentLoaded", () => {
   const lastPage = localStorage.getItem(LAST_PAGE_KEY);
-  frame.src = lastPage || "dashboard.html";
+  loadInFrame(lastPage || "dashboard.html");
 });
   
 /* Search suggestions */
