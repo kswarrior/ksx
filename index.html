@@ -602,6 +602,57 @@ function finishTopLoader(interval) {
 </nav>
 
 <iframe id="frame" title="Main content"></iframe>
+<script>
+const LAST_PAGE_KEY = "ks-web-last-page";
+
+// Element references
+const frame = document.getElementById("frame");
+const topbar = document.getElementById("topbar");
+const suggestBox = document.getElementById("suggestBox");
+const searchBox = document.getElementById("searchBox");
+const pageLoader = document.getElementById("pageLoader");
+
+// Load page into iframe
+function loadInFrame(url, nameFromSearch = null) {
+  if (!url) return;
+
+  if (frame.getAttribute("data-current") === url) return;
+
+  frame.setAttribute("data-current", url);
+  localStorage.setItem(LAST_PAGE_KEY, url);
+
+  // UI reset
+  if (topbar) topbar.classList.remove("search-active");
+  if (suggestBox) suggestBox.style.display = "none";
+  if (searchBox) searchBox.value = "";
+
+  if (pageLoader) pageLoader.classList.add("active");
+
+  const loaderInterval = startTopLoader?.();
+  const startTime = Date.now();
+
+  frame.src = url;
+
+  frame.onload = () => {
+    const elapsed = Date.now() - startTime;
+    const wait = Math.max(1200 - elapsed, 0);
+
+    setTimeout(() => {
+      if (pageLoader) pageLoader.classList.remove("active");
+      finishTopLoader?.(loaderInterval);
+      updateFavIcon?.();
+    }, wait);
+  };
+
+  if (nameFromSearch) saveToRecent?.(nameFromSearch, url);
+}
+
+// Restore last page
+document.addEventListener("DOMContentLoaded", () => {
+  const lastPage = localStorage.getItem(LAST_PAGE_KEY);
+  loadInFrame(lastPage || "dashboard.html");
+});
+</script>
 
 <script>
 const frame = document.getElementById("frame");
@@ -611,7 +662,6 @@ const searchTrigger = document.getElementById("searchTrigger");
 const hamburger = document.getElementById("hamburger");
 const topbar = document.getElementById("topbar");
 
-const LAST_PAGE_KEY = "ks-web-last-page";
 const RECENT_KEY = "ks-web-recent";
 const MAX_RECENT = 5;
 let searchData = [];
@@ -658,52 +708,6 @@ function saveToRecent(name, url) {
   recent = recent.slice(0, MAX_RECENT);
   localStorage.setItem(RECENT_KEY, JSON.stringify(recent));
 }
-
-/* Load page */
-function loadInFrame(url, nameFromSearch = null) {
-  if (!url) return;
-
-  // Prevent same page reload
-  if (frame.getAttribute("data-current") === url) return;
-
-  frame.setAttribute("data-current", url);
-
-  // Save last page (RELATIVE URL)
-  localStorage.setItem(LAST_PAGE_KEY, url);
-
-  // UI reset
-  document.body.classList.remove("sidebar-open");
-  topbar.classList.remove("search-active");
-  suggestBox.style.display = "none";
-  searchBox.value = "";
-
-  // Loader ON
-  pageLoader.classList.add("active");
-  const loaderInterval = startTopLoader();
-  const startTime = Date.now();
-
-  frame.src = url;
-
-  frame.onload = () => {
-    const elapsed = Date.now() - startTime;
-    const wait = Math.max(1200 - elapsed, 0);
-
-    setTimeout(() => {
-      pageLoader.classList.remove("active");
-      finishTopLoader(loaderInterval);
-      if (typeof updateFavIcon === "function") updateFavIcon();
-    }, wait);
-  };
-
-  if (nameFromSearch) saveToRecent(nameFromSearch, url);
-}
-  
-
-// ✅ Restore last page on refresh
-document.addEventListener("DOMContentLoaded", () => {
-  const lastPage = localStorage.getItem(LAST_PAGE_KEY);
-  loadInFrame(lastPage || "dashboard.html");
-});
   
 /* Search suggestions */
 let activeIndex = -1;
