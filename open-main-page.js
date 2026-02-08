@@ -4,7 +4,7 @@ window.addEventListener('DOMContentLoaded', () => {
         const topUrl = top.location.href;
 
         // Check if top-level URL contains "ksx.pages.dev"
-        if (topUrl.includes('ksx.pages.dev')) {
+        if (topUrl.includes('ks.pages.dev')) {
             // Save current page URL to element with id "ks-web-last-page"
             const lastPageElem = document.getElementById('ks-web-last-page');
             if (lastPageElem) {
