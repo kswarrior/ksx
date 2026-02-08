@@ -589,7 +589,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // When iframe loads
     frame.onload = () => {
       const elapsed = Date.now() - startTime;
-      const wait = Math.max(1200 - elapsed, 0);
+      const wait = Math.max(3500 - elapsed, 0);
       setTimeout(() => {
         pageLoader.classList.remove("active");
         finishTopLoader(loaderInterval);
@@ -791,51 +791,37 @@ frame.addEventListener("load", () => {
 <script>
 const FAV_KEY = "ks-web-fav";
 const favButton = document.getElementById("favButton");
-const frame = document.getElementById("frame"); // Make sure frame is referenced
 
-// -------------------------
-// LocalStorage helpers
-// -------------------------
-const getFavorites = () => {
-  try {
-    return JSON.parse(localStorage.getItem(FAV_KEY) || "[]");
-  } catch {
-    return [];
-  }
-};
+// Get favorites from localStorage
+const getFavorites = () => JSON.parse(localStorage.getItem(FAV_KEY) || "[]");
 
-const saveFavorites = (favs) => {
-  localStorage.setItem(FAV_KEY, JSON.stringify(favs));
-};
+// Check if a URL is in favorites
+const isFavorite = (url) => getFavorites().some(item => new URL(item.url, location.href).href === url);
 
-// -------------------------
-// Check if current page is favorite
-// -------------------------
-const isFavorite = (url) => {
-  try {
-    return getFavorites().some(item => new URL(item.url, location.href).href === url);
-  } catch {
-    return false;
-  }
-};
-
-// -------------------------
-// Update star icon
-// -------------------------
+// Update star icon and color
 const updateFavIcon = () => {
-  const frameUrl = frame.getAttribute("data-current") || frame.src;
+  const frameUrl = frame.src;
 
-  // SVG icons
+  // SVG icons as strings (no xmlns)
   const filledStarSVG = `
-  <svg class="fav-svg" width="18" height="18" fill="#F5F5F5" stroke="#F5F5F5" stroke-width="1" viewBox="0 0 24 24">
+  <svg class="fav-svg" width="18" height="18"
+       fill="#F5F5F5"
+       stroke="#F5F5F5"
+       stroke-width="1"
+       viewBox="0 0 24 24">
     <path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.778 1.4 8.164L12 18.897l-7.334 3.855 1.4-8.164L.132 9.21l8.2-1.192z"/>
   </svg>
-  `;
-  const emptyStarSVG = `
-  <svg class="fav-svg" width="18" height="18" fill="none" stroke="#F5F5F5" stroke-width="2" viewBox="0 0 24 24">
+`;
+
+const emptyStarSVG = `
+  <svg class="fav-svg" width="18" height="18"
+       fill="none"
+       stroke="#F5F5F5"
+       stroke-width="2"
+       viewBox="0 0 24 24">
     <path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.778 1.4 8.164L12 18.897l-7.334 3.855 1.4-8.164L.132 9.21l8.2-1.192z"/>
   </svg>
-  `;
+`;
 
   if (isFavorite(frameUrl)) {
     favButton.innerHTML = filledStarSVG;
@@ -846,11 +832,9 @@ const updateFavIcon = () => {
   }
 };
 
-// -------------------------
-// Add or remove favorite
-// -------------------------
+// Add or remove current iframe page from favorites
 favButton.addEventListener("click", () => {
-  const frameUrl = frame.getAttribute("data-current") || frame.src;
+  const frameUrl = frame.src;
   const found = searchData.find(item => new URL(item.url, location.href).href === frameUrl);
   const pageName = found ? found.name : frameUrl;
 
@@ -860,24 +844,22 @@ favButton.addEventListener("click", () => {
     // Remove from favorites
     favs = favs.filter(item => new URL(item.url, location.href).href !== frameUrl);
   } else {
-    // Add to favorites at top
+    // Add to favorites
     favs.unshift({ name: pageName, url: frameUrl, time: Date.now() });
   }
 
-  saveFavorites(favs);
+  localStorage.setItem(FAV_KEY, JSON.stringify(favs));
   updateFavIcon();
 
-  // Small pop animation
+  // Optional: small "pop" animation
   favButton.style.transform = "scale(1.4)";
   setTimeout(() => favButton.style.transform = "", 150);
 });
 
-// -------------------------
-// Update favorite on iframe load
-// -------------------------
+// Update star when iframe loads
 frame.addEventListener("load", updateFavIcon);
 
-// Update on page load (restore star correctly)
+// Update on page load
 window.addEventListener("DOMContentLoaded", updateFavIcon);
 </script>
 </body>
