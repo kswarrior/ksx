@@ -50,6 +50,11 @@
             "name": "Paid Plugins (Free)",
             "url": "/minecraft/server/paid-plugin-free.html",
             "logo": "https://example.com/plugin.png"
+          },
+          {
+            "name": "Custom IP",
+            "url": "/minecraft/server/custom-ip.html",
+            "logo": "https://example.com/ip.png"
           }
         ]
       }
