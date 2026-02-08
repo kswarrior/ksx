@@ -42,6 +42,16 @@
             "logo": "https://example.com/vps.png"
           }
         ]
+      },
+      {
+        "title": "Server",
+        "pages": [
+          {
+            "name": "Paid Plugins (Free)",
+            "url": "/minecraft/server/paid-plugin-free.html",
+            "logo": "https://example.com/plugin.png"
+          }
+        ]
       }
     ]
   },
