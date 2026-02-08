@@ -66,25 +66,57 @@ h1{
   border-radius:var(--radius);
   padding:26px 22px;
   text-align:center;
-  transition:all var(--transition);
+  transition:all 0.45s ease;
   position:relative;
   overflow:hidden;
+  cursor:pointer;
+  -webkit-tap-highlight-color: transparent;
 }
 
+/* SHINY SWEEP EFFECT */
+.container::after{
+  content:'';
+  position:absolute;
+  top:0;
+  left:-100%;
+  width:55%;
+  height:100%;
+  background:linear-gradient(
+    90deg,
+    transparent,
+    rgba(255,255,255,0.18),
+    transparent
+  );
+  transition:left 0.7s ease;
+}
+
+/* GLOW BACKGROUND */
 .container::before{
   content:'';
   position:absolute;
   inset:0;
-  background:radial-gradient(circle at 20% 80%, rgba(255,255,255,0.2), transparent 60%);
+  background:radial-gradient(
+    circle at 20% 80%,
+    rgba(255,255,255,0.25),
+    transparent 60%
+  );
   opacity:0;
   transition:opacity .5s ease;
 }
 
-.container:hover::before{opacity:1}
+/* HOVER EFFECT */
+.container:hover::after{
+  left:120%;
+}
+
+.container:hover::before{
+  opacity:1;
+}
 
 .container:hover{
-  transform:translateY(-8px) scale(1.04);
+  transform:translateY(-10px) scale(1.05);
   background:var(--hover);
+  box-shadow:0 18px 40px rgba(0,0,0,0.35);
 }
 
 /* ------------------------------
