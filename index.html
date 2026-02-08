@@ -601,7 +601,7 @@ function finishTopLoader(interval) {
   <a onclick="loadInFrame('about.html')">About</a>
 </nav>
 
-<iframe id="frame" src="dashboard.html" title="Main content"></iframe>
+<iframe id="frame" title="Main content"></iframe>
 
 <script>
 const frame = document.getElementById("frame");
@@ -611,6 +611,7 @@ const searchTrigger = document.getElementById("searchTrigger");
 const hamburger = document.getElementById("hamburger");
 const topbar = document.getElementById("topbar");
 
+const LAST_PAGE_KEY = "ks-web-last-page";
 const RECENT_KEY = "ks-web-recent";
 const MAX_RECENT = 5;
 let searchData = [];
@@ -661,9 +662,14 @@ function saveToRecent(name, url) {
 /* Load page */
 function loadInFrame(url, nameFromSearch = null) {
   const fullUrl = url.startsWith("http") ? url : url;
-  if (frame.src === new URL(fullUrl, location.href).href) return;
+  const resolvedUrl = new URL(fullUrl, location.href).href;
+
+  if (frame.src === resolvedUrl) return;
 
   frame.src = fullUrl;
+
+  // ✅ Save last opened page
+  localStorage.setItem(LAST_PAGE_KEY, resolvedUrl);
 
   document.body.classList.remove("sidebar-open");
   topbar.classList.remove("search-active");
@@ -673,8 +679,13 @@ function loadInFrame(url, nameFromSearch = null) {
   if (nameFromSearch) {
     saveToRecent(nameFromSearch, fullUrl);
   }
-}
+  }
 
+  document.addEventListener("DOMContentLoaded", () => {
+  const lastPage = localStorage.getItem(LAST_PAGE_KEY);
+  frame.src = lastPage ? lastPage : "dashboard.html";
+});
+  
 /* Search suggestions */
 let activeIndex = -1;
 
