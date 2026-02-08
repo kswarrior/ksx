@@ -106,7 +106,7 @@ h1.injoy{
 }
 
 /* ---------- INPUT / BUTTON ---------- */
-input.ip-input, input.text-input{
+input.ip-input{
   width:calc(100% - 130px);
   padding:10px 14px;
   border-radius:8px;
@@ -116,9 +116,8 @@ input.ip-input, input.text-input{
   font-size:16px;
   background:rgba(255,255,255,0.05);
   color:#fff;
-  margin-bottom:10px;
 }
-button.ip-search, button.create-btn{
+button.ip-search{
   padding:10px 20px;
   font-size:16px;
   border:none;
@@ -128,9 +127,8 @@ button.ip-search, button.create-btn{
   font-weight:700;
   cursor:pointer;
   transition:all 0.3s ease;
-  margin-bottom:10px;
 }
-button.ip-search:hover, button.create-btn:hover{
+button.ip-search:hover{
   transform:scale(1.05);
   box-shadow:0 0 15px var(--accent-glow);
 }
@@ -202,8 +200,11 @@ a.discord:hover{
   h1.title{ font-size:24px; }
   h1.my-name{ font-size:18px; }
   h1.injoy{ font-size:20px; }
-  input.ip-input, input.text-input{ width:100%; margin-bottom:10px; }
-  button.ip-search, button.create-btn{ width:100%; }
+  input.ip-input{ width:100%; margin-bottom:10px; }
+  button.ip-search{ width:100%; }
+}
+iframe {
+  border: none;
 }
 </style>
 </head>
@@ -228,13 +229,9 @@ a.discord:hover{
   <!-- STEP 2 -->
   <div class="step-two">
     <h3 class="step"><pre>  Step {2}  </pre></h3>
-    <p>Create your custom IP information:</p>
-    <div style="display:flex; flex-wrap:wrap; gap:10px;">
-      <input id="customName" class="text-input" placeholder="Custom name (e.g. myserver)">
-      <input id="customIP" class="text-input" placeholder="Custom IP (e.g. play.example.com)">
-      <button class="create-btn" onclick="createCustomIP()">Create</button>
-    </div>
-    <div id="customResult" class="result-box"></div>
+    <p>Fill all information</p>
+    <p>Click on create button</p>
+    <iframe class="link-two" height="455px" width="100%" src="https://shockbyte.com/es/subdomain-creator"></iframe>
   </div>
 
   <!-- ENJOY SECTION -->
@@ -304,23 +301,6 @@ async function loadIPInfo(){
   }catch(err){
     result.innerHTML = `<p style='color:#b91c1c;font-weight:700;'>❌ Error: ${err.message}</p>`;
   }
-}
-
-function createCustomIP(){
-  const name = document.getElementById("customName").value.trim();
-  const ip = document.getElementById("customIP").value.trim();
-  const customResult = document.getElementById("customResult");
-
-  if(!name || !ip){
-    return alert("Please fill all fields");
-  }
-
-  // simulate IP creation (you can integrate server-side logic here)
-  customResult.innerHTML = `
-    <p><span class="label">Custom Name:</span> ${name}</p>
-    <p><span class="label">Custom IP:</span> ${ip} <button class="copy-btn" onclick="copyToClipboard('${ip}')">Copy</button></p>
-    <p style="color:var(--muted)">✅ Your custom IP is ready!</p>
-  `;
 }
 
 function copyToClipboard(text){
