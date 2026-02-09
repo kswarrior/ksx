@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MC Server Without Hosting</title>
+
+<style>
+:root{
+  --bg:#000;
+  --card:rgba(18,18,28,0.88);
+  --soft:rgba(28,28,40,0.95);
+  --hover:rgba(42,42,60,0.95);
+  --text:#fff;
+  --muted:#9a9a9a;
+  --border:rgba(255,255,255,0.12);
+  --accent:#fff;
+  --radius:14px;
+  --transition:0.35s ease;
+}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  background:linear-gradient(180deg,#000,#0a0a0a);
+  color:var(--text);
+  font-family:system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
+  padding:28px 16px;
+  text-align:center;
+}
+
+h1{
+  font-size:30px;
+  font-weight:900;
+}
+
+h2{
+  font-size:15px;
+  color:var(--muted);
+  margin-top:6px;
+}
+
+select{
+  margin-top:22px;
+  padding:14px 20px;
+  font-size:15px;
+  background:var(--soft);
+  color:var(--text);
+  border:1px solid var(--border);
+  border-radius:999px;
+  outline:none;
+  cursor:pointer;
+  transition:var(--transition);
+}
+
+select:hover{
+  background:var(--hover);
+  border-color:#fff;
+}
+
+.section{
+  display:none;
+  max-width:920px;
+  margin:36px auto 0;
+  animation:fadeUp 0.5s ease;
+}
+
+.section.active{
+  display:block;
+}
+
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(20px);}
+  to{opacity:1;transform:translateY(0);}
+}
+
+.container{
+  background:var(--card);
+  border-radius:var(--radius);
+  padding:22px;
+  margin-bottom:20px;
+  text-align:left;
+  border:1px solid var(--border);
+  backdrop-filter:blur(18px);
+  transition:var(--transition);
+}
+
+.container:hover{
+  background:var(--hover);
+  border-color:rgba(255,255,255,0.25);
+}
+
+.container p{
+  font-size:14px;
+  color:var(--muted);
+  margin-bottom:8px;
+}
+
+pre.code{
+  background:#050505;
+  border:1px solid var(--border);
+  padding:14px;
+  border-radius:12px;
+  overflow-x:auto;
+  font-size:13px;
+  color:#00ff9c;
+}
+
+button{
+  margin-top:10px;
+  padding:10px 20px;
+  border-radius:999px;
+  font-size:13px;
+  cursor:pointer;
+  border:none;
+  transition:var(--transition);
+}
+
+button.copy{
+  background:var(--soft);
+  color:var(--text);
+  border:1px solid var(--border);
+}
+
+button.copy:hover{
+  background:var(--hover);
+  border-color:#fff;
+}
+
+button.visit{
+  background:var(--accent);
+  color:#000;
+  font-weight:700;
+  margin-top:14px;
+}
+
+button.visit:hover{
+  transform:scale(1.05);
+}
+
+@media(max-width:600px){
+  h1{font-size:24px;}
+  select{width:100%;}
+}
+</style>
+</head>
+
+<body>
+
+<h1>MC Server Without Hosting</h1>
+<h2>By KS Warrior</h2>
+
+<select onchange="showSection(this.value)">
+  <option value="">-- Select Platform --</option>
+  <option value="codesandbox">CodeSandbox</option>
+  <option value="github">GitHub</option>
+  <option value="gitpod">Gitpod</option>
+  <option value="colab">Google Colab</option>
+</select>
+
+<!-- CodeSandbox -->
+<div id="codesandbox" class="section">
+  <h1>MC Server in CodeSandbox</h1>
+
+  <div class="container">
+    <p>Install Java & server</p>
+    <pre class="code">wget https://github.com/ks-warrior/MC-Server-without-hosting/releases/download/Codesandbox.io/ks-install.sh && bash ks-install.sh</pre>
+    <button class="copy" onclick="copyCode(this)">Copy Code</button>
+  </div>
+
+  <div class="container">
+    <p>Install playit.gg plugin</p>
+    <pre class="code">cd ks-server && mkdir plugins && cd plugins && wget https://github.com/playit-cloud/playit-minecraft-plugin/releases/latest/download/playit-minecraft-plugin.jar</pre>
+    <button class="copy" onclick="copyCode(this)">Copy Code</button>
+  </div>
+
+  <div class="container">
+    <p>Start server</p>
+    <pre class="code">bash ks-start.sh</pre>
+    <button class="copy" onclick="copyCode(this)">Copy Code</button>
+  </div>
+</div>
+
+<!-- GitHub -->
+<div id="github" class="section">
+  <h1>MC Server in GitHub</h1>
+
+  <div class="container">
+    <pre class="code">wget https://github.com/ks-warrior/MC-Server-without-hosting/releases/download/GitHub/ks-install.sh && bash ks-install.sh</pre>
+    <button class="copy" onclick="copyCode(this)">Copy Code</button>
+  </div>
+</div>
+
+<!-- Gitpod -->
+<div id="gitpod" class="section">
+  <h1>MC Server in Gitpod</h1>
+
+  <div class="container">
+    <pre class="code">wget https://github.com/ks-warrior/MC-Server-without-hosting/releases/download/Gitpod/ks-install.sh && bash ks-install.sh</pre>
+    <button class="copy" onclick="copyCode(this)">Copy Code</button>
+  </div>
+</div>
+
+<!-- Colab -->
+<div id="colab" class="section">
+  <h1>MC Server in Google Colab</h1>
+
+  <button class="visit" onclick="window.open('https://youtu.be/jjJZocmN_uI')">YouTube Tutorial</button>
+  <button class="visit" onclick="window.open('https://www.mediafire.com/file/u94f47r4v3s0dnd/mc_server_ks_warrior.ipynb/file')">Download Notebook</button>
+  <button class="visit" onclick="window.open('https://colab.research.google.com/')">Open Colab</button>
+</div>
+
+<script>
+function showSection(id){
+  document.querySelectorAll('.section').forEach(sec=>{
+    sec.classList.remove('active');
+  });
+
+  if(id){
+    document.getElementById(id).classList.add('active');
+  }
+}
+
+function copyCode(btn){
+  const code = btn.previousElementSibling.innerText;
+  navigator.clipboard.writeText(code);
+  btn.innerText = "Copied!";
+  setTimeout(()=>btn.innerText="Copy Code",1500);
+}
+</script>
+
+</body>
+</html>
