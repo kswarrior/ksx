@@ -4,7 +4,25 @@
     "icon": "⛏️",
     "sections": [
       {
-        "title": "Make Hosting",
+        "title": "<svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+  <!-- Server stack -->
+  <rect x="6" y="5" width="20" height="4" rx="2" fill="#ffffff"/>
+  <rect x="6" y="12" width="20" height="4" rx="2" fill="#ffffff"/>
+  <rect x="6" y="19" width="20" height="4" rx="2" fill="#ffffff"/>
+
+  <!-- Status lights -->
+  <circle cx="23" cy="7" r="1" fill="#00e5ff"/>
+  <circle cx="23" cy="14" r="1" fill="#00e5ff"/>
+  <circle cx="23" cy="21" r="1" fill="#00e5ff"/>
+
+  <!-- Lightning -->
+  <path d="M16 6 L13 14 H17 L14 22"
+        fill="none"
+        stroke="#00e5ff"
+        stroke-width="1.6"
+        stroke-linecap="round"
+        stroke-linejoin="round"/>
+</svg>Make Hosting",
         "pages": [
           {
             "name": "Pterodactyl Panel",
