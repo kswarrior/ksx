@@ -40,7 +40,7 @@
         "icon": "<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M5 3h14v18H5z\" fill=\"#ffffff\"/></svg>",
         "pages": [
           {
-            "name": "Java Launcher",
+            "name": "Launcher",
             "url": "/minecraft/java/launcher.html",
             "logo": "<svg viewBox=\"0 0 24 24\" width=\"24\" height=\"24\"><path d=\"M6 4h12v16H6z\" fill=\"#ffffff\"/></svg>"
           }
@@ -51,8 +51,8 @@
         "icon": "<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"4\" y=\"3\" width=\"16\" height=\"18\" rx=\"2\" fill=\"#ffffff\"/></svg>",
         "pages": [
           {
-            "name": "Bedrock Launcher",
-            "url": "/minecraft/game/bedrock/launcher.html",
+            "name": "KS Client",
+            "url": "/minecraft/bedrock/ks-client.html",
             "logo": "<svg viewBox=\"0 0 24 24\" width=\"24\" height=\"24\"><rect x=\"6\" y=\"2\" width=\"12\" height=\"20\" fill=\"#ffffff\"/></svg>"
           }
         ]
