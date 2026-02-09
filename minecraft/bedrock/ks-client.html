@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KS Client By KS Warrior</title>
+
+<style>
+/* ===============================
+   VARIABLES
+================================*/
+:root{
+  --bg:#000000;
+  --card:rgba(18,18,28,0.85);
+  --soft:rgba(28,28,40,0.9);
+  --hover-card:rgba(40,40,55,0.95);
+  --text:#ffffff;
+  --muted:#aaaaaa;
+  --accent:#ffffff;
+  --accent-glow:rgba(255,255,255,0.4);
+  --border:rgba(255,255,255,0.12);
+  --glow:0 0 20px rgba(255,255,255,0.15);
+  --radius:12px;
+  --gap:28px;
+  --transition:0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+*{ box-sizing:border-box; margin:0; padding:0; }
+body{
+  font-family:system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:flex-start;
+  padding:40px 16px;
+  animation:bgPulse 18s ease-in-out infinite alternate;
+  user-select:none;
+  -webkit-tap-highlight-color: transparent;
+  line-height:1.5;
+}
+
+@keyframes bgPulse {
+  0% { background:#000000; }
+  100% { background:#0a0a0a; }
+}
+
+/* ------------------------------
+   CONTAINER CARD
+--------------------------------*/
+.container{
+  background:var(--card);
+  border-radius:var(--radius);
+  padding:var(--gap);
+  max-width:600px;
+  width:100%;
+  border:1px solid var(--border);
+  backdrop-filter:blur(20px);
+  box-shadow: var(--glow);
+  text-align:center;
+  transition:all var(--transition);
+}
+.container:hover{
+  background:var(--hover-card);
+  transform:scale(1.02);
+}
+
+/* ------------------------------
+   HEADINGS
+--------------------------------*/
+h1{
+  font-size:32px;
+  font-weight:900;
+  margin-bottom:8px;
+}
+p.creator{
+  font-size:14px;
+  color:var(--muted);
+  margin-bottom:20px;
+}
+
+/* ------------------------------
+   IMAGE
+--------------------------------*/
+img{
+  border-radius:50%;
+  margin-bottom:20px;
+  border:2px solid var(--border);
+  box-shadow:0 0 20px rgba(255,255,255,0.1);
+}
+
+/* ------------------------------
+   FEATURES LIST
+--------------------------------*/
+pre.feature{
+  text-align:left;
+  background:var(--soft);
+  padding:20px;
+  border-radius:var(--radius);
+  border:1px solid var(--border);
+  margin-bottom:30px;
+  font-size:14px;
+  line-height:1.5;
+  overflow-x:auto;
+  backdrop-filter:blur(12px);
+  box-shadow: 0 0 10px rgba(255,255,255,0.05);
+}
+
+/* ------------------------------
+   DOWNLOAD BUTTON
+--------------------------------*/
+.download-btn{
+  display:inline-block;
+  font-weight:700;
+  background:var(--accent);
+  color:#000;
+  padding:12px 28px;
+  border-radius:999px;
+  text-decoration:none;
+  box-shadow:0 0 10px var(--accent-glow);
+  transition:all 0.4s ease;
+}
+.download-btn:hover{
+  transform:scale(1.05);
+  box-shadow:0 0 25px var(--accent-glow);
+}
+
+/* ------------------------------
+   RESPONSIVE
+--------------------------------*/
+@media(max-width:480px){
+  .container{
+    padding:20px;
+  }
+  h1{
+    font-size:26px;
+  }
+  pre.feature{
+    font-size:13px;
+    padding:16px;
+  }
+  .download-btn{
+    padding:10px 20px;
+  }
+}
+</style>
+
+</head>
+<body>
+
+<div class="container">
+  <h1>KS Client</h1>
+  <p class="creator">Created By KS Warrior</p>
+  <img height="100" width="100" src="https://i.imgur.com/VQfypAD.png" alt="KS Client Logo">
+
+  <pre class="feature">
+All of you get in this client
+1] Optimise your Minecraft
+2] Remove lag
+3] Quick setting
+4] 3D Mace
+5] 3D and side Shield
+6] 3D bow and crossbow
+7] 3D player skin totem
+8] New UI
+9] HUD Armor offhand
+10] Player health indicator
+11] Durability viewer
+12] Beautiful and bright Texture
+13] Clear water
+14] Low fire
+15] Smooth gameplay
+And more… Download and see
+  </pre>
+
+  <a href="https://www.mediafire.com/file/o78xzmld09b5nw9/KS_Client_V3.mcpack/file" target="_blank" class="download-btn">Download KS Client V3</a>
+</div>
+
+</body>
+</html>
