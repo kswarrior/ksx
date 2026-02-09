@@ -62,6 +62,11 @@
         "icon": "<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M3 12l9-9 9 9\" stroke=\"#ffffff\" stroke-width=\"2\" fill=\"none\"/></svg>",
         "pages": [
           {
+            "name": "Setup Server in VPS",
+            "url": "/minecraft/make-server/setup-server-in-vps.html",
+            "logo": "<svg viewBox=\"0 0 24 24\" width=\"24\" height=\"24\"><path d=\"M12 2l10 20H2z\" fill=\"#ffffff\"/></svg>"
+          },
+          {
             "name": "Server Jar Downloader",
             "url": "/minecraft/make-server/server.jar-downloader.html",
             "logo": "<svg viewBox=\"0 0 24 24\" width=\"24\" height=\"24\"><path d=\"M4 4h16v16H4z\" fill=\"#ffffff\"/></svg>"
