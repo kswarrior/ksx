@@ -6,23 +6,15 @@
 <title>KS Client By KS Warrior</title>
 
 <style>
-/* ===============================
-   VARIABLES
-================================*/
 :root{
   --bg:#000000;
-  --card:rgba(18,18,28,0.85);
-  --soft:rgba(28,28,40,0.9);
-  --hover-card:rgba(40,40,55,0.95);
   --text:#ffffff;
   --muted:#aaaaaa;
   --accent:#ffffff;
-  --accent-glow:rgba(255,255,255,0.4);
-  --border:rgba(255,255,255,0.12);
-  --glow:0 0 20px rgba(255,255,255,0.15);
+  --accent-bg:#1e1e1e;
   --radius:12px;
   --gap:28px;
-  --transition:0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  --transition:0.4s ease;
 }
 
 *{ box-sizing:border-box; margin:0; padding:0; }
@@ -32,79 +24,46 @@ body{
   color:var(--text);
   min-height:100vh;
   display:flex;
-  justify-content:center;
-  align-items:flex-start;
+  flex-direction:column;
+  align-items:center;
   padding:40px 16px;
-  animation:bgPulse 18s ease-in-out infinite alternate;
-  user-select:none;
-  -webkit-tap-highlight-color: transparent;
   line-height:1.5;
 }
 
-@keyframes bgPulse {
-  0% { background:#000000; }
-  100% { background:#0a0a0a; }
-}
-
-/* ------------------------------
-   CONTAINER CARD
---------------------------------*/
-.container{
-  background:var(--card);
-  border-radius:var(--radius);
-  padding:var(--gap);
-  max-width:600px;
-  width:100%;
-  border:1px solid var(--border);
-  backdrop-filter:blur(20px);
-  box-shadow: var(--glow);
+header{
   text-align:center;
-  transition:all var(--transition);
+  margin-bottom:40px;
 }
-.container:hover{
-  background:var(--hover-card);
-  transform:scale(1.02);
+header img{
+  height:100px;
+  width:100px;
+  border-radius:50%;
+  border:2px solid var(--accent-bg);
+  margin-bottom:16px;
 }
-
-/* ------------------------------
-   HEADINGS
---------------------------------*/
-h1{
-  font-size:32px;
+header h1{
+  font-size:36px;
   font-weight:900;
   margin-bottom:8px;
 }
-p.creator{
-  font-size:14px;
+header p{
+  font-size:16px;
   color:var(--muted);
-  margin-bottom:20px;
 }
 
 /* ------------------------------
-   IMAGE
+   INFORMATION CARD
 --------------------------------*/
-img{
-  border-radius:50%;
-  margin-bottom:20px;
-  border:2px solid var(--border);
-  box-shadow:0 0 20px rgba(255,255,255,0.1);
-}
-
-/* ------------------------------
-   FEATURES LIST
---------------------------------*/
-pre.feature{
-  text-align:left;
-  background:var(--soft);
-  padding:20px;
+.info-card{
+  background:var(--accent-bg);
   border-radius:var(--radius);
-  border:1px solid var(--border);
-  margin-bottom:30px;
-  font-size:14px;
+  padding:24px;
+  max-width:600px;
+  width:100%;
+  text-align:left;
+  margin-bottom:40px;
   line-height:1.5;
-  overflow-x:auto;
-  backdrop-filter:blur(12px);
-  box-shadow: 0 0 10px rgba(255,255,255,0.05);
+  font-size:14px;
 }
 
 /* ------------------------------
@@ -118,25 +77,23 @@ pre.feature{
   padding:12px 28px;
   border-radius:999px;
   text-decoration:none;
-  box-shadow:0 0 10px var(--accent-glow);
-  transition:all 0.4s ease;
+  transition:all var(--transition);
 }
 .download-btn:hover{
   transform:scale(1.05);
-  box-shadow:0 0 25px var(--accent-glow);
 }
 
 /* ------------------------------
    RESPONSIVE
 --------------------------------*/
 @media(max-width:480px){
-  .container{
-    padding:20px;
+  header h1{
+    font-size:28px;
   }
-  h1{
-    font-size:26px;
+  header p{
+    font-size:14px;
   }
-  pre.feature{
+  .info-card{
     font-size:13px;
     padding:16px;
   }
@@ -145,37 +102,36 @@ pre.feature{
   }
 }
 </style>
-
 </head>
 <body>
 
-<div class="container">
+<header>
+  <img src="https://i.imgur.com/VQfypAD.png" alt="KS Client Logo">
   <h1>KS Client</h1>
-  <p class="creator">Created By KS Warrior</p>
-  <img height="100" width="100" src="https://i.imgur.com/VQfypAD.png" alt="KS Client Logo">
+  <p>Created By KS Warrior</p>
+</header>
 
-  <pre class="feature">
-All of you get in this client
-1] Optimise your Minecraft
-2] Remove lag
-3] Quick setting
-4] 3D Mace
-5] 3D and side Shield
-6] 3D bow and crossbow
-7] 3D player skin totem
-8] New UI
-9] HUD Armor offhand
-10] Player health indicator
-11] Durability viewer
-12] Beautiful and bright Texture
-13] Clear water
-14] Low fire
-15] Smooth gameplay
-And more… Download and see
-  </pre>
-
-  <a href="https://www.mediafire.com/file/o78xzmld09b5nw9/KS_Client_V3.mcpack/file" target="_blank" class="download-btn">Download KS Client V3</a>
+<div class="info-card">
+With this client, you will get:<br>
+1) Better Minecraft performance<br>
+2) Less lag and smoother gameplay<br>
+3) Quick and easy settings<br>
+4) 3D Mace<br>
+5) 3D Shield (front and side view)<br>
+6) 3D Bow and Crossbow<br>
+7) 3D Player Skin Totem<br>
+8) New and modern UI<br>
+9) Armor and offhand HUD<br>
+10) Player health indicator<br>
+11) Item durability viewer<br>
+12) Bright and beautiful textures<br>
+13) Clear water visuals<br>
+14) Low fire effect for better visibility<br>
+15) Overall smooth gameplay<br>
+And much more… Download and see for yourself!
 </div>
+
+<a href="https://www.mediafire.com/file/o78xzmld09b5nw9/KS_Client_V3.mcpack/file" target="_blank" class="download-btn">Download KS Client V3</a>
 
 </body>
 </html>
