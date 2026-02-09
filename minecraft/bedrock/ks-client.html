@@ -22,7 +22,7 @@ body{
   font-family:system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
   background:var(--bg);
   color:var(--text);
-  min-height:100vh;
+  min-height:100dvh;
   display:flex;
   flex-direction:column;
   align-items:center;
@@ -33,14 +33,23 @@ body{
 .header{
   display:flex;
   align-items:center;
-  gap:20px;
+  justify-content:space-between;
+  gap:4px;
+  width:100%;
+  max-width:900px;
   margin-bottom:40px;
 }
 
+.header-left{
+  display:flex;
+  align-items:center;
+  gap:20px;
+}
+
 .header img{
-  height:90px;
-  width:90px;
-  border-radius:50%;
+  height:75px;
+  width:75px;
+  border-radius:25%;
   border:2px solid var(--accent-bg);
 }
 
@@ -62,8 +71,8 @@ body{
 .info-card{
   background:var(--accent-bg);
   border-radius:var(--radius);
-  padding:24px;
-  max-width:600px;
+  padding:25px;
+  max-width:720px;
   width:100%;
   text-align:left;
   margin-bottom:40px;
@@ -75,51 +84,52 @@ body{
    DOWNLOAD BUTTON
 --------------------------------*/
 .download-btn{
-  display:inline-block;
-  font-weight:700;
-  background:var(--accent);
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  font-weight:800;
+  background:linear-gradient(135deg,#ffffff,#dcdcdc);
   color:#000;
-  padding:12px 28px;
+  padding:14px 26px;
   border-radius:999px;
   text-decoration:none;
-  transition:all var(--transition);
-}
-.download-btn:hover{
-  transform:scale(1.05);
+  font-size:14px;
+  letter-spacing:0.4px;
+  box-shadow:0 0 0 rgba(255,255,255,0.0);
+  transition:all 0.35s ease;
 }
 
-/* ------------------------------
-   RESPONSIVE
---------------------------------*/
-@media(max-width:480px){
-  .header{
-    flex-direction:column;
-    text-align:center;
-  }
-  header h1{
-    font-size:28px;
-  }
-  header p{
-    font-size:14px;
-  }
-  .info-card{
-    font-size:13px;
-    padding:16px;
-  }
-  .download-btn{
-    padding:10px 20px;
-  }
+.download-btn:hover{
+  transform:translateY(-2px) scale(1.05);
+  box-shadow:0 10px 30px rgba(255,255,255,0.25);
+}
+
+/* subtle pulse to attract attention */
+.header-download{
+  animation:pulse 2.2s infinite;
+}
+
+@keyframes pulse{
+  0%{ box-shadow:0 0 0 0 rgba(255,255,255,0.4); }
+  70%{ box-shadow:0 0 0 18px rgba(255,255,255,0); }
+  100%{ box-shadow:0 0 0 0 rgba(255,255,255,0); }
 }
 </style>
 </head>
 <body>
 
 <header class="header">
-  <img src="pack_icon.webp" alt="KS Client Logo">
-  <div class="header-text">
-    <h1>KS Client</h1>
-    <p>Created By KS Warrior</p>
+  <div class="header-left">
+    <img src="pack_icon.webp" alt="KS Client Logo">
+    <div class="header-text">
+      <h1>KS Client</h1>
+      <p>Bedrock (PE)</p>
+    </div>
   </div>
+
+  <a href="https://www.mediafire.com/file/o78xzmld09b5nw9/KS_Client_V3.mcpack/file"
+     target="_blank"
+     class="download-btn header-download">⬇</a>
 </header>
 
 <div class="info-card">
@@ -141,8 +151,6 @@ With this client, you will get:<br>
 15) Overall smooth gameplay<br>
 And much more… Download and see for yourself!
 </div>
-
-<a href="https://www.mediafire.com/file/o78xzmld09b5nw9/KS_Client_V3.mcpack/file" target="_blank" class="download-btn">Download KS Client V3</a>
 
 </body>
 </html>
