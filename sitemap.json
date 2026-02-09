@@ -9,17 +9,17 @@
         "pages": [
           {
             "name": "Pterodactyl Panel",
-            "url": "/minecraft/hosting/make-own/pterodactyl.html",
+            "url": "/minecraft/make-hosting/pterodactyl.html",
             "logo": "<svg viewBox=\"0 0 24 24\" width=\"24\" height=\"24\"><path d=\"M4 4h16v16H4z\" fill=\"#ffffff\"/></svg>"
           },
           {
             "name": "Puffer Panel",
-            "url": "/minecraft/hosting/make-own/puffer.html",
+            "url": "/minecraft/make-hosting/puffer.html",
             "logo": "<svg viewBox=\"0 0 24 24\" width=\"24\" height=\"24\"><circle cx=\"12\" cy=\"12\" r=\"10\" fill=\"#ffffff\"/></svg>"
           },
           {
             "name": "Skyport Panel",
-            "url": "/minecraft/hosting/make-own/skyport.html",
+            "url": "/minecraft/make-hosting/skyport.html",
             "logo": "<svg viewBox=\"0 0 24 24\" width=\"24\" height=\"24\"><path d=\"M12 2l10 20H2z\" fill=\"#ffffff\"/></svg>"
           }
         ]
