@@ -34,7 +34,7 @@
         ]
       },
       {
-        "title": "Game",
+        "title": "Java Edition",
         "pages": [
           {
             "name": "Java Launcher",
@@ -44,8 +44,23 @@
         ]
       },
       {
-        "title": "Server",
+        "title": "Bedrock (PE) Edition",
         "pages": [
+          {
+            "name": "Bedrock Launcher",
+            "url": "/minecraft/game/bedrock/launcher.html",
+            "logo": "https://example.com/bedrock.png"
+          }
+        ]
+      },
+      {
+        "title": "Make Server",
+        "pages": [
+          {
+            "name": "Server Jar Downloader",
+            "url": "/minecraft/make-server/server.jar-downloader.html",
+            "logo": "https://example.com/server.png"
+          },
           {
             "name": "Paid Plugins (Free)",
             "url": "/minecraft/server/paid-plugin-free.html",
@@ -55,7 +70,12 @@
             "name": "Custom IP",
             "url": "/minecraft/server/custom-ip.html",
             "logo": "https://example.com/ip.png"
-          },
+          }
+        ]
+      },
+      {
+        "title": "Server",
+        "pages": [
           {
             "name": "Statics",
             "url": "/minecraft/server/statics.html",
