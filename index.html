@@ -111,6 +111,11 @@ html, body {
   to { opacity: 1; }
 }
 
+#control-right{
+  display: flex;
+  justify-content: flex-end;
+}
+  
 /* SEARCH CONTAINER - NEW DESIGN */
 .search-container {
   position: relative;
@@ -473,12 +478,12 @@ body.sidebar-open #sidebar { left: 0; }
       </filter>
     </defs>
 
-    <text x="100%" y="100%" dominant-baseline="middle" text-anchor="middle"
+    <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"
       class="owner-stroke">
       ❰🔹❰❰ 𝑲𝑺 𝑾𝒂𝒓𝒓𝒊𝒐𝒓 ❱❱🔹❱
     </text>
 
-    <text x="100%" y="100%" dominant-baseline="middle" text-anchor="middle"
+    <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"
       class="owner-text">
       ❰🔹❰❰ 𝑲𝑺 𝑾𝒂𝒓𝒓𝒊𝒐𝒓 ❱❱🔹❱
     </text>
@@ -488,7 +493,7 @@ body.sidebar-open #sidebar { left: 0; }
   <!-- FAVOURITE BUTTON -->
 <div id="favButton" title="Add to Favorites" aria-label="Add to Favorites" style="cursor:pointer;font-size:20px;user-select:none;">
 </div>
-  
+  <div id="control-right">
   <!-- NEW SEARCH DESIGN -->
   <div class="search-container">
     <div id="searchTrigger" aria-label="Search">
@@ -522,7 +527,7 @@ body.sidebar-open #sidebar { left: 0; }
   </svg>
   </button>
 </div>
-
+</div>
 <ul id="suggestBox" role="listbox" aria-label="Search suggestions"></ul>
 
 <nav id="sidebar" aria-label="Main navigation">
