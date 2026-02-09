@@ -62,17 +62,17 @@ html, body {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 8px 0;
-  background: transparent;
+  padding: 4px 0; /* 🔹 reduced vertical spacing */
 }
 
+/* 🔥 KEY FIX */
 .owner-svg {
-  width: 100%;
-  max-width: 520px;
-  height: 60px;
+  width: auto;        /* ❌ removed 100% */
+  max-width: 100%;
+  height: 68px;       /* 🔼 increased name size */
 }
 
-/* Stroke animation (blue outline) */
+/* Stroke stays same style */
 .owner-stroke {
   fill: none;
   stroke: #2ea3ff;
@@ -80,15 +80,15 @@ html, body {
   stroke-dasharray: 460;
   stroke-dashoffset: 460;
   animation: strokeDraw 2.4s ease forwards;
-  font-size: 32px;
+  font-size: 36px;    /* 🔼 increased */
   font-weight: 900;
   letter-spacing: 2px;
 }
 
-/* Main text (blue gradient) */
+/* Main text stays same style */
 .owner-text {
   fill: url(#blueGradient);
-  font-size: 32px;
+  font-size: 36px;    /* 🔼 increased */
   font-weight: 900;
   letter-spacing: 2px;
   filter: url(#blueGlow);
@@ -97,13 +97,12 @@ html, body {
   animation-delay: 1.5s;
 }
 
-/* Subtle hover glow (still blue) */
+/* Hover effect unchanged */
 .owner-wrapper:hover .owner-text {
   filter: drop-shadow(0 0 12px rgba(46,163,255,0.9));
-  transition: filter 0.3s ease;
 }
 
-/* Animations */
+/* Animations unchanged */
 @keyframes strokeDraw {
   to { stroke-dashoffset: 0; }
 }
@@ -457,16 +456,14 @@ body.sidebar-open #sidebar { left: 0; }
 <div id="topbar">
   <div class="logo"><img src="/image/ks-logo.webp" alt="Logo"></div>
   <div class="owner-wrapper">
-  <svg class="owner-svg" viewBox="0 0 720 70" preserveAspectRatio="xMidYMid meet">
+  <svg class="owner-svg" viewBox="0 0 560 70" preserveAspectRatio="xMidYMid meet">
     <defs>
-      <!-- Blue Gradient -->
       <linearGradient id="blueGradient" x1="0%" y1="0%" x2="100%" y2="0%">
         <stop offset="0%" stop-color="#1e90ff"/>
         <stop offset="50%" stop-color="#5fb3ff"/>
         <stop offset="100%" stop-color="#1e90ff"/>
       </linearGradient>
 
-      <!-- Soft Blue Glow -->
       <filter id="blueGlow">
         <feGaussianBlur stdDeviation="4" result="blur"/>
         <feMerge>
@@ -476,22 +473,12 @@ body.sidebar-open #sidebar { left: 0; }
       </filter>
     </defs>
 
-    <!-- Animated blue stroke -->
-    <text
-      x="50%"
-      y="50%"
-      dominant-baseline="middle"
-      text-anchor="middle"
+    <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"
       class="owner-stroke">
       ❰🔹❰❰ 𝑲𝑺 𝑾𝒂𝒓𝒓𝒊𝒐𝒓 ❱❱🔹❱
     </text>
 
-    <!-- Main blue text -->
-    <text
-      x="50%"
-      y="50%"
-      dominant-baseline="middle"
-      text-anchor="middle"
+    <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"
       class="owner-text">
       ❰🔹❰❰ 𝑲𝑺 𝑾𝒂𝒓𝒓𝒊𝒐𝒓 ❱❱🔹❱
     </text>
