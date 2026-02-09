@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Universal Mod Downloader</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* =========================================================
+   ROOT VARIABLES
+   (Theme, spacing, motion)
+========================================================= */
+:root{
+    --bg: #000000;
+    --card: rgba(18,18,28,0.85);
+    --soft: rgba(28,28,40,0.9);
+    --hover-card: rgba(40,40,55,0.95);
+
+    --text: #ffffff;
+    --muted: #aaaaaa;
+    --accent: #ffffff;
+
+    --border: rgba(255,255,255,0.12);
+    --radius: 12px;
+    --gap: 28px;
+    --transition: 0.3s ease;
+}
+
+/* =========================================================
+   GLOBAL RESET & BASE
+========================================================= */
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    font-family: 'Poppins', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100dvh;
+    overflow-x: hidden;
+    line-height: 1.5;
+}
+
+/* =========================================================
+   ANIMATIONS
+========================================================= */
+@keyframes floatIn{
+    0%{
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    100%{
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes spin{
+    to{
+        transform: rotate(360deg);
+    }
+}
+
+/* =========================================================
+   LAYOUT
+========================================================= */
+.dashboard{
+    display: grid;
+    gap: var(--gap);
+    max-width: 1180px;
+    margin: 0;
+    padding: var(--gap) 16px;
+}
+
+/* =========================================================
+   HEADINGS
+========================================================= */
+h1{
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 2.5em;
+    font-weight: 700;
+    letter-spacing: 1px;
+    animation: floatIn 1.2s ease-out;
+}
+
+/* =========================================================
+   CONTROLS
+========================================================= */
+.controls{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+
+    background: var(--card);
+    padding: var(--gap);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+
+    animation: floatIn 1.2s ease-out;
+}
+
+/* =========================================================
+   FORM ELEMENTS
+========================================================= */
+select,
+input[type="text"],
+button{
+    min-width: 160px;
+    padding: 12px 18px;
+
+    background: var(--soft);
+    color: var(--text);
+
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+
+    font-size: 1em;
+    outline: none;
+    transition: var(--transition);
+}
+
+select{
+    appearance: none;
+    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23FFFFFF%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095.1c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.9z%22%2F%3E%3C%2Fsvg%3E');
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 12px;
+}
+
+select:focus,
+input[type="text"]:focus,
+button:focus{
+    border-color: var(--accent);
+}
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+button{
+    background: var(--accent);
+    color: #000;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+}
+
+button:hover{
+    transform: translateY(-2px);
+}
+
+/* =========================================================
+   CARD GRID
+========================================================= */
+.grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--gap);
+
+    max-width: 1180px;
+    width: 100%;
+    padding: 0 16px;
+}
+
+/* =========================================================
+   CARDS
+========================================================= */
+.card{
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    background: var(--card);
+    padding: var(--gap);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+
+    transition: var(--transition);
+    animation: floatIn 1.4s ease-out;
+}
+
+.card:hover{
+    background: var(--hover-card);
+    transform: translateY(-4px);
+}
+
+/* =========================================================
+   CARD CONTENT
+========================================================= */
+.icon{
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+
+    transition: var(--transition);
+}
+
+.card:hover .icon{
+    transform: scale(1.05);
+}
+
+.info h3{
+    font-size: 1.4em;
+    font-weight: 600;
+}
+
+.info p{
+    margin-top: 8px;
+    font-size: 0.95em;
+    color: var(--muted);
+}
+
+/* =========================================================
+   CARD BUTTONS – FIXED WIDTH (HARD FIX)
+========================================================= */
+
+.card .buttons{
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+/* REMOVE FLEX GROW COMPLETELY */
+.card .buttons button{
+    flex: 0 0 auto;     /* 🔥 this fixes width issue */
+    width: 100%;       /* fixed width */
+    padding: 10px;
+    font-weight: 500;
+    border-radius: var(--radius);
+    transition: var(--transition);
+}
+
+/* OUTLINE BUTTON */
+.card .buttons button:first-child{
+    background: transparent;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+}
+
+/* HOVER EFFECT */
+.card .buttons button:first-child:hover{
+    background: var(--accent);
+    color: #000;
+}
+/* =========================================================
+   LOADING & EMPTY STATES
+========================================================= */
+#loading{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+
+    padding: 60px 0;
+    font-size: 1.1em;
+    color: var(--muted);
+
+    animation: floatIn 1.2s ease-out;
+}
+
+#loading::before{
+    content: '';
+    width: 24px;
+    height: 24px;
+
+    border: 3px solid var(--accent);
+    border-top-color: transparent;
+    border-radius: 50%;
+
+    animation: spin 1s linear infinite;
+}
+
+.empty{
+    padding: 60px 0;
+    text-align: center;
+    font-size: 16px;
+    color: var(--muted);
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+@media (max-width: 820px){
+    .grid{
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px){
+    h1{
+        font-size: 2em;
+    }
+
+    .controls{
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    select,
+    input[type="text"],
+    button{
+        width: 100%;
+    }
+
+    .grid{
+        padding: 20px;
+    }
+}
+    </style>
+</head>
+<body>
+
+    <div class="dashboard">
+        <h1>Universal Mod Downloader</h1>
+
+        <div class="controls">
+            <select id="source" onchange="onSourceChange()">
+                <option value="modrinth">Modrinth</option>
+                <option value="curseforge">CurseForge</option>
+                <option value="hangar">Hangar</option>
+                <option value="spigot">Spigot</option>
+                <option value="github">GitHub</option>
+                <option value="bukkit">Bukkit</option>
+                <option value="planetminecraft">PlanetMinecraft</option>
+            </select>
+
+            <select id="type"></select>
+            <select id="loader"></select>
+            <select id="version"></select>
+            <input type="text" id="search" placeholder="Search by name">
+            <select id="sort">
+                <option value="relevance">Relevance</option>
+                <option value="downloads">Downloads</option>
+                <option value="newest">Newest</option>
+                <option value="updated">Updated</option>
+            </select>
+            <button onclick="searchContent()">Search</button>
+        </div>
+
+        <div class="grid" id="grid"></div>
+        <div id="loading"></div>
+    </div>
+
+    <script>
+        const grid = document.getElementById("grid");
+        const sourceEl = document.getElementById("source");
+        const typeEl = document.getElementById("type");
+        const loaderEl = document.getElementById("loader");
+        const versionEl = document.getElementById("version");
+        const searchEl = document.getElementById("search");
+        const sortEl = document.getElementById("sort");
+        const loadingEl = document.getElementById("loading");
+
+        // Add your CurseForge API key here (get it from https://console.curseforge.com/)
+        const CURSEFORGE_API_KEY = '';
+
+        // Hardcoded defaults
+        const defaultVersions = ["1.21", "1.20.6", "1.20.5", "1.20.4", "1.20.3", "1.20.2", "1.20.1", "1.20", "1.19.4", "1.19.3", "1.19.2", "1.19.1", "1.19", "1.18.2", "1.18.1", "1.18", "1.17.1", "1.17", "1.16.5", "1.16.4", "1.16.3", "1.16.2", "1.16.1", "1.16", "1.15.2", "1.15.1", "1.15", "1.14.4", "1.14.3", "1.14.2", "1.14.1", "1.14", "1.13.2", "1.13.1", "1.13", "1.12.2", "1.12.1", "1.12", "1.11.2", "1.11", "1.10.2", "1.10", "1.9.4", "1.9", "1.8.9", "1.8.8", "1.8", "1.7.10", "1.7.2", "1.6.4"];
+        const defaultLoaders = ["fabric", "forge", "quilt", "neoforge", "rift", "liteloader"];
+        const defaultTypes = ["mod", "modpack", "resourcepack", "shader", "plugin", "datapack", "world"];
+
+        let currentPage = 0;
+        let isLoading = false;
+        let hasMore = true;
+        let currentParams = {};
+
+        function populateDropdown(dropdown, options, includeEmpty = true, capitalize = true) {
+            dropdown.innerHTML = includeEmpty ? '<option value="">All</option>' : '';
+            options.forEach(opt => {
+                const el = document.createElement("option");
+                el.value = opt;
+                el.textContent = capitalize ? opt.charAt(0).toUpperCase() + opt.slice(1) : opt;
+                dropdown.appendChild(el);
+            });
+        }
+
+        async function onSourceChange() {
+            const source = sourceEl.value;
+            typeEl.style.display = "inline-block";
+            loaderEl.style.display = "inline-block";
+            versionEl.style.display = "inline-block";
+            sortEl.style.display = "inline-block";
+
+            let types = defaultTypes;
+            let loaders = defaultLoaders;
+
+            if (source === "modrinth" || source === "curseforge" || source === "github") {
+                types = ["mod", "modpack", "resourcepack", "shader", "datapack"];
+                loaders = ["fabric", "forge", "quilt", "neoforge"];
+            } else if (source === "hangar") {
+                types = ["plugin"];
+                loaders = ["paper", "waterfall", "velocity"];
+            } else if (source === "spigot" || source === "bukkit") {
+                types = ["plugin"];
+                loaders = ["spigot", "bukkit"];
+            } else if (source === "planetminecraft") {
+                types = ["mod", "modpack", "resourcepack", "map", "skin"];
+                loaders = [];
+            }
+
+            populateDropdown(typeEl, types);
+            populateDropdown(loaderEl, loaders);
+
+            await fetchVersions(source);
+        }
+
+        function createCard(item) {
+            const card = document.createElement("div");
+            card.className = "card";
+            card.innerHTML = `
+                <img class="icon" src="${item.icon || "https://via.placeholder.com/80"}" onerror="this.src='https://via.placeholder.com/80';">
+                <div class="info">
+                    <h3>${item.title}</h3>
+                    <p>${item.desc || "No description"}</p>
+                </div>
+                <div class="buttons">
+                    <button class="" onclick="openPage('${item.url}')">View</button>
+                    <button class="download-btn" onclick="downloadMod('${item.source}', '${item.id}', '${item.type || ''}', '${item.loader || ''}', '${item.version || ''}')">Download</button>
+                </div>
+            `;
+            grid.appendChild(card);
+        }
+
+        function openPage(url) {
+            window.open(url, "_blank");
+        }
+
+        async function downloadMod(source, id, type, loader, version) {
+            let downloadUrl = "";
+            try {
+                if (source === "modrinth") {
+                    let params = new URLSearchParams();
+                    if (loader) params.append("loaders", `["${loader}"]`);
+                    if (version) params.append("game_versions", `["${version}"]`);
+                    const res = await fetch(`https://api.modrinth.com/v2/project/${id}/version?${params.toString()}`);
+                    const data = await res.json();
+                    if (data.length > 0) {
+                        downloadUrl = data[0].files.find(f => f.primary)?.url || data[0].files[0].url;
+                    }
+                } else if (source === "curseforge" && CURSEFORGE_API_KEY) {
+                    const modLoaderType = getCurseModLoader(loader);
+                    let params = new URLSearchParams();
+                    if (version) params.append("gameVersion", version);
+                    if (modLoaderType) params.append("modLoaderType", modLoaderType);
+                    const res = await fetch(`https://api.curseforge.com/v1/mods/${id}/files?${params.toString()}`, {
+                        headers: { 'x-api-key': CURSEFORGE_API_KEY }
+                    });
+                    const data = await res.json();
+                    if (data.data.length > 0) {
+                        downloadUrl = data.data[0].downloadUrl;
+                    }
+                } else if (source === "hangar") {
+                    const res = await fetch(`https://hangar.papermc.io/api/v1/projects/${id}/versions`);
+                    const data = await res.json();
+                    let vers = data.result[0];
+                    if (version) {
+                        vers = data.result.find(v => v.platformVersions?.minecraft?.includes(version)) || vers;
+                    }
+                    if (vers) {
+                        const platform = (loader || "paper").toUpperCase();
+                        downloadUrl = `https://hangar.papermc.io/api/v1/projects/${id}/versions/${vers.name}/${platform}/download`;
+                    }
+                } else if (source === "spigot") {
+                    let versionId = 'latest';
+                    if (version) {
+                        // Fetch versions and find matching
+                        const resVersions = await fetch(`https://api.spiget.org/v2/resources/${id}/versions`);
+                        const versionsData = await resVersions.json();
+                        const matchingVersion = versionsData.find(v => v.name.includes(version));
+                        if (matchingVersion) versionId = matchingVersion.id;
+                    }
+                    const res = await fetch(`https://api.spiget.org/v2/resources/${id}/versions/${versionId}`);
+                    const data = await res.json();
+                    downloadUrl = data.downloadUrl || `https://www.spigotmc.org/resources/${id}/download?version=${data.id}`;
+                } else if (source === "github") {
+                    const res = await fetch(`https://api.github.com/repos/${id}/releases/latest`);
+                    const data = await res.json();
+                    const asset = data.assets?.find(a => a.name.endsWith('.jar') || a.name.endsWith('.zip'));
+                    if (asset) downloadUrl = asset.browser_download_url;
+                }
+
+                if (downloadUrl) {
+                    window.open(downloadUrl, '_blank');
+                } else {
+                    alert("No compatible download found.");
+                }
+            } catch (e) {
+                console.error(e);
+                alert("Error downloading. Some sources may require login or have restrictions.");
+            }
+        }
+
+        function getCurseClassId(type) {
+            const map = { mod: 6, modpack: 4471, resourcepack: 12, shader: 6552, world: 17, datapack: 12, plugin: 5, map: 17 };
+            return map[type] || undefined;
+        }
+
+        function getCurseModLoader(loader) {
+            const map = { forge: 1, fabric: 4, quilt: 5, neoforge: 6, rift: 2, liteloader: 3 };
+            return map[loader] || undefined;
+        }
+
+        /* ====== FETCH VERSIONS DYNAMICALLY ====== */
+        async function fetchVersions(source) {
+            versionEl.innerHTML = '<option value="">All Versions</option>';
+            let versions = [];
+            try {
+                if (source === "modrinth") {
+                    const res = await fetch("https://api.modrinth.com/v2/tag/game_version");
+                    const data = await res.json();
+                    versions = data.filter(v => v.version_type === "release").map(v => v.version).sort((a,b) => b.localeCompare(a, undefined, {numeric: true}));
+                } else if (source === "curseforge" && CURSEFORGE_API_KEY) {
+                    const res = await fetch("https://api.curseforge.com/v1/minecraft/versions", {
+                        headers: { 'x-api-key': CURSEFORGE_API_KEY }
+                    });
+                    const data = await res.json();
+                    versions = data.data.map(v => v.versionString).sort((a,b) => b.localeCompare(a, undefined, {numeric: true}));
+                } else if (source === "hangar") {
+                    const res = await fetch("https://hangar.papermc.io/api/v1/platforms/PAPER/versions");
+                    const data = await res.json();
+                    versions = data.versions;
+                } else if (source === "spigot") {
+                    versions = defaultVersions;
+                } else {
+                    versions = defaultVersions;
+                }
+                populateDropdown(versionEl, versions, false, false);
+            } catch (e) {
+                console.error(e);
+                populateDropdown(versionEl, defaultVersions, false, false);
+            }
+        }
+
+        /* ====== SEARCH CONTENT ====== */
+        function searchContent() {
+            currentParams = {
+                source: sourceEl.value,
+                type: typeEl.value,
+                loader: loaderEl.value,
+                version: versionEl.value,
+                search: searchEl.value.trim(),
+                sort: sortEl.value
+            };
+            grid.innerHTML = "";
+            currentPage = 0;
+            hasMore = true;
+            loadMore();
+        }
+
+        async function loadMore() {
+            if (isLoading || !hasMore) return;
+            isLoading = true;
+            loadingEl.textContent = "Loading more...";
+
+            const {source, type, loader, version, search, sort} = currentParams;
+            let results = [];
+
+            try {
+                if (source === "modrinth") {
+                    results = await loadModrinth(type, loader, version, search, sort, currentPage);
+                } else if (source === "curseforge") {
+                    results = await loadCurseForge(type, loader, version, search, sort, currentPage);
+                } else if (source === "hangar") {
+                    results = await loadHangar(type, loader, version, search, sort, currentPage);
+                } else if (source === "spigot") {
+                    results = await loadSpigot(type, loader, version, search, sort, curr
