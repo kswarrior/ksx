@@ -573,4 +573,194 @@ button:hover{
                 } else if (source === "hangar") {
                     results = await loadHangar(type, loader, version, search, sort, currentPage);
                 } else if (source === "spigot") {
-                    results = await loadSpigot(type, loader, version, search, sort, curr
+                    results = await loadSpigot(type, loader, version, search, sort, currentPage);
+                } else if (source === "github") {
+                    results = await loadGitHub(type, loader, version, search, sort, currentPage);
+                } else if (source === "bukkit") {
+                    results = await loadBukkit(type, loader, version, search, sort, currentPage);
+                } else if (source === "planetminecraft") {
+                    results = await loadPlanetMinecraft(type, loader, version, search, sort, currentPage);
+                }
+            } catch (e) {
+                console.error(e);
+            }
+
+            results.forEach(createCard);
+            if (results.length < 20) hasMore = false;
+            loadingEl.textContent = "";
+            isLoading = false;
+            currentPage++;
+        }
+
+        window.addEventListener('scroll', () => {
+            if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 200 && !isLoading && hasMore) {
+                loadMore();
+            }
+        });
+
+        /* ===== MODRINTH ===== */
+        async function loadModrinth(type, loader, version, search, sort, page) {
+            let facets = [];
+            if (type) facets.push(`["project_type:${type === "resourcepack" ? "resource-pack" : type === "shader" ? "shader-pack" : type}"]`);
+            if (loader) facets.push(`["categories:${loader}"]`);
+            if (version) facets.push(`["versions:${version}"]`);
+            const facetsParam = facets.length ? `&facets=[${facets.join(",")}]` : "";
+            const queryParam = search ? `&query=${encodeURIComponent(search)}` : "";
+            let index = "";
+            if (sort !== "relevance") {
+                if (sort === "newest") index = "&index=created";
+                else if (sort === "updated") index = "&index=updated";
+                else if (sort === "downloads") index = "&index=downloads";
+            }
+            const offset = `&offset=${page * 20}`;
+            const url = `https://api.modrinth.com/v2/search?limit=20${offset}${facetsParam}${queryParam}${index}`;
+            const res = await fetch(url);
+            const data = await res.json();
+            return data.hits.map(p => ({
+                title: p.title,
+                desc: p.description,
+                icon: p.icon_url,
+                url: `https://modrinth.com/${p.project_type}/${p.slug}`,
+                source: "modrinth",
+                id: p.project_id,
+                type, loader, version
+            }));
+        }
+
+        /* ===== CURSEFORGE ===== */
+        async function loadCurseForge(type, loader, version, search, sort, page) {
+            if (!CURSEFORGE_API_KEY) {
+                if (page === 0) {
+                    const emptyDiv = document.createElement("div");
+                    emptyDiv.className = "empty";
+                    emptyDiv.textContent = "CurseForge API key is required.";
+                    grid.appendChild(emptyDiv);
+                }
+                return [];
+            }
+            const classId = getCurseClassId(type);
+            const modLoaderType = getCurseModLoader(loader);
+            const queryParams = new URLSearchParams({
+                gameId: 432,
+                pageSize: 20,
+                index: page * 20
+            });
+            if (classId) queryParams.append("classId", classId);
+            if (search) queryParams.append("searchFilter", search);
+            if (modLoaderType) queryParams.append("modLoaderType", modLoaderType);
+            if (version) queryParams.append("gameVersion", version);
+            let sortField = 1; // default featured/relevance
+            if (sort === "downloads") sortField = 6;
+            else if (sort === "newest" || sort === "updated") sortField = 3; // last updated
+            queryParams.append("sortField", sortField);
+            queryParams.append("sortOrder", "desc");
+            const url = `https://api.curseforge.com/v1/mods/search?${queryParams.toString()}`;
+            const res = await fetch(url, { headers: { 'x-api-key': CURSEFORGE_API_KEY } });
+            const data = await res.json();
+            return data.data.map(p => ({
+                title: p.name,
+                desc: p.summary,
+                icon: p.logo?.thumbnailUrl,
+                url: p.links.websiteUrl,
+                source: "curseforge",
+                id: p.id,
+                type, loader, version
+            }));
+        }
+
+        /* ===== HANGAR ===== */
+        async function loadHangar(type, loader, version, search, sort, page) {
+            const queryParam = search ? `&q=${encodeURIComponent(search)}` : "";
+            const offset = `&offset=${page * 20}&limit=20`;
+            const url = `https://hangar.papermc.io/api/v1/projects?${offset}${queryParam}`;
+            const res = await fetch(url);
+            const data = await res.json();
+            let results = data.result || [];
+            if (type && type !== "plugin") return [];
+            if (loader) results = results.filter(p => p.platforms.includes((loader || "").toUpperCase()));
+            if (version) results = results.filter(p => p.channel?.some(c => c.version?.some(v => v.includes(version))));
+            if (sort === "downloads") results.sort((a,b) => b.stats.downloads - a.stats.downloads);
+            if (sort === "newest" || sort === "updated") results.sort((a,b) => new Date(b.lastUpdate) - new Date(a.lastUpdate));
+            return results.slice(0, 20).map(p => ({
+                title: p.name,
+                desc: p.description,
+                icon: p.avatarUrl,
+                url: `https://hangar.papermc.io/${p.namespace.owner}/${p.namespace.slug}`,
+                source: "hangar",
+                id: `${p.namespace.owner}/${p.namespace.slug}`,
+                type, loader, version
+            }));
+        }
+
+        /* ===== SPIGOT ===== */
+        async function loadSpigot(type, loader, version, search, sort, page) {
+            let url = search ? `https://api.spiget.org/v2/search/resources/${encodeURIComponent(search)}?` : `https://api.spiget.org/v2/resources?`;
+            url += `size=20&page=${page}`;
+            let sortParam = "&sort=";
+            if (sort === "downloads") sortParam += "-downloads";
+            else if (sort === "newest") sortParam += "-id";
+            else if (sort === "updated") sortParam += "-updateDate";
+            url += sortParam;
+            const res = await fetch(url);
+            const data = await res.json();
+            return data.filter(p => (!type || type === "plugin") && (!loader || loader === "spigot") && (!version || true)).map(p => ({
+                title: p.name,
+                desc: p.tag,
+                icon: p.icon?.url ? `https://static.spigotmc.org/styles/spigot/xenresource/${p.icon.url}` : "",
+                url: `https://www.spigotmc.org/resources/${p.id}`,
+                source: "spigot",
+                id: p.id,
+                type, loader, version
+            }));
+        }
+
+        /* ===== GITHUB ===== */
+        async function loadGitHub(type, loader, version, search, sort, page) {
+            let q = search || "minecraft";
+            if (type) q += ` ${type}`;
+            if (loader) q += ` ${loader}`;
+            if (version) q += ` ${version}`;
+            q += " in:name,description,readme";
+            let sortParam = "";
+            if (sort !== "relevance") {
+                if (sort === "downloads") sortParam = "&sort=stars";
+                else if (sort === "newest") sortParam = "&sort=created";
+                else if (sort === "updated") sortParam = "&sort=updated";
+            }
+            const url = `https://api.github.com/search/repositories?q=${encodeURIComponent(q)}&per_page=20&page=${page + 1}${sortParam}`;
+            const res = await fetch(url);
+            const data = await res.json();
+            return (data.items || []).map(r => ({
+                title: r.name,
+                desc: r.description,
+                icon: r.owner.avatar_url,
+                url: r.html_url,
+                source: "github",
+                id: `${r.owner.login}/${r.name}`,
+                type, loader, version
+            }));
+        }
+
+        /* ===== BUKKIT ===== */
+        async function loadBukkit(type, loader, version, search, sort, page) {
+            return await loadCurseForge(type || "plugin", loader || "bukkit", version, search, sort, page);
+        }
+
+        /* ===== PLANETMINECRAFT ===== */
+        async function loadPlanetMinecraft(type, loader, version, search, sort, page) {
+            if (page === 0) {
+                const emptyDiv = document.createElement("div");
+                emptyDiv.className = "empty";
+                emptyDiv.innerHTML = "PlanetMinecraft does not have a public API. Please visit the website directly.";
+                grid.appendChild(emptyDiv);
+            }
+            return [];
+        }
+
+        // Initial setup
+        onSourceChange();
+        searchContent();
+    </script>
+
+</body>
+</html>
