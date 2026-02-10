@@ -78,12 +78,12 @@
           },
           {
             "name": "Paid Plugins (Free)",
-            "url": "/minecraft/server/paid-plugin-free.html",
+            "url": "/minecraft/make-server/paid-plugin-free.html",
             "logo": "<svg viewBox=\"0 0 24 24\" width=\"24\" height=\"24\"><circle cx=\"12\" cy=\"12\" r=\"9\" fill=\"#ffffff\"/></svg>"
           },
           {
             "name": "Custom IP",
-            "url": "/minecraft/server/custom-ip.html",
+            "url": "/minecraft/make-server/custom-ip.html",
             "logo": "<svg viewBox=\"0 0 24 24\" width=\"24\" height=\"24\"><path d=\"M12 2l10 20H2z\" fill=\"#ffffff\"/></svg>"
           }
         ]
