@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Modrinth Downloader</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
         /* =========================================================
    ROOT VARIABLES
@@ -182,6 +183,7 @@ button:hover{
 
     transition: var(--transition);
     animation: floatIn 1.4s ease-out;
+    cursor: pointer;
 }
 
 .card:hover{
@@ -218,40 +220,6 @@ button:hover{
     color: var(--muted);
 }
 
-/* =========================================================
-   CARD BUTTONS – FIXED WIDTH (HARD FIX)
-========================================================= */
-
-.card .buttons{
-    display: flex;
-    gap: 12px;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-}
-
-/* REMOVE FLEX GROW COMPLETELY */
-.card .buttons button{
-    flex: 0 0 auto;     /* 🔥 this fixes width issue */
-    width: 100%;       /* fixed width */
-    padding: 10px;
-    font-weight: 500;
-    border-radius: var(--radius);
-    transition: var(--transition);
-}
-
-/* OUTLINE BUTTON */
-.card .buttons button:first-child{
-    background: transparent;
-    border: 1px solid var(--accent);
-    color: var(--accent);
-}
-
-/* HOVER EFFECT */
-.card .buttons button:first-child:hover{
-    background: var(--accent);
-    color: #000;
-}
 /* =========================================================
    LOADING & EMPTY STATES
 ========================================================= */
@@ -316,6 +284,74 @@ button:hover{
         padding: 20px;
     }
 }
+
+/* =========================================================
+   MODALS
+========================================================= */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: rgba(0,0,0,0.7);
+}
+
+.modal-content {
+    background: var(--card);
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    max-height: 90%;
+    overflow: auto;
+}
+
+.full-modal {
+    width: 90%;
+    max-width: 1200px;
+}
+
+.small-modal {
+    width: 40%;
+    max-width: 400px;
+}
+
+.close {
+    color: var(--text);
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover {
+    color: var(--accent);
+}
+
+#projectIcon {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: var(--radius);
+}
+
+#projectGallery img {
+    max-width: 100%;
+    margin: 10px 0;
+    border-radius: var(--radius);
+}
+
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
     </style>
 </head>
 <body>
@@ -341,6 +377,33 @@ button:hover{
         <div id="loading"></div>
     </div>
 
+    <!-- Details Modal -->
+    <div id="detailsModal" class="modal">
+        <div class="modal-content full-modal">
+            <div class="top-bar">
+                <h2 id="projectTitle"></h2>
+                <button id="downloadBtn">Download</button>
+                <span class="close" onclick="closeDetails()">&times;</span>
+            </div>
+            <img id="projectIcon" src="" alt="Project Icon">
+            <div id="projectDescription"></div>
+            <div id="projectGallery"></div>
+        </div>
+    </div>
+
+    <!-- Download Modal -->
+    <div id="downloadModal" class="modal">
+        <div class="modal-content small-modal">
+            <span class="close" onclick="closeDownload()">&times;</span>
+            <h3>Download Options</h3>
+            <label for="dlVersion">Select game version</label>
+            <select id="dlVersion"></select>
+            <label for="dlLoader">Select platform</label>
+            <select id="dlLoader"></select>
+            <button id="performDownloadBtn">Download</button>
+        </div>
+    </div>
+
 <script>
         const grid = document.getElementById("grid");
         const typeEl = document.getElementById("type");
@@ -349,6 +412,18 @@ button:hover{
         const searchEl = document.getElementById("search");
         const sortEl = document.getElementById("sort");
         const loadingEl = document.getElementById("loading");
+
+        const detailsModal = document.getElementById("detailsModal");
+        const projectTitle = document.getElementById("projectTitle");
+        const projectIcon = document.getElementById("projectIcon");
+        const projectDescription = document.getElementById("projectDescription");
+        const projectGallery = document.getElementById("projectGallery");
+        const downloadBtn = document.getElementById("downloadBtn");
+
+        const downloadModal = document.getElementById("downloadModal");
+        const dlVersion = document.getElementById("dlVersion");
+        const dlLoader = document.getElementById("dlLoader");
+        const performDownloadBtn = document.getElementById("performDownloadBtn");
 
         // Hardcoded project types for Modrinth
         const modrinthTypes = ["mod", "modpack", "resourcepack", "shader", "plugin"];
@@ -362,8 +437,8 @@ button:hover{
         let hasMore = true;
         let currentParams = {};
 
-        function populateDropdown(dropdown, options, includeEmpty = true, capitalize = true) {
-            dropdown.innerHTML = includeEmpty ? '<option value="">All</option>' : '';
+        function populateDropdown(dropdown, options, includeEmpty = true, capitalize = true, emptyText = "All") {
+            dropdown.innerHTML = includeEmpty ? `<option value="">${emptyText}</option>` : '';
             options.forEach(opt => {
                 const el = document.createElement("option");
                 el.value = opt;
@@ -401,38 +476,74 @@ button:hover{
                     <h3>${item.title}</h3>
                     <p>${item.desc || "No description"}</p>
                 </div>
-                <div class="buttons">
-                    <button onclick="openPage('${item.url}')">View</button>
-                    <button onclick="downloadMod('${item.id}', '${item.type || ''}', '${item.loader || ''}', '${item.version || ''}')">Download</button>
-                </div>
             `;
+            card.onclick = () => openDetails(item.id);
             grid.appendChild(card);
         }
 
-        function openPage(url) {
-            window.open(url, "_blank");
-        }
-
-        async function downloadMod(id, type, loader, version) {
-            let downloadUrl = "";
+        async function openDetails(id) {
+            detailsModal.style.display = "block";
             try {
-                let params = new URLSearchParams();
-                if (loader) params.append("loaders", `["${loader}"]`);
-                if (version) params.append("game_versions", `["${version}"]`);
-                const res = await fetch(`https://api.modrinth.com/v2/project/${id}/version?${params.toString()}`);
+                const res = await fetch(`https://api.modrinth.com/v2/project/${id}`);
                 const data = await res.json();
-                if (data.length > 0) {
-                    downloadUrl = data[0].files.find(f => f.primary)?.url || data[0].files[0].url;
+                projectTitle.textContent = data.title;
+                projectIcon.src = data.icon_url || "https://via.placeholder.com/200";
+                projectDescription.innerHTML = marked.parse(data.description);
+                projectGallery.innerHTML = '';
+                if (data.gallery && data.gallery.length > 0) {
+                    data.gallery.forEach(url => {
+                        const img = document.createElement('img');
+                        img.src = url;
+                        projectGallery.appendChild(img);
+                    });
                 }
-                if (downloadUrl) {
-                    window.open(downloadUrl, '_blank');
-                } else {
-                    alert("No compatible download found.");
-                }
+                downloadBtn.onclick = () => openDownloadModal(id);
             } catch (e) {
                 console.error(e);
-                alert("Error downloading.");
+                alert("Error loading project details.");
             }
+        }
+
+        function closeDetails() {
+            detailsModal.style.display = "none";
+        }
+
+        async function openDownloadModal(id) {
+            downloadModal.style.display = "block";
+            try {
+                const res = await fetch(`https://api.modrinth.com/v2/project/${id}/version`);
+                const versions = await res.json();
+                const gameVersionsSet = new Set();
+                const loadersSet = new Set();
+                versions.forEach(v => {
+                    v.game_versions.forEach(gv => gameVersionsSet.add(gv));
+                    v.loaders.forEach(l => loadersSet.add(l));
+                });
+                const gameVersions = Array.from(gameVersionsSet).sort((a, b) => b.localeCompare(a, { numeric: true }));
+                const loaders = Array.from(loadersSet);
+                populateDropdown(dlVersion, gameVersions, true, false, "Select game version");
+                populateDropdown(dlLoader, loaders, true, true, "Select platform");
+                performDownloadBtn.onclick = () => {
+                    const gv = dlVersion.value;
+                    const ld = dlLoader.value;
+                    let matching = versions.filter(v => (!gv || v.game_versions.includes(gv)) && (!ld || v.loaders.includes(ld)));
+                    if (matching.length) {
+                        matching.sort((a, b) => new Date(b.date_published) - new Date(a.date_published));
+                        const ver = matching[0];
+                        const file = ver.files.find(f => f.primary) || ver.files[0];
+                        window.open(file.url, '_blank');
+                    } else {
+                        alert('No matching version found.');
+                    }
+                };
+            } catch (e) {
+                console.error(e);
+                alert("Error loading versions.");
+            }
+        }
+
+        function closeDownload() {
+            downloadModal.style.display = "none";
         }
 
         /* ====== FETCH VERSIONS DYNAMICALLY ====== */
@@ -518,7 +629,7 @@ button:hover{
                 icon: p.icon_url,
                 url: `https://modrinth.com/${p.project_type}/${p.slug}`,
                 id: p.project_id,
-                type, loader, version
+                type: p.project_type
             }));
         }
 
