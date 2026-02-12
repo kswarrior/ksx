@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Universal Mod Downloader</title>
+    <title>Modrinth Mod Downloader</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         /* =========================================================
@@ -321,19 +321,9 @@ button:hover{
 <body>
 
     <div class="dashboard">
-        <h1>Universal Mod Downloader</h1>
+        <h1>Modrinth Mod Downloader</h1>
 
         <div class="controls">
-            <select id="source" onchange="onSourceChange()">
-                <option value="modrinth">Modrinth</option>
-                <option value="curseforge">CurseForge</option>
-                <option value="hangar">Hangar</option>
-                <option value="spigot">Spigot</option>
-                <option value="github">GitHub</option>
-                <option value="bukkit">Bukkit</option>
-                <option value="planetminecraft">PlanetMinecraft</option>
-            </select>
-
             <select id="type"></select>
             <select id="loader"></select>
             <select id="version"></select>
@@ -351,9 +341,8 @@ button:hover{
         <div id="loading"></div>
     </div>
 
-    <script>
+<script>
         const grid = document.getElementById("grid");
-        const sourceEl = document.getElementById("source");
         const typeEl = document.getElementById("type");
         const loaderEl = document.getElementById("loader");
         const versionEl = document.getElementById("version");
@@ -361,13 +350,9 @@ button:hover{
         const sortEl = document.getElementById("sort");
         const loadingEl = document.getElementById("loading");
 
-        // Add your CurseForge API key here (get it from https://console.curseforge.com/)
-        const CURSEFORGE_API_KEY = '';
-
-        // Hardcoded defaults
-        const defaultVersions = ["1.21", "1.20.6", "1.20.5", "1.20.4", "1.20.3", "1.20.2", "1.20.1", "1.20", "1.19.4", "1.19.3", "1.19.2", "1.19.1", "1.19", "1.18.2", "1.18.1", "1.18", "1.17.1", "1.17", "1.16.5", "1.16.4", "1.16.3", "1.16.2", "1.16.1", "1.16", "1.15.2", "1.15.1", "1.15", "1.14.4", "1.14.3", "1.14.2", "1.14.1", "1.14", "1.13.2", "1.13.1", "1.13", "1.12.2", "1.12.1", "1.12", "1.11.2", "1.11", "1.10.2", "1.10", "1.9.4", "1.9", "1.8.9", "1.8.8", "1.8", "1.7.10", "1.7.2", "1.6.4"];
-        const defaultLoaders = ["fabric", "forge", "quilt", "neoforge", "rift", "liteloader"];
-        const defaultTypes = ["mod", "modpack", "resourcepack", "shader", "plugin", "datapack", "world"];
+        // Hardcoded defaults for Modrinth
+        const modrinthTypes = ["mod", "modpack", "resourcepack", "shader", "datapack"];
+        const modrinthLoaders = ["fabric", "forge", "quilt", "neoforge"];
 
         let currentPage = 0;
         let isLoading = false;
@@ -384,34 +369,10 @@ button:hover{
             });
         }
 
-        async function onSourceChange() {
-            const source = sourceEl.value;
-            typeEl.style.display = "inline-block";
-            loaderEl.style.display = "inline-block";
-            versionEl.style.display = "inline-block";
-            sortEl.style.display = "inline-block";
-
-            let types = defaultTypes;
-            let loaders = defaultLoaders;
-
-            if (source === "modrinth" || source === "curseforge" || source === "github") {
-                types = ["mod", "modpack", "resourcepack", "shader", "datapack"];
-                loaders = ["fabric", "forge", "quilt", "neoforge"];
-            } else if (source === "hangar") {
-                types = ["plugin"];
-                loaders = ["paper", "waterfall", "velocity"];
-            } else if (source === "spigot" || source === "bukkit") {
-                types = ["plugin"];
-                loaders = ["spigot", "bukkit"];
-            } else if (source === "planetminecraft") {
-                types = ["mod", "modpack", "resourcepack", "map", "skin"];
-                loaders = [];
-            }
-
-            populateDropdown(typeEl, types);
-            populateDropdown(loaderEl, loaders);
-
-            await fetchVersions(source);
+        async function initModrinth() {
+            populateDropdown(typeEl, modrinthTypes);
+            populateDropdown(loaderEl, modrinthLoaders);
+            await fetchVersions();
         }
 
         function createCard(item) {
@@ -424,8 +385,8 @@ button:hover{
                     <p>${item.desc || "No description"}</p>
                 </div>
                 <div class="buttons">
-                    <button class="" onclick="openPage('${item.url}')">View</button>
-                    <button class="download-btn" onclick="downloadMod('${item.source}', '${item.id}', '${item.type || ''}', '${item.loader || ''}', '${item.version || ''}')">Download</button>
+                    <button onclick="openPage('${item.url}')">View</button>
+                    <button onclick="downloadMod('${item.id}', '${item.type || ''}', '${item.loader || ''}', '${item.version || ''}')">Download</button>
                 </div>
             `;
             grid.appendChild(card);
@@ -435,60 +396,17 @@ button:hover{
             window.open(url, "_blank");
         }
 
-        async function downloadMod(source, id, type, loader, version) {
+        async function downloadMod(id, type, loader, version) {
             let downloadUrl = "";
             try {
-                if (source === "modrinth") {
-                    let params = new URLSearchParams();
-                    if (loader) params.append("loaders", `["${loader}"]`);
-                    if (version) params.append("game_versions", `["${version}"]`);
-                    const res = await fetch(`https://api.modrinth.com/v2/project/${id}/version?${params.toString()}`);
-                    const data = await res.json();
-                    if (data.length > 0) {
-                        downloadUrl = data[0].files.find(f => f.primary)?.url || data[0].files[0].url;
-                    }
-                } else if (source === "curseforge" && CURSEFORGE_API_KEY) {
-                    const modLoaderType = getCurseModLoader(loader);
-                    let params = new URLSearchParams();
-                    if (version) params.append("gameVersion", version);
-                    if (modLoaderType) params.append("modLoaderType", modLoaderType);
-                    const res = await fetch(`https://api.curseforge.com/v1/mods/${id}/files?${params.toString()}`, {
-                        headers: { 'x-api-key': CURSEFORGE_API_KEY }
-                    });
-                    const data = await res.json();
-                    if (data.data.length > 0) {
-                        downloadUrl = data.data[0].downloadUrl;
-                    }
-                } else if (source === "hangar") {
-                    const res = await fetch(`https://hangar.papermc.io/api/v1/projects/${id}/versions`);
-                    const data = await res.json();
-                    let vers = data.result[0];
-                    if (version) {
-                        vers = data.result.find(v => v.platformVersions?.minecraft?.includes(version)) || vers;
-                    }
-                    if (vers) {
-                        const platform = (loader || "paper").toUpperCase();
-                        downloadUrl = `https://hangar.papermc.io/api/v1/projects/${id}/versions/${vers.name}/${platform}/download`;
-                    }
-                } else if (source === "spigot") {
-                    let versionId = 'latest';
-                    if (version) {
-                        // Fetch versions and find matching
-                        const resVersions = await fetch(`https://api.spiget.org/v2/resources/${id}/versions`);
-                        const versionsData = await resVersions.json();
-                        const matchingVersion = versionsData.find(v => v.name.includes(version));
-                        if (matchingVersion) versionId = matchingVersion.id;
-                    }
-                    const res = await fetch(`https://api.spiget.org/v2/resources/${id}/versions/${versionId}`);
-                    const data = await res.json();
-                    downloadUrl = data.downloadUrl || `https://www.spigotmc.org/resources/${id}/download?version=${data.id}`;
-                } else if (source === "github") {
-                    const res = await fetch(`https://api.github.com/repos/${id}/releases/latest`);
-                    const data = await res.json();
-                    const asset = data.assets?.find(a => a.name.endsWith('.jar') || a.name.endsWith('.zip'));
-                    if (asset) downloadUrl = asset.browser_download_url;
+                let params = new URLSearchParams();
+                if (loader) params.append("loaders", `["${loader}"]`);
+                if (version) params.append("game_versions", `["${version}"]`);
+                const res = await fetch(`https://api.modrinth.com/v2/project/${id}/version?${params.toString()}`);
+                const data = await res.json();
+                if (data.length > 0) {
+                    downloadUrl = data[0].files.find(f => f.primary)?.url || data[0].files[0].url;
                 }
-
                 if (downloadUrl) {
                     window.open(downloadUrl, '_blank');
                 } else {
@@ -496,55 +414,27 @@ button:hover{
                 }
             } catch (e) {
                 console.error(e);
-                alert("Error downloading. Some sources may require login or have restrictions.");
+                alert("Error downloading.");
             }
         }
 
-        function getCurseClassId(type) {
-            const map = { mod: 6, modpack: 4471, resourcepack: 12, shader: 6552, world: 17, datapack: 12, plugin: 5, map: 17 };
-            return map[type] || undefined;
-        }
-
-        function getCurseModLoader(loader) {
-            const map = { forge: 1, fabric: 4, quilt: 5, neoforge: 6, rift: 2, liteloader: 3 };
-            return map[loader] || undefined;
-        }
-
         /* ====== FETCH VERSIONS DYNAMICALLY ====== */
-        async function fetchVersions(source) {
+        async function fetchVersions() {
             versionEl.innerHTML = '<option value="">All Versions</option>';
             let versions = [];
             try {
-                if (source === "modrinth") {
-                    const res = await fetch("https://api.modrinth.com/v2/tag/game_version");
-                    const data = await res.json();
-                    versions = data.filter(v => v.version_type === "release").map(v => v.version).sort((a,b) => b.localeCompare(a, undefined, {numeric: true}));
-                } else if (source === "curseforge" && CURSEFORGE_API_KEY) {
-                    const res = await fetch("https://api.curseforge.com/v1/minecraft/versions", {
-                        headers: { 'x-api-key': CURSEFORGE_API_KEY }
-                    });
-                    const data = await res.json();
-                    versions = data.data.map(v => v.versionString).sort((a,b) => b.localeCompare(a, undefined, {numeric: true}));
-                } else if (source === "hangar") {
-                    const res = await fetch("https://hangar.papermc.io/api/v1/platforms/PAPER/versions");
-                    const data = await res.json();
-                    versions = data.versions;
-                } else if (source === "spigot") {
-                    versions = defaultVersions;
-                } else {
-                    versions = defaultVersions;
-                }
+                const res = await fetch("https://api.modrinth.com/v2/tag/game_version");
+                const data = await res.json();
+                versions = data.filter(v => v.version_type === "release").map(v => v.version).sort((a,b) => b.localeCompare(a, undefined, {numeric: true}));
                 populateDropdown(versionEl, versions, false, false);
             } catch (e) {
                 console.error(e);
-                populateDropdown(versionEl, defaultVersions, false, false);
             }
         }
 
         /* ====== SEARCH CONTENT ====== */
         function searchContent() {
             currentParams = {
-                source: sourceEl.value,
                 type: typeEl.value,
                 loader: loaderEl.value,
                 version: versionEl.value,
@@ -562,25 +452,11 @@ button:hover{
             isLoading = true;
             loadingEl.textContent = "Loading more...";
 
-            const {source, type, loader, version, search, sort} = currentParams;
+            const {type, loader, version, search, sort} = currentParams;
             let results = [];
 
             try {
-                if (source === "modrinth") {
-                    results = await loadModrinth(type, loader, version, search, sort, currentPage);
-                } else if (source === "curseforge") {
-                    results = await loadCurseForge(type, loader, version, search, sort, currentPage);
-                } else if (source === "hangar") {
-                    results = await loadHangar(type, loader, version, search, sort, currentPage);
-                } else if (source === "spigot") {
-                    results = await loadSpigot(type, loader, version, search, sort, currentPage);
-                } else if (source === "github") {
-                    results = await loadGitHub(type, loader, version, search, sort, currentPage);
-                } else if (source === "bukkit") {
-                    results = await loadBukkit(type, loader, version, search, sort, currentPage);
-                } else if (source === "planetminecraft") {
-                    results = await loadPlanetMinecraft(type, loader, version, search, sort, currentPage);
-                }
+                results = await loadModrinth(type, loader, version, search, sort, currentPage);
             } catch (e) {
                 console.error(e);
             }
@@ -621,144 +497,13 @@ button:hover{
                 desc: p.description,
                 icon: p.icon_url,
                 url: `https://modrinth.com/${p.project_type}/${p.slug}`,
-                source: "modrinth",
                 id: p.project_id,
                 type, loader, version
             }));
         }
 
-        /* ===== CURSEFORGE ===== */
-        async function loadCurseForge(type, loader, version, search, sort, page) {
-            if (!CURSEFORGE_API_KEY) {
-                if (page === 0) {
-                    const emptyDiv = document.createElement("div");
-                    emptyDiv.className = "empty";
-                    emptyDiv.textContent = "CurseForge API key is required.";
-                    grid.appendChild(emptyDiv);
-                }
-                return [];
-            }
-            const classId = getCurseClassId(type);
-            const modLoaderType = getCurseModLoader(loader);
-            const queryParams = new URLSearchParams({
-                gameId: 432,
-                pageSize: 20,
-                index: page * 20
-            });
-            if (classId) queryParams.append("classId", classId);
-            if (search) queryParams.append("searchFilter", search);
-            if (modLoaderType) queryParams.append("modLoaderType", modLoaderType);
-            if (version) queryParams.append("gameVersion", version);
-            let sortField = 1; // default featured/relevance
-            if (sort === "downloads") sortField = 6;
-            else if (sort === "newest" || sort === "updated") sortField = 3; // last updated
-            queryParams.append("sortField", sortField);
-            queryParams.append("sortOrder", "desc");
-            const url = `https://api.curseforge.com/v1/mods/search?${queryParams.toString()}`;
-            const res = await fetch(url, { headers: { 'x-api-key': CURSEFORGE_API_KEY } });
-            const data = await res.json();
-            return data.data.map(p => ({
-                title: p.name,
-                desc: p.summary,
-                icon: p.logo?.thumbnailUrl,
-                url: p.links.websiteUrl,
-                source: "curseforge",
-                id: p.id,
-                type, loader, version
-            }));
-        }
-
-        /* ===== HANGAR ===== */
-        async function loadHangar(type, loader, version, search, sort, page) {
-            const queryParam = search ? `&q=${encodeURIComponent(search)}` : "";
-            const offset = `&offset=${page * 20}&limit=20`;
-            const url = `https://hangar.papermc.io/api/v1/projects?${offset}${queryParam}`;
-            const res = await fetch(url);
-            const data = await res.json();
-            let results = data.result || [];
-            if (type && type !== "plugin") return [];
-            if (loader) results = results.filter(p => p.platforms.includes((loader || "").toUpperCase()));
-            if (version) results = results.filter(p => p.channel?.some(c => c.version?.some(v => v.includes(version))));
-            if (sort === "downloads") results.sort((a,b) => b.stats.downloads - a.stats.downloads);
-            if (sort === "newest" || sort === "updated") results.sort((a,b) => new Date(b.lastUpdate) - new Date(a.lastUpdate));
-            return results.slice(0, 20).map(p => ({
-                title: p.name,
-                desc: p.description,
-                icon: p.avatarUrl,
-                url: `https://hangar.papermc.io/${p.namespace.owner}/${p.namespace.slug}`,
-                source: "hangar",
-                id: `${p.namespace.owner}/${p.namespace.slug}`,
-                type, loader, version
-            }));
-        }
-
-        /* ===== SPIGOT ===== */
-        async function loadSpigot(type, loader, version, search, sort, page) {
-            let url = search ? `https://api.spiget.org/v2/search/resources/${encodeURIComponent(search)}?` : `https://api.spiget.org/v2/resources?`;
-            url += `size=20&page=${page}`;
-            let sortParam = "&sort=";
-            if (sort === "downloads") sortParam += "-downloads";
-            else if (sort === "newest") sortParam += "-id";
-            else if (sort === "updated") sortParam += "-updateDate";
-            url += sortParam;
-            const res = await fetch(url);
-            const data = await res.json();
-            return data.filter(p => (!type || type === "plugin") && (!loader || loader === "spigot") && (!version || true)).map(p => ({
-                title: p.name,
-                desc: p.tag,
-                icon: p.icon?.url ? `https://static.spigotmc.org/styles/spigot/xenresource/${p.icon.url}` : "",
-                url: `https://www.spigotmc.org/resources/${p.id}`,
-                source: "spigot",
-                id: p.id,
-                type, loader, version
-            }));
-        }
-
-        /* ===== GITHUB ===== */
-        async function loadGitHub(type, loader, version, search, sort, page) {
-            let q = search || "minecraft";
-            if (type) q += ` ${type}`;
-            if (loader) q += ` ${loader}`;
-            if (version) q += ` ${version}`;
-            q += " in:name,description,readme";
-            let sortParam = "";
-            if (sort !== "relevance") {
-                if (sort === "downloads") sortParam = "&sort=stars";
-                else if (sort === "newest") sortParam = "&sort=created";
-                else if (sort === "updated") sortParam = "&sort=updated";
-            }
-            const url = `https://api.github.com/search/repositories?q=${encodeURIComponent(q)}&per_page=20&page=${page + 1}${sortParam}`;
-            const res = await fetch(url);
-            const data = await res.json();
-            return (data.items || []).map(r => ({
-                title: r.name,
-                desc: r.description,
-                icon: r.owner.avatar_url,
-                url: r.html_url,
-                source: "github",
-                id: `${r.owner.login}/${r.name}`,
-                type, loader, version
-            }));
-        }
-
-        /* ===== BUKKIT ===== */
-        async function loadBukkit(type, loader, version, search, sort, page) {
-            return await loadCurseForge(type || "plugin", loader || "bukkit", version, search, sort, page);
-        }
-
-        /* ===== PLANETMINECRAFT ===== */
-        async function loadPlanetMinecraft(type, loader, version, search, sort, page) {
-            if (page === 0) {
-                const emptyDiv = document.createElement("div");
-                emptyDiv.className = "empty";
-                emptyDiv.innerHTML = "PlanetMinecraft does not have a public API. Please visit the website directly.";
-                grid.appendChild(emptyDiv);
-            }
-            return [];
-        }
-
         // Initial setup
-        onSourceChange();
+        initModrinth();
         searchContent();
     </script>
 
