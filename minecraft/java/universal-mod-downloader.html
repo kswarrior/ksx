@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modrinth Mod Downloader</title>
+    <title>Modrinth Downloader</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         /* =========================================================
@@ -321,7 +321,7 @@ button:hover{
 <body>
 
     <div class="dashboard">
-        <h1>Modrinth Mod Downloader</h1>
+        <h1>Modrinth Downloader</h1>
 
         <div class="controls">
             <select id="type"></select>
@@ -350,9 +350,8 @@ button:hover{
         const sortEl = document.getElementById("sort");
         const loadingEl = document.getElementById("loading");
 
-        // Hardcoded defaults for Modrinth
-        const modrinthTypes = ["mod", "modpack", "resourcepack", "shader", "datapack"];
-        const modrinthLoaders = ["fabric", "forge", "quilt", "neoforge"];
+        // Hardcoded project types for Modrinth
+        const modrinthTypes = ["mod", "modpack", "resourcepack", "shader", "plugin"];
 
         let currentPage = 0;
         let isLoading = false;
@@ -371,8 +370,21 @@ button:hover{
 
         async function initModrinth() {
             populateDropdown(typeEl, modrinthTypes);
-            populateDropdown(loaderEl, modrinthLoaders);
+            await fetchLoaders();
             await fetchVersions();
+        }
+
+        async function fetchLoaders() {
+            loaderEl.innerHTML = '<option value="">All</option>';
+            try {
+                const res = await fetch("https://api.modrinth.com/v2/tag/loader");
+                const data = await res.json();
+                populateDropdown(loaderEl, data, false, true);
+            } catch (e) {
+                console.error(e);
+                const fallbackLoaders = ["bukkit", "canvas", "datastore", "fabric", "folia", "forge", "liteloader", "neoforge", "paper", "purpur", "quilt", "rift", "spigot", "sponge", "velocity", "waterfall"];
+                populateDropdown(loaderEl, fallbackLoaders, false, true);
+            }
         }
 
         function createCard(item) {
@@ -477,7 +489,12 @@ button:hover{
         /* ===== MODRINTH ===== */
         async function loadModrinth(type, loader, version, search, sort, page) {
             let facets = [];
-            if (type) facets.push(`["project_type:${type === "resourcepack" ? "resource-pack" : type === "shader" ? "shader-pack" : type}"]`);
+            if (type) {
+                let projectType = type;
+                if (type === "resourcepack") projectType = "resourcepack";
+                if (type === "shader") projectType = "shader";
+                facets.push(`["project_type:${projectType}"]`);
+            }
             if (loader) facets.push(`["categories:${loader}"]`);
             if (version) facets.push(`["versions:${version}"]`);
             const facetsParam = facets.length ? `&facets=[${facets.join(",")}]` : "";
