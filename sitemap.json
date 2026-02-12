@@ -45,8 +45,8 @@
             "logo": "<svg viewBox=\"0 0 24 24\" width=\"24\" height=\"24\"><path d=\"M6 4h12v16H6z\" fill=\"#ffffff\"/></svg>"
           },
           {
-            "name": "Universal Mod Downloader",
-            "url": "/minecraft/java/universal-mod-downloader.html",
+            "name": "Universal Downloader",
+            "url": "/minecraft/java/downloader.html",
             "logo": "<svg viewBox=\"0 0 24 24\" width=\"24\" height=\"24\"><path d=\"M6 4h12v16H6z\" fill=\"#ffffff\"/></svg>"
           }
         ]
