@@ -544,7 +544,7 @@ const performDownloadBtn = document.getElementById("performDownloadBtn");
 const API = "https://api.modrinth.com/v2";
 const LIMIT = 20;
 
-const PROJECT_TYPES = ["mod", "modpack", "resourcepack", "shader", "plugin"];
+const PROJECT_TYPES = ["mod", "modpack", "resourcepack", "shader", "plugin", "datapack"];
 const CLIENT_LOADERS = ["fabric", "forge", "quilt", "neoforge"];
 const SERVER_LOADERS = ["paper", "spigot", "purpur", "bukkit", "velocity"];
 
@@ -600,7 +600,7 @@ async function init() {
 function updateLoaders() {
     const type = typeEl.value;
 
-    if (type === "shader" || type === "resourcepack") {
+    if (type === "shader" || type === "resourcepack" || type === "datapack") {
         loaderEl.style.display = "none";
         loaderEl.innerHTML = "";
         return;
@@ -672,8 +672,14 @@ async function loadProjects(params, page) {
     const { type, loader, version, search, sort } = params;
 
     let facets = [];
-    if (type) facets.push(`["project_type:${type}"]`);
+    const actualType = (type === "datapack" || type === "plugin") ? "mod" : type;
+    if (type) facets.push(`["project_type:${actualType}"]`);
     if (loader) facets.push(`["categories:${loader}"]`);
+    if (type === "datapack") facets.push(`["categories:datapack"]`);
+    if (type === "plugin") {
+        facets.push(`["server_side:required"]`);
+        facets.push(`["client_side:unsupported"]`);
+    }
     if (version) facets.push(`["versions:${version}"]`);
 
     const facetsParam = facets.length ? `&facets=[${facets.join(",")}]` : "";
