@@ -353,6 +353,10 @@ button:hover{
         // Hardcoded project types for Modrinth
         const modrinthTypes = ["mod", "modpack", "resourcepack", "shader", "plugin"];
 
+        // Hardcoded loader categories
+        const clientLoaders = ["fabric", "forge", "quilt", "neoforge", "liteloader", "rift"];
+        const serverLoaders = ["bukkit", "folia", "paper", "purpur", "spigot", "sponge", "velocity", "waterfall"];
+
         let currentPage = 0;
         let isLoading = false;
         let hasMore = true;
@@ -369,21 +373,22 @@ button:hover{
         }
 
         async function initModrinth() {
-            populateDropdown(typeEl, modrinthTypes);
-            await fetchLoaders();
+            populateDropdown(typeEl, modrinthTypes, false, true);
+            typeEl.value = "mod";
+            typeEl.onchange = updateLoaders;
             await fetchVersions();
+            updateLoaders();
         }
 
-        async function fetchLoaders() {
-            loaderEl.innerHTML = '<option value="">All</option>';
-            try {
-                const res = await fetch("https://api.modrinth.com/v2/tag/loader");
-                const data = await res.json();
-                populateDropdown(loaderEl, data, false, true);
-            } catch (e) {
-                console.error(e);
-                const fallbackLoaders = ["bukkit", "canvas", "datastore", "fabric", "folia", "forge", "liteloader", "neoforge", "paper", "purpur", "quilt", "rift", "spigot", "sponge", "velocity", "waterfall"];
-                populateDropdown(loaderEl, fallbackLoaders, false, true);
+        function updateLoaders() {
+            const selectedType = typeEl.value;
+            if (selectedType === "shader" || selectedType === "resourcepack") {
+                loaderEl.style.display = "none";
+                loaderEl.value = "";
+            } else {
+                loaderEl.style.display = "inline-block";
+                let loadersList = (selectedType === "plugin") ? serverLoaders : clientLoaders;
+                populateDropdown(loaderEl, loadersList, true, true);
             }
         }
 
@@ -491,8 +496,6 @@ button:hover{
             let facets = [];
             if (type) {
                 let projectType = type;
-                if (type === "resourcepack") projectType = "resourcepack";
-                if (type === "shader") projectType = "shader";
                 facets.push(`["project_type:${projectType}"]`);
             }
             if (loader) facets.push(`["categories:${loader}"]`);
