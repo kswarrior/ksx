@@ -332,24 +332,91 @@ button:hover{
     color: var(--accent);
 }
 
+.header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
 #projectIcon {
-    width: 200px;
-    height: 200px;
+    width: 64px;
+    height: 64px;
     object-fit: cover;
     border-radius: var(--radius);
 }
 
+#projectTitle {
+    font-size: 2em;
+    margin: 0;
+}
+
+#shortDesc {
+    color: var(--muted);
+    margin-top: 8px;
+}
+
+.stats {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 16px;
+    color: var(--muted);
+}
+
+.download-btn {
+    background: #00af9c;
+    color: var(--text);
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 1em;
+    margin-bottom: 24px;
+}
+
+#projectDescription {
+    margin-bottom: 24px;
+}
+
+#projectDescription iframe {
+    max-width: 100%;
+}
+
+#projectGallery figure {
+    margin: 16px 0;
+}
+
 #projectGallery img {
     max-width: 100%;
-    margin: 10px 0;
     border-radius: var(--radius);
 }
 
-.top-bar {
+#projectGallery figcaption {
+    text-align: center;
+    color: var(--muted);
+    margin-top: 8px;
+}
+
+.additional-info {
+    margin-top: 24px;
+    color: var(--muted);
+}
+
+.additional-info p {
+    margin: 8px 0;
+}
+
+.links {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
+    gap: 16px;
+    margin-top: 16px;
+}
+
+.links a {
+    color: var(--accent);
+    text-decoration: none;
+}
+
+.links a:hover {
+    text-decoration: underline;
 }
 
     </style>
@@ -380,14 +447,20 @@ button:hover{
     <!-- Details Modal -->
     <div id="detailsModal" class="modal">
         <div class="modal-content full-modal">
-            <div class="top-bar">
-                <h2 id="projectTitle"></h2>
-                <button id="downloadBtn">Download</button>
-                <span class="close" onclick="closeDetails()">&times;</span>
+            <span class="close" onclick="closeDetails()">&times;</span>
+            <div class="header">
+                <img id="projectIcon" src="" alt="Project Icon">
+                <div>
+                    <h1 id="projectTitle"></h1>
+                    <p id="shortDesc"></p>
+                </div>
             </div>
-            <img id="projectIcon" src="" alt="Project Icon">
+            <div id="projectStats" class="stats"></div>
+            <button id="downloadBtn" class="download-btn">Download</button>
             <div id="projectDescription"></div>
             <div id="projectGallery"></div>
+            <div id="additionalInfo" class="additional-info"></div>
+            <div id="projectLinks" class="links"></div>
         </div>
     </div>
 
@@ -416,8 +489,12 @@ button:hover{
         const detailsModal = document.getElementById("detailsModal");
         const projectTitle = document.getElementById("projectTitle");
         const projectIcon = document.getElementById("projectIcon");
+        const shortDesc = document.getElementById("shortDesc");
+        const projectStats = document.getElementById("projectStats");
         const projectDescription = document.getElementById("projectDescription");
         const projectGallery = document.getElementById("projectGallery");
+        const additionalInfo = document.getElementById("additionalInfo");
+        const projectLinks = document.getElementById("projectLinks");
         const downloadBtn = document.getElementById("downloadBtn");
 
         const downloadModal = document.getElementById("downloadModal");
@@ -436,6 +513,7 @@ button:hover{
         let isLoading = false;
         let hasMore = true;
         let currentParams = {};
+        let currentProjectId = null;
 
         function populateDropdown(dropdown, options, includeEmpty = true, capitalize = true, emptyText = "All") {
             dropdown.innerHTML = includeEmpty ? `<option value="">${emptyText}</option>` : '';
@@ -481,21 +559,95 @@ button:hover{
             grid.appendChild(card);
         }
 
+        function formatNumber(num) {
+            if (num >= 1000000) return (num / 1000000).toFixed(2) + 'M';
+            if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
+            return num;
+        }
+
+        function embedYouTube(html) {
+            const div = document.createElement('div');
+            div.innerHTML = html;
+            const links = div.querySelectorAll('a');
+            links.forEach(a => {
+                const url = a.href;
+                const match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&?/]+)/);
+                if (match) {
+                    const iframe = document.createElement('iframe');
+                    iframe.src = `https://www.youtube.com/embed/${match[1]}`;
+                    iframe.width = '560';
+                    iframe.height = '315';
+                    iframe.frameBorder = '0';
+                    iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+                    iframe.allowFullscreen = true;
+                    a.parentNode.replaceChild(iframe, a);
+                }
+            });
+            return div.innerHTML;
+        }
+
         async function openDetails(id) {
+            currentProjectId = id;
             detailsModal.style.display = "block";
             try {
                 const res = await fetch(`https://api.modrinth.com/v2/project/${id}`);
                 const data = await res.json();
                 projectTitle.textContent = data.title;
-                projectIcon.src = data.icon_url || "https://via.placeholder.com/200";
-                projectDescription.innerHTML = marked.parse(data.description);
+                projectIcon.src = data.icon_url || "https://via.placeholder.com/64";
+                shortDesc.textContent = data.description;
+                projectStats.innerHTML = `
+                    <span>Downloads: ${formatNumber(data.downloads)}</span>
+                    <span>Followers: ${formatNumber(data.follows)}</span>
+                `;
+                projectDescription.innerHTML = embedYouTube(marked.parse(data.body));
                 projectGallery.innerHTML = '';
                 if (data.gallery && data.gallery.length > 0) {
-                    data.gallery.forEach(url => {
+                    data.gallery.forEach(g => {
+                        const fig = document.createElement('figure');
                         const img = document.createElement('img');
-                        img.src = url;
-                        projectGallery.appendChild(img);
+                        img.src = g.url;
+                        fig.appendChild(img);
+                        if (g.title || g.description) {
+                            const cap = document.createElement('figcaption');
+                            cap.textContent = g.title || g.description;
+                            fig.appendChild(cap);
+                        }
+                        projectGallery.appendChild(fig);
                     });
+                }
+                additionalInfo.innerHTML = `
+                    <p>Supported Game Versions: ${data.game_versions ? data.game_versions.join(', ') : 'N/A'}</p>
+                    <p>Loaders: ${data.loaders ? data.loaders.join(', ') : 'N/A'}</p>
+                    <p>License: ${data.license ? data.license.name : 'N/A'}</p>
+                `;
+                projectLinks.innerHTML = '';
+                if (data.source_url) {
+                    const a = document.createElement('a');
+                    a.href = data.source_url;
+                    a.textContent = 'Source';
+                    a.target = '_blank';
+                    projectLinks.appendChild(a);
+                }
+                if (data.issues_url) {
+                    const a = document.createElement('a');
+                    a.href = data.issues_url;
+                    a.textContent = 'Issues';
+                    a.target = '_blank';
+                    projectLinks.appendChild(a);
+                }
+                if (data.wiki_url) {
+                    const a = document.createElement('a');
+                    a.href = data.wiki_url;
+                    a.textContent = 'Wiki';
+                    a.target = '_blank';
+                    projectLinks.appendChild(a);
+                }
+                if (data.discord_url) {
+                    const a = document.createElement('a');
+                    a.href = data.discord_url;
+                    a.textContent = 'Discord';
+                    a.target = '_blank';
+                    projectLinks.appendChild(a);
                 }
                 downloadBtn.onclick = () => openDownloadModal(id);
             } catch (e) {
