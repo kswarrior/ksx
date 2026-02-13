@@ -158,6 +158,11 @@ h2{
   margin-bottom:10px;
 }
 
+.card a {
+  color: #00ff9c;
+  text-decoration: underline;
+}
+
 /* =====================================================
    CODE BLOCK
 ===================================================== */
@@ -221,7 +226,7 @@ h2{
 <body>
 
 <h1>MC Server Without Hosting</h1>
-<div class="subtitle">By KS Warrior - Updated with Latest Java 25 and Minecraft Server 1.21.11</div>
+<div class="subtitle">By KS Warrior - Updated with Minekube Connect for Permanent Free IP</div>
 
 <select class="platform-select" id="platform">
   <option value="">-- Select Platform --</option>
@@ -229,6 +234,8 @@ h2{
   <option value="github">GitHub</option>
   <option value="gitpod">Gitpod</option>
   <option value="colab">Google Colab</option>
+  <option value="vps">VPS (IPV4)</option>
+  <option value="vm">VM (not IPV4)</option>
 </select>
 
 <!-- ================= CodeSandbox ================= -->
@@ -255,10 +262,11 @@ java -version</pre>
 
   <!-- Download Minecraft Server -->
   <div class="card">
-    <p>Download Minecraft Server - Enter URL below (default latest)</p>
-    <button class="btn btn-get-url" onclick="openLink('https://ksx.pages.dev')">Get Server URL</button>
+    <p>Download Minecraft Server - Enter URL below (default latest Paper 1.21.1)</p>
+    <button class="btn" onclick="openLink('https://ksx.pages.dev')">Get Server URL</button>
+    <p>To get the server URL, click on "Get Server URL," then navigate to the server jar downloader to find the URL you need.</p>
     <label for="mc-url-codesandbox">Minecraft Server JAR URL:</label>
-    <input type="text" id="mc-url-codesandbox" value="https://piston-data.mojang.com/v1/objects/64bb6d763bed0a9f1d632ec347938594144943ed/server.jar">
+    <input type="text" id="mc-url-codesandbox" value="https://api.papermc.io/v2/projects/paper/versions/1.21.1/builds/113/downloads/paper-1.21.1-113.jar">
     <button class="btn" onclick="generateMcCode('codesandbox')">Generate Code</button>
     <pre class="code" id="mc-download-code-codesandbox"></pre>
     <button class="btn" onclick="copyCode(this)">Copy Code</button>
@@ -271,11 +279,24 @@ java -version</pre>
     <button class="btn" onclick="copyCode(this)">Copy Code</button>
   </div>
 
-  <!-- Install playit.gg Plugin -->
+  <!-- Download Minekube Connect Plugin -->
   <div class="card">
-    <p>Install playit.gg Plugin</p>
-    <pre class="code">mkdir plugins && cd plugins && wget https://github.com/playit-cloud/playit-minecraft-plugin/releases/latest/download/playit-minecraft-plugin.jar</pre>
+    <p>Download Minekube Connect Plugin</p>
+    <pre class="code">mkdir plugins && cd plugins && wget https://github.com/minekube/connect-java/releases/download/latest/connect-spigot.jar</pre>
     <button class="btn" onclick="copyCode(this)">Copy Code</button>
+  </div>
+
+  <!-- Configure Endpoint -->
+  <div class="card">
+    <p>Configure Minekube Endpoint</p>
+    <p>Sign up at <a href="https://app.minekube.com/" target="_blank">app.minekube.com</a> (free), create an Endpoint, get name and token.</p>
+    <label for="endpoint-name-codesandbox">Endpoint Name (e.g., kssmp):</label>
+    <input type="text" id="endpoint-name-codesandbox" value="kssmp">
+    <label for="token-codesandbox">Endpoint Token:</label>
+    <input type="text" id="token-codesandbox" placeholder="Paste token here">
+    <button class="btn" onclick="generateConfigCode('codesandbox')">Generate Config Code</button>
+    <pre class="code" id="config-code-codesandbox"></pre>
+    <button class="btn" onclick="copyCode(this)">Copy Config Code</button>
   </div>
 
   <!-- Start Server -->
@@ -293,6 +314,13 @@ java -version</pre>
 <div id="github" class="section">
   <h2>MC Server in GitHub</h2>
 
+  <!-- Root Folder -->
+  <div class="card">
+    <p>Root Folder (if needed)</p>
+    <pre class="code">sudo su</pre>
+    <button class="btn" onclick="copyCode(this)">Copy Code</button>
+  </div>
+
   <!-- Update System & Install wget -->
   <div class="card">
     <p>Update System & Install wget (if needed)</p>
@@ -313,10 +341,11 @@ java -version</pre>
 
   <!-- Download Minecraft Server -->
   <div class="card">
-    <p>Download Minecraft Server - Enter URL below (default latest)</p>
-    <button class="btn btn-get-url" onclick="openLink('https://ksx.pages.dev')">Get Server URL</button>
+    <p>Download Minecraft Server - Enter URL below (default latest Paper 1.21.1)</p>
+    <button class="btn" onclick="openLink('https://ksx.pages.dev')">Get Server URL</button>
+    <p>To get the server URL, click on "Get Server URL," then navigate to the server jar downloader to find the URL you need.</p>
     <label for="mc-url-github">Minecraft Server JAR URL:</label>
-    <input type="text" id="mc-url-github" value="https://piston-data.mojang.com/v1/objects/64bb6d763bed0a9f1d632ec347938594144943ed/server.jar">
+    <input type="text" id="mc-url-github" value="https://api.papermc.io/v2/projects/paper/versions/1.21.1/builds/113/downloads/paper-1.21.1-113.jar">
     <button class="btn" onclick="generateMcCode('github')">Generate Code</button>
     <pre class="code" id="mc-download-code-github"></pre>
     <button class="btn" onclick="copyCode(this)">Copy Code</button>
@@ -329,11 +358,24 @@ java -version</pre>
     <button class="btn" onclick="copyCode(this)">Copy Code</button>
   </div>
 
-  <!-- Install playit.gg Plugin -->
+  <!-- Download Minekube Connect Plugin -->
   <div class="card">
-    <p>Install playit.gg Plugin</p>
-    <pre class="code">mkdir plugins && cd plugins && wget https://github.com/playit-cloud/playit-minecraft-plugin/releases/latest/download/playit-minecraft-plugin.jar</pre>
+    <p>Download Minekube Connect Plugin</p>
+    <pre class="code">mkdir plugins && cd plugins && wget https://github.com/minekube/connect-java/releases/download/latest/connect-spigot.jar</pre>
     <button class="btn" onclick="copyCode(this)">Copy Code</button>
+  </div>
+
+  <!-- Configure Endpoint -->
+  <div class="card">
+    <p>Configure Minekube Endpoint</p>
+    <p>Sign up at <a href="https://app.minekube.com/" target="_blank">app.minekube.com</a> (free), create an Endpoint, get name and token.</p>
+    <label for="endpoint-name-github">Endpoint Name (e.g., kssmp):</label>
+    <input type="text" id="endpoint-name-github" value="kssmp">
+    <label for="token-github">Endpoint Token:</label>
+    <input type="text" id="token-github" placeholder="Paste token here">
+    <button class="btn" onclick="generateConfigCode('github')">Generate Config Code</button>
+    <pre class="code" id="config-code-github"></pre>
+    <button class="btn" onclick="copyCode(this)">Copy Config Code</button>
   </div>
 
   <!-- Start Server -->
@@ -351,6 +393,13 @@ java -version</pre>
 <div id="gitpod" class="section">
   <h2>MC Server in Gitpod</h2>
 
+  <!-- Root Folder -->
+  <div class="card">
+    <p>Root Folder (if needed)</p>
+    <pre class="code">sudo su</pre>
+    <button class="btn" onclick="copyCode(this)">Copy Code</button>
+  </div>
+
   <!-- Update System & Install wget -->
   <div class="card">
     <p>Update System & Install wget (if needed)</p>
@@ -371,10 +420,11 @@ java -version</pre>
 
   <!-- Download Minecraft Server -->
   <div class="card">
-    <p>Download Minecraft Server - Enter URL below (default latest)</p>
-    <button class="btn btn-get-url" onclick="openLink('https://ksx.pages.dev')">Get Server URL</button>
+    <p>Download Minecraft Server - Enter URL below (default latest Paper 1.21.1)</p>
+    <button class="btn" onclick="openLink('https://ksx.pages.dev')">Get Server URL</button>
+    <p>To get the server URL, click on "Get Server URL," then navigate to the server jar downloader to find the URL you need.</p>
     <label for="mc-url-gitpod">Minecraft Server JAR URL:</label>
-    <input type="text" id="mc-url-gitpod" value="https://piston-data.mojang.com/v1/objects/64bb6d763bed0a9f1d632ec347938594144943ed/server.jar">
+    <input type="text" id="mc-url-gitpod" value="https://api.papermc.io/v2/projects/paper/versions/1.21.1/builds/113/downloads/paper-1.21.1-113.jar">
     <button class="btn" onclick="generateMcCode('gitpod')">Generate Code</button>
     <pre class="code" id="mc-download-code-gitpod"></pre>
     <button class="btn" onclick="copyCode(this)">Copy Code</button>
@@ -387,11 +437,24 @@ java -version</pre>
     <button class="btn" onclick="copyCode(this)">Copy Code</button>
   </div>
 
-  <!-- Install playit.gg Plugin -->
+  <!-- Download Minekube Connect Plugin -->
   <div class="card">
-    <p>Install playit.gg Plugin</p>
-    <pre class="code">mkdir plugins && cd plugins && wget https://github.com/playit-cloud/playit-minecraft-plugin/releases/latest/download/playit-minecraft-plugin.jar</pre>
+    <p>Download Minekube Connect Plugin</p>
+    <pre class="code">mkdir plugins && cd plugins && wget https://github.com/minekube/connect-java/releases/download/latest/connect-spigot.jar</pre>
     <button class="btn" onclick="copyCode(this)">Copy Code</button>
+  </div>
+
+  <!-- Configure Endpoint -->
+  <div class="card">
+    <p>Configure Minekube Endpoint</p>
+    <p>Sign up at <a href="https://app.minekube.com/" target="_blank">app.minekube.com</a> (free), create an Endpoint, get name and token.</p>
+    <label for="endpoint-name-gitpod">Endpoint Name (e.g., kssmp):</label>
+    <input type="text" id="endpoint-name-gitpod" value="kssmp">
+    <label for="token-gitpod">Endpoint Token:</label>
+    <input type="text" id="token-gitpod" placeholder="Paste token here">
+    <button class="btn" onclick="generateConfigCode('gitpod')">Generate Config Code</button>
+    <pre class="code" id="config-code-gitpod"></pre>
+    <button class="btn" onclick="copyCode(this)">Copy Config Code</button>
   </div>
 
   <!-- Start Server -->
@@ -412,122 +475,340 @@ java -version</pre>
   <button class="btn btn-primary" onclick="openLink('https://youtu.be/jjJZocmN_uI')">YouTube Tutorial</button>
   <button class="btn btn-primary" onclick="openLink('https://www.mediafire.com/file/u94f47r4v3s0dnd/mc_server_ks_warrior.ipynb/file')">Download Notebook</button>
   <button class="btn btn-primary" onclick="openLink('https://colab.research.google.com/')">Open Colab</button>
+
+  <!-- Update System & Install wget -->
+  <div class="card">
+    <p>Update System & Install wget (if needed)</p>
+    <pre class="code">!apt update -y && apt upgrade -y && apt install wget -y</pre>
+    <button class="btn" onclick="copyCode(this)">Copy Code</button>
+  </div>
+
+  <!-- Install Java -->
+  <div class="card">
+    <p>Install Latest Java (Oracle JDK 25) via URL</p>
+    <pre class="code">!wget https://download.oracle.com/java/25/latest/jdk-25_linux-x64_bin.tar.gz
+!tar -xvf jdk-25_linux-x64_bin.tar.gz
+import os
+os.environ['JAVA_HOME'] = os.getcwd() + '/jdk-25.0.2'
+os.environ['PATH'] = os.environ['JAVA_HOME'] + '/bin:' + os.environ['PATH']
+!java -version</pre>
+    <button class="btn" onclick="copyCode(this)">Copy Code</button>
+  </div>
+
+  <!-- Download Minecraft Server -->
+  <div class="card">
+    <p>Download Minecraft Server - Enter URL below (default latest Paper 1.21.1)</p>
+    <button class="btn" onclick="openLink('https://ksx.pages.dev')">Get Server URL</button>
+    <p>To get the server URL, click on "Get Server URL," then navigate to the server jar downloader to find the URL you need.</p>
+    <label for="mc-url-colab">Minecraft Server JAR URL:</label>
+    <input type="text" id="mc-url-colab" value="https://api.papermc.io/v2/projects/paper/versions/1.21.1/builds/113/downloads/paper-1.21.1-113.jar">
+    <button class="btn" onclick="generateMcCode('colab')">Generate Code</button>
+    <pre class="code" id="mc-download-code-colab"></pre>
+    <button class="btn" onclick="copyCode(this)">Copy Code</button>
+  </div>
+
+  <!-- Accept EULA -->
+  <div class="card">
+    <p>Accept Minecraft EULA</p>
+    <pre class="code">!echo "eula=true" > eula.txt</pre>
+    <button class="btn" onclick="copyCode(this)">Copy Code</button>
+  </div>
+
+  <!-- Download Minekube Connect Plugin -->
+  <div class="card">
+    <p>Download Minekube Connect Plugin</p>
+    <pre class="code">!mkdir plugins && cd plugins && wget https://github.com/minekube/connect-java/releases/download/latest/connect-spigot.jar</pre>
+    <button class="btn" onclick="copyCode(this)">Copy Code</button>
+  </div>
+
+  <!-- Configure Endpoint -->
+  <div class="card">
+    <p>Configure Minekube Endpoint</p>
+    <p>Sign up at <a href="https://app.minekube.com/" target="_blank">app.minekube.com</a> (free), create an Endpoint, get name and token.</p>
+    <label for="endpoint-name-colab">Endpoint Name (e.g., kssmp):</label>
+    <input type="text" id="endpoint-name-colab" value="kssmp">
+    <label for="token-colab">Endpoint Token:</label>
+    <input type="text" id="token-colab" placeholder="Paste token here">
+    <button class="btn" onclick="generateConfigCode('colab')">Generate Config Code</button>
+    <pre class="code" id="config-code-colab"></pre>
+    <button class="btn" onclick="copyCode(this)">Copy Config Code</button>
+  </div>
+
+  <!-- Start Server -->
+  <div class="card">
+    <p>Start Server - Enter RAM in MB (default 1024)</p>
+    <label for="ram-colab">RAM Allocation (MB):</label>
+    <input type="number" id="ram-colab" value="1024" min="512">
+    <button class="btn" onclick="generateStartCode('colab')">Generate Code</button>
+    <pre class="code" id="start-code-colab"></pre>
+    <button class="btn" onclick="copyCode(this)">Copy Code</button>
+  </div>
+</div>
+
+<!-- ================= VPS (IPV4) ================= -->
+<div id="vps" class="section">
+  <h2>MC Server in VPS (IPV4)</h2>
+
+  <!-- Root Folder -->
+  <div class="card">
+    <p>Root Folder (if needed)</p>
+    <pre class="code">sudo su</pre>
+    <button class="btn" onclick="copyCode(this)">Copy Code</button>
+  </div>
+
+  <!-- Update System & Install wget -->
+  <div class="card">
+    <p>Update System & Install wget (if needed)</p>
+    <pre class="code">apt update -y && apt upgrade -y && apt install wget -y</pre>
+    <button class="btn" onclick="copyCode(this)">Copy Code</button>
+  </div>
+
+  <!-- Install Java -->
+  <div class="card">
+    <p>Install Latest Java (Oracle JDK 25) via URL</p>
+    <pre class="code">wget https://download.oracle.com/java/25/latest/jdk-25_linux-x64_bin.tar.gz
+tar -xvf jdk-25_linux-x64_bin.tar.gz
+export JAVA_HOME=$(pwd)/jdk-25.0.2
+export PATH=$JAVA_HOME/bin:$PATH
+java -version</pre>
+    <button class="btn" onclick="copyCode(this)">Copy Code</button>
+  </div>
+
+  <!-- Download Minecraft Server -->
+  <div class="card">
+    <p>Download Minecraft Server - Enter URL below (default latest Paper 1.21.1)</p>
+    <button class="btn" onclick="openLink('https://ksx.pages.dev')">Get Server URL</button>
+    <p>To get the server URL, click on "Get Server URL," then navigate to the server jar downloader to find the URL you need.</p>
+    <label for="mc-url-vps">Minecraft Server JAR URL:</label>
+    <input type="text" id="mc-url-vps" value="https://api.papermc.io/v2/projects/paper/versions/1.21.1/builds/113/downloads/paper-1.21.1-113.jar">
+    <button class="btn" onclick="generateMcCode('vps')">Generate Code</button>
+    <pre class="code" id="mc-download-code-vps"></pre>
+    <button class="btn" onclick="copyCode(this)">Copy Code</button>
+  </div>
+
+  <!-- Accept EULA -->
+  <div class="card">
+    <p>Accept Minecraft EULA</p>
+    <pre class="code">echo "eula=true" > eula.txt</pre>
+    <button class="btn" onclick="copyCode(this)">Copy Code</button>
+  </div>
+
+  <!-- Download Minekube Connect Plugin -->
+  <div class="card">
+    <p>Download Minekube Connect Plugin</p>
+    <pre class="code">mkdir plugins && cd plugins && wget https://github.com/minekube/connect-java/releases/download/latest/connect-spigot.jar</pre>
+    <button class="btn" onclick="copyCode(this)">Copy Code</button>
+  </div>
+
+  <!-- Configure Endpoint -->
+  <div class="card">
+    <p>Configure Minekube Endpoint</p>
+    <p>Sign up at <a href="https://app.minekube.com/" target="_blank">app.minekube.com</a> (free), create an Endpoint, get name and token.</p>
+    <label for="endpoint-name-vps">Endpoint Name (e.g., kssmp):</label>
+    <input type="text" id="endpoint-name-vps" value="kssmp">
+    <label for="token-vps">Endpoint Token:</label>
+    <input type="text" id="token-vps" placeholder="Paste token here">
+    <button class="btn" onclick="generateConfigCode('vps')">Generate Config Code</button>
+    <pre class="code" id="config-code-vps"></pre>
+    <button class="btn" onclick="copyCode(this)">Copy Config Code</button>
+  </div>
+
+  <!-- Start Server -->
+  <div class="card">
+    <p>Start Server - Enter RAM in MB (default 1024)</p>
+    <label for="ram-vps">RAM Allocation (MB):</label>
+    <input type="number" id="ram-vps" value="1024" min="512">
+    <button class="btn" onclick="generateStartCode('vps')">Generate Code</button>
+    <pre class="code" id="start-code-vps"></pre>
+    <button class="btn" onclick="copyCode(this)">Copy Code</button>
+  </div>
+</div>
+
+<!-- ================= VM (not IPV4) ================= -->
+<div id="vm" class="section">
+  <h2>MC Server in VM (not IPV4)</h2>
+
+  <!-- Root Folder -->
+  <div class="card">
+    <p>Root Folder (if needed)</p>
+    <pre class="code">sudo su</pre>
+    <button class="btn" onclick="copyCode(this)">Copy Code</button>
+  </div>
+
+  <!-- Update System & Install wget -->
+  <div class="card">
+    <p>Update System & Install wget (if needed)</p>
+    <pre class="code">apt update -y && apt upgrade -y && apt install wget -y</pre>
+    <button class="btn" onclick="copyCode(this)">Copy Code</button>
+  </div>
+
+  <!-- Install Java -->
+  <div class="card">
+    <p>Install Latest Java (Oracle JDK 25) via URL</p>
+    <pre class="code">wget https://download.oracle.com/java/25/latest/jdk-25_linux-x64_bin.tar.gz
+tar -xvf jdk-25_linux-x64_bin.tar.gz
+export JAVA_HOME=$(pwd)/jdk-25.0.2
+export PATH=$JAVA_HOME/bin:$PATH
+java -version</pre>
+    <button class="btn" onclick="copyCode(this)">Copy Code</button>
+  </div>
+
+  <!-- Download Minecraft Server -->
+  <div class="card">
+    <p>Download Minecraft Server - Enter URL below (default latest Paper 1.21.1)</p>
+    <button class="btn" onclick="openLink('https://ksx.pages.dev')">Get Server URL</button>
+    <p>To get the server URL, click on "Get Server URL," then navigate to the server jar downloader to find the URL you need.</p>
+    <label for="mc-url-vm">Minecraft Server JAR URL:</label>
+    <input type="text" id="mc-url-vm" value="https://api.papermc.io/v2/projects/paper/versions/1.21.1/builds/113/downloads/paper-1.21.1-113.jar">
+    <button class="btn" onclick="generateMcCode('vm')">Generate Code</button>
+    <pre class="code" id="mc-download-code-vm"></pre>
+    <button class="btn" onclick="copyCode(this)">Copy Code</button>
+  </div>
+
+  <!-- Accept EULA -->
+  <div class="card">
+    <p>Accept Minecraft EULA</p>
+    <pre class="code">echo "eula=true" > eula.txt</pre>
+    <button class="btn" onclick="copyCode(this)">Copy Code</button>
+  </div>
+
+  <!-- Download Minekube Connect Plugin -->
+  <div class="card">
+    <p>Download Minekube Connect Plugin</p>
+    <pre class="code">mkdir plugins && cd plugins && wget https://github.com/minekube/connect-java/releases/download/latest/connect-spigot.jar</pre>
+    <button class="btn" onclick="copyCode(this)">Copy Code</button>
+  </div>
+
+  <!-- Configure Endpoint -->
+  <div class="card">
+    <p>Configure Minekube Endpoint</p>
+    <p>Sign up at <a href="https://app.minekube.com/" target="_blank">app.minekube.com</a> (free), create an Endpoint, get name and token.</p>
+    <label for="endpoint-name-vm">Endpoint Name (e.g., kssmp):</label>
+    <input type="text" id="endpoint-name-vm" value="kssmp">
+    <label for="token-vm">Endpoint Token:</label>
+    <input type="text" id="token-vm" placeholder="Paste token here">
+    <button class="btn" onclick="generateConfigCode('vm')">Generate Config Code</button>
+    <pre class="code" id="config-code-vm"></pre>
+    <button class="btn" onclick="copyCode(this)">Copy Config Code</button>
+  </div>
+
+  <!-- Start Server -->
+  <div class="card">
+    <p>Start Server - Enter RAM in MB (default 1024)</p>
+    <label for="ram-vm">RAM Allocation (MB):</label>
+    <input type="number" id="ram-vm" value="1024" min="512">
+    <button class="btn" onclick="generateStartCode('vm')">Generate Code</button>
+    <pre class="code" id="start-code-vm"></pre>
+    <button class="btn" onclick="copyCode(this)">Copy Code</button>
+  </div>
 </div>
 
 <script>
-document.addEventListener("DOMContentLoaded", () => {
+// Global copy function - improved version
+function copyCode(btn) {
+  const card = btn.closest('.card');
+  if (!card) return alert('Copy failed - no card found');
 
-  const select = document.getElementById("platform");
-  const sections = document.querySelectorAll(".section");
+  const codeEl = card.querySelector('.code');
+  if (!codeEl) return alert('No code block found');
 
-  /* ===============================
-     SHOW SECTION FUNCTION
-  =============================== */
-  function showSection(value) {
-    sections.forEach(section => section.classList.remove("active"));
+  const code = codeEl.innerText.trim();
+  if (!code) return alert('Code is empty');
 
-    const target = document.getElementById(value);
-    if (target) {
-      target.classList.add("active");
+  // Try modern clipboard API first
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(code).then(() => {
+      showCopied(btn);
+    }).catch(() => {
+      fallbackCopy(code, btn);
+    });
+  } else {
+    fallbackCopy(code, btn);
+  }
+}
+
+function fallbackCopy(text, btn) {
+  const textarea = document.createElement("textarea");
+  textarea.value = text;
+  textarea.style.position = "fixed";
+  textarea.style.opacity = "0";
+  document.body.appendChild(textarea);
+  textarea.focus();
+  textarea.select();
+
+  try {
+    document.execCommand("copy");
+    showCopied(btn);
+  } catch (err) {
+    alert("Copy failed. Please select and copy manually.");
+  }
+
+  document.body.removeChild(textarea);
+}
+
+function showCopied(btn) {
+  const original = btn.innerText;
+  btn.innerText = "Copied ✓";
+  setTimeout(() => btn.innerText = original, 1500);
+}
+
+// Generate download command
+function generateMcCode(platform) {
+  const input = document.getElementById(`mc-url-${platform}`);
+  const output = document.getElementById(`mc-download-code-${platform}`);
+  if (!input || !output) return;
+  const url = input.value.trim() || 'https://api.papermc.io/v2/projects/paper/versions/1.21.1/builds/113/downloads/paper-1.21.1-113.jar';
+  output.innerText = `mkdir mc-server && cd mc-server && wget ${url} -O server.jar`;
+}
+
+// Generate start command
+function generateStartCode(platform) {
+  const ramInput = document.getElementById(`ram-${platform}`);
+  const output = document.getElementById(`start-code-${platform}`);
+  if (!ramInput || !output) return;
+  let ram = parseInt(ramInput.value) || 1024;
+  output.innerText = `java -Xmx${ram}M -Xms${ram}M -jar server.jar nogui`;
+}
+
+// Generate config commands
+function generateConfigCode(platform) {
+  const nameInput = document.getElementById(`endpoint-name-${platform}`);
+  const tokenInput = document.getElementById(`token-${platform}`);
+  const output = document.getElementById(`config-code-${platform}`);
+  if (!nameInput || !tokenInput || !output) return;
+
+  const name = nameInput.value.trim() || 'kssmp';
+  const token = tokenInput.value.trim();
+
+  if (!token) {
+    alert('Please paste your Minekube token first');
+    return;
+  }
+
+  output.innerText = `echo "endpoint: ${name}" > plugins/connect/config.yml
+echo '{"token":"${token}"}' > plugins/connect/token.json`;
+}
+
+// Platform switcher
+document.addEventListener('DOMContentLoaded', () => {
+  const select = document.getElementById('platform');
+  if (!select) return;
+
+  select.addEventListener('change', (e) => {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    const target = document.getElementById(e.target.value);
+    if (target) target.classList.add('active');
+  });
+
+  // Show first option if nothing selected
+  if (!select.value) {
+    const firstOption = select.options[1]?.value;
+    if (firstOption) {
+      select.value = firstOption;
+      document.getElementById(firstOption).classList.add('active');
     }
   }
-
-  /* ===============================
-     ON CHANGE
-  =============================== */
-  if (select) {
-    select.addEventListener("change", () => {
-      showSection(select.value);
-    });
-
-    // 🔥 FIX: Show default selected section on first load
-    showSection(select.value);
-  }
-
 });
-
-
-/* ===============================
-   COPY CODE FUNCTION
-================================ */
-function copyCode(button) {
-  if (!button) return;
-
-  const codeElement = button.previousElementSibling;
-  if (!codeElement) return;
-
-  const code = codeElement.innerText.trim();
-  if (!code) return;
-
-  navigator.clipboard.writeText(code)
-    .then(() => {
-      const originalText = button.innerText;
-      button.innerText = "Copied ✓";
-
-      setTimeout(() => {
-        button.innerText = originalText;
-      }, 1500);
-    })
-    .catch(() => {
-      alert("Copy failed. Please copy manually.");
-    });
-}
-
-
-/* ===============================
-   OPEN LINK (Same Tab)
-================================ */
-const LAST_PAGE_KEY = "ks-web-last-page";
-
-function openLink(url) {
-  if (!url) return;
-
-  // Save last page
-  localStorage.setItem(LAST_PAGE_KEY, url);
-
-  // Redirect
-  window.location.assign("/minecraft/make-server/server.jar-downloader.html");
-}
-
-
-/* ===============================
-   GENERATE MC DOWNLOAD CODE
-================================ */
-function generateMcCode(platform) {
-  if (!platform) return;
-
-  const urlInput = document.getElementById(`mc-url-${platform}`);
-  const codeElement = document.getElementById(`mc-download-code-${platform}`);
-
-  if (!codeElement) return;
-
-  const defaultUrl =
-    "https://piston-data.mojang.com/v1/objects/64bb6d763bed0a9f1d632ec347938594144943ed/server.jar";
-
-  const url = urlInput?.value.trim() || defaultUrl;
-
-  codeElement.innerText =
-    `mkdir mc-server && cd mc-server && wget ${url} -O server.jar`;
-}
-
-
-/* ===============================
-   GENERATE START COMMAND
-================================ */
-function generateStartCode(platform) {
-  if (!platform) return;
-
-  const ramInput = document.getElementById(`ram-${platform}`);
-  const codeElement = document.getElementById(`start-code-${platform}`);
-
-  if (!codeElement) return;
-
-  let ram = parseInt(ramInput?.value);
-  if (isNaN(ram) || ram <= 0) ram = 1024;
-
-  codeElement.innerText =
-    `java -Xmx${ram}M -Xms${ram}M -jar server.jar nogui`;
-}
 </script>
 
 </body>
