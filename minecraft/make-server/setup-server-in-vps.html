@@ -417,19 +417,31 @@ java -version</pre>
 <script>
 document.addEventListener("DOMContentLoaded", () => {
 
-  /* ===============================
-     SECTION SWITCHER
-  =============================== */
   const select = document.getElementById("platform");
   const sections = document.querySelectorAll(".section");
 
+  /* ===============================
+     SHOW SECTION FUNCTION
+  =============================== */
+  function showSection(value) {
+    sections.forEach(section => section.classList.remove("active"));
+
+    const target = document.getElementById(value);
+    if (target) {
+      target.classList.add("active");
+    }
+  }
+
+  /* ===============================
+     ON CHANGE
+  =============================== */
   if (select) {
     select.addEventListener("change", () => {
-      sections.forEach(section => section.classList.remove("active"));
-
-      const target = document.getElementById(select.value);
-      if (target) target.classList.add("active");
+      showSection(select.value);
     });
+
+    // 🔥 FIX: Show default selected section on first load
+    showSection(select.value);
   }
 
 });
@@ -473,7 +485,7 @@ function openLink(url) {
   // Save last page
   localStorage.setItem(LAST_PAGE_KEY, url);
 
-  // Redirect to fixed page
+  // Redirect
   window.location.assign("/minecraft/make-server/server.jar-downloader.html");
 }
 
