@@ -6,19 +6,31 @@
 <title>MC Server Without Hosting</title>
 
 <style>
+/* =====================================================
+   ROOT VARIABLES
+===================================================== */
 :root{
   --bg:#000;
-  --card:rgba(18,18,28,0.88);
-  --soft:rgba(28,28,40,0.95);
-  --hover:rgba(42,42,60,0.95);
-  --text:#fff;
-  --muted:#9a9a9a;
-  --border:rgba(255,255,255,0.12);
-  --accent:#fff;
+  --bg-soft:#0a0a0a;
+
+  --card:#12121c;
+  --card-hover:#1e1e2a;
+
+  --text:#ffffff;
+  --muted:#9c9c9c;
+
+  --border:rgba(255,255,255,0.08);
+  --border-hover:rgba(255,255,255,0.18);
+
+  --accent:#ffffff;
+
   --radius:14px;
-  --transition:0.35s ease;
+  --transition:0.25s ease;
 }
 
+/* =====================================================
+   GLOBAL RESET
+===================================================== */
 *{
   margin:0;
   padding:0;
@@ -26,47 +38,65 @@
 }
 
 body{
-  background:linear-gradient(180deg,#000,#0a0a0a);
-  color:var(--text);
   font-family:system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
-  padding:28px 16px;
+  background:linear-gradient(180deg,var(--bg),var(--bg-soft));
+  color:var(--text);
+  padding:40px 18px;
   text-align:center;
+  min-height:100vh; /* smoother than 100dvh */
+  -webkit-font-smoothing:antialiased;
 }
 
+/* =====================================================
+   TYPOGRAPHY
+===================================================== */
 h1{
   font-size:30px;
-  font-weight:900;
+  font-weight:800;
 }
 
 h2{
-  font-size:15px;
+  font-size:22px;
+  font-weight:700;
+  margin-bottom:20px;
+}
+
+.subtitle{
+  font-size:14px;
   color:var(--muted);
   margin-top:6px;
 }
 
-select{
-  margin-top:22px;
-  padding:14px 20px;
-  font-size:15px;
-  background:var(--soft);
+/* =====================================================
+   SELECT
+===================================================== */
+.platform-select{
+  margin-top:26px;
+  padding:12px 20px;
+  font-size:14px;
+  background:var(--card);
   color:var(--text);
   border:1px solid var(--border);
   border-radius:999px;
-  outline:none;
   cursor:pointer;
-  transition:var(--transition);
+  outline:none;
+  transition:background var(--transition), border var(--transition);
 }
 
-select:hover{
-  background:var(--hover);
+.platform-select:hover,
+.platform-select:focus{
+  background:var(--card-hover);
   border-color:#fff;
 }
 
+/* =====================================================
+   SECTION
+===================================================== */
 .section{
   display:none;
-  max-width:920px;
-  margin:36px auto 0;
-  animation:fadeUp 0.5s ease;
+  max-width:900px;
+  margin:40px auto 0;
+  animation:fadeUp .35s ease;
 }
 
 .section.active{
@@ -74,77 +104,116 @@ select:hover{
 }
 
 @keyframes fadeUp{
-  from{opacity:0;transform:translateY(20px);}
-  to{opacity:1;transform:translateY(0);}
+  from{
+    opacity:0;
+    transform:translateY(15px);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
 }
 
-.container{
-  background:var(--card);
-  border-radius:var(--radius);
-  padding:22px;
-  margin-bottom:20px;
+/* =====================================================
+   CARD
+===================================================== */
+.card{
   text-align:left;
+  margin:20px 0;
+  background:var(--card);
   border:1px solid var(--border);
-  backdrop-filter:blur(18px);
-  transition:var(--transition);
+  border-radius:var(--radius);
+  padding:18px;
+  transition:transform var(--transition), 
+             background var(--transition), 
+             border var(--transition);
 }
 
-.container:hover{
-  background:var(--hover);
-  border-color:rgba(255,255,255,0.25);
+.card:hover{
+  background:var(--card-hover);
+  border-color:var(--border-hover);
+  transform:translateY(-3px);
 }
 
-.container p{
+.card p{
   font-size:14px;
   color:var(--muted);
-  margin-bottom:8px;
+  margin-bottom:10px;
 }
 
-pre.code{
-  background:#050505;
+.card label{
+  display:block;
+  font-size:14px;
+  margin-bottom:6px;
+}
+
+.card input{
+  width:100%;
+  padding:10px;
+  background:#0a0a0a;
+  border:1px solid var(--border);
+  border-radius:8px;
+  color:#00ff9c;
+  font-size:13px;
+  margin-bottom:10px;
+}
+
+/* =====================================================
+   CODE BLOCK
+===================================================== */
+.code{
+  background:#0a0a0a;
   border:1px solid var(--border);
   padding:14px;
-  border-radius:12px;
-  overflow-x:auto;
+  border-radius:10px;
   font-size:13px;
   color:#00ff9c;
+  overflow-x:auto;
+  margin-bottom:10px;
+  white-space:pre-wrap;
+  word-break:break-word;
 }
 
-button{
-  margin-top:10px;
-  padding:10px 20px;
+/* =====================================================
+   BUTTONS
+===================================================== */
+.btn{
+  padding:9px 18px;
   border-radius:999px;
   font-size:13px;
   cursor:pointer;
-  border:none;
-  transition:var(--transition);
-}
-
-button.copy{
-  background:var(--soft);
-  color:var(--text);
   border:1px solid var(--border);
+  background:var(--card);
+  color:var(--text);
+  transition:background var(--transition),
+             border var(--transition),
+             transform var(--transition);
+  margin:0 5px 8px 0;
 }
 
-button.copy:hover{
-  background:var(--hover);
+.btn:hover{
+  background:var(--card-hover);
   border-color:#fff;
 }
 
-button.visit{
+.btn-primary{
   background:var(--accent);
   color:#000;
   font-weight:700;
-  margin-top:14px;
+  border:none;
+  margin:10px;
 }
 
-button.visit:hover{
-  transform:scale(1.05);
+.btn-primary:hover{
+  transform:scale(1.04);
 }
 
+/* =====================================================
+   RESPONSIVE
+===================================================== */
 @media(max-width:600px){
   h1{font-size:24px;}
-  select{width:100%;}
+  .platform-select{width:100%;}
 }
 </style>
 </head>
@@ -152,9 +221,9 @@ button.visit:hover{
 <body>
 
 <h1>MC Server Without Hosting</h1>
-<h2>By KS Warrior</h2>
+<div class="subtitle">By KS Warrior - Updated with Latest Java 25 and Minecraft Server 1.21.11</div>
 
-<select onchange="showSection(this.value)">
+<select class="platform-select" id="platform">
   <option value="">-- Select Platform --</option>
   <option value="codesandbox">CodeSandbox</option>
   <option value="github">GitHub</option>
@@ -162,74 +231,290 @@ button.visit:hover{
   <option value="colab">Google Colab</option>
 </select>
 
-<!-- CodeSandbox -->
+<!-- ================= CodeSandbox ================= -->
 <div id="codesandbox" class="section">
-  <h1>MC Server in CodeSandbox</h1>
+  <h2>MC Server in CodeSandbox</h2>
 
-  <div class="container">
-    <p>Install Java & server</p>
-    <pre class="code">wget https://github.com/ks-warrior/MC-Server-without-hosting/releases/download/Codesandbox.io/ks-install.sh && bash ks-install.sh</pre>
-    <button class="copy" onclick="copyCode(this)">Copy Code</button>
+  <!-- Update System & Install wget -->
+  <div class="card">
+    <p>Update System & Install wget (if needed)</p>
+    <pre class="code">apt update -y && apt upgrade -y && apt install wget -y</pre>
+    <button class="btn" onclick="copyCode(this)">Copy Code</button>
   </div>
 
-  <div class="container">
-    <p>Install playit.gg plugin</p>
-    <pre class="code">cd ks-server && mkdir plugins && cd plugins && wget https://github.com/playit-cloud/playit-minecraft-plugin/releases/latest/download/playit-minecraft-plugin.jar</pre>
-    <button class="copy" onclick="copyCode(this)">Copy Code</button>
+  <!-- Install Java -->
+  <div class="card">
+    <p>Install Latest Java (Oracle JDK 25) via URL</p>
+    <pre class="code">wget https://download.oracle.com/java/25/latest/jdk-25_linux-x64_bin.tar.gz
+tar -xvf jdk-25_linux-x64_bin.tar.gz
+export JAVA_HOME=$(pwd)/jdk-25.0.2
+export PATH=$JAVA_HOME/bin:$PATH
+java -version</pre>
+    <button class="btn" onclick="copyCode(this)">Copy Code</button>
   </div>
 
-  <div class="container">
-    <p>Start server</p>
-    <pre class="code">bash ks-start.sh</pre>
-    <button class="copy" onclick="copyCode(this)">Copy Code</button>
+  <!-- Download Minecraft Server -->
+  <div class="card">
+    <p>Download Minecraft Server - Enter URL below (default latest)</p>
+    <button class="btn btn-get-url" onclick="openLink('https://ksx.pages.dev')">Get Server URL</button>
+    <label for="mc-url-codesandbox">Minecraft Server JAR URL:</label>
+    <input type="text" id="mc-url-codesandbox" value="https://piston-data.mojang.com/v1/objects/64bb6d763bed0a9f1d632ec347938594144943ed/server.jar">
+    <button class="btn" onclick="generateMcCode('codesandbox')">Generate Code</button>
+    <pre class="code" id="mc-download-code-codesandbox"></pre>
+    <button class="btn" onclick="copyCode(this)">Copy Code</button>
+  </div>
+
+  <!-- Accept EULA -->
+  <div class="card">
+    <p>Accept Minecraft EULA</p>
+    <pre class="code">echo "eula=true" > eula.txt</pre>
+    <button class="btn" onclick="copyCode(this)">Copy Code</button>
+  </div>
+
+  <!-- Install playit.gg Plugin -->
+  <div class="card">
+    <p>Install playit.gg Plugin</p>
+    <pre class="code">mkdir plugins && cd plugins && wget https://github.com/playit-cloud/playit-minecraft-plugin/releases/latest/download/playit-minecraft-plugin.jar</pre>
+    <button class="btn" onclick="copyCode(this)">Copy Code</button>
+  </div>
+
+  <!-- Start Server -->
+  <div class="card">
+    <p>Start Server - Enter RAM in MB (default 1024)</p>
+    <label for="ram-codesandbox">RAM Allocation (MB):</label>
+    <input type="number" id="ram-codesandbox" value="1024" min="512">
+    <button class="btn" onclick="generateStartCode('codesandbox')">Generate Code</button>
+    <pre class="code" id="start-code-codesandbox"></pre>
+    <button class="btn" onclick="copyCode(this)">Copy Code</button>
   </div>
 </div>
 
-<!-- GitHub -->
+<!-- ================= GitHub ================= -->
 <div id="github" class="section">
-  <h1>MC Server in GitHub</h1>
+  <h2>MC Server in GitHub</h2>
 
-  <div class="container">
-    <pre class="code">wget https://github.com/ks-warrior/MC-Server-without-hosting/releases/download/GitHub/ks-install.sh && bash ks-install.sh</pre>
-    <button class="copy" onclick="copyCode(this)">Copy Code</button>
+  <!-- Update System & Install wget -->
+  <div class="card">
+    <p>Update System & Install wget (if needed)</p>
+    <pre class="code">apt update -y && apt upgrade -y && apt install wget -y</pre>
+    <button class="btn" onclick="copyCode(this)">Copy Code</button>
+  </div>
+
+  <!-- Install Java -->
+  <div class="card">
+    <p>Install Latest Java (Oracle JDK 25) via URL</p>
+    <pre class="code">wget https://download.oracle.com/java/25/latest/jdk-25_linux-x64_bin.tar.gz
+tar -xvf jdk-25_linux-x64_bin.tar.gz
+export JAVA_HOME=$(pwd)/jdk-25.0.2
+export PATH=$JAVA_HOME/bin:$PATH
+java -version</pre>
+    <button class="btn" onclick="copyCode(this)">Copy Code</button>
+  </div>
+
+  <!-- Download Minecraft Server -->
+  <div class="card">
+    <p>Download Minecraft Server - Enter URL below (default latest)</p>
+    <button class="btn btn-get-url" onclick="openLink('https://ksx.pages.dev')">Get Server URL</button>
+    <label for="mc-url-github">Minecraft Server JAR URL:</label>
+    <input type="text" id="mc-url-github" value="https://piston-data.mojang.com/v1/objects/64bb6d763bed0a9f1d632ec347938594144943ed/server.jar">
+    <button class="btn" onclick="generateMcCode('github')">Generate Code</button>
+    <pre class="code" id="mc-download-code-github"></pre>
+    <button class="btn" onclick="copyCode(this)">Copy Code</button>
+  </div>
+
+  <!-- Accept EULA -->
+  <div class="card">
+    <p>Accept Minecraft EULA</p>
+    <pre class="code">echo "eula=true" > eula.txt</pre>
+    <button class="btn" onclick="copyCode(this)">Copy Code</button>
+  </div>
+
+  <!-- Install playit.gg Plugin -->
+  <div class="card">
+    <p>Install playit.gg Plugin</p>
+    <pre class="code">mkdir plugins && cd plugins && wget https://github.com/playit-cloud/playit-minecraft-plugin/releases/latest/download/playit-minecraft-plugin.jar</pre>
+    <button class="btn" onclick="copyCode(this)">Copy Code</button>
+  </div>
+
+  <!-- Start Server -->
+  <div class="card">
+    <p>Start Server - Enter RAM in MB (default 1024)</p>
+    <label for="ram-github">RAM Allocation (MB):</label>
+    <input type="number" id="ram-github" value="1024" min="512">
+    <button class="btn" onclick="generateStartCode('github')">Generate Code</button>
+    <pre class="code" id="start-code-github"></pre>
+    <button class="btn" onclick="copyCode(this)">Copy Code</button>
   </div>
 </div>
 
-<!-- Gitpod -->
+<!-- ================= Gitpod ================= -->
 <div id="gitpod" class="section">
-  <h1>MC Server in Gitpod</h1>
+  <h2>MC Server in Gitpod</h2>
 
-  <div class="container">
-    <pre class="code">wget https://github.com/ks-warrior/MC-Server-without-hosting/releases/download/Gitpod/ks-install.sh && bash ks-install.sh</pre>
-    <button class="copy" onclick="copyCode(this)">Copy Code</button>
+  <!-- Update System & Install wget -->
+  <div class="card">
+    <p>Update System & Install wget (if needed)</p>
+    <pre class="code">apt update -y && apt upgrade -y && apt install wget -y</pre>
+    <button class="btn" onclick="copyCode(this)">Copy Code</button>
+  </div>
+
+  <!-- Install Java -->
+  <div class="card">
+    <p>Install Latest Java (Oracle JDK 25) via URL</p>
+    <pre class="code">wget https://download.oracle.com/java/25/latest/jdk-25_linux-x64_bin.tar.gz
+tar -xvf jdk-25_linux-x64_bin.tar.gz
+export JAVA_HOME=$(pwd)/jdk-25.0.2
+export PATH=$JAVA_HOME/bin:$PATH
+java -version</pre>
+    <button class="btn" onclick="copyCode(this)">Copy Code</button>
+  </div>
+
+  <!-- Download Minecraft Server -->
+  <div class="card">
+    <p>Download Minecraft Server - Enter URL below (default latest)</p>
+    <button class="btn btn-get-url" onclick="openLink('https://ksx.pages.dev')">Get Server URL</button>
+    <label for="mc-url-gitpod">Minecraft Server JAR URL:</label>
+    <input type="text" id="mc-url-gitpod" value="https://piston-data.mojang.com/v1/objects/64bb6d763bed0a9f1d632ec347938594144943ed/server.jar">
+    <button class="btn" onclick="generateMcCode('gitpod')">Generate Code</button>
+    <pre class="code" id="mc-download-code-gitpod"></pre>
+    <button class="btn" onclick="copyCode(this)">Copy Code</button>
+  </div>
+
+  <!-- Accept EULA -->
+  <div class="card">
+    <p>Accept Minecraft EULA</p>
+    <pre class="code">echo "eula=true" > eula.txt</pre>
+    <button class="btn" onclick="copyCode(this)">Copy Code</button>
+  </div>
+
+  <!-- Install playit.gg Plugin -->
+  <div class="card">
+    <p>Install playit.gg Plugin</p>
+    <pre class="code">mkdir plugins && cd plugins && wget https://github.com/playit-cloud/playit-minecraft-plugin/releases/latest/download/playit-minecraft-plugin.jar</pre>
+    <button class="btn" onclick="copyCode(this)">Copy Code</button>
+  </div>
+
+  <!-- Start Server -->
+  <div class="card">
+    <p>Start Server - Enter RAM in MB (default 1024)</p>
+    <label for="ram-gitpod">RAM Allocation (MB):</label>
+    <input type="number" id="ram-gitpod" value="1024" min="512">
+    <button class="btn" onclick="generateStartCode('gitpod')">Generate Code</button>
+    <pre class="code" id="start-code-gitpod"></pre>
+    <button class="btn" onclick="copyCode(this)">Copy Code</button>
   </div>
 </div>
 
-<!-- Colab -->
+<!-- ================= Colab ================= -->
 <div id="colab" class="section">
-  <h1>MC Server in Google Colab</h1>
+  <h2>MC Server in Google Colab</h2>
 
-  <button class="visit" onclick="window.open('https://youtu.be/jjJZocmN_uI')">YouTube Tutorial</button>
-  <button class="visit" onclick="window.open('https://www.mediafire.com/file/u94f47r4v3s0dnd/mc_server_ks_warrior.ipynb/file')">Download Notebook</button>
-  <button class="visit" onclick="window.open('https://colab.research.google.com/')">Open Colab</button>
+  <button class="btn btn-primary" onclick="openLink('https://youtu.be/jjJZocmN_uI')">YouTube Tutorial</button>
+  <button class="btn btn-primary" onclick="openLink('https://www.mediafire.com/file/u94f47r4v3s0dnd/mc_server_ks_warrior.ipynb/file')">Download Notebook</button>
+  <button class="btn btn-primary" onclick="openLink('https://colab.research.google.com/')">Open Colab</button>
 </div>
 
 <script>
-function showSection(id){
-  document.querySelectorAll('.section').forEach(sec=>{
-    sec.classList.remove('active');
-  });
+document.addEventListener("DOMContentLoaded", () => {
 
-  if(id){
-    document.getElementById(id).classList.add('active');
+  /* ===============================
+     SECTION SWITCHER
+  =============================== */
+  const select = document.getElementById("platform");
+  const sections = document.querySelectorAll(".section");
+
+  if (select) {
+    select.addEventListener("change", () => {
+      sections.forEach(section => section.classList.remove("active"));
+
+      const target = document.getElementById(select.value);
+      if (target) target.classList.add("active");
+    });
   }
+
+});
+
+
+/* ===============================
+   COPY CODE FUNCTION
+================================ */
+function copyCode(button) {
+  if (!button) return;
+
+  const codeElement = button.previousElementSibling;
+  if (!codeElement) return;
+
+  const code = codeElement.innerText.trim();
+  if (!code) return;
+
+  navigator.clipboard.writeText(code)
+    .then(() => {
+      const originalText = button.innerText;
+      button.innerText = "Copied ✓";
+
+      setTimeout(() => {
+        button.innerText = originalText;
+      }, 1500);
+    })
+    .catch(() => {
+      alert("Copy failed. Please copy manually.");
+    });
 }
 
-function copyCode(btn){
-  const code = btn.previousElementSibling.innerText;
-  navigator.clipboard.writeText(code);
-  btn.innerText = "Copied!";
-  setTimeout(()=>btn.innerText="Copy Code",1500);
+
+/* ===============================
+   OPEN LINK (Same Tab)
+================================ */
+const LAST_PAGE_KEY = "ks-web-last-page";
+
+function openLink(url) {
+  if (!url) return;
+
+  // Save last page
+  localStorage.setItem(LAST_PAGE_KEY, url);
+
+  // Redirect to fixed page
+  window.location.assign("/minecraft/make-server/server.jar-downloader.html");
+}
+
+
+/* ===============================
+   GENERATE MC DOWNLOAD CODE
+================================ */
+function generateMcCode(platform) {
+  if (!platform) return;
+
+  const urlInput = document.getElementById(`mc-url-${platform}`);
+  const codeElement = document.getElementById(`mc-download-code-${platform}`);
+
+  if (!codeElement) return;
+
+  const defaultUrl =
+    "https://piston-data.mojang.com/v1/objects/64bb6d763bed0a9f1d632ec347938594144943ed/server.jar";
+
+  const url = urlInput?.value.trim() || defaultUrl;
+
+  codeElement.innerText =
+    `mkdir mc-server && cd mc-server && wget ${url} -O server.jar`;
+}
+
+
+/* ===============================
+   GENERATE START COMMAND
+================================ */
+function generateStartCode(platform) {
+  if (!platform) return;
+
+  const ramInput = document.getElementById(`ram-${platform}`);
+  const codeElement = document.getElementById(`start-code-${platform}`);
+
+  if (!codeElement) return;
+
+  let ram = parseInt(ramInput?.value);
+  if (isNaN(ram) || ram <= 0) ram = 1024;
+
+  codeElement.innerText =
+    `java -Xmx${ram}M -Xms${ram}M -jar server.jar nogui`;
 }
 </script>
 
