@@ -1,22 +1,56 @@
 window.addEventListener('DOMContentLoaded', () => {
     try {
-        // Get the top-level URL
-        const topUrl = top.location.href;
+        const topUrl = window.top.location.href;
+        const urlObj = new URL(topUrl);
 
-        // Check if top-level URL contains "ksx.pages.dev"
-        if (topUrl.includes('ks.pages.dev')) {
-            // Save current page URL to element with id "ks-web-last-page"
-            const lastPageElem = document.getElementById('ks-web-last-page');
-            if (lastPageElem) {
-                lastPageElem.textContent = topUrl;
-                // Optional: store in localStorage for persistence
+        const isKsx = urlObj.hostname === 'ksx.pages.dev';
+        const hasPath = urlObj.pathname !== '/' && urlObj.pathname !== '';
+
+        // Show bar only if ksx.pages.dev/anything
+        if (isKsx && hasPath) {
+
+            // Create top bar
+            const bar = document.createElement('div');
+            bar.style.position = 'fixed';
+            bar.style.top = '0';
+            bar.style.left = '0';
+            bar.style.width = '100%';
+            bar.style.background = '#111';
+            bar.style.color = '#fff';
+            bar.style.padding = '10px';
+            bar.style.display = 'flex';
+            bar.style.justifyContent = 'space-between';
+            bar.style.alignItems = 'center';
+            bar.style.zIndex = '9999';
+            bar.style.fontFamily = 'Arial';
+
+            bar.innerHTML = `
+                <span>This page is opened from sub path</span>
+                <div>
+                    <button id="ks-close" style="margin-right:10px;">✖</button>
+                    <button id="ks-confirm">Confirm</button>
+                </div>
+            `;
+
+            document.body.appendChild(bar);
+
+            // Add body margin so content not hidden
+            document.body.style.marginTop = '50px';
+
+            // Cross button → remove bar
+            document.getElementById('ks-close').onclick = () => {
+                bar.remove();
+                document.body.style.marginTop = '0';
+            };
+
+            // Confirm button → save + redirect to main
+            document.getElementById('ks-confirm').onclick = () => {
                 localStorage.setItem('ks-web-last-page', topUrl);
-            }
-
-            // Redirect top-level window to the other website
-            top.location.href = 'https://ks.42web.io';
+                window.top.location.href = 'https://ksx.pages.dev';
+            };
         }
+
     } catch (err) {
-        console.error('Cannot access top-level window URL:', err);
+        console.error('Error:', err);
     }
 });
