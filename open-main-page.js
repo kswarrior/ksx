@@ -45,7 +45,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
                 .ks-btn{
                   padding:8px 18px;
-                  border-radius:999px;
+                  border-radius:10px;
                   border:1px solid rgba(255,255,255,0.12);
                   background:rgba(28,28,40,0.9);
                   color:#ffffff;
