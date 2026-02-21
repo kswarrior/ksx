@@ -1,1 +1,1042 @@
-h
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Minecraft Bot Without Hosting</title>
+
+<style>
+:root{
+  --bg:#000;
+  --bg-soft:#0a0a0a;
+  --card:#12121c;
+  --card-hover:#1e1e2a;
+  --text:#ffffff;
+  --muted:#9c9c9c;
+  --border:rgba(255,255,255,0.08);
+  --border-hover:rgba(255,255,255,0.18);
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+  font-family:system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
+  background:linear-gradient(180deg,var(--bg),var(--bg-soft));
+  color:var(--text);
+  padding:40px 18px;
+  text-align:center;
+}
+
+h1{font-size:28px;font-weight:800;}
+.subtitle{font-size:14px;color:var(--muted);margin-top:6px;}
+
+.section{
+  max-width:900px;
+  margin:25px auto;
+}
+
+.card{
+  text-align:left;
+  margin:12px 0;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:15px;
+  transition:0.25s ease;
+}
+
+.card p {
+  font-size: 15px;
+  margin-bottom: 15px;
+  font-weight: 750;
+}
+
+.card label {
+  color: gray;
+  font-size: 14px;
+}
+
+.card:hover{
+  background:var(--card-hover);
+  border-color:var(--border-hover);
+}
+
+.code{
+  background:#000;
+  border:1px solid var(--border);
+  padding:14px;
+  border-radius:8px;
+  font-size:10px;
+  color:#00ff9c;
+  overflow-x:auto;
+  margin-bottom:10px;
+  white-space:pre-wrap;
+}
+
+input{
+  width:100%;
+  padding:10px;
+  margin:8px 0;
+  background:#0a0a0a;
+  border:1px solid var(--border);
+  border-radius:8px;
+  color:#00ff9c;
+}
+
+.btn{
+  padding:8px 16px;
+  border-radius:8px;
+  border:1px solid var(--border);
+  background:#000;
+  color:#fff;
+  cursor:pointer;
+  margin-top:6px;
+}
+.btn:hover{
+  background:var(--card-hover);
+}
+</style>
+</head>
+
+<body>
+
+<h1>Minecraft Bot</h1>
+<div class="subtitle">By KS Warrior | Using Node.js + mineflayer — No paid hosting needed! <strong>Ultimate powerful bot</strong> with PVP, mining, auto-equip armor/weapons/tools, totem/shield handling, auto-eat, anti-AFK, player protection, mob hunting, and more — simulates a full player.</div>
+
+<div class="section">
+
+<div class="card">
+<p>1. Install Node.js</p>
+<pre class="code">sudo apt update && \
+sudo apt install curl -y && \
+curl -fsSL https://deb.nodesource.com/setup_current.x | sudo -E bash - && \
+sudo apt install nodejs -y</pre>
+<button class="btn" onclick="copyFromCard(this)">Copy Code</button>
+</div>
+
+<div class="card">
+<p>2. Create project folder</p>
+<pre class="code">mkdir mc-bot
+cd mc-bot
+npm init -y
+npm install mineflayer vec3</pre>
+<button class="btn" onclick="copyFromCard(this)">Copy Code</button>
+</div>
+
+<div class="card">
+<p>3. Enter your server details</p>
+
+<label>Server IP:</label>
+<input type="text" id="server-ip" value="" placeholder="e.g., yourserver.aternos.me">
+
+<label>Server Port:</label>
+<input type="text" id="server-port" value="" placeholder="e.g., 25565">
+
+<label>Bot Username:</label>
+<input type="text" id="bot-name" value="" placeholder="Bot's in-game name">
+
+<label>Owner Username:</label>
+<input type="text" id="owner-name" value="" placeholder="Your in-game name">
+
+<label>Reconnect Delay (seconds):</label>
+<input type="text" id="reconnect-delay" value="5" placeholder="Time to wait before reconnecting">
+
+<label>Auto Eat Food Threshold:</label>
+<input type="text" id="auto-eat-threshold" value="15" placeholder="Start eating when food &lt; this">
+
+<label>Anti-AFK Jump Interval (seconds):</label>
+<input type="text" id="afk-jump-interval" value="45" placeholder="Interval for jumps when idle">
+
+<label>Anti-AFK Walk Interval (seconds):</label>
+<input type="text" id="afk-walk-interval" value="60" placeholder="Interval for random walks when idle">
+
+<label>View Distance:</label>
+<input type="text" id="view-distance" value="far" placeholder="far or normal">
+
+<button class="btn" onclick="generateBotCode()">Generate bot.js Code</button>
+
+<pre class="code" id="bot-code">// Generated code will appear here...</pre>
+
+<button class="btn" onclick="copyGenerated()">Copy Generated Code</button>
+<p style="margin-top:10px;color:var(--muted);font-size:13px;">Paste the copied code into your terminal to create bot.js automatically!</p>
+</div>
+
+<div class="card">
+<p>4. Run the bot</p>
+<pre class="code">node bot.js</pre>
+<button class="btn" onclick="copyFromCard(this)">Copy Code</button>
+<p style="margin-top:10px;color:var(--muted);font-size:13px;">Tip: Use 'screen -S bot' then run, detach with Ctrl+A+D, reattach with 'screen -r bot'. Or 'nohup node bot.js &'</p>
+</div>
+
+<div class="card">
+<p>Bot Features & Commands (say in chat, only owner can use)</p>
+<ul style="color:var(--muted);font-size:13px;list-style-type:disc;padding-left:20px;">
+<li>!follow &lt;name&gt; - Bot follows you</li>
+<li>!come - Bot comes to your position</li>
+<li>!guard - Bot guards & protects you (follows + auto-attacks threats)</li>
+<li>!stopguard - Stop protecting you</li>
+<li>!stop - Stop current action</li>
+<li>!attack &lt;player&gt; - Attack a specific player</li>
+<li>!huntmobs - Hunt and kill nearby hostile mobs</li>
+<li>!pvpstop - Stop PVP/hunting</li>
+<li>!mine &lt;block&gt; - Mine specified block (e.g., !mine diamond_ore)</li>
+<li>!equip - Re-equip best armor, weapons, tools</li>
+<li>!give &lt;item&gt; - Give item to owner</li>
+<li>!place &lt;item&gt; - Place block in front of bot</li>
+<li>!totem - Equip totem in offhand</li>
+<li>!help - List all commands</li>
+<li>Auto-equip armor, sword/axe, shield/totem based on situation</li>
+<li>Auto-eat when hungry/low health</li>
+<li>Auto-respawn on death</li>
+<li>Anti-AFK: configurable jumps & random walks</li>
+<li>Auto-reconnect with configurable delay</li>
+<li>Totem handling: auto-equip on low health</li>
+<li>Shield: auto-equip in combat if healthy</li>
+<li>Smart PVP with strafe, critical hits, retreat, obstacle jump</li>
+<li>Revenge + protect owner from nearby threats</li>
+</ul>
+</div>
+
+</div>
+
+<script>
+function copyText(text, btn){
+  navigator.clipboard.writeText(text).then(()=>{
+    const original = btn.innerText;
+    btn.innerText = "Copied ✓";
+    setTimeout(()=> btn.innerText = original,1500);
+  });
+}
+
+function copyFromCard(btn){
+  const code = btn.closest('.card').querySelector('.code').innerText.trim();
+  copyText(code, btn);
+}
+
+function copyGenerated(){
+  const btn = event.target;
+  const code = document.getElementById('bot-code').innerText.trim();
+  copyText(code, btn);
+}
+
+function generateBotCode(){
+  const ip = document.getElementById("server-ip").value.trim() || 'localhost';
+  const port = parseInt(document.getElementById("server-port").value) || 25565;
+  const name = document.getElementById("bot-name").value.trim() || 'KSBot';
+  const owner = document.getElementById("owner-name").value.trim() || 'YourMinecraftName';
+  const reconnectDelay = (parseInt(document.getElementById("reconnect-delay").value) || 5) * 1000;
+  const eatThreshold = parseInt(document.getElementById("auto-eat-threshold").value) || 15;
+  const jumpInterval = (parseInt(document.getElementById("afk-jump-interval").value) || 45) * 1000;
+  const walkInterval = (parseInt(document.getElementById("afk-walk-interval").value) || 60) * 1000;
+  const viewDist = document.getElementById("view-distance").value.trim() || 'far';
+
+  const jsCode = `const mineflayer = require('mineflayer')
+const Vec3 = require('vec3').Vec3
+
+/* ================= GLOBAL ERROR PROTECTION ================= */
+process.on('uncaughtException', err => console.log('Uncaught Exception:', err.message))
+process.on('unhandledRejection', err => console.log('Unhandled Rejection:', err))
+
+/* ================= CONFIG ================= */
+const config = {
+  host: '${ip}',
+  port: ${port},
+  username: '${name}',
+  owner: '${owner}',
+  reconnectDelay: ${reconnectDelay},
+  eatFoodThreshold: ${eatThreshold},
+  antiAfkJumpInterval: ${jumpInterval},
+  antiAfkWalkInterval: ${walkInterval},
+  viewDistance: '${viewDist}'
+}
+
+let bot
+let actionInterval = null
+let weaponBusy = false
+let eatInterval = null
+let eating = false
+let afkJumpInterval = null
+let afkWalkInterval = null
+let equipInterval = null
+let healthInterval = null
+let offhandBusy = false
+
+let guardTarget = null
+let currentTarget = null
+let followTarget = null
+let guardPosition = null
+let isMining = false
+let lastObstacleJump = 0
+
+/* ================= CREATE BOT ================= */
+function createBot() {
+  bot = mineflayer.createBot({
+    host: config.host,
+    port: config.port,
+    username: config.username,
+    viewDistance: config.viewDistance
+  })
+
+  /* ================= SAFE CLEAR ================= */
+  function stopActions() {
+    if (actionInterval) clearInterval(actionInterval)
+    actionInterval = null
+    isMining = false
+    currentTarget = null
+    followTarget = null
+    guardPosition = null
+    try { bot.clearControlStates() } catch {}
+  }
+
+  /* ================= AUTO RESPAWN ================= */
+  bot.on('death', () => {
+    console.log('Bot died - respawning')
+    stopActions()
+    setTimeout(() => bot.respawn(), 1200)
+  })
+
+  /* ================= LOGIN / SPAWN ================= */
+  bot.on('login', () => console.log(config.username + ' joined the server'))
+
+  bot.on('spawn', () => {
+    console.log('Bot spawned on world 🌍')
+    stopActions()
+    if (eatInterval) clearInterval(eatInterval)
+    eatInterval = setInterval(tryAutoEat, 250)
+    startAntiAFK()
+    if (equipInterval) clearInterval(equipInterval)
+    equipInterval = setInterval(equipAllBest, 1000)
+    bot.chat('I Am KS Ultra Smart Combat Bot')
+  })
+
+  /* ================= AUTO RECONNECT ================= */
+  bot.on('end', () => {
+    console.log('Disconnected... reconnecting in ' + (config.reconnectDelay / 1000) + 's')
+    stopActions()
+    setTimeout(createBot, config.reconnectDelay)
+  })
+
+  bot.on('error', err => console.log('Error:', err.message))
+
+  /* ================= REVENGE ================= */
+  bot.on('entityHurt', (entity) => {
+
+    if (!bot.entity) return
+
+    // If bot is hurt
+    if (entity.id === bot.entity.id) {
+
+      const myPos = bot.entity.position
+      let attacker = null
+      let closestDist = 999
+
+      Object.values(bot.entities).forEach(e => {
+        if (!e.position) return
+        if (e.id === bot.entity.id) return
+        if (e.type !== 'player' && e.type !== 'mob') return
+
+        const dist = e.position.distanceTo(myPos)
+
+        if (dist < 4 && dist < closestDist) {
+          attacker = e
+          closestDist = dist
+        }
+      })
+
+      if (attacker) {
+        bot.chat('⚔ Revenge on ' + (attacker.username || attacker.name))
+        attackEntity(attacker)
+      }
+    }
+
+    // If guard target is hurt
+    if (guardTarget && entity.id === guardTarget.id) {
+
+      let attacker = null
+      let closestDist = 999
+
+      Object.values(bot.entities).forEach(e => {
+        if (!e.position) return
+        if (e.id === bot.entity.id) return
+
+        const dist = e.position.distanceTo(guardTarget.position)
+
+        if (dist < 3 && dist < closestDist) {
+          attacker = e
+          closestDist = dist
+        }
+      })
+
+      if (attacker) {
+        bot.chat('⚔ Protecting guard from ' + (attacker.username || attacker.name))
+        attackEntity(attacker)
+      }
+    }
+
+  })
+
+  /* ================= AUTO EAT (fixed - no interrupt PVP) ================= */
+  async function tryAutoEat() {
+    if (!bot.entity || eating) return
+
+    // During PvP eat only if needed
+    if (currentTarget && bot.health > 15) return
+    if (bot.food >= config.eatFoodThreshold && bot.health > 14) return
+
+    const foodNames = [
+      'bread','cooked_beef','cooked_chicken','cooked_porkchop','cooked_mutton',
+      'cooked_salmon','cooked_cod','golden_apple','enchanted_golden_apple',
+      'golden_carrot','apple','carrot','baked_potato','melon_slice','pumpkin_pie'
+    ]
+
+    const food = bot.inventory.items().find(i => foodNames.includes(i.name))
+    if (!food) return
+
+    try {
+      eating = true
+
+      // Stop combat temporarily
+      if (actionInterval) clearInterval(actionInterval)
+      bot.clearControlStates()
+
+      await bot.equip(food, 'hand')
+      await bot.consume()
+
+    } catch (err) {
+      // silent
+    } finally {
+      eating = false
+
+      // 🔥 Resume PvP automatically
+      if (currentTarget) {
+        attackEntity(currentTarget)
+      }
+    }
+  }
+
+  /* ================= AUTO OFFHAND (Totem + Shield) ================= */
+  async function equipBestOffhand() {
+    if (!bot.entity || offhandBusy) return
+
+    const items = bot.inventory.items()
+    const offhandSlot = bot.getEquipmentDestSlot('off-hand')
+    const current = bot.inventory.slots[offhandSlot]
+
+    try {
+      offhandBusy = true
+
+      // 🛡 Totem priority when low HP
+      const totem = items.find(i => i.name === 'totem_of_undying')
+      if (totem && bot.health <= 14) {
+        if (!current || current.name !== 'totem_of_undying') {
+          await bot.equip(totem, 'off-hand')
+        }
+        return
+      }
+
+      // 🛡 Shield when fighting
+      if (currentTarget) {
+        const shield = items.find(i => i.name === 'shield')
+        if (shield && (!current || current.name !== 'shield')) {
+          await bot.equip(shield, 'off-hand')
+        }
+      }
+
+    } catch (err) {
+      // silent
+    } finally {
+      offhandBusy = false
+    }
+  }
+
+  /* ================= EQUIP SYSTEM ================= */
+  async function equipBestWeapon() {
+    if (!bot.entity || weaponBusy) return
+
+    const weapons = [
+      'netherite_sword',
+      'diamond_sword',
+      'iron_sword',
+      'netherite_axe',
+      'diamond_axe',
+      'iron_axe'
+    ]
+
+    const current = bot.heldItem
+    const items = bot.inventory.items()
+
+    try {
+      weaponBusy = true
+
+      for (let name of weapons) {
+        const item = items.find(i => i.name === name)
+
+        if (item) {
+          // Don't re-equip same weapon
+          if (current && current.name === item.name) return
+
+          await bot.equip(item, 'hand')
+          return
+        }
+      }
+
+    } catch (err) {
+      // silent
+    } finally {
+      weaponBusy = false
+    }
+  }
+
+  async function equipBestArmor() {
+    if (!bot || !bot.inventory) return
+
+    const armorSlots = {
+      head: ['netherite_helmet','diamond_helmet','iron_helmet'],
+      torso: ['netherite_chestplate','diamond_chestplate','iron_chestplate'],
+      legs: ['netherite_leggings','diamond_leggings','iron_leggings'],
+      feet: ['netherite_boots','diamond_boots','iron_boots']
+    }
+
+    for (let slot in armorSlots) {
+
+      // Skip if already wearing best armor
+      const current = bot.inventory.slots[bot.getEquipmentDestSlot(slot)]
+      if (current && armorSlots[slot].includes(current.name)) continue
+
+      for (let name of armorSlots[slot]) {
+        const item = bot.inventory.items().find(i => i.name === name)
+
+        if (item) {
+          try {
+            await bot.equip(item, slot)
+            break
+          } catch (err) {
+            console.log("Equip error:", err.message)
+          }
+        }
+      }
+    }
+  }
+
+  function equipBestTool() {
+    const tools = ['netherite_pickaxe','diamond_pickaxe','iron_pickaxe','netherite_axe','diamond_axe','iron_axe','netherite_shovel','diamond_shovel','iron_shovel']
+    for (let name of tools) {
+      const item = bot.inventory.items().find(i => i.name === name)
+      if (item) {
+        bot.equip(item, 'hand').catch(() => {})
+        return
+      }
+    }
+  }
+
+  function equipAllBest() {
+    equipBestArmor()
+    equipBestWeapon()
+    equipBestOffhand()
+  }
+
+  /* ================= OBSTACLE JUMP (FIXED - never gets stuck) ================= */
+  function autoJumpIfBlocked() {
+    if (Date.now() - lastObstacleJump < 650) return
+
+    const yaw = bot.entity.yaw || 0
+    const dx = -Math.sin(yaw) * 1.8
+    const dz = -Math.cos(yaw) * 1.8
+
+    const checkPos = bot.entity.position.offset(dx, 0.6, dz).floored()
+    const block = bot.blockAt(checkPos)
+
+    if (block && block.name !== 'air' &&
+        !['water','lava','grass','tall_grass','fern','dead_bush'].includes(block.name)) {
+      bot.setControlState('jump', true)
+      setTimeout(() => bot.setControlState('jump', false), 260)
+      lastObstacleJump = Date.now()
+    }
+  }
+
+  /* ================= PRO PVP - SMART ATTACK (fixed) ================= */
+  async function attackEntity(entity) {
+    if (!entity) return
+
+    stopActions()
+    currentTarget = entity
+
+    await equipBestWeapon()
+    await equipBestOffhand()
+
+    let lastAttack = 0
+    let lastStrafe = 0
+    let lastJump = 0
+    let retreating = false
+
+    actionInterval = setInterval(async () => {
+
+      if (eating) {
+        bot.clearControlStates()
+        return
+      }
+
+      if (!currentTarget || !bot.entities[currentTarget.id]) {
+        stopActions()
+        currentTarget = null
+        bot.chat('Target eliminated.')
+        return
+      }
+
+      const target = bot.entities[currentTarget.id]
+      const dist = bot.entity.position.distanceTo(target.position)
+      const health = bot.health
+
+      bot.lookAt(target.position.offset(0, 1.6, 0), true)
+
+      // ===== LOW HEALTH RETREAT =====
+      if (health <= 6) {
+        retreating = true
+      }
+
+      if (retreating) {
+        if (health >= 14) retreating = false
+        else {
+          bot.setControlState('back', true)
+          bot.setControlState('sprint', true)
+          return
+        }
+      }
+
+      // ===== SMART CHASE DISTANCE =====
+      if (dist > 3.2) {
+        bot.setControlState('forward', true)
+        bot.setControlState('sprint', true)
+
+        if (bot.entity.onGround && Date.now() - lastJump > 800) {
+          lastJump = Date.now()
+          bot.setControlState('jump', true)
+          setTimeout(() => bot.setControlState('jump', false), 100)
+        }
+
+        return
+      }
+
+      // ===== CLOSE RANGE CONTROL =====
+      bot.setControlState('forward', false)
+      bot.setControlState('sprint', false)
+
+      // Re-equip weapon if needed
+      const held = bot.heldItem
+      if (!held || !(held.name.includes('sword') || held.name.includes('axe'))) {
+        await equipBestWeapon()
+      }
+
+      // ===== ADAPTIVE STRAFE =====
+      if (Date.now() - lastStrafe > 500) {
+        lastStrafe = Date.now()
+
+        const left = Math.random() > 0.5
+        bot.setControlState('left', left)
+        bot.setControlState('right', !left)
+
+        setTimeout(() => {
+          bot.setControlState('left', false)
+          bot.setControlState('right', false)
+        }, 300)
+      }
+
+      // ===== HIT RESET MICRO-BACK =====
+      if (dist < 2.3) {
+        bot.setControlState('back', true)
+        setTimeout(() => bot.setControlState('back', false), 120)
+      }
+
+      // ===== SHIELD BLOCK BETWEEN HITS =====
+      if (bot.inventory.items().find(i => i.name.includes('shield'))) {
+        bot.activateItem()
+        setTimeout(() => bot.deactivateItem(), 200)
+      }
+
+      // ===== 1.9+ COOLDOWN CRITICAL =====
+      if (Date.now() - lastAttack > 600) {
+        lastAttack = Date.now()
+
+        if (bot.entity.onGround) {
+          bot.setControlState('jump', true)
+          setTimeout(() => bot.setControlState('jump', false), 120)
+        }
+
+        bot.attack(target)
+      }
+
+    }, 50)
+  }
+
+  /* ================= FOLLOW PLAYER ================= */
+  function followPlayer(name) {
+    stopActions()
+
+    const player = bot.players[name]
+    if (!player || !player.entity) {
+      bot.chat('Player not found')
+      return
+    }
+
+    followTarget = player.entity
+
+    actionInterval = setInterval(() => {
+      if (!followTarget || !followTarget.position) {
+        stopActions()
+        return
+      }
+
+      const dist = bot.entity.position.distanceTo(followTarget.position)
+
+      bot.lookAt(followTarget.position.offset(0, 1.6, 0), true)
+
+      if (dist > 3) {
+        bot.setControlState('forward', true)
+        bot.setControlState('sprint', true)
+        autoJumpIfBlocked()
+      } else {
+        bot.clearControlStates()
+      }
+
+    }, 100)
+  }
+
+  /* ================= PLAYER GUARD PHYSICS TICK ================= */
+  bot.on('physicsTick', () => {
+    if (!guardTarget) return
+    if (!guardTarget.position) return
+
+    const guardPos = guardTarget.position
+    const myPos = bot.entity.position
+    const dist = myPos.distanceTo(guardPos)
+
+    let threat = null
+    let closestDist = 999
+
+    // ===== FOLLOW OWNER =====
+    if (dist > 4) {
+      bot.lookAt(guardPos.offset(0, 1.6, 0), true)
+      bot.setControlState('forward', true)
+      bot.setControlState('sprint', true)
+    } else {
+      bot.setControlState('forward', false)
+      bot.setControlState('sprint', false)
+    }
+
+    // ===== SCAN ALL ENTITIES =====
+    Object.values(bot.entities).forEach(entity => {
+
+      if (!entity.position) return
+      if (entity.id === bot.entity.id) return
+
+      const distanceToGuard = entity.position.distanceTo(guardPos)
+
+      // ===== PLAYER THREAT =====
+      if (entity.type === 'player') {
+
+        if (entity.username === bot.username) return
+        if (entity.username === guardTarget.username) return
+
+        // Only attack if very close to owner
+        if (distanceToGuard < 3) {
+          if (distanceToGuard < closestDist) {
+            threat = entity
+            closestDist = distanceToGuard
+          }
+        }
+      }
+      
+      // ===== HOSTILE MOB THREAT =====
+      if (entity.type === 'mob') {
+
+        const hostileMobs = [
+          'zombie','skeleton','creeper','spider',
+          'enderman','witch','husk','drowned',
+          'pillager','vindicator','evoker',
+          'blaze','phantom','hoglin','zoglin'
+        ]
+
+        if (!hostileMobs.includes(entity.name)) return
+
+        if (distanceToGuard < 6) {
+          if (distanceToGuard < closestDist) {
+            threat = entity
+            closestDist = distanceToGuard
+          }
+        }
+      }
+
+    })
+
+    // ===== ATTACK HIGHEST PRIORITY =====
+    if (threat) {
+      attackEntity(threat)
+    }
+
+  })
+
+  /* ================= GUARD POSITION (with obstacle jump) ================= */
+  function startGuard() {
+    stopActions()
+    guardPosition = bot.entity.position.clone()
+    bot.chat('Guarding position')
+
+    actionInterval = setInterval(() => {
+      if (!guardPosition) return
+
+      const dist = bot.entity.position.distanceTo(guardPosition)
+      bot.lookAt(guardPosition.offset(0, 1.6, 0), true)
+
+      if (dist > 4.8) {
+        bot.setControlState('forward', true)
+        bot.setControlState('sprint', true)
+        autoJumpIfBlocked()
+      } else {
+        bot.clearControlStates()
+
+        if (Math.random() < 0.4) {
+          const lookPos = guardPosition.offset(
+            (Math.random() - 0.5) * 14,
+            1.5 + Math.random() * 4,
+            (Math.random() - 0.5) * 14
+          )
+          bot.lookAt(lookPos, true)
+        }
+      }
+    }, 150)
+  }
+
+  /* ================= PLACE BLOCK ================= */
+  async function placeBlock(keyword) {
+    const item = bot.inventory.items().find(i =>
+      i.name.toLowerCase().includes(keyword.toLowerCase())
+    )
+    if (!item) return bot.chat('No ' + keyword + ' found')
+
+    await bot.equip(item, 'hand').catch(() => {})
+
+    const yaw = bot.entity.yaw
+    const dx = -Math.sin(yaw)
+    const dz = -Math.cos(yaw)
+
+    for (let d = 1; d <= 4; d++) {
+      const placePos = bot.entity.position.offset(dx * d, 0.1, dz * d).floored()
+      const air = bot.blockAt(placePos)
+      if (air && air.name === 'air') {
+        const faces = [
+          new Vec3(0,1,0), new Vec3(0,-1,0),
+          new Vec3(1,0,0), new Vec3(-1,0,0),
+          new Vec3(0,0,1), new Vec3(0,0,-1)
+        ]
+        for (let face of faces) {
+          const refPos = placePos.minus(face)
+          const ref = bot.blockAt(refPos)
+          if (ref && ref.name !== 'air' && ref.name !== 'water' && ref.name !== 'lava') {
+            try {
+              await bot.placeBlock(ref, face)
+              bot.chat('Placed ' + item.name)
+              return
+            } catch {}
+          }
+        }
+      }
+    }
+    bot.chat('No placeable spot in front')
+  }
+
+  /* ================= MINING ================= */
+  async function startMining(keyword) {
+    stopActions()
+    isMining = true
+    bot.chat('Mining ' + keyword + '...')
+
+    async function mineNext() {
+      if (!isMining) return
+      equipBestTool()
+
+      const block = bot.findBlock({
+        matching: b => b.name.toLowerCase().includes(keyword.toLowerCase()),
+        maxDistance: 34
+      })
+
+      if (!block) {
+        bot.chat('No more ' + keyword)
+        stopActions()
+        return
+      }
+
+      try {
+        await bot.lookAt(block.position.offset(0.5, 0.5, 0.5), true)
+        await bot.dig(block)
+        setTimeout(mineNext, 160)
+      } catch {
+        setTimeout(mineNext, 500)
+      }
+    }
+    mineNext()
+  }
+
+  /* ================= KILL MOB ================= */
+  function killMobByName(name) {
+    stopActions()
+    bot.chat('Hunting ' + name + '...')
+
+    actionInterval = setInterval(() => {
+
+      const mob = bot.nearestEntity(entity => {
+        if (entity.type !== 'mob') return false
+        if (!entity.name) return false
+        
+        return entity.name.toLowerCase() === name.toLowerCase()
+      })
+
+      if (mob) {
+        attackEntity(mob)
+      }
+
+    }, 850)
+  }
+
+  /* ================= GIVE ITEM ================= */
+  async function giveItemToOwner(keyword) {
+    const ownerPlayer = bot.players[config.owner]
+    if (!ownerPlayer || !ownerPlayer.entity) return bot.chat('Owner not visible')
+
+    const item = bot.inventory.items().find(i => i.name.toLowerCase().includes(keyword.toLowerCase()))
+    if (!item) return bot.chat('No ' + keyword)
+
+    await bot.tossStack(item)
+    bot.chat('Gave ' + item.name)
+  }
+
+  /* ================= ANTI AFK (separate jump & walk) ================= */
+  function startAntiAFK() {
+    if (afkJumpInterval) clearInterval(afkJumpInterval)
+    if (afkWalkInterval) clearInterval(afkWalkInterval)
+
+    afkJumpInterval = setInterval(() => {
+      if (actionInterval || eating || currentTarget || followTarget || guardTarget || isMining || !bot.entity) return
+      bot.setControlState('jump', true)
+      setTimeout(() => bot.setControlState('jump', false), 140 + Math.random() * 160)
+    }, config.antiAfkJumpInterval)
+
+    afkWalkInterval = setInterval(() => {
+      if (actionInterval || eating || currentTarget || followTarget || guardTarget || isMining || !bot.entity) return
+      const r = Math.random()
+      if (r < 0.6) {
+        bot.setControlState('forward', true)
+        setTimeout(() => bot.setControlState('forward', false), 400 + Math.random() * 700)
+        bot.look(bot.entity.yaw + (Math.random() - 0.5) * 2.5, bot.entity.pitch)
+      } else {
+        bot.look(bot.entity.yaw + (Math.random() - 0.5) * 3, bot.entity.pitch + (Math.random() - 0.5) * 1.2)
+      }
+    }, config.antiAfkWalkInterval)
+  }
+
+  /* ================= HUNT MOBS ================= */
+  function huntMobs() {
+    stopActions()
+    bot.chat('Hunting hostile mobs...')
+
+    const hostileMobs = [
+      'zombie','skeleton','creeper','spider',
+      'enderman','witch','husk','drowned',
+      'pillager','vindicator','evoker',
+      'blaze','phantom','hoglin','zoglin'
+    ]
+
+    actionInterval = setInterval(() => {
+      if (!bot.entity) return
+      const mob = bot.nearestEntity(entity => entity.type === 'mob' && hostileMobs.includes(entity.name))
+      if (mob) {
+        attackEntity(mob)
+      } else if (Math.random() < 0.1) {
+        bot.chat('No more hostile mobs nearby, wandering...')
+        bot.setControlState('forward', true)
+        setTimeout(() => bot.setControlState('forward', false), 1000)
+      }
+    }, 850)
+  }
+
+  /* ================= COMMANDS ================= */
+  bot.on('chat', async (username, message) => {
+    if (username !== config.owner) return
+    if (!bot.entity) return
+
+    const args = message.toLowerCase().split(' ')
+    const cmd = args[0]
+
+    if (cmd === '!attack' && args[1]) {
+      const target = bot.players[args[1]]
+      if (target?.entity) attackEntity(target.entity)
+    }
+
+    if (cmd === '!kill' && args[1]) killMobByName(args[1])
+
+    if (cmd === '!follow' && args[1]) followPlayer(args[1])
+
+    if (cmd === '!come') followPlayer(config.owner)
+
+    if (cmd === '!guard') {
+      const player = bot.players[config.owner]
+      if (player?.entity) {
+        guardTarget = player.entity
+        bot.chat('Now guarding ' + config.owner + ' (auto protect)')
+      } else bot.chat('Owner not in render distance')
+    }
+
+    if (cmd === '!stopguard') {
+      guardTarget = null
+      bot.chat('Guard mode disabled.')
+    }
+    
+    if (cmd === '!stop') {
+      stopActions()
+      bot.chat('Stopped everything')
+    }
+
+    if (cmd === '!equip') {
+      equipAllBest()
+      bot.chat('Best gear equipped')
+    }
+
+    if (cmd === '!give' && args[1]) giveItemToOwner(args[1])
+
+    if (cmd === '!place' && args[1]) placeBlock(args[1])
+
+    if (cmd === '!mine' && args[1]) startMining(args[1])
+
+    if (cmd === '!totem') {
+      equipBestOffhand()
+      bot.chat('Totem ready')
+    }
+
+    if (cmd === '!huntmobs') {
+      huntMobs()
+    }
+
+    if (cmd === '!pvpstop') {
+      stopActions()
+      currentTarget = null
+      bot.chat('PVP stopped')
+    }
+
+    if (cmd === '!help') {
+      bot.chat('Bot Commands: !help !follow <name> !come !guard !stopguard !stop !attack <player> !huntmobs !pvpstop !mine <block> !equip !give <item> !place <item> !totem')
+    }
+  })
+}
+
+createBot()
+`
+
+  const fullCode = `cat << 'EOF' > bot.js
+${jsCode}
+EOF`
+
+  document.getElementById("bot-code").innerText = fullCode;
+}
+</script>
+
+</body>
+</html>
