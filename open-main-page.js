@@ -1,7 +1,15 @@
 window.addEventListener('DOMContentLoaded', () => {
     try {
-        const topUrl = window.top.location.href;
-        const urlObj = new URL(topUrl);
+
+        /* ----------------------------------
+           PREVENT ISSUES IN IFRAMES (Google Safe)
+        ----------------------------------- */
+        if (window.self !== window.top) {
+            return;
+        }
+
+        const currentUrl = window.location.href;
+        const urlObj = new URL(currentUrl);
 
         const isKsx = urlObj.hostname === 'ksx.pages.dev';
         const hasPath = urlObj.pathname !== '/' && urlObj.pathname !== '';
@@ -108,8 +116,8 @@ window.addEventListener('DOMContentLoaded', () => {
             };
 
             document.getElementById('ks-confirm').onclick = () => {
-                localStorage.setItem('ks-web-last-page', topUrl);
-                window.top.location.href = 'https://ksx.pages.dev';
+                localStorage.setItem('ks-web-last-page', currentUrl);
+                window.location.href = 'https://ksx.pages.dev';
             };
         }
 
