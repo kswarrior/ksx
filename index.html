@@ -7,18 +7,16 @@
     <meta name="description" content="Join KS Warrior—your go-to KS website for Minecraft servers, KS Ultra Hub builds, and epic gameplay. Discover KS Minecraft guides, KS Web setups, and more. Free resources for ultimate hubs!">
     <meta name="keywords" content="ks warrior, ks ultra hub, ks minecraft, ks website, ks web, minecraft hub, minecraft server, ultra hub setup">
     <meta name="robots" content="index, follow">
-    <meta name="theme-color" content="#3b82f6">
+    <meta name="theme-color" content="#0a0a0f">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-title" content="KS Warrior">
 
     <meta property="og:title" content="KS Warrior: Ultimate Minecraft Hub & KS Ultra Hub Server">
     <meta property="og:description" content="Explore KS Warrior, the premier KS website for Minecraft enthusiasts. Build epic KS Ultra Hubs, join servers, and master KS Web integrations.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://ksx.pages.dev">
     <meta property="og:image" content="https://ksx.pages.dev/og-image.jpg">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
     <meta property="og:site_name" content="KS Warrior">
 
     <meta name="twitter:card" content="summary_large_image">
@@ -27,361 +25,516 @@
     <meta name="twitter:image" content="https://ksx.pages.dev/og-image.jpg">
 
     <title>KS Warrior: Ultimate Minecraft Hub & KS Ultra Hub Server</title>
-
     <link rel="canonical" href="https://ksx.pages.dev">
-    <link rel="icon" href="https://ksx.pages.dev/logo.png" type="image/x-icon">
+    <link rel="icon" href="https://ksx.pages.dev/logo.png" type="image/png">
     <link rel="apple-touch-icon" href="https://ksx.pages.dev/logo.png">
-    <link rel="manifest" href="/manifest.json">
-
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "VideoGame",
-        "name": "KS Warrior Minecraft Hub",
-        "author": {
-            "@type": "Person",
-            "name": "KS Warrior"
-        },
-        "genre": "Minecraft Server",
-        "description": "KS Warrior is the leading KS Ultra Hub for Minecraft players, featuring custom KS Web integrations and epic builds.",
-        "url": "https://ksx.pages.dev",
-        "image": "https://ksx.pages.dev/logo.png",
-        "offers": {
-            "@type": "Offer",
-            "price": "0",
-            "priceCurrency": "USD",
-            "availability": "https://schema.org/InStock"
-        },
-        "aggregateRating": {
-            "@type": "AggregateRating",
-            "ratingValue": "4.8",
-            "reviewCount": "1250"
-        }
-    }
-    </script>
 
 <style>
 :root {
   --bg: #0a0a0f;
-  --top: #0b0b10;
-  --panel: #15151b;
-  --border: #24242c;
-  --text: #e6e6eb;
-  --muted: #9aa0aa;
+  --surface: #12121a;
+  --panel: #1a1a24;
+  --border: #2a2a35;
+  --text: #f0f0f5;
+  --muted: #8b8b9a;
   --accent: #3b82f6;
-  --accent-hover: #2563eb;
-  --hover: #1f1f2a;
-  --glass: rgba(20, 20, 30, 0.85);
-  --topbar-height: 56px;
-  --sidebar-width: 240px;
-  --sidebar-collapsed: -240px;
+  --accent-glow: rgba(59, 130, 246, 0.4);
+  --hover: #252530;
+  --topbar-height: 60px;
+  --sidebar-width: 260px;
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
 
 html, body {
   height: 100%;
   background: var(--bg);
   color: var(--text);
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
   overflow: hidden;
-  user-select: none;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
-/* TOPBAR - Responsive */
+/* ============================================
+   CINEMATIC LOADER - Multi-layer Gaming Style
+   ============================================ */
+#loader-container {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+
+#loader-container.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* Background grid animation */
+.loader-grid {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(rgba(59, 130, 246, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(59, 130, 246, 0.03) 1px, transparent 1px);
+  background-size: 50px 50px;
+  animation: gridMove 20s linear infinite;
+}
+
+@keyframes gridMove {
+  0% { transform: perspective(500px) rotateX(60deg) translateY(0); }
+  100% { transform: perspective(500px) rotateX(60deg) translateY(50px); }
+}
+
+/* Central logo container */
+.loader-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+}
+
+/* Glowing ring */
+.loader-ring {
+  width: 120px;
+  height: 120px;
+  border: 3px solid transparent;
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  position: relative;
+  margin: 0 auto 24px;
+}
+
+.loader-ring::before,
+.loader-ring::after {
+  content: '';
+  position: absolute;
+  border: 3px solid transparent;
+  border-radius: 50%;
+}
+
+.loader-ring::before {
+  inset: -10px;
+  border-top-color: rgba(59, 130, 246, 0.3);
+  animation: spin 2s linear infinite reverse;
+}
+
+.loader-ring::after {
+  inset: 5px;
+  border-top-color: rgba(59, 130, 246, 0.6);
+  animation: spin 1.5s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Logo text with glitch effect */
+.loader-logo {
+  font-size: 28px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  background: linear-gradient(135deg, #fff 0%, var(--accent) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  position: relative;
+  animation: glitch 3s infinite;
+}
+
+@keyframes glitch {
+  0%, 100% { transform: translate(0); }
+  20% { transform: translate(-2px, 2px); }
+  40% { transform: translate(-2px, -2px); }
+  60% { transform: translate(2px, 2px); }
+  80% { transform: translate(2px, -2px); }
+}
+
+/* Progress bar */
+.loader-progress {
+  width: 200px;
+  height: 3px;
+  background: var(--border);
+  border-radius: 3px;
+  margin-top: 24px;
+  overflow: hidden;
+  position: relative;
+}
+
+.loader-bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--accent), #60a5fa);
+  border-radius: 3px;
+  transition: width 0.3s ease;
+  box-shadow: 0 0 10px var(--accent-glow);
+}
+
+/* Floating particles */
+.particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: var(--accent);
+  border-radius: 50%;
+  opacity: 0.6;
+  animation: float 3s ease-in-out infinite;
+}
+
+.particle:nth-child(1) { left: 10%; top: 20%; animation-delay: 0s; }
+.particle:nth-child(2) { left: 20%; top: 60%; animation-delay: 0.5s; }
+.particle:nth-child(3) { left: 80%; top: 30%; animation-delay: 1s; }
+.particle:nth-child(4) { left: 70%; top: 70%; animation-delay: 1.5s; }
+.particle:nth-child(5) { left: 40%; top: 80%; animation-delay: 2s; }
+
+@keyframes float {
+  0%, 100% { transform: translateY(0) scale(1); opacity: 0.6; }
+  50% { transform: translateY(-20px) scale(1.2); opacity: 1; }
+}
+
+/* ============================================
+   TOPBAR - Fixed Layout Management
+   ============================================ */
 #topbar {
   position: fixed;
-  top: 0; left: 0; right: 0;
+  top: 0;
+  left: 0;
+  right: 0;
   height: var(--topbar-height);
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 0 12px;
-  background: var(--top);
-  border-bottom: 1px solid var(--border);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  justify-content: space-between;
+  padding: 0 16px;
   z-index: 1000;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+/* Left section: Logo + Title */
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+  min-width: 0;
+}
+
+.logo {
+  width: 36px;
+  height: 36px;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  flex-shrink: 0;
   transition: all 0.3s ease;
 }
 
-/* LOGO & TITLE - Responsive */
-.logo {
-  width: 32px; height: 32px;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  overflow: hidden;
-  flex-shrink: 0;
-  transition: transform 0.2s ease;
+.logo:hover {
+  border-color: var(--accent);
+  box-shadow: 0 0 15px var(--accent-glow);
 }
-.logo:hover { transform: scale(1.05); }
-.logo img { width: 100%; height: 100%; object-fit: cover; }
+
+.logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 
 .owner-name {
-  font-size: 14px;
-  font-weight: 900;
+  font-size: 16px;
+  font-weight: 800;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  flex: 1;
-  user-select: none;
-  letter-spacing: -0.2px;
+  background: linear-gradient(135deg, #fff 0%, #94a3b8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: 0.5px;
 }
 
-#control-right {
+/* Right section: Search + Fav + Menu */
+.topbar-right {
   display: flex;
   align-items: center;
   gap: 8px;
-  justify-content: flex-end;
-}
-
-/* FAVORITE BUTTON */
-#favButton {
-  cursor: pointer;
-  color: var(--accent);
-  font-size: 20px;
-  font-weight: 900;
-  user-select: none;
-  transition: transform 0.2s ease, color 0.2s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 10px;
   flex-shrink: 0;
 }
 
-#favButton:hover {
+/* Search Container */
+.search-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+#searchBox {
+  width: 40px;
+  height: 40px;
+  padding: 0 16px 0 40px;
+  background: var(--panel);
+  border: 2px solid var(--border);
+  border-radius: 20px;
+  color: var(--text);
+  font-size: 14px;
+  outline: none;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+}
+
+#searchBox:focus,
+#searchBox.active {
+  width: 280px;
+  cursor: text;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+#searchTrigger {
+  position: absolute;
+  left: 12px;
+  width: 20px;
+  height: 20px;
+  pointer-events: none;
+  color: var(--muted);
+  transition: color 0.3s ease;
+}
+
+#searchBox:focus + #searchTrigger,
+#searchBox.active + #searchTrigger {
   color: var(--accent);
-  transform: scale(1.1);
-  background: var(--hover);
+}
+
+.search-icon {
+  width: 100%;
+  height: 100%;
+}
+
+/* Favorite Button */
+#favButton {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--panel);
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: var(--muted);
+}
+
+#favButton:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  transform: scale(1.05);
+  box-shadow: 0 0 15px var(--accent-glow);
 }
 
 #favButton.filled {
   color: var(--accent);
+  background: rgba(59, 130, 246, 0.1);
 }
 
-.fav-svg {
-  filter: drop-shadow(0 0 2px rgba(0,0,0,0.35));
-  transition: all 0.2s ease;
-}
-
-/* SEARCH CONTAINER - Responsive Design */
-.search-container {
-  position: relative;
-  width: 40px;
-  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  overflow: hidden;
-  flex-shrink: 0;
-}
-
-#topbar.search-active .search-container {
-  width: min(320px, 50vw);
-}
-
-#searchBox {
-  width: 100%;
-  height: 40px;
-  padding: 0 14px 0 44px;
-  background: rgba(18, 18, 24, 0.9);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  color: var(--text);
-  font-size: 14px;
-  outline: none;
-  opacity: 0;
-  transition: opacity 0.3s ease 0.1s, border-color 0.2s ease;
-}
-
-#topbar.search-active #searchBox {
-  opacity: 1;
-}
-
-#searchBox:focus {
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-}
-
-/* Search Icon */
-#searchTrigger {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 40px;
-  height: 40px;
-  display: grid;
-  place-items: center;
-  cursor: pointer;
-  color: var(--text);
-  font-size: 20px;
-  z-index: 2;
-  transition: color 0.2s ease;
-  -webkit-tap-highlight-color: transparent;
-}
-
-#searchTrigger:hover {
-  color: var(--accent);
-}
-
-.search-svg {
-  width: 22px;
-  height: 22px;
-  stroke: #F5F5F5;
-  stroke-width: 2.2;
-  fill: none;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  transition: stroke 0.25s ease, transform 0.25s ease, filter 0.25s ease;
-}
-
-#searchTrigger:hover .search-svg {
-  stroke: var(--accent);
-  transform: scale(1.15);
-  filter: drop-shadow(0 0 6px rgba(59,130,246,0.6));
-}
-
-#topbar.search-active .search-svg {
-  stroke: var(--accent);
-}
-
-/* HAMBURGER */
+/* Hamburger - Clean 3-line design */
 #hamburger {
-  width: 40px; height: 40px;
-  background: transparent;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  color: var(--text);
-  cursor: pointer;
-  font-size: 22px;
-  display: grid;
-  place-items: center;
-  transition: all 0.2s ease;
-  flex-shrink: 0;
-  -webkit-tap-highlight-color: transparent;
-}
-
-#hamburger:hover, #hamburger:active {
-  background: var(--hover);
-  border-color: var(--accent);
-}
-
-.menu-svg {
-  width: 20px;
-  height: 20px;
-  stroke: #F5F5F5;
-  stroke-width: 2.2;
-  fill: none;
-  stroke-linecap: round;
-  transition: stroke 0.25s ease, transform 0.25s ease, filter 0.25s ease;
-}
-
-#hamburger:hover .menu-svg {
-  stroke: var(--accent);
-  transform: scale(1.1);
-  filter: drop-shadow(0 0 6px rgba(59,130,246,0.5));
-}
-
-/* SUGGESTIONS - Responsive */
-#suggestBox {
-  position: fixed;
-  top: calc(var(--topbar-height) + 8px);
-  left: 16px; right: 16px;
-  max-width: min(560px, calc(100% - 32px));
-  margin: 0 auto;
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  list-style: none;
-  padding: 8px 0;
-  box-shadow: 0 12px 32px rgba(0,0,0,0.5);
-  display: none;
-  z-index: 900;
-  max-height: min(360px, 60vh);
-  overflow-y: auto;
-  backdrop-filter: blur(12px);
-  -webkit-overflow-scrolling: touch;
-}
-
-#suggestBox li {
-  padding: 12px 18px;
-  cursor: pointer;
-  transition: background 0.2s ease;
-  min-height: 44px;
+  width: 40px;
+  height: 40px;
   display: flex;
+  flex-direction: column;
   align-items: center;
+  justify-content: center;
+  gap: 5px;
+  background: var(--panel);
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0;
 }
 
-#suggestBox li:hover,
-#suggestBox li.active {
-  background: var(--hover);
+#hamburger:hover {
+  border-color: var(--accent);
+  box-shadow: 0 0 15px var(--accent-glow);
 }
 
-/* SIDEBAR - Responsive */
+#hamburger span {
+  display: block;
+  width: 20px;
+  height: 2px;
+  background: var(--text);
+  border-radius: 2px;
+  transition: all 0.3s ease;
+  transform-origin: center;
+}
+
+#hamburger.active span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+#hamburger.active span:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0);
+}
+
+#hamburger.active span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* ============================================
+   SIDEBAR - Professional Slide-out
+   ============================================ */
 #sidebar {
   position: fixed;
   top: var(--topbar-height);
-  left: var(--sidebar-collapsed);
+  left: 0;
   width: var(--sidebar-width);
   height: calc(100% - var(--topbar-height));
-  background: var(--glass);
-  backdrop-filter: blur(20px) saturate(160%);
-  -webkit-backdrop-filter: blur(20px) saturate(160%);
-  padding: 20px 0;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  transition: left 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-  z-index: 800;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
+  background: var(--surface);
   border-right: 1px solid var(--border);
+  transform: translateX(-100%);
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 900;
+  overflow-y: auto;
+  padding: 20px 0;
 }
 
-body.sidebar-open #sidebar { left: 0; }
-
-#sidebar a {
-  display: flex;
-  align-items: center;
-  padding: 14px 24px;
-  color: var(--text);
-  text-decoration: none;
-  font-size: 15px;
-  font-weight: 500;
-  transition: all 0.25s ease;
-  border-left: 3px solid transparent;
-  user-select: none;
-  min-height: 48px;
-  position: relative;
+#sidebar.open {
+  transform: translateX(0);
 }
 
-#sidebar a:hover, #sidebar a:active {
-  background: var(--hover);
-  border-left-color: var(--accent);
-  padding-left: 28px;
-  color: var(--accent);
-}
-
-/* Sidebar overlay for mobile */
+/* Sidebar overlay */
 #sidebar-overlay {
   position: fixed;
   inset: var(--topbar-height) 0 0 0;
-  background: rgba(0,0,0,0.5);
+  background: rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(4px);
-  z-index: 700;
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.3s ease, visibility 0.3s ease;
+  transition: all 0.3s ease;
+  z-index: 800;
 }
 
-body.sidebar-open #sidebar-overlay {
+#sidebar-overlay.visible {
   opacity: 1;
   visibility: visible;
 }
 
-/* FRAME - Responsive */
+/* Sidebar items */
+#sidebar a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 24px;
+  margin: 4px 12px;
+  color: var(--text);
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 500;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+#sidebar a::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--accent);
+  transform: scaleY(0);
+  transition: transform 0.3s ease;
+}
+
+#sidebar a:hover,
+#sidebar a.active {
+  background: var(--hover);
+  color: var(--accent);
+}
+
+#sidebar a:hover::before,
+#sidebar a.active::before {
+  transform: scaleY(1);
+}
+
+.nav-icon {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
+/* ============================================
+   SEARCH SUGGESTIONS
+   ============================================ */
+#suggestBox {
+  position: fixed;
+  top: calc(var(--topbar-height) + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(560px, calc(100% - 32px));
+  max-height: 400px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+  overflow-y: auto;
+  z-index: 950;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  padding: 8px 0;
+}
+
+#suggestBox.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.suggest-item {
+  padding: 12px 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-left: 3px solid transparent;
+}
+
+.suggest-item:hover,
+.suggest-item.active {
+  background: var(--hover);
+  border-left-color: var(--accent);
+  padding-left: 24px;
+}
+
+.suggest-category {
+  padding: 8px 20px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--accent);
+  margin-top: 8px;
+}
+
+/* ============================================
+   MAIN FRAME
+   ============================================ */
 #frame {
   position: fixed;
   top: var(--topbar-height);
@@ -390,19 +543,20 @@ body.sidebar-open #sidebar-overlay {
   height: calc(100% - var(--topbar-height));
   border: none;
   background: #fff;
-  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), left 0.4s ease, width 0.4s ease;
+  transition: all 0.4s ease;
 }
 
-/* Desktop sidebar persistent */
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+/* Tablet and Desktop */
 @media (min-width: 1024px) {
-  :root {
-    --sidebar-width: 260px;
-    --sidebar-collapsed: 0;
+  #sidebar {
+    transform: translateX(0);
   }
   
-  #sidebar {
-    left: 0;
-    border-right: 1px solid var(--border);
+  #hamburger {
+    display: none;
   }
   
   #frame {
@@ -410,322 +564,81 @@ body.sidebar-open #sidebar-overlay {
     width: calc(100% - var(--sidebar-width));
   }
   
-  #hamburger {
-    display: none;
-  }
-  
   #sidebar-overlay {
     display: none;
   }
   
-  body.sidebar-open #frame {
-    transform: none;
-  }
-}
-
-/* Tablet adjustments */
-@media (min-width: 768px) and (max-width: 1023px) {
-  .owner-name {
-    font-size: 16px;
-  }
-  
-  #topbar.search-active .search-container {
-    width: 280px;
+  #searchBox:focus,
+  #searchBox.active {
+    width: 320px;
   }
 }
 
 /* Mobile optimizations */
 @media (max-width: 767px) {
   :root {
-    --topbar-height: 52px;
-  }
-  
-  #topbar {
-    padding: 0 8px;
-    gap: 6px;
-  }
-  
-  .logo {
-    width: 28px;
-    height: 28px;
+    --topbar-height: 56px;
   }
   
   .owner-name {
-    font-size: 12px;
-    max-width: 120px;
+    font-size: 14px;
+    max-width: 140px;
   }
   
-  #topbar.search-active .owner-name {
-    display: none;
+  #searchBox:focus,
+  #searchBox.active {
+    width: calc(100vw - 140px);
+    position: fixed;
+    right: 16px;
+    z-index: 1001;
   }
   
-  #topbar.search-active .search-container {
-    width: calc(100vw - 80px);
-    flex: 1;
+  .loader-logo {
+    font-size: 24px;
   }
   
-  #topbar.search-active .logo {
-    display: none;
-  }
-  
-  #favButton {
-    width: 36px;
-    height: 36px;
-  }
-  
-  #hamburger {
-    width: 36px;
-    height: 36px;
-  }
-  
-  #searchTrigger {
-    width: 36px;
-    height: 36px;
-  }
-  
-  #searchBox {
-    height: 36px;
-    font-size: 16px; /* Prevent zoom on iOS */
-  }
-  
-  .search-container {
-    width: 36px;
-  }
-  
-  #sidebar {
-    width: 280px;
-    left: -280px;
-  }
-  
-  body.sidebar-open #sidebar {
-    left: 0;
-  }
-  
-  #sidebar a {
-    padding: 16px 24px;
-    font-size: 16px;
-  }
-  
-  #suggestBox {
-    top: calc(var(--topbar-height) + 4px);
-    left: 8px;
-    right: 8px;
-    border-radius: 16px;
-  }
-  
-  #suggestBox li {
-    padding: 14px 16px;
-    font-size: 15px;
+  .loader-ring {
+    width: 100px;
+    height: 100px;
   }
 }
 
 /* Small mobile */
 @media (max-width: 380px) {
   .owner-name {
-    font-size: 11px;
-    letter-spacing: -0.3px;
+    font-size: 12px;
+    max-width: 100px;
   }
   
-  #favButton {
+  .logo {
     width: 32px;
     height: 32px;
   }
-  
-  .fav-svg {
-    width: 16px;
-    height: 16px;
-  }
 }
 
-/* Landscape mobile */
+/* Landscape */
 @media (max-height: 500px) and (orientation: landscape) {
-  :root {
-    --topbar-height: 48px;
-  }
-  
-  #suggestBox {
-    max-height: 50vh;
-  }
-  
   #sidebar {
     padding: 10px 0;
   }
   
   #sidebar a {
-    padding: 12px 24px;
-    min-height: 44px;
+    padding: 10px 20px;
   }
 }
 
-/* Large desktop */
-@media (min-width: 1440px) {
-  :root {
-    --sidebar-width: 300px;
-  }
-  
-  #sidebar a {
-    font-size: 16px;
-    padding: 16px 28px;
-  }
-  
-  .owner-name {
-    font-size: 16px;
-  }
-}
-
-/* ICON */
-.s-icon {
-  display: inline-grid;
-  place-items: center;
-  width: 22px;
-  height: 22px;
-  margin-right: 8px;
-  border-radius: 6px;
-  background: rgba(59, 130, 246, 0.15);
-  color: var(--accent);
-  font-size: 13px;
-  flex-shrink: 0;
-}
-
-/* CATEGORY */
-.s-category {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 15px;
-  font-weight: 800;
-  color: var(--accent);
-  padding: 12px 18px 8px;
-  margin-top: 4px;
-  cursor: default;
-  text-transform: uppercase;
-  letter-spacing: 0.4px;
-  opacity: 0.95;
-  pointer-events: none;
-}
-
-.s-category::after {
-  content: "";
-  display: block;
-  width: 100%;
-  height: 1px;
-  background: linear-gradient(to right, var(--accent), transparent);
-  margin-top: 6px;
-  opacity: 0.25;
-}
-
-/* TITLE */
-.s-title {
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--text);
-  padding: 8px 28px 6px;
-  margin-left: 35px;
-  opacity: 0.85;
-  cursor: default;
-  position: relative;
-  pointer-events: none;
-}
-
-.s-title::before {
-  content: "❯❯";
-  position: absolute;
-  left: -5px;
-  color: var(--accent);
-  opacity: 0.6;
-  font-size: 10px;
-}
-
-/* PAGE */
-.s-page {
-  font-size: 12px;
-  padding: 10px 40px;
-  margin-left: 55px;
-  color: var(--muted);
-  border-radius: 8px;
-  transition: all 0.2s ease;
-  position: relative;
-}
-
-.s-page:hover, .s-page.active {
-  background: linear-gradient(90deg, rgba(59, 130, 246, 0.15), transparent);
-  color: var(--text);
-}
-
-.s-page::before {
-  content: "➣";
-  position: absolute;
-  left: -5px;
-  top: 8px;
-  bottom: 8px;
-  width: 3px;
-  opacity: 0;
-  border-radius: 3px;
-  background: var(--accent);
-  transition: opacity 0.2s ease;
-}
-
-.s-page:hover::before, .s-page.active::before {
-  opacity: 1;
-}
-
-/* Animations */
-#suggestBox li {
-  animation: fadeIn 0.15s ease;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(4px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* Touch feedback */
-@media (hover: none) {
-  #sidebar a:active,
-  #hamburger:active,
-  #searchTrigger:active,
-  #favButton:active {
-    transform: scale(0.95);
-    opacity: 0.8;
-  }
-  
-  .s-page:active {
-    background: rgba(59, 130, 246, 0.25);
-  }
-}
-
-/* Reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  * {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-}
-
-/* Dark mode support (system preference) */
-@media (prefers-color-scheme: light) {
-  /* Keep dark theme regardless of system preference for gaming aesthetic */
-}
-
-/* Safe area insets for notched devices */
+/* Safe area for notched phones */
 @supports (padding-top: env(safe-area-inset-top)) {
   #topbar {
     padding-top: env(safe-area-inset-top);
     height: calc(var(--topbar-height) + env(safe-area-inset-top));
   }
   
-  #sidebar, #frame, #pageLoader {
+  #sidebar,
+  #frame,
+  #sidebar-overlay {
     top: calc(var(--topbar-height) + env(safe-area-inset-top));
     height: calc(100% - var(--topbar-height) - env(safe-area-inset-top));
-  }
-  
-  #suggestBox {
-    top: calc(var(--topbar-height) + env(safe-area-inset-top) + 8px);
-  }
-  
-  #topLoader {
-    top: calc(var(--topbar-height) + env(safe-area-inset-top));
   }
 }
 </style>
@@ -733,444 +646,383 @@ body.sidebar-open #sidebar-overlay {
 
 <body>
 
-<div id="topbar">
-  <div class="logo"><img src="/image/ks-logo.webp" alt="KS Warrior Logo"></div>
-  <div class="owner-name">❰🔹❰❰ 𝑲𝑺 𝑾𝒂𝒓𝒓𝒊𝒐𝒓 ❱❱🔹❱</div>
-
-  <div id="favButton" title="Add to Favorites" aria-label="Add to Favorites"></div>
+<!-- Cinematic Loader -->
+<div id="loader-container">
+  <div class="loader-grid"></div>
+  <div class="particle"></div>
+  <div class="particle"></div>
+  <div class="particle"></div>
+  <div class="particle"></div>
+  <div class="particle"></div>
   
-  <div id="control-right">
-    <div class="search-container">
-      <div id="searchTrigger" aria-label="Search" role="button" tabindex="0">
-        <svg class="search-svg" viewBox="0 0 24 24" aria-hidden="true">
-          <circle cx="11" cy="11" r="6.8" fill="none" stroke-width="1.8" stroke-linecap="round"/>
-          <line x1="16.2" y1="16.2" x2="20.4" y2="20.4" stroke-width="1.8" stroke-linecap="round"/>
-        </svg>
-      </div>
-      <input id="searchBox" type="search" placeholder="Search pages..." aria-label="Search pages" autocomplete="off" enterkeyhint="search">
+  <div class="loader-content">
+    <div class="loader-ring"></div>
+    <div class="loader-logo">❰🔹❰❰ 𝑲𝑺 ❱❱🔹❱</div>
+    <div class="loader-progress">
+      <div class="loader-bar" id="loaderBar"></div>
     </div>
-
-    <button id="hamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="sidebar">
-      <svg class="menu-svg" viewBox="0 0 24 24" aria-hidden="true">
-        <line x1="4" y1="6" x2="20" y2="6"/>
-        <line x1="4" y1="12" x2="20" y2="12"/>
-        <line x1="4" y1="18" x2="20" y2="18"/>
-      </svg>
-    </button>
   </div>
 </div>
 
-<ul id="suggestBox" role="listbox" aria-label="Search suggestions"></ul>
+<!-- Topbar - Fixed Layout -->
+<header id="topbar">
+  <div class="topbar-left">
+    <div class="logo">
+      <img src="/image/ks-logo.webp" alt="KS Warrior Logo">
+    </div>
+    <div class="owner-name">❰🔹❰❰ 𝑲𝑺 𝑾𝒂𝒓𝒓𝒊𝒐𝒓 ❱❱🔹❱</div>
+  </div>
+  
+  <div class="topbar-right">
+    <div class="search-wrapper">
+      <input type="search" id="searchBox" placeholder="Search pages..." autocomplete="off">
+      <div id="searchTrigger">
+        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"></circle>
+          <path d="m21 21-4.35-4.35"></path>
+        </svg>
+      </div>
+    </div>
+    
+    <button id="favButton" aria-label="Add to favorites">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+      </svg>
+    </button>
+    
+    <button id="hamburger" aria-label="Toggle menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </div>
+</header>
 
-<div id="sidebar-overlay" aria-hidden="true"></div>
+<!-- Search Suggestions -->
+<ul id="suggestBox" role="listbox"></ul>
 
-<nav id="sidebar" aria-label="Main navigation" role="navigation">
-  <a href="#" onclick="loadInFrame('dashboard.html'); return false;" role="menuitem">
-    <span style="margin-right: 12px;">📊</span> Dashboard
+<!-- Sidebar Overlay -->
+<div id="sidebar-overlay"></div>
+
+<!-- Sidebar Navigation -->
+<nav id="sidebar" aria-label="Main navigation">
+  <a href="#" onclick="loadPage('dashboard.html'); return false;" class="active">
+    <span class="nav-icon">📊</span>
+    <span>Dashboard</span>
   </a>
-  <a href="#" onclick="loadInFrame('map.html'); return false;" role="menuitem">
-    <span style="margin-right: 12px;">🗺️</span> Sites Map
+  <a href="#" onclick="loadPage('map.html'); return false;">
+    <span class="nav-icon">🗺️</span>
+    <span>Sites Map</span>
   </a>
-  <a href="#" onclick="loadInFrame('social.html'); return false;" role="menuitem">
-    <span style="margin-right: 12px;">🌐</span> Social Media
+  <a href="#" onclick="loadPage('social.html'); return false;">
+    <span class="nav-icon">🌐</span>
+    <span>Social Media</span>
   </a>
-  <a href="#" onclick="loadInFrame('about.html'); return false;" role="menuitem">
-    <span style="margin-right: 12px;">ℹ️</span> About
+  <a href="#" onclick="loadPage('about.html'); return false;">
+    <span class="nav-icon">ℹ️</span>
+    <span>About</span>
   </a>
 </nav>
 
-<iframe id="frame" title="Main content" sandbox="allow-same-origin allow-scripts allow-popups allow-forms" loading="eager"></iframe>
+<!-- Main Content Frame -->
+<iframe id="frame" title="Main content" sandbox="allow-same-origin allow-scripts allow-popups allow-forms"></iframe>
 
 <script>
-document.addEventListener("DOMContentLoaded", () => {
-  const frame = document.getElementById("frame");
-  const topbar = document.getElementById("topbar");
-  const suggestBox = document.getElementById("suggestBox");
-  const searchBox = document.getElementById("searchBox");
-  const hamburger = document.getElementById("hamburger");
-  const sidebar = document.getElementById("sidebar");
-  const sidebarOverlay = document.getElementById("sidebar-overlay");
-  const favButton = document.getElementById("favButton");
-
-  // Detect touch device
-  const isTouchDevice = window.matchMedia('(pointer: coarse)').matches;
-  const isDesktop = window.innerWidth >= 1024;
-
-  // Page Loader
-  const pageLoader = document.createElement("div");
-  pageLoader.id = "pageLoader";
-  pageLoader.innerHTML = `
-    <div class="loader-box">
-      <svg class="ks-loader" width="120" height="40" viewBox="0 0 120 40">
-        <text x="50%" y="50%" text-anchor="middle" dominant-baseline="middle" 
-          font-family="monospace" font-size="28" fill="none" stroke="var(--accent)" 
-          stroke-width="1.5" stroke-dasharray="100" stroke-dashoffset="100">
-          ❰🔹❰❰ 𝑲𝑺 ❱❱🔹❱
-        </text>
-      </svg>
-    </div>
-  `;
-  document.body.appendChild(pageLoader);
-
-  // Top Loader
-  const topLoader = document.createElement("div");
-  topLoader.id = "topLoader";
-  document.body.appendChild(topLoader);
-
-  // Loader CSS
-  const loaderCSS = document.createElement("style");
-  loaderCSS.innerHTML = `
-    #pageLoader {
-      position: fixed;
-      inset: var(--topbar-height) 0 0 0;
-      background: rgba(10, 10, 15, 0.92);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 1200;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.25s ease;
-    }
-    #pageLoader.active {
-      opacity: 1;
-      pointer-events: all;
-    }
-    .loader-box {
-      display: flex; 
-      flex-direction: column; 
-      align-items: center; 
-      gap: 14px;
-    }
-    .ks-loader text {
-      stroke: var(--accent);
-      stroke-width: 1.5;
-      stroke-dasharray: 100;
-      stroke-dashoffset: 100;
-      animation: ks-draw 2s cubic-bezier(0.65, 0, 0.35, 1) infinite alternate;
-    }
-    @keyframes ks-draw {
-      0% { stroke-dashoffset: 100; fill: none; opacity: 0.25; }
-      40% { stroke-dashoffset: 0; fill: var(--accent); opacity: 1; }
-      100% { stroke-dashoffset: 100; fill: none; opacity: 0.25; }
-    }
-    #topLoader {
-      position: fixed;
-      top: var(--topbar-height);
-      left: 0;
-      width: 0%;
-      height: 2px;
-      background: var(--accent);
-      z-index: 1300;
-      transition: width 1.5s ease;
-    }
-    @supports (padding-top: env(safe-area-inset-top)) {
-      #pageLoader { top: calc(var(--topbar-height) + env(safe-area-inset-top)); }
-      #topLoader { top: calc(var(--topbar-height) + env(safe-area-inset-top)); }
-    }
-  `;
-  document.head.appendChild(loaderCSS);
-
-  // Top Loader Functions
-  let loaderInterval;
-  function startTopLoader() {
-    topLoader.style.width = "0%";
-    let width = 0;
-    loaderInterval = setInterval(() => {
-      width += Math.random() * 2;
-      if (width < 90) topLoader.style.width = width + "%";
-    }, 20);
-  }
-
-  function finishTopLoader() {
-    clearInterval(loaderInterval);
-    topLoader.style.width = "100%";
-    setTimeout(() => { topLoader.style.width = "0%"; }, 300);
-  }
-
-  // Load Frame Function
-  const LAST_PAGE_KEY = "ks-web-last-page";
-  window.loadInFrame = function(url, nameFromSearch = null) {
-    if (!url) return;
-    if (frame.getAttribute("data-current") === url) return;
+// ==========================================
+// CINEMATIC LOADER
+// ==========================================
+window.addEventListener('load', () => {
+  const loaderBar = document.getElementById('loaderBar');
+  const loaderContainer = document.getElementById('loader-container');
+  let progress = 0;
+  
+  // Simulate loading progress
+  const interval = setInterval(() => {
+    progress += Math.random() * 15;
+    if (progress > 100) progress = 100;
+    loaderBar.style.width = progress + '%';
     
-    frame.setAttribute("data-current", url);
-    localStorage.setItem(LAST_PAGE_KEY, url);
-    
-    // Close mobile sidebar
-    if (!isDesktop) {
-      document.body.classList.remove("sidebar-open");
-      hamburger.setAttribute("aria-expanded", "false");
-    }
-    
-    topbar.classList.remove("search-active");
-    suggestBox.style.display = "none";
-    searchBox.value = "";
-    searchBox.blur();
-
-    pageLoader.classList.add("active");
-    const startTime = Date.now();
-    startTopLoader();
-
-    frame.src = url;
-
-    frame.onload = () => {
-      const elapsed = Date.now() - startTime;
-      const wait = Math.max(2500 - elapsed, 0);
+    if (progress === 100) {
+      clearInterval(interval);
       setTimeout(() => {
-        pageLoader.classList.remove("active");
-        finishTopLoader();
-        updateFavIcon();
-      }, wait);
+        loaderContainer.classList.add('hidden');
+        // Initialize app after loader
+        initApp();
+      }, 400);
+    }
+  }, 150);
+});
 
-      if (nameFromSearch && typeof saveToRecent === "function") {
-        saveToRecent(nameFromSearch, url);
-      }
-    };
-  };
-
-  // Restore Last Page
-  const lastPage = localStorage.getItem(LAST_PAGE_KEY);
-  loadInFrame(lastPage || "dashboard.html");
-
-  // Sidebar Toggle
-  hamburger.addEventListener("click", () => {
-    const isOpen = document.body.classList.toggle("sidebar-open");
-    hamburger.setAttribute("aria-expanded", isOpen);
-  });
-
-  // Close sidebar when clicking overlay
-  sidebarOverlay.addEventListener("click", () => {
-    document.body.classList.remove("sidebar-open");
-    hamburger.setAttribute("aria-expanded", "false");
-  });
-
-  // Close sidebar on escape key
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && document.body.classList.contains("sidebar-open")) {
-      document.body.classList.remove("sidebar-open");
-      hamburger.setAttribute("aria-expanded", "false");
+// ==========================================
+// APP INITIALIZATION
+// ==========================================
+function initApp() {
+  const frame = document.getElementById('frame');
+  const sidebar = document.getElementById('sidebar');
+  const hamburger = document.getElementById('hamburger');
+  const overlay = document.getElementById('sidebar-overlay');
+  const searchBox = document.getElementById('searchBox');
+  const suggestBox = document.getElementById('suggestBox');
+  const favButton = document.getElementById('favButton');
+  
+  let searchData = [];
+  let activeIndex = -1;
+  
+  // Load initial page
+  const lastPage = localStorage.getItem('ks-last-page') || 'dashboard.html';
+  loadPage(lastPage, false);
+  
+  // ==========================================
+  // SIDEBAR TOGGLE
+  // ==========================================
+  function toggleSidebar() {
+    const isOpen = sidebar.classList.toggle('open');
+    hamburger.classList.toggle('active', isOpen);
+    overlay.classList.toggle('visible', isOpen);
+  }
+  
+  hamburger.addEventListener('click', toggleSidebar);
+  overlay.addEventListener('click', toggleSidebar);
+  
+  // Close sidebar on escape
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && sidebar.classList.contains('open')) {
+      toggleSidebar();
     }
   });
-
-  // Handle resize
-  let resizeTimeout;
-  window.addEventListener("resize", () => {
-    clearTimeout(resizeTimeout);
-    resizeTimeout = setTimeout(() => {
-      const newIsDesktop = window.innerWidth >= 1024;
-      if (newIsDesktop !== isDesktop) {
-        location.reload(); // Reload to apply desktop/mobile styles properly
-      }
-    }, 250);
-  });
-
-  // Search Data
-  const RECENT_KEY = "ks-web-recent";
-  const MAX_RECENT = 5;
-  let searchData = [];
-
-  // Load sitemap
-  fetch("/sitemap.json")
+  
+  // ==========================================
+  // SEARCH FUNCTIONALITY
+  // ==========================================
+  fetch('/sitemap.json')
     .then(r => r.ok ? r.json() : [])
     .then(data => {
-      const list = [];
       data.forEach(cat => {
-        const category = cat.category;
-        const icon = cat.icon || "";
         (cat.sections || []).forEach(sec => {
-          const title = sec.title;
           (sec.pages || []).forEach(page => {
-            list.push({ icon, category, title, name: page.name, url: page.url });
+            searchData.push({
+              category: cat.category,
+              title: sec.title,
+              name: page.name,
+              url: page.url,
+              icon: cat.icon || '•'
+            });
           });
         });
       });
-      searchData = list;
     })
-    .catch(() => { searchData = []; });
-
-  // Save to recent
-  window.saveToRecent = function(name, url) {
-    if (!name || !url) return;
-    let recent = JSON.parse(localStorage.getItem(RECENT_KEY) || "[]");
-    recent = recent.filter(item => item.url !== url);
-    recent.unshift({ name, url, time: Date.now() });
-    recent = recent.slice(0, MAX_RECENT);
-    localStorage.setItem(RECENT_KEY, JSON.stringify(recent));
-  };
-
-  // Search functionality
-  let activeIndex = -1;
-  const searchTrigger = document.getElementById("searchTrigger");
-
+    .catch(() => {});
+  
   function updateSuggestions() {
     const query = searchBox.value.trim().toLowerCase();
-    suggestBox.innerHTML = "";
-    suggestBox.style.display = "none";
+    suggestBox.innerHTML = '';
     activeIndex = -1;
-
-    if (!query || searchData.length === 0) return;
-
-    const matched = searchData.filter(item =>
+    
+    if (!query || !searchData.length) {
+      suggestBox.classList.remove('visible');
+      return;
+    }
+    
+    const matches = searchData.filter(item => 
       item.name.toLowerCase().includes(query) ||
-      item.title.toLowerCase().includes(query) ||
       item.category.toLowerCase().includes(query)
     );
-
-    if (matched.length === 0) {
-      suggestBox.innerHTML = `<li style="padding:14px 18px;color:var(--muted);">No results found</li>`;
-      suggestBox.style.display = "block";
+    
+    if (!matches.length) {
+      suggestBox.innerHTML = '<li class="suggest-item">No results found</li>';
+      suggestBox.classList.add('visible');
       return;
     }
-
-    const tree = {};
-    matched.forEach(i => {
-      tree[i.category] ??= { icon: i.icon, titles: {} };
-      tree[i.category].titles[i.title] ??= [];
-      tree[i.category].titles[i.title].push(i);
+    
+    // Group by category
+    const grouped = {};
+    matches.forEach(item => {
+      if (!grouped[item.category]) grouped[item.category] = [];
+      grouped[item.category].push(item);
     });
-
-    let html = "";
-    Object.entries(tree).forEach(([category, data]) => {
-      html += `<li class="s-category"><span class="s-icon">${data.icon}</span><span>${category}</span></li>`;
-      Object.entries(data.titles).forEach(([title, pages]) => {
-        html += `<li class="s-title">${title}</li>`;
-        pages.forEach(p => {
-          html += `<li class="s-page" tabindex="0" role="option" data-url="${p.url}" data-name="${p.name}">${p.name}</li>`;
-        });
+    
+    let html = '';
+    Object.entries(grouped).forEach(([cat, items]) => {
+      html += `<li class="suggest-category">${cat}</li>`;
+      items.forEach(item => {
+        html += `
+          <li class="suggest-item" data-url="${item.url}" data-name="${item.name}">
+            <strong>${item.name}</strong>
+            <div style="font-size: 12px; color: var(--muted); margin-top: 2px;">${item.title}</div>
+          </li>
+        `;
       });
     });
-
+    
     suggestBox.innerHTML = html;
-    suggestBox.style.display = "block";
+    suggestBox.classList.add('visible');
   }
-
-  searchBox.addEventListener("input", updateSuggestions);
-
-  searchBox.addEventListener("keydown", (e) => {
-    const items = [...suggestBox.querySelectorAll("li[role='option']")];
-    if (items.length === 0) return;
-
-    if (e.key === "ArrowDown") {
-      e.preventDefault();
-      activeIndex = (activeIndex + 1) % items.length;
-    } else if (e.key === "ArrowUp") {
-      e.preventDefault();
-      activeIndex = (activeIndex - 1 + items.length) % items.length;
-    } else if (e.key === "Enter") {
-      e.preventDefault();
-      if (activeIndex >= 0) {
-        const item = items[activeIndex];
-        loadInFrame(item.dataset.url, item.dataset.name);
-      }
-      return;
-    } else if (e.key === "Escape") {
-      topbar.classList.remove("search-active");
-      suggestBox.style.display = "none";
-      searchBox.value = "";
-      searchBox.blur();
-      return;
-    }
-
-    items.forEach(i => i.classList.remove("active"));
-    if (activeIndex >= 0) items[activeIndex].classList.add("active");
-  });
-
-  suggestBox.addEventListener("click", (e) => {
-    const li = e.target.closest("li[role='option']");
-    if (li) loadInFrame(li.dataset.url, li.dataset.name);
-  });
-
-  // Search trigger
-  searchTrigger.addEventListener("click", (e) => {
-    e.stopPropagation();
-    topbar.classList.add("search-active");
-    setTimeout(() => searchBox.focus(), 100);
+  
+  searchBox.addEventListener('focus', () => {
+    searchBox.classList.add('active');
     updateSuggestions();
   });
-
-  searchTrigger.addEventListener("keydown", (e) => {
-    if (e.key === "Enter" || e.key === " ") {
-      e.preventDefault();
-      searchTrigger.click();
-    }
-  });
-
-  // Close search on outside click
-  document.addEventListener("click", (e) => {
-    if (!topbar.contains(e.target) && !suggestBox.contains(e.target)) {
-      topbar.classList.remove("search-active");
-      suggestBox.style.display = "none";
-      searchBox.value = "";
-    }
-  });
-
-  suggestBox.addEventListener("click", (e) => e.stopPropagation());
-
-  // Favorites
-  const FAV_KEY = "ks-web-fav";
   
-  const getFavorites = () => JSON.parse(localStorage.getItem(FAV_KEY) || "[]");
-  const isFavorite = (url) => getFavorites().some(item => new URL(item.url, location.href).href === url);
-
-  window.updateFavIcon = function() {
-    const frameUrl = frame.src;
-    const filledStarSVG = `<svg class="fav-svg" width="20" height="20" fill="#F5F5F5" stroke="#F5F5F5" stroke-width="1" viewBox="0 0 24 24"><path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.778 1.4 8.164L12 18.897l-7.334 3.855 1.4-8.164L.132 9.21l8.2-1.192z"/></svg>`;
-    const emptyStarSVG = `<svg class="fav-svg" width="20" height="20" fill="none" stroke="#F5F5F5" stroke-width="2" viewBox="0 0 24 24"><path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.778 1.4 8.164L12 18.897l-7.334 3.855 1.4-8.164L.132 9.21l8.2-1.192z"/></svg>`;
-
-    if (isFavorite(frameUrl)) {
-      favButton.innerHTML = filledStarSVG;
-      favButton.classList.add("filled");
-      favButton.setAttribute("aria-label", "Remove from favorites");
+  searchBox.addEventListener('input', updateSuggestions);
+  
+  searchBox.addEventListener('keydown', (e) => {
+    const items = suggestBox.querySelectorAll('.suggest-item[data-url]');
+    
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      activeIndex = (activeIndex + 1) % items.length;
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      activeIndex = (activeIndex - 1 + items.length) % items.length;
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      if (activeIndex >= 0 && items[activeIndex]) {
+        const item = items[activeIndex];
+        loadPage(item.dataset.url);
+        saveRecent(item.dataset.name, item.dataset.url);
+      }
+      return;
+    } else if (e.key === 'Escape') {
+      searchBox.classList.remove('active');
+      searchBox.blur();
+      suggestBox.classList.remove('visible');
+      return;
+    }
+    
+    items.forEach((item, i) => {
+      item.classList.toggle('active', i === activeIndex);
+    });
+  });
+  
+  suggestBox.addEventListener('click', (e) => {
+    const item = e.target.closest('.suggest-item[data-url]');
+    if (item) {
+      loadPage(item.dataset.url);
+      saveRecent(item.dataset.name, item.dataset.url);
+    }
+  });
+  
+  // Close search when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.search-wrapper') && !e.target.closest('#suggestBox')) {
+      searchBox.classList.remove('active');
+      suggestBox.classList.remove('visible');
+    }
+  });
+  
+  // ==========================================
+  // FAVORITES SYSTEM
+  // ==========================================
+  const FAV_KEY = 'ks-favorites';
+  
+  function getFavs() {
+    return JSON.parse(localStorage.getItem(FAV_KEY) || '[]');
+  }
+  
+  function isFav(url) {
+    return getFavs().some(f => f.url === url);
+  }
+  
+  function updateFavButton() {
+    const currentUrl = frame.getAttribute('data-current');
+    if (isFav(currentUrl)) {
+      favButton.classList.add('filled');
+      favButton.innerHTML = `
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2">
+          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+        </svg>
+      `;
     } else {
-      favButton.innerHTML = emptyStarSVG;
-      favButton.classList.remove("filled");
-      favButton.setAttribute("aria-label", "Add to favorites");
+      favButton.classList.remove('filled');
+      favButton.innerHTML = `
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+        </svg>
+      `;
+    }
+  }
+  
+  favButton.addEventListener('click', () => {
+    const currentUrl = frame.getAttribute('data-current');
+    let favs = getFavs();
+    const name = searchData.find(s => s.url === currentUrl)?.name || 'Page';
+    
+    if (isFav(currentUrl)) {
+      favs = favs.filter(f => f.url !== currentUrl);
+    } else {
+      favs.unshift({ name, url: currentUrl, time: Date.now() });
+    }
+    
+    localStorage.setItem(FAV_KEY, JSON.stringify(favs));
+    updateFavButton();
+    
+    // Pop animation
+    favButton.style.transform = 'scale(1.2)';
+    setTimeout(() => favButton.style.transform = '', 200);
+  });
+  
+  frame.addEventListener('load', updateFavButton);
+  
+  // ==========================================
+  // PAGE LOADER
+  // ==========================================
+  window.loadPage = function(url, save = true) {
+    if (!url || frame.getAttribute('data-current') === url) return;
+    
+    // Update sidebar active state
+    document.querySelectorAll('#sidebar a').forEach(link => {
+      link.classList.remove('active');
+      if (link.getAttribute('onclick')?.includes(url)) {
+        link.classList.add('active');
+      }
+    });
+    
+    // Close mobile sidebar
+    if (window.innerWidth < 1024) {
+      sidebar.classList.remove('open');
+      hamburger.classList.remove('active');
+      overlay.classList.remove('visible');
+    }
+    
+    // Hide search
+    searchBox.classList.remove('active');
+    suggestBox.classList.remove('visible');
+    
+    // Load page
+    frame.setAttribute('data-current', url);
+    frame.src = url;
+    
+    if (save) {
+      localStorage.setItem('ks-last-page', url);
     }
   };
-
-  favButton.addEventListener("click", () => {
-    const frameUrl = frame.src;
-    const found = searchData.find(item => new URL(item.url, location.href).href === frameUrl);
-    const pageName = found ? found.name : "Current Page";
-
-    let favs = getFavorites();
-
-    if (isFavorite(frameUrl)) {
-      favs = favs.filter(item => new URL(item.url, location.href).href !== frameUrl);
-    } else {
-      favs.unshift({ name: pageName, url: frameUrl, time: Date.now() });
+  
+  function saveRecent(name, url) {
+    const key = 'ks-recent';
+    let recent = JSON.parse(localStorage.getItem(key) || '[]');
+    recent = recent.filter(r => r.url !== url);
+    recent.unshift({ name, url, time: Date.now() });
+    localStorage.setItem(key, JSON.stringify(recent.slice(0, 5)));
+  }
+  
+  // ==========================================
+  // RESPONSIVE HANDLING
+  // ==========================================
+  let lastWidth = window.innerWidth;
+  window.addEventListener('resize', () => {
+    const newWidth = window.innerWidth;
+    // Reload only when crossing breakpoint to apply CSS changes
+    if ((lastWidth < 1024 && newWidth >= 1024) || (lastWidth >= 1024 && newWidth < 1024)) {
+      location.reload();
     }
-
-    localStorage.setItem(FAV_KEY, JSON.stringify(favs));
-    updateFavIcon();
-
-    favButton.style.transform = "scale(1.3)";
-    setTimeout(() => favButton.style.transform = "", 150);
+    lastWidth = newWidth;
   });
+}
 
-  frame.addEventListener("load", updateFavIcon);
-  updateFavIcon();
-
-  // Prevent zoom on double tap for mobile
-  if (isTouchDevice) {
-    let lastTouchEnd = 0;
-    document.addEventListener("touchend", (e) => {
-      const now = Date.now();
-      if (now - lastTouchEnd <= 300) {
-        e.preventDefault();
-      }
-      lastTouchEnd = now;
-    }, { passive: false });
-  }
-
-  // Service Worker registration for PWA
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/sw.js').catch(() => {});
-  }
-});
+// Touch device detection for hover effects
+if (window.matchMedia('(pointer: coarse)').matches) {
+  document.body.classList.add('touch-device');
+}
 </script>
 </body>
 </html>
