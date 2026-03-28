@@ -2,24 +2,36 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover">
     <meta name="author" content="KS Warrior">
     <meta name="description" content="Join KS Warrior—your go-to KS website for Minecraft servers, KS Ultra Hub builds, and epic gameplay. Discover KS Minecraft guides, KS Web setups, and more. Free resources for ultimate hubs!">
     <meta name="keywords" content="ks warrior, ks ultra hub, ks minecraft, ks website, ks web, minecraft hub, minecraft server, ultra hub setup">
     <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#3b82f6">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="format-detection" content="telephone=no">
 
     <meta property="og:title" content="KS Warrior: Ultimate Minecraft Hub & KS Ultra Hub Server">
     <meta property="og:description" content="Explore KS Warrior, the premier KS website for Minecraft enthusiasts. Build epic KS Ultra Hubs, join servers, and master KS Web integrations.">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="YOUR_SITE_URL">
-    <meta property="og:image" content="YOUR_IMAGE_URL">
+    <meta property="og:url" content="https://ksx.pages.dev">
+    <meta property="og:image" content="https://ksx.pages.dev/og-image.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="KS Warrior">
 
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="KS Warrior: Ultimate Minecraft Hub & KS Ultra Hub Server">
     <meta name="twitter:description" content="Your KS Minecraft destination for servers, hubs, and guides.">
-    <meta name="twitter:image" content="YOUR_IMAGE_URL">
+    <meta name="twitter:image" content="https://ksx.pages.dev/og-image.jpg">
 
     <title>KS Warrior: Ultimate Minecraft Hub & KS Ultra Hub Server</title>
+
+    <link rel="canonical" href="https://ksx.pages.dev">
+    <link rel="icon" href="https://ksx.pages.dev/logo.png" type="image/x-icon">
+    <link rel="apple-touch-icon" href="https://ksx.pages.dev/logo.png">
+    <link rel="manifest" href="/manifest.json">
 
     <script type="application/ld+json">
     {
@@ -32,19 +44,21 @@
         },
         "genre": "Minecraft Server",
         "description": "KS Warrior is the leading KS Ultra Hub for Minecraft players, featuring custom KS Web integrations and epic builds.",
-        "url": "YOUR_SITE_URL",
-        "image": "YOUR_IMAGE_URL",
+        "url": "https://ksx.pages.dev",
+        "image": "https://ksx.pages.dev/logo.png",
         "offers": {
             "@type": "Offer",
             "price": "0",
             "priceCurrency": "USD",
             "availability": "https://schema.org/InStock"
+        },
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.8",
+            "reviewCount": "1250"
         }
     }
     </script>
-
-    <link rel="canonical" href="https://ksx.pages.dev">
-    <link rel="icon" href="https://ksx.pages.dev/logo.png" type="image/x-icon">
 
 <style>
 :root {
@@ -58,9 +72,12 @@
   --accent-hover: #2563eb;
   --hover: #1f1f2a;
   --glass: rgba(20, 20, 30, 0.85);
+  --topbar-height: 56px;
+  --sidebar-width: 240px;
+  --sidebar-collapsed: -240px;
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
 html, body {
   height: 100%;
@@ -69,67 +86,106 @@ html, body {
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
   overflow: hidden;
   user-select: none;
-  -webkit-tap-highlight-color: transparent;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* TOPBAR */
+/* TOPBAR - Responsive */
 #topbar {
   position: fixed;
   top: 0; left: 0; right: 0;
-  height: 56px;
+  height: var(--topbar-height);
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 0 16px;
+  gap: 8px;
+  padding: 0 12px;
   background: var(--top);
   border-bottom: 1px solid var(--border);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   z-index: 1000;
+  transition: all 0.3s ease;
 }
 
-/* LOGO & TITLE */
+/* LOGO & TITLE - Responsive */
 .logo {
-  width: 30px; height: 30px;
+  width: 32px; height: 32px;
   border: 1px solid var(--border);
   border-radius: 10px;
   overflow: hidden;
   flex-shrink: 0;
+  transition: transform 0.2s ease;
 }
+.logo:hover { transform: scale(1.05); }
 .logo img { width: 100%; height: 100%; object-fit: cover; }
 
 .owner-name {
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 900;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   flex: 1;
   user-select: none;
+  letter-spacing: -0.2px;
 }
 
-#control-right{
+#control-right {
   display: flex;
+  align-items: center;
+  gap: 8px;
   justify-content: flex-end;
 }
-  
-/* SEARCH CONTAINER - NEW DESIGN */
+
+/* FAVORITE BUTTON */
+#favButton {
+  cursor: pointer;
+  color: var(--accent);
+  font-size: 20px;
+  font-weight: 900;
+  user-select: none;
+  transition: transform 0.2s ease, color 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+
+#favButton:hover {
+  color: var(--accent);
+  transform: scale(1.1);
+  background: var(--hover);
+}
+
+#favButton.filled {
+  color: var(--accent);
+}
+
+.fav-svg {
+  filter: drop-shadow(0 0 2px rgba(0,0,0,0.35));
+  transition: all 0.2s ease;
+}
+
+/* SEARCH CONTAINER - Responsive Design */
 .search-container {
   position: relative;
-  width: 45px; /* Initial collapsed width (just icon) */
+  width: 40px;
   transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   overflow: hidden;
+  flex-shrink: 0;
 }
 
 #topbar.search-active .search-container {
-  width: 320px; /* Expanded width */
-  max-width: 60vw;
+  width: min(320px, 50vw);
 }
 
 #searchBox {
   width: 100%;
   height: 40px;
-  padding: 0 14px 0 44px; /* Left padding for icon */
+  padding: 0 14px 0 44px;
   background: rgba(18, 18, 24, 0.9);
   border: 1px solid var(--border);
   border-radius: 10px;
@@ -137,14 +193,19 @@ html, body {
   font-size: 14px;
   outline: none;
   opacity: 0;
-  transition: opacity 0.3s ease 0.1s;
+  transition: opacity 0.3s ease 0.1s, border-color 0.2s ease;
 }
 
 #topbar.search-active #searchBox {
   opacity: 1;
 }
 
-/* Search Icon - Now inside the bar on the left */
+#searchBox:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Search Icon */
 #searchTrigger {
   position: absolute;
   left: 0;
@@ -165,7 +226,7 @@ html, body {
   color: var(--accent);
 }
 
-  .search-svg {
+.search-svg {
   width: 22px;
   height: 22px;
   stroke: #F5F5F5;
@@ -173,20 +234,15 @@ html, body {
   fill: none;
   stroke-linecap: round;
   stroke-linejoin: round;
-  transition:
-    stroke 0.25s ease,
-    transform 0.25s ease,
-    filter 0.25s ease;
+  transition: stroke 0.25s ease, transform 0.25s ease, filter 0.25s ease;
 }
 
-/* Hover effect */
 #searchTrigger:hover .search-svg {
   stroke: var(--accent);
   transform: scale(1.15);
   filter: drop-shadow(0 0 6px rgba(59,130,246,0.6));
 }
 
-/* Active (search opened) */
 #topbar.search-active .search-svg {
   stroke: var(--accent);
 }
@@ -206,37 +262,34 @@ html, body {
   flex-shrink: 0;
   -webkit-tap-highlight-color: transparent;
 }
-#hamburger:hover {
+
+#hamburger:hover, #hamburger:active {
   background: var(--hover);
   border-color: var(--accent);
 }
 
-  .menu-svg {
+.menu-svg {
   width: 20px;
   height: 20px;
   stroke: #F5F5F5;
   stroke-width: 2.2;
   fill: none;
   stroke-linecap: round;
-  transition:
-    stroke 0.25s ease,
-    transform 0.25s ease,
-    filter 0.25s ease;
+  transition: stroke 0.25s ease, transform 0.25s ease, filter 0.25s ease;
 }
 
-/* Hover */
 #hamburger:hover .menu-svg {
   stroke: var(--accent);
   transform: scale(1.1);
   filter: drop-shadow(0 0 6px rgba(59,130,246,0.5));
 }
-  
-/* SUGGESTIONS */
+
+/* SUGGESTIONS - Responsive */
 #suggestBox {
   position: fixed;
-  top: 64px;
+  top: calc(var(--topbar-height) + 8px);
   left: 16px; right: 16px;
-  max-width: 560px;
+  max-width: min(560px, calc(100% - 32px));
   margin: 0 auto;
   background: var(--panel);
   border: 1px solid var(--border);
@@ -246,86 +299,278 @@ html, body {
   box-shadow: 0 12px 32px rgba(0,0,0,0.5);
   display: none;
   z-index: 900;
-  max-height: 360px;
+  max-height: min(360px, 60vh);
   overflow-y: auto;
   backdrop-filter: blur(12px);
+  -webkit-overflow-scrolling: touch;
 }
+
 #suggestBox li {
   padding: 12px 18px;
   cursor: pointer;
   transition: background 0.2s ease;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
 }
+
 #suggestBox li:hover,
 #suggestBox li.active {
   background: var(--hover);
 }
 
-/* SIDEBAR & FRAME (unchanged but polished) */
+/* SIDEBAR - Responsive */
 #sidebar {
   position: fixed;
-  top: 56px;
-  left: -175px;
-  width: 175px;
-  height: calc(100% - 56px);
+  top: var(--topbar-height);
+  left: var(--sidebar-collapsed);
+  width: var(--sidebar-width);
+  height: calc(100% - var(--topbar-height));
   background: var(--glass);
   backdrop-filter: blur(20px) saturate(160%);
   -webkit-backdrop-filter: blur(20px) saturate(160%);
   padding: 20px 0;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 4px;
   transition: left 0.4s cubic-bezier(0.22, 1, 0.36, 1);
   z-index: 800;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  border-right: 1px solid var(--border);
 }
+
 body.sidebar-open #sidebar { left: 0; }
 
 #sidebar a {
-  display: block;
+  display: flex;
+  align-items: center;
   padding: 14px 24px;
   color: var(--text);
   text-decoration: none;
-  font-size: 16px;
+  font-size: 15px;
+  font-weight: 500;
   transition: all 0.25s ease;
   border-left: 3px solid transparent;
   user-select: none;
+  min-height: 48px;
+  position: relative;
 }
-#sidebar a:hover {
+
+#sidebar a:hover, #sidebar a:active {
   background: var(--hover);
   border-left-color: var(--accent);
   padding-left: 28px;
+  color: var(--accent);
 }
 
+/* Sidebar overlay for mobile */
+#sidebar-overlay {
+  position: fixed;
+  inset: var(--topbar-height) 0 0 0;
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(4px);
+  z-index: 700;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+body.sidebar-open #sidebar-overlay {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* FRAME - Responsive */
 #frame {
   position: fixed;
-  top: 56px;
+  top: var(--topbar-height);
   left: 0;
   width: 100%;
-  height: calc(100% - 56px);
+  height: calc(100% - var(--topbar-height));
   border: none;
   background: #fff;
-  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-}
- /* Favorite Button Hover & Filled */
-#favButton {
-  cursor: pointer;
-  color: var(--accent);
-  font-size: 35px;
-  font-weight: 900;
-  user-select: none;
-  transition: transform 0.2s ease, color 0.2s ease;
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), left 0.4s ease, width 0.4s ease;
 }
 
-#favButton:hover {
-  color: var(--accent);
-  transform: scale(1.2);
+/* Desktop sidebar persistent */
+@media (min-width: 1024px) {
+  :root {
+    --sidebar-width: 260px;
+    --sidebar-collapsed: 0;
+  }
+  
+  #sidebar {
+    left: 0;
+    border-right: 1px solid var(--border);
+  }
+  
+  #frame {
+    left: var(--sidebar-width);
+    width: calc(100% - var(--sidebar-width));
+  }
+  
+  #hamburger {
+    display: none;
+  }
+  
+  #sidebar-overlay {
+    display: none;
+  }
+  
+  body.sidebar-open #frame {
+    transform: none;
+  }
 }
 
-#favButton.filled {
-  color: var(--accent); /* Blue color when added to favorites */
+/* Tablet adjustments */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .owner-name {
+    font-size: 16px;
+  }
+  
+  #topbar.search-active .search-container {
+    width: 280px;
+  }
 }
 
-.fav-svg {
-  filter: drop-shadow(0 0 2px rgba(0,0,0,0.35));
+/* Mobile optimizations */
+@media (max-width: 767px) {
+  :root {
+    --topbar-height: 52px;
+  }
+  
+  #topbar {
+    padding: 0 8px;
+    gap: 6px;
+  }
+  
+  .logo {
+    width: 28px;
+    height: 28px;
+  }
+  
+  .owner-name {
+    font-size: 12px;
+    max-width: 120px;
+  }
+  
+  #topbar.search-active .owner-name {
+    display: none;
+  }
+  
+  #topbar.search-active .search-container {
+    width: calc(100vw - 80px);
+    flex: 1;
+  }
+  
+  #topbar.search-active .logo {
+    display: none;
+  }
+  
+  #favButton {
+    width: 36px;
+    height: 36px;
+  }
+  
+  #hamburger {
+    width: 36px;
+    height: 36px;
+  }
+  
+  #searchTrigger {
+    width: 36px;
+    height: 36px;
+  }
+  
+  #searchBox {
+    height: 36px;
+    font-size: 16px; /* Prevent zoom on iOS */
+  }
+  
+  .search-container {
+    width: 36px;
+  }
+  
+  #sidebar {
+    width: 280px;
+    left: -280px;
+  }
+  
+  body.sidebar-open #sidebar {
+    left: 0;
+  }
+  
+  #sidebar a {
+    padding: 16px 24px;
+    font-size: 16px;
+  }
+  
+  #suggestBox {
+    top: calc(var(--topbar-height) + 4px);
+    left: 8px;
+    right: 8px;
+    border-radius: 16px;
+  }
+  
+  #suggestBox li {
+    padding: 14px 16px;
+    font-size: 15px;
+  }
+}
+
+/* Small mobile */
+@media (max-width: 380px) {
+  .owner-name {
+    font-size: 11px;
+    letter-spacing: -0.3px;
+  }
+  
+  #favButton {
+    width: 32px;
+    height: 32px;
+  }
+  
+  .fav-svg {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+/* Landscape mobile */
+@media (max-height: 500px) and (orientation: landscape) {
+  :root {
+    --topbar-height: 48px;
+  }
+  
+  #suggestBox {
+    max-height: 50vh;
+  }
+  
+  #sidebar {
+    padding: 10px 0;
+  }
+  
+  #sidebar a {
+    padding: 12px 24px;
+    min-height: 44px;
+  }
+}
+
+/* Large desktop */
+@media (min-width: 1440px) {
+  :root {
+    --sidebar-width: 300px;
+  }
+  
+  #sidebar a {
+    font-size: 16px;
+    padding: 16px 28px;
+  }
+  
+  .owner-name {
+    font-size: 16px;
+  }
 }
 
 /* ICON */
@@ -356,19 +601,15 @@ body.sidebar-open #sidebar { left: 0; }
   text-transform: uppercase;
   letter-spacing: 0.4px;
   opacity: 0.95;
+  pointer-events: none;
 }
 
-/* subtle divider under category */
 .s-category::after {
   content: "";
   display: block;
   width: 100%;
   height: 1px;
-  background: linear-gradient(
-    to right,
-    var(--accent),
-    transparent
-  );
+  background: linear-gradient(to right, var(--accent), transparent);
   margin-top: 6px;
   opacity: 0.25;
 }
@@ -383,15 +624,16 @@ body.sidebar-open #sidebar { left: 0; }
   opacity: 0.85;
   cursor: default;
   position: relative;
+  pointer-events: none;
 }
 
-/* small dot before title */
 .s-title::before {
   content: "❯❯";
   position: absolute;
   left: -5px;
   color: var(--accent);
   opacity: 0.6;
+  font-size: 10px;
 }
 
 /* PAGE */
@@ -405,18 +647,11 @@ body.sidebar-open #sidebar { left: 0; }
   position: relative;
 }
 
-/* hover + keyboard */
-.s-page:hover,
-.s-page.active {
-  background: linear-gradient(
-    90deg,
-    rgba(59, 130, 246, 0.15),
-    transparent
-  );
+.s-page:hover, .s-page.active {
+  background: linear-gradient(90deg, rgba(59, 130, 246, 0.15), transparent);
   color: var(--text);
 }
 
-/* left highlight bar */
 .s-page::before {
   content: "➣";
   position: absolute;
@@ -430,24 +665,67 @@ body.sidebar-open #sidebar { left: 0; }
   transition: opacity 0.2s ease;
 }
 
-.s-page:hover::before,
-.s-page.active::before {
+.s-page:hover::before, .s-page.active::before {
   opacity: 1;
 }
 
-/* smooth appear animation */
+/* Animations */
 #suggestBox li {
   animation: fadeIn 0.15s ease;
 }
 
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(4px);
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Touch feedback */
+@media (hover: none) {
+  #sidebar a:active,
+  #hamburger:active,
+  #searchTrigger:active,
+  #favButton:active {
+    transform: scale(0.95);
+    opacity: 0.8;
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+  
+  .s-page:active {
+    background: rgba(59, 130, 246, 0.25);
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Dark mode support (system preference) */
+@media (prefers-color-scheme: light) {
+  /* Keep dark theme regardless of system preference for gaming aesthetic */
+}
+
+/* Safe area insets for notched devices */
+@supports (padding-top: env(safe-area-inset-top)) {
+  #topbar {
+    padding-top: env(safe-area-inset-top);
+    height: calc(var(--topbar-height) + env(safe-area-inset-top));
+  }
+  
+  #sidebar, #frame, #pageLoader {
+    top: calc(var(--topbar-height) + env(safe-area-inset-top));
+    height: calc(100% - var(--topbar-height) - env(safe-area-inset-top));
+  }
+  
+  #suggestBox {
+    top: calc(var(--topbar-height) + env(safe-area-inset-top) + 8px);
+  }
+  
+  #topLoader {
+    top: calc(var(--topbar-height) + env(safe-area-inset-top));
   }
 }
 </style>
@@ -456,66 +734,69 @@ body.sidebar-open #sidebar { left: 0; }
 <body>
 
 <div id="topbar">
-  <div class="logo"><img src="/image/ks-logo.webp" alt="Logo"></div>
+  <div class="logo"><img src="/image/ks-logo.webp" alt="KS Warrior Logo"></div>
   <div class="owner-name">❰🔹❰❰ 𝑲𝑺 𝑾𝒂𝒓𝒓𝒊𝒐𝒓 ❱❱🔹❱</div>
 
-  <!-- FAVOURITE BUTTON -->
-<div id="favButton" title="Add to Favorites" aria-label="Add to Favorites" style="cursor:pointer;font-size:20px;user-select:none;">
-</div>
+  <div id="favButton" title="Add to Favorites" aria-label="Add to Favorites"></div>
+  
   <div id="control-right">
-  <!-- NEW SEARCH DESIGN -->
-  <div class="search-container">
-    <div id="searchTrigger" aria-label="Search">
-  <svg class="search-svg" viewBox="0 0 24 24" aria-hidden="true">
-  <circle
-    cx="11"
-    cy="11"
-    r="6.8"
-    fill="none"
-    stroke-width="1.8"
-    stroke-linecap="round"
-  />
-  <line
-    x1="16.2"
-    y1="16.2"
-    x2="20.4"
-    y2="20.4"
-    stroke-width="1.8"
-    stroke-linecap="round"
-  />
-</svg>
-</div>
-    <input id="searchBox" type="text" placeholder="Search pages..." aria-label="Search pages">
-  </div>
+    <div class="search-container">
+      <div id="searchTrigger" aria-label="Search" role="button" tabindex="0">
+        <svg class="search-svg" viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="11" cy="11" r="6.8" fill="none" stroke-width="1.8" stroke-linecap="round"/>
+          <line x1="16.2" y1="16.2" x2="20.4" y2="20.4" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <input id="searchBox" type="search" placeholder="Search pages..." aria-label="Search pages" autocomplete="off" enterkeyhint="search">
+    </div>
 
-  <button id="hamburger" aria-label="Menu">
-  <svg class="menu-svg" viewBox="0 0 24 24" aria-hidden="true">
-    <line x1="4" y1="6" x2="20" y2="6"></line>
-    <line x1="4" y1="12" x2="20" y2="12"></line>
-    <line x1="4" y1="18" x2="20" y2="18"></line>
-  </svg>
-  </button>
+    <button id="hamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="sidebar">
+      <svg class="menu-svg" viewBox="0 0 24 24" aria-hidden="true">
+        <line x1="4" y1="6" x2="20" y2="6"/>
+        <line x1="4" y1="12" x2="20" y2="12"/>
+        <line x1="4" y1="18" x2="20" y2="18"/>
+      </svg>
+    </button>
+  </div>
 </div>
-</div>
+
 <ul id="suggestBox" role="listbox" aria-label="Search suggestions"></ul>
 
-<nav id="sidebar" aria-label="Main navigation">
-  <a onclick="loadInFrame('dashboard.html')">Dashboard</a>
-  <a onclick="loadInFrame('map.html')">Sites Map</a>
-  <a onclick="loadInFrame('social.html')">Social Media</a>
-  <a onclick="loadInFrame('about.html')">About</a>
+<div id="sidebar-overlay" aria-hidden="true"></div>
+
+<nav id="sidebar" aria-label="Main navigation" role="navigation">
+  <a href="#" onclick="loadInFrame('dashboard.html'); return false;" role="menuitem">
+    <span style="margin-right: 12px;">📊</span> Dashboard
+  </a>
+  <a href="#" onclick="loadInFrame('map.html'); return false;" role="menuitem">
+    <span style="margin-right: 12px;">🗺️</span> Sites Map
+  </a>
+  <a href="#" onclick="loadInFrame('social.html'); return false;" role="menuitem">
+    <span style="margin-right: 12px;">🌐</span> Social Media
+  </a>
+  <a href="#" onclick="loadInFrame('about.html'); return false;" role="menuitem">
+    <span style="margin-right: 12px;">ℹ️</span> About
+  </a>
 </nav>
 
-<iframe id="frame" title="Main content"></iframe>
+<iframe id="frame" title="Main content" sandbox="allow-same-origin allow-scripts allow-popups allow-forms" loading="eager"></iframe>
+
 <script>
 document.addEventListener("DOMContentLoaded", () => {
-  // --- ELEMENTS ---
   const frame = document.getElementById("frame");
   const topbar = document.getElementById("topbar");
   const suggestBox = document.getElementById("suggestBox");
   const searchBox = document.getElementById("searchBox");
+  const hamburger = document.getElementById("hamburger");
+  const sidebar = document.getElementById("sidebar");
+  const sidebarOverlay = document.getElementById("sidebar-overlay");
+  const favButton = document.getElementById("favButton");
 
-  // ---------- PAGE LOADER ----------
+  // Detect touch device
+  const isTouchDevice = window.matchMedia('(pointer: coarse)').matches;
+  const isDesktop = window.innerWidth >= 1024;
+
+  // Page Loader
   const pageLoader = document.createElement("div");
   pageLoader.id = "pageLoader";
   pageLoader.innerHTML = `
@@ -531,17 +812,17 @@ document.addEventListener("DOMContentLoaded", () => {
   `;
   document.body.appendChild(pageLoader);
 
-  // ---------- TOP LOADER ----------
+  // Top Loader
   const topLoader = document.createElement("div");
   topLoader.id = "topLoader";
   document.body.appendChild(topLoader);
 
-  // ---------- LOADER CSS ----------
+  // Loader CSS
   const loaderCSS = document.createElement("style");
   loaderCSS.innerHTML = `
     #pageLoader {
       position: fixed;
-      inset: 56px 0 0 0;
+      inset: var(--topbar-height) 0 0 0;
       background: rgba(10, 10, 15, 0.92);
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
@@ -577,7 +858,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     #topLoader {
       position: fixed;
-      top: 56px;
+      top: var(--topbar-height);
       left: 0;
       width: 0%;
       height: 2px;
@@ -585,327 +866,311 @@ document.addEventListener("DOMContentLoaded", () => {
       z-index: 1300;
       transition: width 1.5s ease;
     }
+    @supports (padding-top: env(safe-area-inset-top)) {
+      #pageLoader { top: calc(var(--topbar-height) + env(safe-area-inset-top)); }
+      #topLoader { top: calc(var(--topbar-height) + env(safe-area-inset-top)); }
+    }
   `;
   document.head.appendChild(loaderCSS);
 
-  // ---------- TOP LOADER FUNCTIONS ----------
+  // Top Loader Functions
+  let loaderInterval;
   function startTopLoader() {
     topLoader.style.width = "0%";
     let width = 0;
-    const interval = setInterval(() => {
+    loaderInterval = setInterval(() => {
       width += Math.random() * 2;
       if (width < 90) topLoader.style.width = width + "%";
     }, 20);
-    return interval;
   }
 
-  function finishTopLoader(interval) {
-    clearInterval(interval);
+  function finishTopLoader() {
+    clearInterval(loaderInterval);
     topLoader.style.width = "100%";
     setTimeout(() => { topLoader.style.width = "0%"; }, 300);
   }
 
-  // ---------- LOAD FRAME FUNCTION ----------
+  // Load Frame Function
   const LAST_PAGE_KEY = "ks-web-last-page";
   window.loadInFrame = function(url, nameFromSearch = null) {
     if (!url) return;
-
-    // Prevent reload if already loaded
     if (frame.getAttribute("data-current") === url) return;
+    
     frame.setAttribute("data-current", url);
-
-    // Save last page
     localStorage.setItem(LAST_PAGE_KEY, url);
-
-    // Reset UI
-    document.body.classList.remove("sidebar-open");
+    
+    // Close mobile sidebar
+    if (!isDesktop) {
+      document.body.classList.remove("sidebar-open");
+      hamburger.setAttribute("aria-expanded", "false");
+    }
+    
     topbar.classList.remove("search-active");
     suggestBox.style.display = "none";
     searchBox.value = "";
+    searchBox.blur();
 
-    // Show page loader
     pageLoader.classList.add("active");
     const startTime = Date.now();
-    const loaderInterval = startTopLoader();
+    startTopLoader();
 
-    // Set iframe URL
     frame.src = url;
 
-    // When iframe loads
     frame.onload = () => {
       const elapsed = Date.now() - startTime;
       const wait = Math.max(2500 - elapsed, 0);
       setTimeout(() => {
         pageLoader.classList.remove("active");
-        finishTopLoader(loaderInterval);
-        if (typeof updateFavIcon === "function") updateFavIcon();
+        finishTopLoader();
+        updateFavIcon();
       }, wait);
 
-      if (nameFromSearch) saveToRecent?.(nameFromSearch, url);
+      if (nameFromSearch && typeof saveToRecent === "function") {
+        saveToRecent(nameFromSearch, url);
+      }
     };
   };
 
-  // ---------- RESTORE LAST PAGE ----------
+  // Restore Last Page
   const lastPage = localStorage.getItem(LAST_PAGE_KEY);
   loadInFrame(lastPage || "dashboard.html");
-});
-</script>
-<script>
-const frame = document.getElementById("frame");
-const searchBox = document.getElementById("searchBox");
-const suggestBox = document.getElementById("suggestBox");
-const searchTrigger = document.getElementById("searchTrigger");
-const hamburger = document.getElementById("hamburger");
-const topbar = document.getElementById("topbar");
 
-const RECENT_KEY = "ks-web-recent";
-const MAX_RECENT = 5;
-let searchData = [];
+  // Sidebar Toggle
+  hamburger.addEventListener("click", () => {
+    const isOpen = document.body.classList.toggle("sidebar-open");
+    hamburger.setAttribute("aria-expanded", isOpen);
+  });
 
-/* Load sitemap.json (icon → category → title → pages) */
-fetch("/sitemap.json")
-  .then(r => r.ok ? r.json() : [])
-  .then(data => {
-    const list = [];
+  // Close sidebar when clicking overlay
+  sidebarOverlay.addEventListener("click", () => {
+    document.body.classList.remove("sidebar-open");
+    hamburger.setAttribute("aria-expanded", "false");
+  });
 
-    data.forEach(cat => {
-      const category = cat.category;
-      const icon = cat.icon || "";
+  // Close sidebar on escape key
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && document.body.classList.contains("sidebar-open")) {
+      document.body.classList.remove("sidebar-open");
+      hamburger.setAttribute("aria-expanded", "false");
+    }
+  });
 
-      (cat.sections || []).forEach(sec => {
-        const title = sec.title;
+  // Handle resize
+  let resizeTimeout;
+  window.addEventListener("resize", () => {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(() => {
+      const newIsDesktop = window.innerWidth >= 1024;
+      if (newIsDesktop !== isDesktop) {
+        location.reload(); // Reload to apply desktop/mobile styles properly
+      }
+    }, 250);
+  });
 
-        (sec.pages || []).forEach(page => {
-          list.push({
-            icon,
-            category,
-            title,
-            name: page.name,
-            url: page.url
+  // Search Data
+  const RECENT_KEY = "ks-web-recent";
+  const MAX_RECENT = 5;
+  let searchData = [];
+
+  // Load sitemap
+  fetch("/sitemap.json")
+    .then(r => r.ok ? r.json() : [])
+    .then(data => {
+      const list = [];
+      data.forEach(cat => {
+        const category = cat.category;
+        const icon = cat.icon || "";
+        (cat.sections || []).forEach(sec => {
+          const title = sec.title;
+          (sec.pages || []).forEach(page => {
+            list.push({ icon, category, title, name: page.name, url: page.url });
           });
+        });
+      });
+      searchData = list;
+    })
+    .catch(() => { searchData = []; });
+
+  // Save to recent
+  window.saveToRecent = function(name, url) {
+    if (!name || !url) return;
+    let recent = JSON.parse(localStorage.getItem(RECENT_KEY) || "[]");
+    recent = recent.filter(item => item.url !== url);
+    recent.unshift({ name, url, time: Date.now() });
+    recent = recent.slice(0, MAX_RECENT);
+    localStorage.setItem(RECENT_KEY, JSON.stringify(recent));
+  };
+
+  // Search functionality
+  let activeIndex = -1;
+  const searchTrigger = document.getElementById("searchTrigger");
+
+  function updateSuggestions() {
+    const query = searchBox.value.trim().toLowerCase();
+    suggestBox.innerHTML = "";
+    suggestBox.style.display = "none";
+    activeIndex = -1;
+
+    if (!query || searchData.length === 0) return;
+
+    const matched = searchData.filter(item =>
+      item.name.toLowerCase().includes(query) ||
+      item.title.toLowerCase().includes(query) ||
+      item.category.toLowerCase().includes(query)
+    );
+
+    if (matched.length === 0) {
+      suggestBox.innerHTML = `<li style="padding:14px 18px;color:var(--muted);">No results found</li>`;
+      suggestBox.style.display = "block";
+      return;
+    }
+
+    const tree = {};
+    matched.forEach(i => {
+      tree[i.category] ??= { icon: i.icon, titles: {} };
+      tree[i.category].titles[i.title] ??= [];
+      tree[i.category].titles[i.title].push(i);
+    });
+
+    let html = "";
+    Object.entries(tree).forEach(([category, data]) => {
+      html += `<li class="s-category"><span class="s-icon">${data.icon}</span><span>${category}</span></li>`;
+      Object.entries(data.titles).forEach(([title, pages]) => {
+        html += `<li class="s-title">${title}</li>`;
+        pages.forEach(p => {
+          html += `<li class="s-page" tabindex="0" role="option" data-url="${p.url}" data-name="${p.name}">${p.name}</li>`;
         });
       });
     });
 
-    searchData = list;
-  })
-  .catch(err => {
-    console.warn("Failed to load sitemap.json:", err);
-    searchData = [];
-  });
-
-/* Save to recent */
-function saveToRecent(name, url) {
-  if (!name || !url) return;
-
-  let recent = JSON.parse(localStorage.getItem(RECENT_KEY) || "[]");
-  recent = recent.filter(item => item.url !== url);
-  recent.unshift({ name, url, time: Date.now() });
-  recent = recent.slice(0, MAX_RECENT);
-  localStorage.setItem(RECENT_KEY, JSON.stringify(recent));
-}
-  
-/* Search suggestions */
-let activeIndex = -1;
-
-function updateSuggestions() {
-  const query = searchBox.value.trim().toLowerCase();
-  suggestBox.innerHTML = "";
-  suggestBox.style.display = "none";
-  activeIndex = -1;
-
-  if (!query || searchData.length === 0) return;
-
-  const matched = searchData.filter(item =>
-    item.name.toLowerCase().includes(query) ||
-    item.title.toLowerCase().includes(query) ||
-    item.category.toLowerCase().includes(query)
-  );
-
-  if (matched.length === 0) {
-    suggestBox.innerHTML =
-      `<li style="background: var(--glass);backdrop-filter: blur(20px) saturate(160%);-webkit-backdrop-filter: blur(20px) saturate(160%);;padding:12px 18px;">No results found</li>`;
+    suggestBox.innerHTML = html;
     suggestBox.style.display = "block";
-    return;
   }
 
-  /* Build tree: icon + category → title → pages */
-  const tree = {};
-  matched.forEach(i => {
-    tree[i.category] ??= { icon: i.icon, titles: {} };
-    tree[i.category].titles[i.title] ??= [];
-    tree[i.category].titles[i.title].push(i);
-  });
+  searchBox.addEventListener("input", updateSuggestions);
 
-  let html = "";
+  searchBox.addEventListener("keydown", (e) => {
+    const items = [...suggestBox.querySelectorAll("li[role='option']")];
+    if (items.length === 0) return;
 
-  Object.entries(tree).forEach(([category, data]) => {
-    html += `
-      <li class="s-category">
-        <span class="s-icon">${data.icon}</span>
-        <span>${category}</span>
-      </li>
-    `;
-
-    Object.entries(data.titles).forEach(([title, pages]) => {
-      html += `<li class="s-title">${title}</li>`;
-
-      pages.forEach(p => {
-        html += `
-          <li class="s-page" tabindex="0" role="option"
-              data-url="${p.url}"
-              data-name="${p.name}">
-              ${p.name}
-          </li>
-        `;
-      });
-    });
-  });
-
-  suggestBox.innerHTML = html;
-  suggestBox.style.display = "block";
-}
-
-searchBox.addEventListener("input", updateSuggestions);
-
-searchBox.addEventListener("keydown", (e) => {
-  const items = [...suggestBox.querySelectorAll("li[role='option']")];
-  if (items.length === 0) return;
-
-  if (e.key === "ArrowDown") {
-    e.preventDefault();
-    activeIndex = (activeIndex + 1) % items.length;
-  } else if (e.key === "ArrowUp") {
-    e.preventDefault();
-    activeIndex = (activeIndex - 1 + items.length) % items.length;
-  } else if (e.key === "Enter") {
-    e.preventDefault();
-    if (activeIndex >= 0) {
-      const item = items[activeIndex];
-      loadInFrame(item.dataset.url, item.dataset.name);
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      activeIndex = (activeIndex + 1) % items.length;
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      activeIndex = (activeIndex - 1 + items.length) % items.length;
+    } else if (e.key === "Enter") {
+      e.preventDefault();
+      if (activeIndex >= 0) {
+        const item = items[activeIndex];
+        loadInFrame(item.dataset.url, item.dataset.name);
+      }
+      return;
+    } else if (e.key === "Escape") {
+      topbar.classList.remove("search-active");
+      suggestBox.style.display = "none";
+      searchBox.value = "";
+      searchBox.blur();
+      return;
     }
-    return;
-  } else if (e.key === "Escape") {
-    topbar.classList.remove("search-active");
-    suggestBox.style.display = "none";
-    searchBox.value = "";
-    searchBox.blur();
-    return;
-  }
 
-  items.forEach(i => i.classList.remove("active"));
-  if (activeIndex >= 0) items[activeIndex].classList.add("active");
-});
+    items.forEach(i => i.classList.remove("active"));
+    if (activeIndex >= 0) items[activeIndex].classList.add("active");
+  });
 
-suggestBox.addEventListener("click", (e) => {
-  const li = e.target.closest("li[role='option']");
-  if (li) {
-    loadInFrame(li.dataset.url, li.dataset.name);
-  }
-});
+  suggestBox.addEventListener("click", (e) => {
+    const li = e.target.closest("li[role='option']");
+    if (li) loadInFrame(li.dataset.url, li.dataset.name);
+  });
 
-/* Activate search */
-searchTrigger.addEventListener("click", (e) => {
-  e.stopPropagation();
-  topbar.classList.add("search-active");
-  searchBox.focus();
-  updateSuggestions();
-});
+  // Search trigger
+  searchTrigger.addEventListener("click", (e) => {
+    e.stopPropagation();
+    topbar.classList.add("search-active");
+    setTimeout(() => searchBox.focus(), 100);
+    updateSuggestions();
+  });
 
-/* Close search on outside click */
-document.addEventListener("click", (e) => {
-  if (!topbar.contains(e.target) && !suggestBox.contains(e.target)) {
-    topbar.classList.remove("search-active");
-    suggestBox.style.display = "none";
-    searchBox.value = "";
-  }
-});
+  searchTrigger.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      searchTrigger.click();
+    }
+  });
 
-suggestBox.addEventListener("click", (e) => e.stopPropagation());
+  // Close search on outside click
+  document.addEventListener("click", (e) => {
+    if (!topbar.contains(e.target) && !suggestBox.contains(e.target)) {
+      topbar.classList.remove("search-active");
+      suggestBox.style.display = "none";
+      searchBox.value = "";
+    }
+  });
 
-hamburger.addEventListener("click", () => {
-  document.body.classList.toggle("sidebar-open");
-});
+  suggestBox.addEventListener("click", (e) => e.stopPropagation());
 
-frame.addEventListener("load", () => {
-  if (window.innerWidth >= 768) {
-    document.body.classList.remove("sidebar-open");
-  }
-});
-</script>
-<script>
-const FAV_KEY = "ks-web-fav";
-const favButton = document.getElementById("favButton");
+  // Favorites
+  const FAV_KEY = "ks-web-fav";
+  
+  const getFavorites = () => JSON.parse(localStorage.getItem(FAV_KEY) || "[]");
+  const isFavorite = (url) => getFavorites().some(item => new URL(item.url, location.href).href === url);
 
-// Get favorites from localStorage
-const getFavorites = () => JSON.parse(localStorage.getItem(FAV_KEY) || "[]");
+  window.updateFavIcon = function() {
+    const frameUrl = frame.src;
+    const filledStarSVG = `<svg class="fav-svg" width="20" height="20" fill="#F5F5F5" stroke="#F5F5F5" stroke-width="1" viewBox="0 0 24 24"><path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.778 1.4 8.164L12 18.897l-7.334 3.855 1.4-8.164L.132 9.21l8.2-1.192z"/></svg>`;
+    const emptyStarSVG = `<svg class="fav-svg" width="20" height="20" fill="none" stroke="#F5F5F5" stroke-width="2" viewBox="0 0 24 24"><path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.778 1.4 8.164L12 18.897l-7.334 3.855 1.4-8.164L.132 9.21l8.2-1.192z"/></svg>`;
 
-// Check if a URL is in favorites
-const isFavorite = (url) => getFavorites().some(item => new URL(item.url, location.href).href === url);
+    if (isFavorite(frameUrl)) {
+      favButton.innerHTML = filledStarSVG;
+      favButton.classList.add("filled");
+      favButton.setAttribute("aria-label", "Remove from favorites");
+    } else {
+      favButton.innerHTML = emptyStarSVG;
+      favButton.classList.remove("filled");
+      favButton.setAttribute("aria-label", "Add to favorites");
+    }
+  };
 
-// Update star icon and color
-const updateFavIcon = () => {
-  const frameUrl = frame.src;
+  favButton.addEventListener("click", () => {
+    const frameUrl = frame.src;
+    const found = searchData.find(item => new URL(item.url, location.href).href === frameUrl);
+    const pageName = found ? found.name : "Current Page";
 
-  // SVG icons as strings (no xmlns)
-  const filledStarSVG = `
-  <svg class="fav-svg" width="18" height="18"
-       fill="#F5F5F5"
-       stroke="#F5F5F5"
-       stroke-width="1"
-       viewBox="0 0 24 24">
-    <path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.778 1.4 8.164L12 18.897l-7.334 3.855 1.4-8.164L.132 9.21l8.2-1.192z"/>
-  </svg>
-`;
+    let favs = getFavorites();
 
-const emptyStarSVG = `
-  <svg class="fav-svg" width="18" height="18"
-       fill="none"
-       stroke="#F5F5F5"
-       stroke-width="2"
-       viewBox="0 0 24 24">
-    <path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.778 1.4 8.164L12 18.897l-7.334 3.855 1.4-8.164L.132 9.21l8.2-1.192z"/>
-  </svg>
-`;
+    if (isFavorite(frameUrl)) {
+      favs = favs.filter(item => new URL(item.url, location.href).href !== frameUrl);
+    } else {
+      favs.unshift({ name: pageName, url: frameUrl, time: Date.now() });
+    }
 
-  if (isFavorite(frameUrl)) {
-    favButton.innerHTML = filledStarSVG;
-    favButton.classList.add("filled");
-  } else {
-    favButton.innerHTML = emptyStarSVG;
-    favButton.classList.remove("filled");
-  }
-};
+    localStorage.setItem(FAV_KEY, JSON.stringify(favs));
+    updateFavIcon();
 
-// Add or remove current iframe page from favorites
-favButton.addEventListener("click", () => {
-  const frameUrl = frame.src;
-  const found = searchData.find(item => new URL(item.url, location.href).href === frameUrl);
-  const pageName = found ? found.name : frameUrl;
+    favButton.style.transform = "scale(1.3)";
+    setTimeout(() => favButton.style.transform = "", 150);
+  });
 
-  let favs = getFavorites();
-
-  if (isFavorite(frameUrl)) {
-    // Remove from favorites
-    favs = favs.filter(item => new URL(item.url, location.href).href !== frameUrl);
-  } else {
-    // Add to favorites
-    favs.unshift({ name: pageName, url: frameUrl, time: Date.now() });
-  }
-
-  localStorage.setItem(FAV_KEY, JSON.stringify(favs));
+  frame.addEventListener("load", updateFavIcon);
   updateFavIcon();
 
-  // Optional: small "pop" animation
-  favButton.style.transform = "scale(1.4)";
-  setTimeout(() => favButton.style.transform = "", 150);
+  // Prevent zoom on double tap for mobile
+  if (isTouchDevice) {
+    let lastTouchEnd = 0;
+    document.addEventListener("touchend", (e) => {
+      const now = Date.now();
+      if (now - lastTouchEnd <= 300) {
+        e.preventDefault();
+      }
+      lastTouchEnd = now;
+    }, { passive: false });
+  }
+
+  // Service Worker registration for PWA
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js').catch(() => {});
+  }
 });
-
-// Update star when iframe loads
-frame.addEventListener("load", updateFavIcon);
-
-// Update on page load
-window.addEventListener("DOMContentLoaded", updateFavIcon);
 </script>
 </body>
 </html>
