@@ -63,14 +63,21 @@ html, body {
    ============================================ */
 #loader-container {
   position: fixed;
-  inset: 0;
-  background: var(--bg);
+  inset: 0;                    /* covers the entire viewport */
+  background-image: url('https://i.pinimg.com/originals/11/da/17/11da17f139514aa738fea26d9265c4b4.gif');
+  background-size: cover;      /* recommended for full-screen GIFs */
+  background-position: center;
+  background-repeat: no-repeat;
   z-index: 10000;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  
+  /* Smooth fade-out when hiding */
   transition: opacity 0.5s ease, visibility 0.5s ease;
+  opacity: 1;
+  visibility: visible;
 }
 
 #loader-container.hidden {
