@@ -59,7 +59,7 @@ html, body {
 }
 
 /* ============================================
-   CINEMATIC LOADER - Fixed
+   CINEMATIC LOADER
    ============================================ */
 #loader-container {
   position: fixed;
@@ -137,7 +137,7 @@ html, body {
 /* Central loader content */
 .loader-content {
   position: relative;
-  z-index: -index: 10;
+  z-index: 10;
   text-align: center;
 }
 
@@ -234,7 +234,7 @@ html, body {
 }
 
 /* ============================================
-   TOPBAR - Fixed Layout
+   TOPBAR
    ============================================ */
 #topbar {
   position: fixed;
@@ -303,7 +303,7 @@ html, body {
   flex-shrink: 0;
 }
 
-/* Search - Fixed sizing */
+/* Search */
 .search-box {
   position: relative;
 }
@@ -377,7 +377,7 @@ html, body {
   background: rgba(59, 130, 246, 0.1);
 }
 
-/* Menu Button - Clean 3 lines */
+/* Menu Button */
 #menuBtn {
   width: 42px;
   height: 42px;
@@ -423,14 +423,14 @@ html, body {
 }
 
 /* ============================================
-   SEARCH SUGGESTIONS - Compact & Stylish
+   SEARCH SUGGESTIONS (Enhanced with old stylish categories)
    ============================================ */
 #suggestBox {
   position: fixed;
   top: calc(var(--topbar-height) + 8px);
   right: 16px;
-  width: min(320px, calc(100vw - 32px));
-  max-height: 320px;
+  width: min(360px, calc(100vw - 32px));
+  max-height: 420px;
   background: var(--panel);
   border: 1px solid var(--border);
   border-radius: 12px;
@@ -450,6 +450,7 @@ html, body {
   transform: translateY(0);
 }
 
+/* Old stylish suggestion styles (merged for perfect look) */
 .suggest-header {
   padding: 8px 16px;
   font-size: 11px;
@@ -461,36 +462,99 @@ html, body {
   margin-bottom: 4px;
 }
 
-.suggest-item {
-  padding: 10px 16px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  border-left: 2px solid transparent;
+.s-category {
   display: flex;
-  flex-direction: column;
-  gap: 2px;
+  align-items: center;
+  gap: 6px;
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--accent);
+  padding: 12px 18px 8px;
+  margin-top: 4px;
+  cursor: default;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  opacity: 0.95;
 }
 
-.suggest-item:hover,
-.suggest-item.active {
-  background: var(--hover);
-  border-left-color: var(--accent);
-  padding-left: 18px;
+.s-category::after {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(to right, var(--accent), transparent);
+  margin-top: 6px;
+  opacity: 0.25;
 }
 
-.suggest-name {
-  font-size: 14px;
-  font-weight: 600;
+.s-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  background: rgba(59, 130, 246, 0.15);
+  color: var(--accent);
+  font-size: 13px;
+  flex-shrink: 0;
+}
+
+.s-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  padding: 8px 28px 6px;
+  margin-left: 35px;
+  opacity: 0.85;
+  cursor: default;
+  position: relative;
+}
+
+.s-title::before {
+  content: "❯❯";
+  position: absolute;
+  left: -5px;
+  color: var(--accent);
+  opacity: 0.6;
+}
+
+.s-page {
+  font-size: 12px;
+  padding: 10px 40px;
+  margin-left: 55px;
+  color: var(--muted);
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  position: relative;
+  cursor: pointer;
+}
+
+.s-page:hover,
+.s-page.active {
+  background: linear-gradient(90deg, rgba(59, 130, 246, 0.15), transparent);
   color: var(--text);
 }
 
-.suggest-meta {
-  font-size: 11px;
-  color: var(--muted);
+.s-page::before {
+  content: "➣";
+  position: absolute;
+  left: -5px;
+  top: 8px;
+  bottom: 8px;
+  width: 3px;
+  opacity: 0;
+  border-radius: 3px;
+  background: var(--accent);
+  transition: opacity 0.2s ease;
+}
+
+.s-page:hover::before,
+.s-page.active::before {
+  opacity: 1;
 }
 
 /* ============================================
-   SIDEBAR - Fixed & Animated
+   SIDEBAR
    ============================================ */
 #sidebar {
   position: fixed;
@@ -579,7 +643,7 @@ html, body {
 }
 
 /* ============================================
-   MAIN FRAME - Fixed
+   MAIN FRAME
    ============================================ */
 #mainFrame {
   position: fixed;
@@ -594,156 +658,78 @@ html, body {
 }
 
 /* ============================================
-   RESPONSIVE - Phone & Desktop
+   RESPONSIVE
    ============================================ */
-/* Desktop: Persistent sidebar */
 @media (min-width: 1024px) {
-  #menuBtn {
-    display: none;
-  }
-  
-  #sidebar {
-    transform: translateX(0);
-  }
-  
-  #sidebarOverlay {
-    display: none;
-  }
-  
+  #menuBtn { display: none; }
+  #sidebar { transform: translateX(0); }
+  #sidebarOverlay { display: none; }
   #mainFrame {
     left: var(--sidebar-width);
     width: calc(100% - var(--sidebar-width));
   }
-  
-  #searchInput.expanded {
-    width: 300px;
-  }
-  
+  #searchInput.expanded { width: 300px; }
   #suggestBox {
     right: auto;
-    left: calc(100% - 340px);
+    left: calc(100% - 380px);
   }
 }
 
-/* Tablet */
 @media (min-width: 768px) and (max-width: 1023px) {
-  #searchInput.expanded {
-    width: 240px;
-  }
+  #searchInput.expanded { width: 240px; }
 }
 
-/* Mobile */
 @media (max-width: 767px) {
-  :root {
-    --topbar-height: 56px;
-  }
-  
-  .owner-name {
-    font-size: 13px;
-    max-width: 120px;
-  }
-  
-  .logo {
-    width: 32px;
-    height: 32px;
-  }
-  
+  :root { --topbar-height: 56px; }
+  .owner-name { font-size: 13px; max-width: 120px; }
+  .logo { width: 32px; height: 32px; }
   #searchInput {
     width: 38px;
     height: 38px;
     padding-left: 38px;
   }
-  
   #searchInput.expanded {
     width: calc(100vw - 140px);
     position: fixed;
     right: 12px;
     z-index: 1001;
   }
-  
   #favBtn, #menuBtn {
     width: 38px;
     height: 38px;
   }
-  
   #suggestBox {
     top: calc(var(--topbar-height) + 4px);
     right: 12px;
     left: 12px;
     width: auto;
-    max-height: 280px;
-  }
-  
-  .nav-item {
-    padding: 14px 16px;
-    font-size: 15px;
   }
 }
 
-/* Small mobile */
 @media (max-width: 380px) {
-  .owner-name {
-    font-size: 12px;
-    max-width: 100px;
-  }
-  
-  #searchInput.expanded {
-    width: calc(100vw - 120px);
-  }
+  .owner-name { font-size: 12px; max-width: 100px; }
+  #searchInput.expanded { width: calc(100vw - 120px); }
 }
 
-/* Landscape */
-@media (max-height: 500px) and (orientation: landscape) {
-  #sidebar {
-    padding: 8px;
-  }
-  
-  .nav-item {
-    padding: 8px 12px;
-  }
-}
-
-/* Safe area support */
 @supports (padding-top: env(safe-area-inset-top)) {
-  #topbar {
-    padding-top: env(safe-area-inset-top);
-    height: calc(var(--topbar-height) + env(safe-area-inset-top));
-  }
-  
-  #sidebar,
-  #mainFrame,
-  #sidebarOverlay {
+  #topbar { padding-top: env(safe-area-inset-top); height: calc(var(--topbar-height) + env(safe-area-inset-top)); }
+  #sidebar, #mainFrame, #sidebarOverlay {
     top: calc(var(--topbar-height) + env(safe-area-inset-top));
     height: calc(100% - var(--topbar-height) - env(safe-area-inset-top));
   }
-  
-  #suggestBox {
-    top: calc(var(--topbar-height) + env(safe-area-inset-top) + 8px);
-  }
+  #suggestBox { top: calc(var(--topbar-height) + env(safe-area-inset-top) + 8px); }
 }
 
-/* Touch optimizations */
 @media (pointer: coarse) {
-  .nav-item,
-  #favBtn,
-  #menuBtn,
-  .suggest-item {
-    min-height: 44px;
-  }
-  
-  .nav-item:active,
-  #favBtn:active,
-  #menuBtn:active {
-    transform: scale(0.95);
-    opacity: 0.8;
-  }
+  .nav-item, #favBtn, #menuBtn, .s-page { min-height: 44px; }
+  .nav-item:active, #favBtn:active, #menuBtn:active { transform: scale(0.95); opacity: 0.8; }
 }
 </style>
 </head>
 
 <body>
 
-<!-- Cinematic Loader -->
+<!-- Cinematic Initial Loader -->
 <div id="loader-container">
   <div class="loader-bg">
     <div class="loader-grid"></div>
@@ -766,7 +752,7 @@ html, body {
     <div class="loader-progress">
       <div class="loader-bar" id="loaderBar"></div>
     </div>
-    <div class="loader-text">Loading Experience</div>
+    <div class="loader-text">Loading KS Experience</div>
   </div>
 </div>
 
@@ -781,7 +767,7 @@ html, body {
   
   <div class="topbar-right">
     <div class="search-box">
-      <input type="search" id="searchInput" placeholder="Search..." autocomplete="off">
+      <input type="search" id="searchInput" placeholder="Search pages..." autocomplete="off">
       <div id="searchIcon">
         <svg class="search-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="11" cy="11" r="8"></circle>
@@ -790,11 +776,7 @@ html, body {
       </div>
     </div>
     
-    <button id="favBtn" aria-label="Toggle favorite">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-      </svg>
-    </button>
+    <button id="favBtn" aria-label="Toggle favorite"></button>
     
     <button id="menuBtn" aria-label="Toggle menu">
       <span></span>
@@ -830,12 +812,12 @@ html, body {
   </a>
 </nav>
 
-<!-- Main Content -->
+<!-- Main Content Frame -->
 <iframe id="mainFrame" title="Main content" sandbox="allow-same-origin allow-scripts allow-popups allow-forms"></iframe>
 
 <script>
 // ==========================================
-// CINEMATIC LOADER - Fixed
+// CINEMATIC LOADER
 // ==========================================
 (function() {
   const loader = document.getElementById('loader-container');
@@ -852,18 +834,16 @@ html, body {
     } else {
       setTimeout(() => {
         loader.classList.add('hidden');
-        // Initialize app after loader fades
-        setTimeout(initApp, 100);
+        setTimeout(initApp, 150);
       }, 400);
     }
   }
   
-  // Start loading after brief delay for visual impact
   setTimeout(updateProgress, 300);
 })();
 
 // ==========================================
-// APP INITIALIZATION
+// APP CORE
 // ==========================================
 function initApp() {
   const frame = document.getElementById('mainFrame');
@@ -873,151 +853,231 @@ function initApp() {
   const searchInput = document.getElementById('searchInput');
   const suggestBox = document.getElementById('suggestBox');
   const favBtn = document.getElementById('favBtn');
-  
+
   let searchData = [];
   let isSearchOpen = false;
-  
-  // ==========================================
-  // LOAD INITIAL PAGE - Fixed
-  // ==========================================
-  const lastPage = localStorage.getItem('ks-last-page') || 'dashboard.html';
-  loadPage(lastPage, null, false);
-  
-  // ==========================================
-  // SIDEBAR TOGGLE - Fixed
-  // ==========================================
-  function toggleSidebar() {
-    const isOpen = sidebar.classList.toggle('open');
-    menuBtn.classList.toggle('active', isOpen);
-    overlay.classList.toggle('visible', isOpen);
-  }
-  
-  menuBtn.addEventListener('click', function(e) {
-    e.stopPropagation();
-    toggleSidebar();
+  const FAV_KEY = 'ks-web-fav';
+  const LAST_PAGE_KEY = 'ks-web-last-page';
+
+  // ====================== FAVORITES (Improved from old code) ======================
+  const getFavorites = () => JSON.parse(localStorage.getItem(FAV_KEY) || '[]');
+  const isFavorite = (url) => getFavorites().some(item => {
+    const itemFull = new URL(item.url, location.href).href;
+    const currentFull = new URL(url, location.href).href;
+    return itemFull === currentFull;
   });
-  
-  overlay.addEventListener('click', toggleSidebar);
-  
-  // Close on escape
-  document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') {
-      if (sidebar.classList.contains('open')) toggleSidebar();
-      if (isSearchOpen) closeSearch();
+
+  const updateFavBtn = () => {
+    const current = frame.getAttribute('data-current') || '';
+    const isActive = isFavorite(current);
+
+    // SVGs (filled / empty)
+    const filledSVG = `<svg width="18" height="18" fill="#3b82f6" stroke="#3b82f6" stroke-width="1" viewBox="0 0 24 24"><path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.778 1.4 8.164L12 18.897l-7.334 3.855 1.4-8.164L.132 9.21l8.2-1.192z"/></svg>`;
+    const emptySVG = `<svg width="18" height="18" fill="none" stroke="#f0f0f5" stroke-width="2" viewBox="0 0 24 24"><path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.778 1.4 8.164L12 18.897l-7.334 3.855 1.4-8.164L.132 9.21l8.2-1.192z"/></svg>`;
+
+    favBtn.innerHTML = isActive ? filledSVG : emptySVG;
+    favBtn.classList.toggle('active', isActive);
+  };
+
+  favBtn.addEventListener('click', () => {
+    const current = frame.getAttribute('data-current') || '';
+    if (!current) return;
+
+    const found = searchData.find(item => new URL(item.url, location.href).href === new URL(current, location.href).href);
+    const pageName = found ? found.name : 'Page';
+
+    let favs = getFavorites();
+
+    if (isFavorite(current)) {
+      favs = favs.filter(item => new URL(item.url, location.href).href !== new URL(current, location.href).href);
+    } else {
+      favs.unshift({ name: pageName, url: current, time: Date.now() });
     }
+
+    localStorage.setItem(FAV_KEY, JSON.stringify(favs));
+    updateFavBtn();
+
+    // Pop animation
+    favBtn.style.transform = 'scale(1.25)';
+    setTimeout(() => { favBtn.style.transform = ''; }, 160);
   });
-  
-  // ==========================================
-  // SEARCH - Fixed sizing
-  // ==========================================
-  function openSearch() {
-    isSearchOpen = true;
-    searchInput.classList.add('expanded');
-    searchInput.focus();
-    updateSuggestions();
-  }
-  
-  function closeSearch() {
-    isSearchOpen = false;
-    searchInput.classList.remove('expanded');
-    searchInput.blur();
-    searchInput.value = '';
-    suggestBox.classList.remove('visible');
-  }
-  
-  searchInput.addEventListener('click', function(e) {
-    e.stopPropagation();
-    if (!isSearchOpen) openSearch();
-  });
-  
-  searchInput.addEventListener('focus', openSearch);
-  
-  // Close search when clicking outside
-  document.addEventListener('click', function(e) {
-    if (!e.target.closest('.search-box') && !e.target.closest('#suggestBox')) {
-      closeSearch();
-    }
-  });
-  
-  // Load search data
+
+  // ====================== SEARCH DATA (Full old structure) ======================
   fetch('/sitemap.json')
     .then(r => r.ok ? r.json() : [])
     .then(data => {
+      const list = [];
       data.forEach(cat => {
+        const category = cat.category;
+        const icon = cat.icon || '🔹';
         (cat.sections || []).forEach(sec => {
+          const title = sec.title;
           (sec.pages || []).forEach(page => {
-            searchData.push({
-              category: cat.category,
-              title: sec.title,
+            list.push({
+              icon,
+              category,
+              title,
               name: page.name,
               url: page.url
             });
           });
         });
       });
+      searchData = list;
     })
     .catch(() => {
-      // Fallback data if sitemap fails
+      // Fallback
       searchData = [
-        { category: 'Main', title: 'Overview', name: 'Dashboard', url: 'dashboard.html' },
-        { category: 'Main', title: 'Overview', name: 'Sites Map', url: 'map.html' },
-        { category: 'Main', title: 'Overview', name: 'Social Media', url: 'social.html' },
-        { category: 'Main', title: 'Overview', name: 'About', url: 'about.html' }
+        { icon: '📊', category: 'Main', title: 'Overview', name: 'Dashboard', url: 'dashboard.html' },
+        { icon: '🗺️', category: 'Main', title: 'Overview', name: 'Sites Map', url: 'map.html' },
+        { icon: '🌐', category: 'Main', title: 'Overview', name: 'Social Media', url: 'social.html' },
+        { icon: 'ℹ️', category: 'Main', title: 'Overview', name: 'About', url: 'about.html' }
       ];
     });
-  
+
+  // ====================== SEARCH SUGGESTIONS (Stylish like old) ======================
   let activeIndex = -1;
-  
+
   function updateSuggestions() {
     const query = searchInput.value.trim().toLowerCase();
     suggestBox.innerHTML = '';
     activeIndex = -1;
-    
-    if (!query) {
+    if (!query || searchData.length === 0) {
       suggestBox.classList.remove('visible');
       return;
     }
-    
-    const matches = searchData.filter(item => 
+
+    const matched = searchData.filter(item =>
       item.name.toLowerCase().includes(query) ||
+      item.title.toLowerCase().includes(query) ||
       item.category.toLowerCase().includes(query)
     );
-    
-    if (!matches.length) {
-      suggestBox.innerHTML = '<div class="suggest-item"><span class="suggest-name">No results</span></div>';
+
+    if (matched.length === 0) {
+      suggestBox.innerHTML = `<div class="suggest-item"><span class="suggest-name" style="color:#8b8b9a">No results found</span></div>`;
       suggestBox.classList.add('visible');
       return;
     }
-    
-    // Group by category
-    const grouped = {};
-    matches.forEach(item => {
-      if (!grouped[item.category]) grouped[item.category] = [];
-      grouped[item.category].push(item);
+
+    // Build tree like old code
+    const tree = {};
+    matched.forEach(i => {
+      tree[i.category] ??= { icon: i.icon, titles: {} };
+      tree[i.category].titles[i.title] ??= [];
+      tree[i.category].titles[i.title].push(i);
     });
-    
+
     let html = '';
-    Object.entries(grouped).forEach(([cat, items]) => {
-      html += `<div class="suggest-header">${cat}</div>`;
-      items.forEach(item => {
-        html += `
-          <div class="suggest-item" data-url="${item.url}" data-name="${item.name}">
-            <span class="suggest-name">${item.name}</span>
-            <span class="suggest-meta">${item.title}</span>
-          </div>
-        `;
+    Object.entries(tree).forEach(([category, data]) => {
+      html += `
+        <div class="s-category">
+          <span class="s-icon">${data.icon}</span>
+          <span>${category}</span>
+        </div>
+      `;
+
+      Object.entries(data.titles).forEach(([title, pages]) => {
+        html += `<div class="s-title">${title}</div>`;
+
+        pages.forEach(p => {
+          html += `
+            <div class="s-page" data-url="${p.url}" data-name="${p.name}">
+              ${p.name}
+            </div>
+          `;
+        });
       });
     });
-    
+
     suggestBox.innerHTML = html;
     suggestBox.classList.add('visible');
   }
-  
+
+  // ====================== PAGE LOADING (Robust like old + new) ======================
+  window.loadPage = function(url, navElement = null, save = true) {
+    if (!url) return;
+    const current = frame.getAttribute('data-current');
+    if (current === url) return;
+
+    frame.setAttribute('data-current', url);
+
+    if (save) localStorage.setItem(LAST_PAGE_KEY, url);
+
+    // Update active nav
+    document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+    if (navElement) {
+      navElement.classList.add('active');
+    } else {
+      document.querySelectorAll('.nav-item').forEach(el => {
+        if (el.getAttribute('onclick')?.includes(url)) el.classList.add('active');
+      });
+    }
+
+    // Close mobile sidebar
+    if (window.innerWidth < 1024 && sidebar.classList.contains('open')) {
+      toggleSidebar();
+    }
+
+    // Load page
+    frame.src = url;
+
+    // Update fav after load
+    frame.onload = () => {
+      updateFavBtn();
+      if (typeof saveRecent === 'function') saveRecent(null, url); // optional recent
+    };
+  };
+
+  function saveRecent(name, url) {
+    if (!name) return;
+    const key = 'ks-recent';
+    let recent = JSON.parse(localStorage.getItem(key) || '[]');
+    recent = recent.filter(r => r.url !== url);
+    recent.unshift({ name, url, time: Date.now() });
+    localStorage.setItem(key, JSON.stringify(recent.slice(0, 5)));
+  }
+
+  // ====================== SIDEBAR ======================
+  function toggleSidebar() {
+    const isOpen = sidebar.classList.toggle('open');
+    menuBtn.classList.toggle('active', isOpen);
+    overlay.classList.toggle('visible', isOpen);
+  }
+
+  menuBtn.addEventListener('click', e => {
+    e.stopPropagation();
+    toggleSidebar();
+  });
+
+  overlay.addEventListener('click', toggleSidebar);
+
+  // ====================== SEARCH ======================
+  function openSearch() {
+    isSearchOpen = true;
+    searchInput.classList.add('expanded');
+    searchInput.focus();
+    updateSuggestions();
+  }
+
+  function closeSearch() {
+    isSearchOpen = false;
+    searchInput.classList.remove('expanded');
+    searchInput.value = '';
+    suggestBox.classList.remove('visible');
+  }
+
+  searchInput.addEventListener('click', e => {
+    e.stopPropagation();
+    if (!isSearchOpen) openSearch();
+  });
+
+  searchInput.addEventListener('focus', openSearch);
   searchInput.addEventListener('input', updateSuggestions);
-  
-  searchInput.addEventListener('keydown', function(e) {
-    const items = suggestBox.querySelectorAll('.suggest-item[data-url]');
-    
+
+  searchInput.addEventListener('keydown', e => {
+    const items = suggestBox.querySelectorAll('.s-page');
+    if (items.length === 0) return;
+
     if (e.key === 'ArrowDown') {
       e.preventDefault();
       activeIndex = (activeIndex + 1) % items.length;
@@ -1028,140 +1088,60 @@ function initApp() {
       e.preventDefault();
       if (activeIndex >= 0 && items[activeIndex]) {
         const item = items[activeIndex];
-        selectPage(item.dataset.url, item.dataset.name);
+        loadPage(item.dataset.url, null);
+        closeSearch();
       }
       return;
     } else if (e.key === 'Escape') {
       closeSearch();
       return;
     }
-    
-    items.forEach((item, i) => {
-      item.classList.toggle('active', i === activeIndex);
-    });
+
+    items.forEach((item, i) => item.classList.toggle('active', i === activeIndex));
   });
-  
-  suggestBox.addEventListener('click', function(e) {
-    const item = e.target.closest('.suggest-item[data-url]');
-    if (item) {
-      selectPage(item.dataset.url, item.dataset.name);
+
+  suggestBox.addEventListener('click', e => {
+    const pageEl = e.target.closest('.s-page');
+    if (pageEl) {
+      loadPage(pageEl.dataset.url, null);
+      closeSearch();
     }
   });
-  
-  function selectPage(url, name) {
-    loadPage(url);
-    saveRecent(name, url);
-    closeSearch();
-  }
-  
-  // ==========================================
-  // FAVORITES
-  // ==========================================
-  const FAV_KEY = 'ks-favorites';
-  
-  function getFavs() {
-    return JSON.parse(localStorage.getItem(FAV_KEY) || '[]');
-  }
-  
-  function isFav(url) {
-    return getFavs().some(f => f.url === url);
-  }
-  
-  function updateFavBtn() {
-    const current = frame.getAttribute('data-current');
-    const isActive = isFav(current);
-    
-    favBtn.classList.toggle('active', isActive);
-    favBtn.innerHTML = isActive 
-      ? '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>'
-      : '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>';
-  }
-  
-  favBtn.addEventListener('click', function() {
-    const current = frame.getAttribute('data-current');
-    const name = searchData.find(s => s.url === current)?.name || 'Page';
-    let favs = getFavs();
-    
-    if (isFav(current)) {
-      favs = favs.filter(f => f.url !== current);
-    } else {
-      favs.unshift({ name, url: current, time: Date.now() });
+
+  // Close search on outside click
+  document.addEventListener('click', e => {
+    if (!e.target.closest('.search-box') && !e.target.closest('#suggestBox')) {
+      closeSearch();
     }
-    
-    localStorage.setItem(FAV_KEY, JSON.stringify(favs));
-    updateFavBtn();
-    
-    // Pop animation
-    favBtn.style.transform = 'scale(1.15)';
-    setTimeout(() => favBtn.style.transform = '', 150);
   });
-  
-  // ==========================================
-  // PAGE LOADER - Fixed
-  // ==========================================
-  window.loadPage = function(url, navElement, save = true) {
-    if (!url) return;
-    
-    const current = frame.getAttribute('data-current');
-    if (current === url) return;
-    
-    // Update nav active state
-    if (navElement) {
-      document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-      navElement.classList.add('active');
-    } else {
-      // Find and activate matching nav item
-      document.querySelectorAll('.nav-item').forEach(el => {
-        el.classList.remove('active');
-        if (el.getAttribute('onclick')?.includes(url)) {
-          el.classList.add('active');
-        }
-      });
-    }
-    
-    // Close mobile sidebar
-    if (window.innerWidth < 1024 && sidebar.classList.contains('open')) {
-      toggleSidebar();
-    }
-    
-    // Update frame
-    frame.setAttribute('data-current', url);
-    frame.src = url;
-    
-    if (save) {
-      localStorage.setItem('ks-last-page', url);
-    }
-    
-    // Update fav button after load
-    frame.onload = updateFavBtn;
-  };
-  
-  function saveRecent(name, url) {
-    const key = 'ks-recent';
-    let recent = JSON.parse(localStorage.getItem(key) || '[]');
-    recent = recent.filter(r => r.url !== url);
-    recent.unshift({ name, url, time: Date.now() });
-    localStorage.setItem(key, JSON.stringify(recent.slice(0, 5)));
-  }
-  
-  // Initial fav button state
+
+  // ====================== INITIAL LOAD ======================
+  const lastPage = localStorage.getItem(LAST_PAGE_KEY) || 'dashboard.html';
+  loadPage(lastPage, null, false);
+
+  // Initial fav state
   frame.onload = updateFavBtn;
-  
-  // ==========================================
-  // RESPONSIVE
-  // ==========================================
+
+  // Keyboard escape
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      if (sidebar.classList.contains('open')) toggleSidebar();
+      if (isSearchOpen) closeSearch();
+    }
+  });
+
+  // Responsive reload fix
   let lastWidth = window.innerWidth;
-  window.addEventListener('resize', function() {
+  window.addEventListener('resize', () => {
     const newWidth = window.innerWidth;
     if ((lastWidth < 1024 && newWidth >= 1024) || (lastWidth >= 1024 && newWidth < 1024)) {
-      // Reload to apply desktop/mobile styles
       location.reload();
     }
     lastWidth = newWidth;
   });
 }
 
-// Touch detection
+// Touch class
 if (window.matchMedia('(pointer: coarse)').matches) {
   document.body.classList.add('touch');
 }
