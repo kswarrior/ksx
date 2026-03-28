@@ -59,25 +59,18 @@ html, body {
 }
 
 /* ============================================
-   CINEMATIC LOADER
+   CINEMATIC LOADER (Initial App Open - Already had)
    ============================================ */
 #loader-container {
   position: fixed;
-  inset: 0;                    /* covers the entire viewport */
-  background-image: url('https://i.pinimg.com/originals/11/da/17/11da17f139514aa738fea26d9265c4b4.gif');
-  background-size: cover;      /* recommended for full-screen GIFs */
-  background-position: center;
-  background-repeat: no-repeat;
+  inset: 0;
+  background: var(--bg);
   z-index: 10000;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  
-  /* Smooth fade-out when hiding */
   transition: opacity 0.5s ease, visibility 0.5s ease;
-  opacity: 1;
-  visibility: visible;
 }
 
 #loader-container.hidden {
@@ -86,7 +79,6 @@ html, body {
   pointer-events: none;
 }
 
-/* Animated background grid */
 .loader-bg {
   position: absolute;
   inset: 0;
@@ -113,7 +105,6 @@ html, body {
   100% { transform: perspective(500px) rotateX(60deg) translateY(40px); }
 }
 
-/* Floating particles */
 .particles {
   position: absolute;
   inset: 0;
@@ -141,14 +132,12 @@ html, body {
   50% { transform: translateY(-30px) scale(1.5); opacity: 1; }
 }
 
-/* Central loader content */
 .loader-content {
   position: relative;
   z-index: 10;
   text-align: center;
 }
 
-/* Triple ring spinner */
 .loader-rings {
   position: relative;
   width: 100px;
@@ -188,7 +177,6 @@ html, body {
   to { transform: rotate(360deg); }
 }
 
-/* Logo text with pulse */
 .loader-logo {
   font-size: 26px;
   font-weight: 900;
@@ -205,7 +193,6 @@ html, body {
   to { background-position: 200% center; }
 }
 
-/* Progress bar */
 .loader-progress {
   width: 180px;
   height: 2px;
@@ -225,7 +212,6 @@ html, body {
   box-shadow: 0 0 10px var(--accent);
 }
 
-/* Loading text */
 .loader-text {
   margin-top: 16px;
   font-size: 12px;
@@ -238,6 +224,64 @@ html, body {
 @keyframes pulse {
   0%, 100% { opacity: 0.5; }
   50% { opacity: 1; }
+}
+
+/* ============================================
+   PAGE LOADER (NEW - Shows when switching pages in iframe)
+   ============================================ */
+#pageLoader {
+  position: fixed;
+  top: var(--topbar-height);
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(10, 10, 15, 0.94);
+  backdrop-filter: blur(14px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1200;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+#pageLoader.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.loader-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.ks-loader text {
+  stroke: var(--accent);
+  stroke-width: 1.5;
+  stroke-dasharray: 120;
+  stroke-dashoffset: 120;
+  animation: ks-draw 2s cubic-bezier(0.65, 0, 0.35, 1) infinite alternate;
+}
+
+@keyframes ks-draw {
+  0% { stroke-dashoffset: 120; fill: none; opacity: 0.25; }
+  40% { stroke-dashoffset: 0; fill: var(--accent); opacity: 1; }
+  100% { stroke-dashoffset: 120; fill: none; opacity: 0.25; }
+}
+
+#topLoader {
+  position: fixed;
+  top: var(--topbar-height);
+  left: 0;
+  width: 0%;
+  height: 3px;
+  background: var(--accent);
+  z-index: 1300;
+  transition: width 1.5s ease;
+  box-shadow: 0 0 8px var(--accent);
 }
 
 /* ============================================
@@ -260,7 +304,6 @@ html, body {
   -webkit-backdrop-filter: blur(20px);
 }
 
-/* Left: Logo + Title */
 .topbar-left {
   display: flex;
   align-items: center;
@@ -302,7 +345,6 @@ html, body {
   letter-spacing: 0.5px;
 }
 
-/* Right: Controls */
 .topbar-right {
   display: flex;
   align-items: center;
@@ -310,7 +352,6 @@ html, body {
   flex-shrink: 0;
 }
 
-/* Search */
 .search-box {
   position: relative;
 }
@@ -357,7 +398,6 @@ html, body {
   height: 100%;
 }
 
-/* Favorite Button */
 #favBtn {
   width: 42px;
   height: 42px;
@@ -384,7 +424,6 @@ html, body {
   background: rgba(59, 130, 246, 0.1);
 }
 
-/* Menu Button */
 #menuBtn {
   width: 42px;
   height: 42px;
@@ -430,7 +469,7 @@ html, body {
 }
 
 /* ============================================
-   SEARCH SUGGESTIONS (Enhanced with old stylish categories)
+   SEARCH SUGGESTIONS
    ============================================ */
 #suggestBox {
   position: fixed;
@@ -455,18 +494,6 @@ html, body {
   opacity: 1;
   visibility: visible;
   transform: translateY(0);
-}
-
-/* Old stylish suggestion styles (merged for perfect look) */
-.suggest-header {
-  padding: 8px 16px;
-  font-size: 11px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  color: var(--accent);
-  border-bottom: 1px solid var(--border);
-  margin-bottom: 4px;
 }
 
 .s-category {
@@ -561,7 +588,7 @@ html, body {
 }
 
 /* ============================================
-   SIDEBAR
+   SIDEBAR + FRAME + RESPONSIVE
    ============================================ */
 #sidebar {
   position: fixed;
@@ -582,7 +609,6 @@ html, body {
   transform: translateX(0);
 }
 
-/* Overlay */
 #sidebarOverlay {
   position: fixed;
   inset: var(--topbar-height) 0 0 0;
@@ -599,7 +625,6 @@ html, body {
   visibility: visible;
 }
 
-/* Nav Items */
 .nav-item {
   display: flex;
   align-items: center;
@@ -649,9 +674,6 @@ html, body {
   font-size: 16px;
 }
 
-/* ============================================
-   MAIN FRAME
-   ============================================ */
 #mainFrame {
   position: fixed;
   top: var(--topbar-height);
@@ -664,22 +686,14 @@ html, body {
   z-index: 100;
 }
 
-/* ============================================
-   RESPONSIVE
-   ============================================ */
+/* Responsive */
 @media (min-width: 1024px) {
   #menuBtn { display: none; }
   #sidebar { transform: translateX(0); }
   #sidebarOverlay { display: none; }
-  #mainFrame {
-    left: var(--sidebar-width);
-    width: calc(100% - var(--sidebar-width));
-  }
+  #mainFrame { left: var(--sidebar-width); width: calc(100% - var(--sidebar-width)); }
   #searchInput.expanded { width: 300px; }
-  #suggestBox {
-    right: auto;
-    left: calc(100% - 380px);
-  }
+  #suggestBox { right: auto; left: calc(100% - 380px); }
 }
 
 @media (min-width: 768px) and (max-width: 1023px) {
@@ -690,27 +704,10 @@ html, body {
   :root { --topbar-height: 56px; }
   .owner-name { font-size: 13px; max-width: 120px; }
   .logo { width: 32px; height: 32px; }
-  #searchInput {
-    width: 38px;
-    height: 38px;
-    padding-left: 38px;
-  }
-  #searchInput.expanded {
-    width: calc(100vw - 140px);
-    position: fixed;
-    right: 12px;
-    z-index: 1001;
-  }
-  #favBtn, #menuBtn {
-    width: 38px;
-    height: 38px;
-  }
-  #suggestBox {
-    top: calc(var(--topbar-height) + 4px);
-    right: 12px;
-    left: 12px;
-    width: auto;
-  }
+  #searchInput { width: 38px; height: 38px; padding-left: 38px; }
+  #searchInput.expanded { width: calc(100vw - 140px); position: fixed; right: 12px; z-index: 1001; }
+  #favBtn, #menuBtn { width: 38px; height: 38px; }
+  #suggestBox { top: calc(var(--topbar-height) + 4px); right: 12px; left: 12px; width: auto; }
 }
 
 @media (max-width: 380px) {
@@ -720,7 +717,7 @@ html, body {
 
 @supports (padding-top: env(safe-area-inset-top)) {
   #topbar { padding-top: env(safe-area-inset-top); height: calc(var(--topbar-height) + env(safe-area-inset-top)); }
-  #sidebar, #mainFrame, #sidebarOverlay {
+  #sidebar, #mainFrame, #sidebarOverlay, #pageLoader, #topLoader {
     top: calc(var(--topbar-height) + env(safe-area-inset-top));
     height: calc(100% - var(--topbar-height) - env(safe-area-inset-top));
   }
@@ -736,7 +733,7 @@ html, body {
 
 <body>
 
-<!-- Cinematic Initial Loader -->
+<!-- CINEMATIC LOADER - Shows only when you first open the website -->
 <div id="loader-container">
   <div class="loader-bg">
     <div class="loader-grid"></div>
@@ -822,10 +819,23 @@ html, body {
 <!-- Main Content Frame -->
 <iframe id="mainFrame" title="Main content" sandbox="allow-same-origin allow-scripts allow-popups allow-forms"></iframe>
 
+<!-- PAGE LOADER (NEW) - Shows every time you open a page from sidebar or search -->
+<div id="pageLoader">
+  <div class="loader-box">
+    <svg class="ks-loader" width="140" height="45" viewBox="0 0 140 45">
+      <text x="50%" y="50%" text-anchor="middle" dominant-baseline="middle" 
+        font-family="monospace" font-size="28" fill="none" stroke="var(--accent)" 
+        stroke-width="1.5" stroke-dasharray="120" stroke-dashoffset="120">
+        ❰🔹❰❰ 𝑲𝑺 ❱❱🔹❱
+      </text>
+    </svg>
+  </div>
+</div>
+<div id="topLoader"></div>
+
 <script>
 // ==========================================
-// CINEMATIC LOADER
-// ==========================================
+// CINEMATIC LOADER (Initial App Open)
 (function() {
   const loader = document.getElementById('loader-container');
   const bar = document.getElementById('loaderBar');
@@ -851,7 +861,6 @@ html, body {
 
 // ==========================================
 // APP CORE
-// ==========================================
 function initApp() {
   const frame = document.getElementById('mainFrame');
   const sidebar = document.getElementById('sidebar');
@@ -860,25 +869,41 @@ function initApp() {
   const searchInput = document.getElementById('searchInput');
   const suggestBox = document.getElementById('suggestBox');
   const favBtn = document.getElementById('favBtn');
+  const pageLoader = document.getElementById('pageLoader');
+  const topLoaderEl = document.getElementById('topLoader');
 
   let searchData = [];
   let isSearchOpen = false;
   const FAV_KEY = 'ks-web-fav';
   const LAST_PAGE_KEY = 'ks-web-last-page';
 
-  // ====================== FAVORITES (Improved from old code) ======================
+  // Top loader functions (for page switches)
+  function startTopLoader() {
+    topLoaderEl.style.width = "0%";
+    let width = 0;
+    const interval = setInterval(() => {
+      width += Math.random() * 2.5 + 1;
+      if (width < 92) topLoaderEl.style.width = width + "%";
+    }, 18);
+    return interval;
+  }
+
+  function finishTopLoader(interval) {
+    clearInterval(interval);
+    topLoaderEl.style.width = "100%";
+    setTimeout(() => { topLoaderEl.style.width = "0%"; }, 280);
+  }
+
+  // ====================== FAVORITES ======================
   const getFavorites = () => JSON.parse(localStorage.getItem(FAV_KEY) || '[]');
   const isFavorite = (url) => getFavorites().some(item => {
-    const itemFull = new URL(item.url, location.href).href;
-    const currentFull = new URL(url, location.href).href;
-    return itemFull === currentFull;
+    return new URL(item.url, location.href).href === new URL(url, location.href).href;
   });
 
   const updateFavBtn = () => {
     const current = frame.getAttribute('data-current') || '';
     const isActive = isFavorite(current);
 
-    // SVGs (filled / empty)
     const filledSVG = `<svg width="18" height="18" fill="#3b82f6" stroke="#3b82f6" stroke-width="1" viewBox="0 0 24 24"><path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.778 1.4 8.164L12 18.897l-7.334 3.855 1.4-8.164L.132 9.21l8.2-1.192z"/></svg>`;
     const emptySVG = `<svg width="18" height="18" fill="none" stroke="#f0f0f5" stroke-width="2" viewBox="0 0 24 24"><path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.778 1.4 8.164L12 18.897l-7.334 3.855 1.4-8.164L.132 9.21l8.2-1.192z"/></svg>`;
 
@@ -889,27 +914,23 @@ function initApp() {
   favBtn.addEventListener('click', () => {
     const current = frame.getAttribute('data-current') || '';
     if (!current) return;
-
     const found = searchData.find(item => new URL(item.url, location.href).href === new URL(current, location.href).href);
     const pageName = found ? found.name : 'Page';
 
     let favs = getFavorites();
-
     if (isFavorite(current)) {
       favs = favs.filter(item => new URL(item.url, location.href).href !== new URL(current, location.href).href);
     } else {
       favs.unshift({ name: pageName, url: current, time: Date.now() });
     }
-
     localStorage.setItem(FAV_KEY, JSON.stringify(favs));
     updateFavBtn();
 
-    // Pop animation
     favBtn.style.transform = 'scale(1.25)';
-    setTimeout(() => { favBtn.style.transform = ''; }, 160);
+    setTimeout(() => favBtn.style.transform = '', 160);
   });
 
-  // ====================== SEARCH DATA (Full old structure) ======================
+  // ====================== SEARCH DATA ======================
   fetch('/sitemap.json')
     .then(r => r.ok ? r.json() : [])
     .then(data => {
@@ -920,20 +941,13 @@ function initApp() {
         (cat.sections || []).forEach(sec => {
           const title = sec.title;
           (sec.pages || []).forEach(page => {
-            list.push({
-              icon,
-              category,
-              title,
-              name: page.name,
-              url: page.url
-            });
+            list.push({ icon, category, title, name: page.name, url: page.url });
           });
         });
       });
       searchData = list;
     })
     .catch(() => {
-      // Fallback
       searchData = [
         { icon: '📊', category: 'Main', title: 'Overview', name: 'Dashboard', url: 'dashboard.html' },
         { icon: '🗺️', category: 'Main', title: 'Overview', name: 'Sites Map', url: 'map.html' },
@@ -942,7 +956,7 @@ function initApp() {
       ];
     });
 
-  // ====================== SEARCH SUGGESTIONS (Stylish like old) ======================
+  // ====================== SEARCH SUGGESTIONS ======================
   let activeIndex = -1;
 
   function updateSuggestions() {
@@ -961,12 +975,11 @@ function initApp() {
     );
 
     if (matched.length === 0) {
-      suggestBox.innerHTML = `<div class="suggest-item"><span class="suggest-name" style="color:#8b8b9a">No results found</span></div>`;
+      suggestBox.innerHTML = `<div style="padding:12px 18px;color:#8b8b9a">No results found</div>`;
       suggestBox.classList.add('visible');
       return;
     }
 
-    // Build tree like old code
     const tree = {};
     matched.forEach(i => {
       tree[i.category] ??= { icon: i.icon, titles: {} };
@@ -976,22 +989,11 @@ function initApp() {
 
     let html = '';
     Object.entries(tree).forEach(([category, data]) => {
-      html += `
-        <div class="s-category">
-          <span class="s-icon">${data.icon}</span>
-          <span>${category}</span>
-        </div>
-      `;
-
+      html += `<div class="s-category"><span class="s-icon">${data.icon}</span><span>${category}</span></div>`;
       Object.entries(data.titles).forEach(([title, pages]) => {
         html += `<div class="s-title">${title}</div>`;
-
         pages.forEach(p => {
-          html += `
-            <div class="s-page" data-url="${p.url}" data-name="${p.name}">
-              ${p.name}
-            </div>
-          `;
+          html += `<div class="s-page" data-url="${p.url}" data-name="${p.name}">${p.name}</div>`;
         });
       });
     });
@@ -1000,21 +1002,20 @@ function initApp() {
     suggestBox.classList.add('visible');
   }
 
-  // ====================== PAGE LOADING (Robust like old + new) ======================
+  // ====================== PAGE LOADING WITH NEW PAGE LOADER ======================
   window.loadPage = function(url, navElement = null, save = true) {
     if (!url) return;
+
     const current = frame.getAttribute('data-current');
     if (current === url) return;
 
     frame.setAttribute('data-current', url);
-
     if (save) localStorage.setItem(LAST_PAGE_KEY, url);
 
     // Update active nav
     document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-    if (navElement) {
-      navElement.classList.add('active');
-    } else {
+    if (navElement) navElement.classList.add('active');
+    else {
       document.querySelectorAll('.nav-item').forEach(el => {
         if (el.getAttribute('onclick')?.includes(url)) el.classList.add('active');
       });
@@ -1025,24 +1026,22 @@ function initApp() {
       toggleSidebar();
     }
 
-    // Load page
+    // === SHOW THE SECOND LOADER (KS animated text + top bar) ===
+    pageLoader.classList.add("active");
+    const loaderInterval = startTopLoader();
+
+    // Load the page
     frame.src = url;
 
-    // Update fav after load
     frame.onload = () => {
-      updateFavBtn();
-      if (typeof saveRecent === 'function') saveRecent(null, url); // optional recent
+      // Short delay so the animation is visible
+      setTimeout(() => {
+        pageLoader.classList.remove("active");
+        finishTopLoader(loaderInterval);
+        updateFavBtn();
+      }, 380);
     };
   };
-
-  function saveRecent(name, url) {
-    if (!name) return;
-    const key = 'ks-recent';
-    let recent = JSON.parse(localStorage.getItem(key) || '[]');
-    recent = recent.filter(r => r.url !== url);
-    recent.unshift({ name, url, time: Date.now() });
-    localStorage.setItem(key, JSON.stringify(recent.slice(0, 5)));
-  }
 
   // ====================== SIDEBAR ======================
   function toggleSidebar() {
@@ -1051,11 +1050,7 @@ function initApp() {
     overlay.classList.toggle('visible', isOpen);
   }
 
-  menuBtn.addEventListener('click', e => {
-    e.stopPropagation();
-    toggleSidebar();
-  });
-
+  menuBtn.addEventListener('click', e => { e.stopPropagation(); toggleSidebar(); });
   overlay.addEventListener('click', toggleSidebar);
 
   // ====================== SEARCH ======================
@@ -1073,11 +1068,7 @@ function initApp() {
     suggestBox.classList.remove('visible');
   }
 
-  searchInput.addEventListener('click', e => {
-    e.stopPropagation();
-    if (!isSearchOpen) openSearch();
-  });
-
+  searchInput.addEventListener('click', e => { e.stopPropagation(); if (!isSearchOpen) openSearch(); });
   searchInput.addEventListener('focus', openSearch);
   searchInput.addEventListener('input', updateSuggestions);
 
@@ -1085,24 +1076,16 @@ function initApp() {
     const items = suggestBox.querySelectorAll('.s-page');
     if (items.length === 0) return;
 
-    if (e.key === 'ArrowDown') {
-      e.preventDefault();
-      activeIndex = (activeIndex + 1) % items.length;
-    } else if (e.key === 'ArrowUp') {
-      e.preventDefault();
-      activeIndex = (activeIndex - 1 + items.length) % items.length;
-    } else if (e.key === 'Enter') {
+    if (e.key === 'ArrowDown') { e.preventDefault(); activeIndex = (activeIndex + 1) % items.length; }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); activeIndex = (activeIndex - 1 + items.length) % items.length; }
+    else if (e.key === 'Enter') {
       e.preventDefault();
       if (activeIndex >= 0 && items[activeIndex]) {
-        const item = items[activeIndex];
-        loadPage(item.dataset.url, null);
+        loadPage(items[activeIndex].dataset.url);
         closeSearch();
       }
       return;
-    } else if (e.key === 'Escape') {
-      closeSearch();
-      return;
-    }
+    } else if (e.key === 'Escape') { closeSearch(); return; }
 
     items.forEach((item, i) => item.classList.toggle('active', i === activeIndex));
   });
@@ -1110,23 +1093,19 @@ function initApp() {
   suggestBox.addEventListener('click', e => {
     const pageEl = e.target.closest('.s-page');
     if (pageEl) {
-      loadPage(pageEl.dataset.url, null);
+      loadPage(pageEl.dataset.url);
       closeSearch();
     }
   });
 
-  // Close search on outside click
   document.addEventListener('click', e => {
-    if (!e.target.closest('.search-box') && !e.target.closest('#suggestBox')) {
-      closeSearch();
-    }
+    if (!e.target.closest('.search-box') && !e.target.closest('#suggestBox')) closeSearch();
   });
 
   // ====================== INITIAL LOAD ======================
   const lastPage = localStorage.getItem(LAST_PAGE_KEY) || 'dashboard.html';
-  loadPage(lastPage, null, false);
+  loadPage(lastPage, null, false);   // This will trigger the new page loader
 
-  // Initial fav state
   frame.onload = updateFavBtn;
 
   // Keyboard escape
@@ -1137,21 +1116,17 @@ function initApp() {
     }
   });
 
-  // Responsive reload fix
+  // Responsive fix
   let lastWidth = window.innerWidth;
   window.addEventListener('resize', () => {
     const newWidth = window.innerWidth;
-    if ((lastWidth < 1024 && newWidth >= 1024) || (lastWidth >= 1024 && newWidth < 1024)) {
-      location.reload();
-    }
+    if ((lastWidth < 1024 && newWidth >= 1024) || (lastWidth >= 1024 && newWidth < 1024)) location.reload();
     lastWidth = newWidth;
   });
 }
 
-// Touch class
-if (window.matchMedia('(pointer: coarse)').matches) {
-  document.body.classList.add('touch');
-}
+// Touch support
+if (window.matchMedia('(pointer: coarse)').matches) document.body.classList.add('touch');
 </script>
 </body>
 </html>
