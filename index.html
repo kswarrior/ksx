@@ -59,7 +59,7 @@ html, body {
 }
 
 /* ============================================
-   CINEMATIC LOADER (Initial App Open)
+   CINEMATIC LOADER
    ============================================ */
 #loader-container {
   position: fixed;
@@ -79,6 +79,7 @@ html, body {
   pointer-events: none;
 }
 
+/* Animated background grid */
 .loader-bg {
   position: absolute;
   inset: 0;
@@ -105,6 +106,7 @@ html, body {
   100% { transform: perspective(500px) rotateX(60deg) translateY(40px); }
 }
 
+/* Floating particles */
 .particles {
   position: absolute;
   inset: 0;
@@ -132,12 +134,14 @@ html, body {
   50% { transform: translateY(-30px) scale(1.5); opacity: 1; }
 }
 
+/* Central loader content */
 .loader-content {
   position: relative;
   z-index: 10;
   text-align: center;
 }
 
+/* Triple ring spinner */
 .loader-rings {
   position: relative;
   width: 100px;
@@ -177,6 +181,7 @@ html, body {
   to { transform: rotate(360deg); }
 }
 
+/* Logo text with pulse */
 .loader-logo {
   font-size: 26px;
   font-weight: 900;
@@ -193,6 +198,7 @@ html, body {
   to { background-position: 200% center; }
 }
 
+/* Progress bar */
 .loader-progress {
   width: 180px;
   height: 2px;
@@ -212,6 +218,7 @@ html, body {
   box-shadow: 0 0 10px var(--accent);
 }
 
+/* Loading text */
 .loader-text {
   margin-top: 16px;
   font-size: 12px;
@@ -224,64 +231,6 @@ html, body {
 @keyframes pulse {
   0%, 100% { opacity: 0.5; }
   50% { opacity: 1; }
-}
-
-/* ============================================
-   PAGE LOADER (Shows when switching pages)
-   ============================================ */
-#pageLoader {
-  position: fixed;
-  top: var(--topbar-height);
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(10, 10, 15, 0.94);
-  backdrop-filter: blur(14px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1200;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.25s ease;
-}
-
-#pageLoader.active {
-  opacity: 1;
-  pointer-events: all;
-}
-
-.loader-box {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 14px;
-}
-
-.ks-loader text {
-  stroke: var(--accent);
-  stroke-width: 1.5;
-  stroke-dasharray: 120;
-  stroke-dashoffset: 120;
-  animation: ks-draw 2s cubic-bezier(0.65, 0, 0.35, 1) infinite alternate;
-}
-
-@keyframes ks-draw {
-  0% { stroke-dashoffset: 120; fill: none; opacity: 0.25; }
-  40% { stroke-dashoffset: 0; fill: var(--accent); opacity: 1; }
-  100% { stroke-dashoffset: 120; fill: none; opacity: 0.25; }
-}
-
-#topLoader {
-  position: fixed;
-  top: var(--topbar-height);
-  left: 0;
-  width: 0%;
-  height: 3px;
-  background: var(--accent);
-  z-index: 1300;
-  transition: width 1.5s ease;
-  box-shadow: 0 0 8px var(--accent);
 }
 
 /* ============================================
@@ -304,6 +253,7 @@ html, body {
   -webkit-backdrop-filter: blur(20px);
 }
 
+/* Left: Logo + Title */
 .topbar-left {
   display: flex;
   align-items: center;
@@ -345,6 +295,7 @@ html, body {
   letter-spacing: 0.5px;
 }
 
+/* Right: Controls */
 .topbar-right {
   display: flex;
   align-items: center;
@@ -352,6 +303,7 @@ html, body {
   flex-shrink: 0;
 }
 
+/* Search */
 .search-box {
   position: relative;
 }
@@ -398,6 +350,7 @@ html, body {
   height: 100%;
 }
 
+/* Favorite Button */
 #favBtn {
   width: 42px;
   height: 42px;
@@ -424,6 +377,7 @@ html, body {
   background: rgba(59, 130, 246, 0.1);
 }
 
+/* Menu Button */
 #menuBtn {
   width: 42px;
   height: 42px;
@@ -469,7 +423,7 @@ html, body {
 }
 
 /* ============================================
-   SEARCH SUGGESTIONS
+   SEARCH SUGGESTIONS (Enhanced with old stylish categories)
    ============================================ */
 #suggestBox {
   position: fixed;
@@ -494,6 +448,18 @@ html, body {
   opacity: 1;
   visibility: visible;
   transform: translateY(0);
+}
+
+/* Old stylish suggestion styles (merged for perfect look) */
+.suggest-header {
+  padding: 8px 16px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--accent);
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 4px;
 }
 
 .s-category {
@@ -588,7 +554,7 @@ html, body {
 }
 
 /* ============================================
-   SIDEBAR + MAIN CONTENT (REPLACED IFRAME WITH SPA)
+   SIDEBAR
    ============================================ */
 #sidebar {
   position: fixed;
@@ -609,6 +575,7 @@ html, body {
   transform: translateX(0);
 }
 
+/* Overlay */
 #sidebarOverlay {
   position: fixed;
   inset: var(--topbar-height) 0 0 0;
@@ -625,6 +592,7 @@ html, body {
   visibility: visible;
 }
 
+/* Nav Items */
 .nav-item {
   display: flex;
   align-items: center;
@@ -674,40 +642,37 @@ html, body {
   font-size: 16px;
 }
 
-/* NEW: Main SPA Content Container (replaces iframe) */
-#mainContent {
+/* ============================================
+   MAIN FRAME
+   ============================================ */
+#mainFrame {
   position: fixed;
   top: var(--topbar-height);
   left: 0;
   width: 100%;
   height: calc(100% - var(--topbar-height));
-  overflow-y: auto;
-  background: var(--bg);
-  z-index: 100;
-  padding: 16px;
+  border: none;
+  background: #fff;
   transition: all 0.35s ease;
+  z-index: 100;
 }
 
-/* Individual page containers */
-.page-content {
-  display: none;
-  flex-direction: column;
-  gap: 20px;
-  min-height: 100%;
-}
-
-.page-content.active {
-  display: flex;
-}
-
-/* Responsive */
+/* ============================================
+   RESPONSIVE
+   ============================================ */
 @media (min-width: 1024px) {
   #menuBtn { display: none; }
   #sidebar { transform: translateX(0); }
   #sidebarOverlay { display: none; }
-  #mainContent { left: var(--sidebar-width); width: calc(100% - var(--sidebar-width)); }
+  #mainFrame {
+    left: var(--sidebar-width);
+    width: calc(100% - var(--sidebar-width));
+  }
   #searchInput.expanded { width: 300px; }
-  #suggestBox { right: auto; left: calc(100% - 380px); }
+  #suggestBox {
+    right: auto;
+    left: calc(100% - 380px);
+  }
 }
 
 @media (min-width: 768px) and (max-width: 1023px) {
@@ -718,10 +683,27 @@ html, body {
   :root { --topbar-height: 56px; }
   .owner-name { font-size: 13px; max-width: 120px; }
   .logo { width: 32px; height: 32px; }
-  #searchInput { width: 38px; height: 38px; padding-left: 38px; }
-  #searchInput.expanded { width: calc(100vw - 140px); position: fixed; right: 12px; z-index: 1001; }
-  #favBtn, #menuBtn { width: 38px; height: 38px; }
-  #suggestBox { top: calc(var(--topbar-height) + 4px); right: 12px; left: 12px; width: auto; }
+  #searchInput {
+    width: 38px;
+    height: 38px;
+    padding-left: 38px;
+  }
+  #searchInput.expanded {
+    width: calc(100vw - 140px);
+    position: fixed;
+    right: 12px;
+    z-index: 1001;
+  }
+  #favBtn, #menuBtn {
+    width: 38px;
+    height: 38px;
+  }
+  #suggestBox {
+    top: calc(var(--topbar-height) + 4px);
+    right: 12px;
+    left: 12px;
+    width: auto;
+  }
 }
 
 @media (max-width: 380px) {
@@ -731,7 +713,7 @@ html, body {
 
 @supports (padding-top: env(safe-area-inset-top)) {
   #topbar { padding-top: env(safe-area-inset-top); height: calc(var(--topbar-height) + env(safe-area-inset-top)); }
-  #sidebar, #mainContent, #sidebarOverlay, #pageLoader, #topLoader {
+  #sidebar, #mainFrame, #sidebarOverlay {
     top: calc(var(--topbar-height) + env(safe-area-inset-top));
     height: calc(100% - var(--topbar-height) - env(safe-area-inset-top));
   }
@@ -742,50 +724,12 @@ html, body {
   .nav-item, #favBtn, #menuBtn, .s-page { min-height: 44px; }
   .nav-item:active, #favBtn:active, #menuBtn:active { transform: scale(0.95); opacity: 0.8; }
 }
-
-/* Minecraft-themed content styles */
-.card {
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 18px;
-  transition: all 0.3s ease;
-}
-
-.card:hover {
-  border-color: var(--accent);
-  box-shadow: 0 0 20px var(--accent-glow);
-  transform: translateY(-2px);
-}
-
-.stat-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: 14px;
-}
-
-.minecraft-btn {
-  background: linear-gradient(90deg, #3b82f6, #60a5fa);
-  color: white;
-  border: none;
-  padding: 14px 24px;
-  border-radius: 9999px;
-  font-weight: 700;
-  font-size: 15px;
-  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
-  transition: all 0.3s ease;
-}
-
-.minecraft-btn:hover {
-  transform: scale(1.05);
-  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.6);
-}
 </style>
 </head>
 
 <body>
 
-<!-- CINEMATIC LOADER - Shows only when you first open the website -->
+<!-- Cinematic Initial Loader -->
 <div id="loader-container">
   <div class="loader-bg">
     <div class="loader-grid"></div>
@@ -850,176 +794,31 @@ html, body {
 
 <!-- Sidebar -->
 <nav id="sidebar" aria-label="Main navigation">
-  <a href="#" class="nav-item active" onclick="loadPage('dashboard', this); return false;">
+  <a href="#" class="nav-item active" onclick="loadPage('dashboard.html', this); return false;">
     <span class="nav-icon">📊</span>
     <span>Dashboard</span>
   </a>
-  <a href="#" class="nav-item" onclick="loadPage('map', this); return false;">
+  <a href="#" class="nav-item" onclick="loadPage('map.html', this); return false;">
     <span class="nav-icon">🗺️</span>
     <span>Sites Map</span>
   </a>
-  <a href="#" class="nav-item" onclick="loadPage('social', this); return false;">
+  <a href="#" class="nav-item" onclick="loadPage('social.html', this); return false;">
     <span class="nav-icon">🌐</span>
     <span>Social Media</span>
   </a>
-  <a href="#" class="nav-item" onclick="loadPage('about', this); return false;">
+  <a href="#" class="nav-item" onclick="loadPage('about.html', this); return false;">
     <span class="nav-icon">ℹ️</span>
     <span>About</span>
   </a>
 </nav>
 
-<!-- MAIN SPA CONTENT (fixed the blue screen + next page loading) -->
-<div id="mainContent">
-  
-  <!-- DASHBOARD -->
-  <div id="page-dashboard" class="page-content active">
-    <h1 style="font-size:28px;font-weight:900;margin-bottom:8px;">Welcome back, Warrior! 🔹</h1>
-    <p style="color:var(--muted);margin-bottom:24px;">KS Ultra Hub • Minecraft 1.21 • Server Status: <span style="color:#22c55e;font-weight:700;">ONLINE</span></p>
-    
-    <div class="stat-grid">
-      <div class="card">
-        <div style="display:flex;align-items:center;gap:12px;">
-          <span style="font-size:32px;">👥</span>
-          <div>
-            <div style="font-size:13px;color:var(--muted);">Players Online</div>
-            <div style="font-size:32px;font-weight:900;">142 / 500</div>
-          </div>
-        </div>
-      </div>
-      <div class="card">
-        <div style="display:flex;align-items:center;gap:12px;">
-          <span style="font-size:32px;">🏗️</span>
-          <div>
-            <div style="font-size:13px;color:var(--muted);">Latest Build</div>
-            <div style="font-size:24px;font-weight:700;">Ultra Hub v2.4</div>
-          </div>
-        </div>
-      </div>
-      <div class="card">
-        <div style="display:flex;align-items:center;gap:12px;">
-          <span style="font-size:32px;">⚡</span>
-          <div>
-            <div style="font-size:13px;color:var(--muted);">Ping</div>
-            <div style="font-size:32px;font-weight:900;">24 ms</div>
-          </div>
-        </div>
-      </div>
-      <div class="card">
-        <div style="display:flex;align-items:center;gap:12px;">
-          <span style="font-size:32px;">🏆</span>
-          <div>
-            <div style="font-size:13px;color:var(--muted);">Your Rank</div>
-            <div style="font-size:24px;font-weight:700;color:#eab308;">LEGEND</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div style="margin-top:30px;">
-      <button onclick="alert('🔗 Connecting to play.ksx.dev... (demo)')" class="minecraft-btn" style="width:100%;">
-        🚀 JOIN KS ULTRA HUB SERVER
-      </button>
-    </div>
-
-    <div style="margin-top:40px;">
-      <h2 style="font-size:18px;margin-bottom:12px;">Recent Activity</h2>
-      <div class="card">
-        <p><strong>KS Warrior</strong> just completed the new Nether Hub build 🔥</p>
-        <p style="font-size:12px;color:var(--muted);">2 minutes ago</p>
-      </div>
-      <div class="card" style="margin-top:10px;">
-        <p><strong>You</strong> earned the "Master Builder" achievement</p>
-        <p style="font-size:12px;color:var(--muted);">14 minutes ago</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- SITES MAP -->
-  <div id="page-map" class="page-content">
-    <h1 style="font-size:28px;font-weight:900;margin-bottom:20px;">🗺️ KS Sites Map</h1>
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;">
-      <div class="card">
-        <h3 style="margin-bottom:8px;">📊 Dashboard</h3>
-        <p style="color:var(--muted);">Server stats, player count, latest builds</p>
-      </div>
-      <div class="card">
-        <h3 style="margin-bottom:8px;">🏗️ Ultra Hub Builds</h3>
-        <p style="color:var(--muted);">Free schematics • Download • Tutorials</p>
-      </div>
-      <div class="card">
-        <h3 style="margin-bottom:8px;">🎮 Minecraft Servers</h3>
-        <p style="color:var(--muted);">play.ksx.dev • Survival • Creative • Skyblock</p>
-      </div>
-      <div class="card">
-        <h3 style="margin-bottom:8px;">📖 Guides &amp; Resources</h3>
-        <p style="color:var(--muted);">WorldEdit commands • Redstone tips • More</p>
-      </div>
-    </div>
-    <div style="margin-top:40px;text-align:center;color:var(--muted);font-size:14px;">
-      Everything is connected under one KS Warrior hub.<br>
-      No more switching tabs — all in one place.
-    </div>
-  </div>
-
-  <!-- SOCIAL MEDIA -->
-  <div id="page-social" class="page-content">
-    <h1 style="font-size:28px;font-weight:900;margin-bottom:20px;">🌐 Connect with KS Warrior</h1>
-    <div style="display:flex;flex-direction:column;gap:16px;">
-      <a href="https://discord.gg/ksx" target="_blank" style="display:flex;align-items:center;gap:16px;background:var(--panel);padding:18px;border-radius:14px;text-decoration:none;color:var(--text);">
-        <span style="font-size:40px;">📌</span>
-        <div>
-          <div style="font-weight:700;">Official Discord</div>
-          <div style="color:var(--muted);">Join 12,847 members • Live voice chats</div>
-        </div>
-      </a>
-      <a href="https://x.com/ksxwarrior" target="_blank" style="display:flex;align-items:center;gap:16px;background:var(--panel);padding:18px;border-radius:14px;text-decoration:none;color:var(--text);">
-        <span style="font-size:40px;">𝕏</span>
-        <div>
-          <div style="font-weight:700;">X / Twitter</div>
-          <div style="color:var(--muted);">@KSXWarrior • Daily builds &amp; updates</div>
-        </div>
-      </a>
-      <a href="https://youtube.com/ksx" target="_blank" style="display:flex;align-items:center;gap:16px;background:var(--panel);padding:18px;border-radius:14px;text-decoration:none;color:var(--text);">
-        <span style="font-size:40px;">▶️</span>
-        <div>
-          <div style="font-weight:700;">YouTube</div>
-          <div style="color:var(--muted);">Epic timelapses • Tutorial series</div>
-        </div>
-      </a>
-    </div>
-  </div>
-
-  <!-- ABOUT -->
-  <div id="page-about" class="page-content">
-    <h1 style="font-size:28px;font-weight:900;margin-bottom:20px;">ℹ️ About KS Warrior</h1>
-    <div class="card">
-      <p style="line-height:1.6;">Hey, I'm KS — Minecraft builder, server owner, and creator of the KS Ultra Hub.</p>
-      <p style="margin-top:16px;line-height:1.6;">This is your one-stop portal for everything KS: free hub schematics, server guides, live stats, and community tools.</p>
-      <p style="margin-top:20px;font-size:13px;color:var(--accent);">Built with love for the Minecraft community • 2025</p>
-    </div>
-    <div style="margin-top:30px;text-align:center;">
-      <p style="color:var(--muted);">Made as a full-screen PWA experience so you can play and build without leaving the browser.</p>
-    </div>
-  </div>
-</div>
-
-<!-- PAGE LOADER (NEW) -->
-<div id="pageLoader">
-  <div class="loader-box">
-    <svg class="ks-loader" width="140" height="45" viewBox="0 0 140 45">
-      <text x="50%" y="50%" text-anchor="middle" dominant-baseline="middle" 
-        font-family="monospace" font-size="28" fill="none" stroke="var(--accent)" 
-        stroke-width="1.5" stroke-dasharray="120" stroke-dashoffset="120">
-        ❰🔹❰❰ 𝑲𝑺 ❱❱🔹❱
-      </text>
-    </svg>
-  </div>
-</div>
-<div id="topLoader"></div>
+<!-- Main Content Frame -->
+<iframe id="mainFrame" title="Main content" sandbox="allow-same-origin allow-scripts allow-popups allow-forms"></iframe>
 
 <script>
 // ==========================================
-// CINEMATIC LOADER (Initial App Open)
+// CINEMATIC LOADER
+// ==========================================
 (function() {
   const loader = document.getElementById('loader-container');
   const bar = document.getElementById('loaderBar');
@@ -1044,48 +843,35 @@ html, body {
 })();
 
 // ==========================================
-// APP CORE - FIXED VERSION (SPA - no more missing .html files)
+// APP CORE
+// ==========================================
 function initApp() {
+  const frame = document.getElementById('mainFrame');
   const sidebar = document.getElementById('sidebar');
   const menuBtn = document.getElementById('menuBtn');
   const overlay = document.getElementById('sidebarOverlay');
   const searchInput = document.getElementById('searchInput');
   const suggestBox = document.getElementById('suggestBox');
   const favBtn = document.getElementById('favBtn');
-  const pageLoader = document.getElementById('pageLoader');
-  const topLoaderEl = document.getElementById('topLoader');
-  const mainContent = document.getElementById('mainContent');
 
   let searchData = [];
   let isSearchOpen = false;
   const FAV_KEY = 'ks-web-fav';
   const LAST_PAGE_KEY = 'ks-web-last-page';
 
-  // Top loader functions
-  function startTopLoader() {
-    topLoaderEl.style.width = "0%";
-    let width = 0;
-    const interval = setInterval(() => {
-      width += Math.random() * 2.5 + 1;
-      if (width < 92) topLoaderEl.style.width = width + "%";
-    }, 18);
-    return interval;
-  }
-
-  function finishTopLoader(interval) {
-    clearInterval(interval);
-    topLoaderEl.style.width = "100%";
-    setTimeout(() => { topLoaderEl.style.width = "0%"; }, 280);
-  }
-
-  // ====================== FAVORITES ======================
+  // ====================== FAVORITES (Improved from old code) ======================
   const getFavorites = () => JSON.parse(localStorage.getItem(FAV_KEY) || '[]');
-  const isFavorite = (pageKey) => getFavorites().some(item => item.key === pageKey);
+  const isFavorite = (url) => getFavorites().some(item => {
+    const itemFull = new URL(item.url, location.href).href;
+    const currentFull = new URL(url, location.href).href;
+    return itemFull === currentFull;
+  });
 
   const updateFavBtn = () => {
-    const current = mainContent.getAttribute('data-current') || 'dashboard';
+    const current = frame.getAttribute('data-current') || '';
     const isActive = isFavorite(current);
 
+    // SVGs (filled / empty)
     const filledSVG = `<svg width="18" height="18" fill="#3b82f6" stroke="#3b82f6" stroke-width="1" viewBox="0 0 24 24"><path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.778 1.4 8.164L12 18.897l-7.334 3.855 1.4-8.164L.132 9.21l8.2-1.192z"/></svg>`;
     const emptySVG = `<svg width="18" height="18" fill="none" stroke="#f0f0f5" stroke-width="2" viewBox="0 0 24 24"><path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.778 1.4 8.164L12 18.897l-7.334 3.855 1.4-8.164L.132 9.21l8.2-1.192z"/></svg>`;
 
@@ -1094,27 +880,29 @@ function initApp() {
   };
 
   favBtn.addEventListener('click', () => {
-    const current = mainContent.getAttribute('data-current') || 'dashboard';
+    const current = frame.getAttribute('data-current') || '';
+    if (!current) return;
+
+    const found = searchData.find(item => new URL(item.url, location.href).href === new URL(current, location.href).href);
+    const pageName = found ? found.name : 'Page';
+
     let favs = getFavorites();
+
     if (isFavorite(current)) {
-      favs = favs.filter(item => item.key !== current);
+      favs = favs.filter(item => new URL(item.url, location.href).href !== new URL(current, location.href).href);
     } else {
-      const names = {
-        dashboard: 'Dashboard',
-        map: 'Sites Map',
-        social: 'Social Media',
-        about: 'About'
-      };
-      favs.unshift({ key: current, name: names[current] || 'Page', time: Date.now() });
+      favs.unshift({ name: pageName, url: current, time: Date.now() });
     }
+
     localStorage.setItem(FAV_KEY, JSON.stringify(favs));
     updateFavBtn();
 
+    // Pop animation
     favBtn.style.transform = 'scale(1.25)';
-    setTimeout(() => favBtn.style.transform = '', 160);
+    setTimeout(() => { favBtn.style.transform = ''; }, 160);
   });
 
-  // ====================== SEARCH DATA ======================
+  // ====================== SEARCH DATA (Full old structure) ======================
   fetch('/sitemap.json')
     .then(r => r.ok ? r.json() : [])
     .then(data => {
@@ -1125,22 +913,29 @@ function initApp() {
         (cat.sections || []).forEach(sec => {
           const title = sec.title;
           (sec.pages || []).forEach(page => {
-            list.push({ icon, category, title, name: page.name, key: page.key || page.url.replace('.html','') });
+            list.push({
+              icon,
+              category,
+              title,
+              name: page.name,
+              url: page.url
+            });
           });
         });
       });
       searchData = list;
     })
     .catch(() => {
+      // Fallback
       searchData = [
-        { icon: '📊', category: 'Main', title: 'Overview', name: 'Dashboard', key: 'dashboard' },
-        { icon: '🗺️', category: 'Main', title: 'Overview', name: 'Sites Map', key: 'map' },
-        { icon: '🌐', category: 'Main', title: 'Overview', name: 'Social Media', key: 'social' },
-        { icon: 'ℹ️', category: 'Main', title: 'Overview', name: 'About', key: 'about' }
+        { icon: '📊', category: 'Main', title: 'Overview', name: 'Dashboard', url: 'dashboard.html' },
+        { icon: '🗺️', category: 'Main', title: 'Overview', name: 'Sites Map', url: 'map.html' },
+        { icon: '🌐', category: 'Main', title: 'Overview', name: 'Social Media', url: 'social.html' },
+        { icon: 'ℹ️', category: 'Main', title: 'Overview', name: 'About', url: 'about.html' }
       ];
     });
 
-  // ====================== SEARCH SUGGESTIONS ======================
+  // ====================== SEARCH SUGGESTIONS (Stylish like old) ======================
   let activeIndex = -1;
 
   function updateSuggestions() {
@@ -1159,11 +954,12 @@ function initApp() {
     );
 
     if (matched.length === 0) {
-      suggestBox.innerHTML = `<div style="padding:12px 18px;color:#8b8b9a">No results found</div>`;
+      suggestBox.innerHTML = `<div class="suggest-item"><span class="suggest-name" style="color:#8b8b9a">No results found</span></div>`;
       suggestBox.classList.add('visible');
       return;
     }
 
+    // Build tree like old code
     const tree = {};
     matched.forEach(i => {
       tree[i.category] ??= { icon: i.icon, titles: {} };
@@ -1173,11 +969,22 @@ function initApp() {
 
     let html = '';
     Object.entries(tree).forEach(([category, data]) => {
-      html += `<div class="s-category"><span class="s-icon">${data.icon}</span><span>${category}</span></div>`;
+      html += `
+        <div class="s-category">
+          <span class="s-icon">${data.icon}</span>
+          <span>${category}</span>
+        </div>
+      `;
+
       Object.entries(data.titles).forEach(([title, pages]) => {
         html += `<div class="s-title">${title}</div>`;
+
         pages.forEach(p => {
-          html += `<div class="s-page" data-key="${p.key}">${p.name}</div>`;
+          html += `
+            <div class="s-page" data-url="${p.url}" data-name="${p.name}">
+              ${p.name}
+            </div>
+          `;
         });
       });
     });
@@ -1186,22 +993,24 @@ function initApp() {
     suggestBox.classList.add('visible');
   }
 
-  // ====================== PAGE LOADING (FIXED - SPA version) ======================
-  window.loadPage = function(pageKey, navElement = null, save = true) {
-    if (!pageKey) return;
+  // ====================== PAGE LOADING (Robust like old + new) ======================
+  window.loadPage = function(url, navElement = null, save = true) {
+    if (!url) return;
+    const current = frame.getAttribute('data-current');
+    if (current === url) return;
 
-    const current = mainContent.getAttribute('data-current');
-    if (current === pageKey) return;
+    frame.setAttribute('data-current', url);
 
-    mainContent.setAttribute('data-current', pageKey);
-    if (save) localStorage.setItem(LAST_PAGE_KEY, pageKey);
+    if (save) localStorage.setItem(LAST_PAGE_KEY, url);
 
     // Update active nav
     document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-    if (navElement) navElement.classList.add('active');
-    else {
-      const link = document.querySelector(`.nav-item[onclick*="loadPage('${pageKey}'"]`);
-      if (link) link.classList.add('active');
+    if (navElement) {
+      navElement.classList.add('active');
+    } else {
+      document.querySelectorAll('.nav-item').forEach(el => {
+        if (el.getAttribute('onclick')?.includes(url)) el.classList.add('active');
+      });
     }
 
     // Close mobile sidebar
@@ -1209,21 +1018,24 @@ function initApp() {
       toggleSidebar();
     }
 
-    // Show page loader animation
-    pageLoader.classList.add("active");
-    const loaderInterval = startTopLoader();
+    // Load page
+    frame.src = url;
 
-    // Switch content instantly (but keep loader visible for nice effect)
-    setTimeout(() => {
-      document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active'));
-      const targetPage = document.getElementById('page-' + pageKey);
-      if (targetPage) targetPage.classList.add('active');
-
-      pageLoader.classList.remove("active");
-      finishTopLoader(loaderInterval);
+    // Update fav after load
+    frame.onload = () => {
       updateFavBtn();
-    }, 420);
+      if (typeof saveRecent === 'function') saveRecent(null, url); // optional recent
+    };
   };
+
+  function saveRecent(name, url) {
+    if (!name) return;
+    const key = 'ks-recent';
+    let recent = JSON.parse(localStorage.getItem(key) || '[]');
+    recent = recent.filter(r => r.url !== url);
+    recent.unshift({ name, url, time: Date.now() });
+    localStorage.setItem(key, JSON.stringify(recent.slice(0, 5)));
+  }
 
   // ====================== SIDEBAR ======================
   function toggleSidebar() {
@@ -1232,7 +1044,11 @@ function initApp() {
     overlay.classList.toggle('visible', isOpen);
   }
 
-  menuBtn.addEventListener('click', e => { e.stopPropagation(); toggleSidebar(); });
+  menuBtn.addEventListener('click', e => {
+    e.stopPropagation();
+    toggleSidebar();
+  });
+
   overlay.addEventListener('click', toggleSidebar);
 
   // ====================== SEARCH ======================
@@ -1250,7 +1066,11 @@ function initApp() {
     suggestBox.classList.remove('visible');
   }
 
-  searchInput.addEventListener('click', e => { e.stopPropagation(); if (!isSearchOpen) openSearch(); });
+  searchInput.addEventListener('click', e => {
+    e.stopPropagation();
+    if (!isSearchOpen) openSearch();
+  });
+
   searchInput.addEventListener('focus', openSearch);
   searchInput.addEventListener('input', updateSuggestions);
 
@@ -1258,16 +1078,24 @@ function initApp() {
     const items = suggestBox.querySelectorAll('.s-page');
     if (items.length === 0) return;
 
-    if (e.key === 'ArrowDown') { e.preventDefault(); activeIndex = (activeIndex + 1) % items.length; }
-    else if (e.key === 'ArrowUp') { e.preventDefault(); activeIndex = (activeIndex - 1 + items.length) % items.length; }
-    else if (e.key === 'Enter') {
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      activeIndex = (activeIndex + 1) % items.length;
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      activeIndex = (activeIndex - 1 + items.length) % items.length;
+    } else if (e.key === 'Enter') {
       e.preventDefault();
       if (activeIndex >= 0 && items[activeIndex]) {
-        loadPage(items[activeIndex].dataset.key);
+        const item = items[activeIndex];
+        loadPage(item.dataset.url, null);
         closeSearch();
       }
       return;
-    } else if (e.key === 'Escape') { closeSearch(); return; }
+    } else if (e.key === 'Escape') {
+      closeSearch();
+      return;
+    }
 
     items.forEach((item, i) => item.classList.toggle('active', i === activeIndex));
   });
@@ -1275,18 +1103,24 @@ function initApp() {
   suggestBox.addEventListener('click', e => {
     const pageEl = e.target.closest('.s-page');
     if (pageEl) {
-      loadPage(pageEl.dataset.key);
+      loadPage(pageEl.dataset.url, null);
       closeSearch();
     }
   });
 
+  // Close search on outside click
   document.addEventListener('click', e => {
-    if (!e.target.closest('.search-box') && !e.target.closest('#suggestBox')) closeSearch();
+    if (!e.target.closest('.search-box') && !e.target.closest('#suggestBox')) {
+      closeSearch();
+    }
   });
 
   // ====================== INITIAL LOAD ======================
-  const lastPage = localStorage.getItem(LAST_PAGE_KEY) || 'dashboard';
+  const lastPage = localStorage.getItem(LAST_PAGE_KEY) || 'dashboard.html';
   loadPage(lastPage, null, false);
+
+  // Initial fav state
+  frame.onload = updateFavBtn;
 
   // Keyboard escape
   document.addEventListener('keydown', e => {
@@ -1296,17 +1130,21 @@ function initApp() {
     }
   });
 
-  // Responsive fix
+  // Responsive reload fix
   let lastWidth = window.innerWidth;
   window.addEventListener('resize', () => {
     const newWidth = window.innerWidth;
-    if ((lastWidth < 1024 && newWidth >= 1024) || (lastWidth >= 1024 && newWidth < 1024)) location.reload();
+    if ((lastWidth < 1024 && newWidth >= 1024) || (lastWidth >= 1024 && newWidth < 1024)) {
+      location.reload();
+    }
     lastWidth = newWidth;
   });
 }
 
-// Touch support
-if (window.matchMedia('(pointer: coarse)').matches) document.body.classList.add('touch');
+// Touch class
+if (window.matchMedia('(pointer: coarse)').matches) {
+  document.body.classList.add('touch');
+}
 </script>
 </body>
 </html>
