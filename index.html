@@ -2,466 +2,347 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="author" content="KS Warrior">
     <meta name="description" content="Join KS Warrior—your go-to KS website for Minecraft servers, KS Ultra Hub builds, and epic gameplay. Discover KS Minecraft guides, KS Web setups, and more. Free resources for ultimate hubs!">
     <meta name="keywords" content="ks warrior, ks ultra hub, ks minecraft, ks website, ks web, minecraft hub, minecraft server, ultra hub setup">
     <meta name="robots" content="index, follow">
-    <meta name="theme-color" content="#0a0a0f">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
     <meta property="og:title" content="KS Warrior: Ultimate Minecraft Hub & KS Ultra Hub Server">
     <meta property="og:description" content="Explore KS Warrior, the premier KS website for Minecraft enthusiasts. Build epic KS Ultra Hubs, join servers, and master KS Web integrations.">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://ksx.pages.dev">
-    <meta property="og:image" content="https://ksx.pages.dev/logo.png">
+    <meta property="og:url" content="YOUR_SITE_URL">
+    <meta property="og:image" content="YOUR_IMAGE_URL">
 
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="KS Warrior: Ultimate Minecraft Hub & KS Ultra Hub Server">
     <meta name="twitter:description" content="Your KS Minecraft destination for servers, hubs, and guides.">
-    <meta name="twitter:image" content="https://ksx.pages.dev/logo.png">
+    <meta name="twitter:image" content="YOUR_IMAGE_URL">
 
     <title>KS Warrior: Ultimate Minecraft Hub & KS Ultra Hub Server</title>
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "VideoGame",
+        "name": "KS Warrior Minecraft Hub",
+        "author": {
+            "@type": "Person",
+            "name": "KS Warrior"
+        },
+        "genre": "Minecraft Server",
+        "description": "KS Warrior is the leading KS Ultra Hub for Minecraft players, featuring custom KS Web integrations and epic builds.",
+        "url": "YOUR_SITE_URL",
+        "image": "YOUR_IMAGE_URL",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD",
+            "availability": "https://schema.org/InStock"
+        }
+    }
+    </script>
+
     <link rel="canonical" href="https://ksx.pages.dev">
-    <link rel="icon" href="https://ksx.pages.dev/logo.png" type="image/png">
-    <link rel="apple-touch-icon" href="https://ksx.pages.dev/logo.png">
+    <link rel="icon" href="https://ksx.pages.dev/logo.png" type="image/x-icon">
 
 <style>
 :root {
   --bg: #0a0a0f;
-  --surface: #12121a;
-  --panel: #1a1a24;
-  --border: #2a2a35;
-  --text: #f0f0f5;
-  --muted: #8b8b9a;
+  --top: #0b0b10;
+  --panel: #15151b;
+  --border: #24242c;
+  --text: #e6e6eb;
+  --muted: #9aa0aa;
   --accent: #3b82f6;
-  --accent-glow: rgba(59, 130, 246, 0.4);
-  --hover: #252530;
-  --topbar-height: 60px;
-  --sidebar-width: 280px;
+  --accent-hover: #2563eb;
+  --hover: #1f1f2a;
+  --glass: rgba(20, 20, 30, 0.85);
 }
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  -webkit-tap-highlight-color: transparent;
-}
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
 html, body {
   height: 100%;
   background: var(--bg);
   color: var(--text);
-  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
   overflow: hidden;
-  -webkit-font-smoothing: antialiased;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
-/* ============================================
-   CINEMATIC LOADER
-   ============================================ */
-#loader-container {
-  position: fixed;
-  inset: 0;
-  background: var(--bg);
-  z-index: 10000;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  transition: opacity 0.5s ease, visibility 0.5s ease;
-}
-
-#loader-container.hidden {
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-}
-
-/* Animated background grid */
-.loader-bg {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-  opacity: 0.4;
-}
-
-.loader-grid {
-  position: absolute;
-  width: 200%;
-  height: 200%;
-  top: -50%;
-  left: -50%;
-  background-image: 
-    linear-gradient(rgba(59, 130, 246, 0.1) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(59, 130, 246, 0.1) 1px, transparent 1px);
-  background-size: 40px 40px;
-  transform: perspective(500px) rotateX(60deg);
-  animation: gridScroll 8s linear infinite;
-}
-
-@keyframes gridScroll {
-  0% { transform: perspective(500px) rotateX(60deg) translateY(0); }
-  100% { transform: perspective(500px) rotateX(60deg) translateY(40px); }
-}
-
-/* Floating particles */
-.particles {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-}
-
-.particle {
-  position: absolute;
-  width: 3px;
-  height: 3px;
-  background: var(--accent);
-  border-radius: 50%;
-  box-shadow: 0 0 6px var(--accent);
-  animation: particleFloat 4s ease-in-out infinite;
-}
-
-.particle:nth-child(1) { left: 20%; top: 30%; animation-delay: 0s; }
-.particle:nth-child(2) { left: 80%; top: 20%; animation-delay: 0.8s; }
-.particle:nth-child(3) { left: 60%; top: 70%; animation-delay: 1.6s; }
-.particle:nth-child(4) { left: 30%; top: 60%; animation-delay: 2.4s; }
-.particle:nth-child(5) { left: 70%; top: 40%; animation-delay: 3.2s; }
-
-@keyframes particleFloat {
-  0%, 100% { transform: translateY(0) scale(1); opacity: 0.4; }
-  50% { transform: translateY(-30px) scale(1.5); opacity: 1; }
-}
-
-/* Central loader content */
-.loader-content {
-  position: relative;
-  z-index: 10;
-  text-align: center;
-}
-
-/* Triple ring spinner */
-.loader-rings {
-  position: relative;
-  width: 100px;
-  height: 100px;
-  margin: 0 auto 30px;
-}
-
-.ring {
-  position: absolute;
-  inset: 0;
-  border: 3px solid transparent;
-  border-radius: 50%;
-  border-top-color: var(--accent);
-  animation: spin 1.2s linear infinite;
-}
-
-.ring:nth-child(1) {
-  inset: 0;
-  border-top-color: var(--accent);
-  box-shadow: 0 0 10px var(--accent-glow);
-}
-
-.ring:nth-child(2) {
-  inset: -12px;
-  border-top-color: rgba(59, 130, 246, 0.4);
-  animation-duration: 1.8s;
-  animation-direction: reverse;
-}
-
-.ring:nth-child(3) {
-  inset: 8px;
-  border-top-color: rgba(59, 130, 246, 0.7);
-  animation-duration: 0.9s;
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-/* Logo text with pulse */
-.loader-logo {
-  font-size: 26px;
-  font-weight: 900;
-  letter-spacing: 3px;
-  background: linear-gradient(135deg, #fff 0%, var(--accent) 50%, #fff 100%);
-  background-size: 200% auto;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: shine 3s linear infinite;
-  margin-bottom: 20px;
-}
-
-@keyframes shine {
-  to { background-position: 200% center; }
-}
-
-/* Progress bar */
-.loader-progress {
-  width: 180px;
-  height: 2px;
-  background: var(--border);
-  border-radius: 2px;
-  margin: 0 auto;
-  overflow: hidden;
-  position: relative;
-}
-
-.loader-bar {
-  height: 100%;
-  width: 0%;
-  background: linear-gradient(90deg, var(--accent), #60a5fa);
-  border-radius: 2px;
-  transition: width 0.2s ease;
-  box-shadow: 0 0 10px var(--accent);
-}
-
-/* Loading text */
-.loader-text {
-  margin-top: 16px;
-  font-size: 12px;
-  color: var(--muted);
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  animation: pulse 1.5s ease-in-out infinite;
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 0.5; }
-  50% { opacity: 1; }
-}
-
-/* ============================================
-   TOPBAR
-   ============================================ */
+/* TOPBAR */
 #topbar {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: var(--topbar-height);
-  background: var(--surface);
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 16px;
-  z-index: 1000;
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-}
-
-/* Left: Logo + Title */
-.topbar-left {
+  top: 0; left: 0; right: 0;
+  height: 56px;
   display: flex;
   align-items: center;
   gap: 12px;
-  flex-shrink: 0;
-  min-width: 0;
+  padding: 0 16px;
+  background: var(--top);
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  z-index: 1000;
 }
 
+/* LOGO & TITLE */
 .logo {
-  width: 36px;
-  height: 36px;
-  border: 2px solid var(--border);
+  width: 30px; height: 30px;
+  border: 1px solid var(--border);
   border-radius: 10px;
   overflow: hidden;
   flex-shrink: 0;
-  transition: all 0.3s ease;
 }
-
-.logo:hover {
-  border-color: var(--accent);
-  box-shadow: 0 0 15px var(--accent-glow);
-}
-
-.logo img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
+.logo img { width: 100%; height: 100%; object-fit: cover; }
 
 .owner-name {
   font-size: 15px;
-  font-weight: 800;
+  font-weight: 900;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  background: linear-gradient(135deg, #fff 0%, #94a3b8 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  letter-spacing: 0.5px;
+  flex: 1;
+  user-select: none;
 }
 
-/* Right: Controls */
-.topbar-right {
+#control-right{
   display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-shrink: 0;
+  justify-content: flex-end;
 }
-
-/* Search */
-.search-box {
+  
+/* SEARCH CONTAINER - NEW DESIGN */
+.search-container {
   position: relative;
+  width: 45px; /* Initial collapsed width (just icon) */
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
 }
 
-#searchInput {
-  width: 42px;
-  height: 42px;
-  padding: 0 16px 0 42px;
-  background: var(--panel);
-  border: 2px solid var(--border);
-  border-radius: 21px;
+#topbar.search-active .search-container {
+  width: 320px; /* Expanded width */
+  max-width: 60vw;
+}
+
+#searchBox {
+  width: 100%;
+  height: 40px;
+  padding: 0 14px 0 44px; /* Left padding for icon */
+  background: rgba(18, 18, 24, 0.9);
+  border: 1px solid var(--border);
+  border-radius: 10px;
   color: var(--text);
   font-size: 14px;
   outline: none;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  cursor: pointer;
-}
-
-#searchInput.expanded {
-  width: 260px;
-  cursor: text;
-  border-color: var(--accent);
-  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
-}
-
-#searchIcon {
-  position: absolute;
-  left: 13px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 18px;
-  height: 18px;
-  color: var(--muted);
-  pointer-events: none;
-  transition: color 0.3s ease;
-}
-
-#searchInput.expanded + #searchIcon {
-  color: var(--accent);
-}
-
-.search-icon-svg {
-  width: 100%;
-  height: 100%;
-}
-
-/* Favorite Button */
-#favBtn {
-  width: 42px;
-  height: 42px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--panel);
-  border: 2px solid var(--border);
-  border-radius: 10px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  color: var(--muted);
-}
-
-#favBtn:hover {
-  border-color: var(--accent);
-  color: var(--accent);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
-}
-
-#favBtn.active {
-  color: var(--accent);
-  background: rgba(59, 130, 246, 0.1);
-}
-
-/* Menu Button */
-#menuBtn {
-  width: 42px;
-  height: 42px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 5px;
-  background: var(--panel);
-  border: 2px solid var(--border);
-  border-radius: 10px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  padding: 0;
-}
-
-#menuBtn:hover {
-  border-color: var(--accent);
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
-}
-
-#menuBtn span {
-  display: block;
-  width: 18px;
-  height: 2px;
-  background: var(--text);
-  border-radius: 2px;
-  transition: all 0.3s ease;
-  transform-origin: center;
-}
-
-#menuBtn.active span:nth-child(1) {
-  transform: translateY(7px) rotate(45deg);
-}
-
-#menuBtn.active span:nth-child(2) {
   opacity: 0;
-  transform: scaleX(0);
+  transition: opacity 0.3s ease 0.1s;
 }
 
-#menuBtn.active span:nth-child(3) {
-  transform: translateY(-7px) rotate(-45deg);
+#topbar.search-active #searchBox {
+  opacity: 1;
 }
 
-/* ============================================
-   SEARCH SUGGESTIONS (Enhanced with old stylish categories)
-   ============================================ */
+/* Search Icon - Now inside the bar on the left */
+#searchTrigger {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  color: var(--text);
+  font-size: 20px;
+  z-index: 2;
+  transition: color 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+#searchTrigger:hover {
+  color: var(--accent);
+}
+
+  .search-svg {
+  width: 22px;
+  height: 22px;
+  stroke: #F5F5F5;
+  stroke-width: 2.2;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition:
+    stroke 0.25s ease,
+    transform 0.25s ease,
+    filter 0.25s ease;
+}
+
+/* Hover effect */
+#searchTrigger:hover .search-svg {
+  stroke: var(--accent);
+  transform: scale(1.15);
+  filter: drop-shadow(0 0 6px rgba(59,130,246,0.6));
+}
+
+/* Active (search opened) */
+#topbar.search-active .search-svg {
+  stroke: var(--accent);
+}
+
+/* HAMBURGER */
+#hamburger {
+  width: 40px; height: 40px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text);
+  cursor: pointer;
+  font-size: 22px;
+  display: grid;
+  place-items: center;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+#hamburger:hover {
+  background: var(--hover);
+  border-color: var(--accent);
+}
+
+  .menu-svg {
+  width: 20px;
+  height: 20px;
+  stroke: #F5F5F5;
+  stroke-width: 2.2;
+  fill: none;
+  stroke-linecap: round;
+  transition:
+    stroke 0.25s ease,
+    transform 0.25s ease,
+    filter 0.25s ease;
+}
+
+/* Hover */
+#hamburger:hover .menu-svg {
+  stroke: var(--accent);
+  transform: scale(1.1);
+  filter: drop-shadow(0 0 6px rgba(59,130,246,0.5));
+}
+  
+/* SUGGESTIONS */
 #suggestBox {
   position: fixed;
-  top: calc(var(--topbar-height) + 8px);
-  right: 16px;
-  width: min(360px, calc(100vw - 32px));
-  max-height: 420px;
+  top: 64px;
+  left: 16px; right: 16px;
+  max-width: 560px;
+  margin: 0 auto;
   background: var(--panel);
   border: 1px solid var(--border);
   border-radius: 12px;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.6);
-  overflow-y: auto;
-  z-index: 999;
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(-10px);
-  transition: all 0.3s ease;
+  list-style: none;
   padding: 8px 0;
+  box-shadow: 0 12px 32px rgba(0,0,0,0.5);
+  display: none;
+  z-index: 900;
+  max-height: 360px;
+  overflow-y: auto;
+  backdrop-filter: blur(12px);
+}
+#suggestBox li {
+  padding: 12px 18px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+#suggestBox li:hover,
+#suggestBox li.active {
+  background: var(--hover);
 }
 
-#suggestBox.visible {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
+/* SIDEBAR & FRAME (unchanged but polished) */
+#sidebar {
+  position: fixed;
+  top: 56px;
+  left: -175px;
+  width: 175px;
+  height: calc(100% - 56px);
+  background: var(--glass);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  padding: 20px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  transition: left 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  z-index: 800;
+}
+body.sidebar-open #sidebar { left: 0; }
+
+#sidebar a {
+  display: block;
+  padding: 14px 24px;
+  color: var(--text);
+  text-decoration: none;
+  font-size: 16px;
+  transition: all 0.25s ease;
+  border-left: 3px solid transparent;
+  user-select: none;
+}
+#sidebar a:hover {
+  background: var(--hover);
+  border-left-color: var(--accent);
+  padding-left: 28px;
 }
 
-/* Old stylish suggestion styles (merged for perfect look) */
-.suggest-header {
-  padding: 8px 16px;
-  font-size: 11px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1px;
+#frame {
+  position: fixed;
+  top: 56px;
+  left: 0;
+  width: 100%;
+  height: calc(100% - 56px);
+  border: none;
+  background: #fff;
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+ /* Favorite Button Hover & Filled */
+#favButton {
+  cursor: pointer;
   color: var(--accent);
-  border-bottom: 1px solid var(--border);
-  margin-bottom: 4px;
+  font-size: 35px;
+  font-weight: 900;
+  user-select: none;
+  transition: transform 0.2s ease, color 0.2s ease;
 }
 
+#favButton:hover {
+  color: var(--accent);
+  transform: scale(1.2);
+}
+
+#favButton.filled {
+  color: var(--accent); /* Blue color when added to favorites */
+}
+
+.fav-svg {
+  filter: drop-shadow(0 0 2px rgba(0,0,0,0.35));
+}
+
+/* ICON */
+.s-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  margin-right: 8px;
+  border-radius: 6px;
+  background: rgba(59, 130, 246, 0.15);
+  color: var(--accent);
+  font-size: 13px;
+  flex-shrink: 0;
+}
+
+/* CATEGORY */
 .s-category {
   display: flex;
   align-items: center;
@@ -477,28 +358,22 @@ html, body {
   opacity: 0.95;
 }
 
+/* subtle divider under category */
 .s-category::after {
   content: "";
   display: block;
   width: 100%;
   height: 1px;
-  background: linear-gradient(to right, var(--accent), transparent);
+  background: linear-gradient(
+    to right,
+    var(--accent),
+    transparent
+  );
   margin-top: 6px;
   opacity: 0.25;
 }
 
-.s-icon {
-  display: inline-grid;
-  place-items: center;
-  width: 22px;
-  height: 22px;
-  border-radius: 6px;
-  background: rgba(59, 130, 246, 0.15);
-  color: var(--accent);
-  font-size: 13px;
-  flex-shrink: 0;
-}
-
+/* TITLE */
 .s-title {
   font-size: 13px;
   font-weight: 700;
@@ -510,6 +385,7 @@ html, body {
   position: relative;
 }
 
+/* small dot before title */
 .s-title::before {
   content: "❯❯";
   position: absolute;
@@ -518,6 +394,7 @@ html, body {
   opacity: 0.6;
 }
 
+/* PAGE */
 .s-page {
   font-size: 12px;
   padding: 10px 40px;
@@ -526,15 +403,20 @@ html, body {
   border-radius: 8px;
   transition: all 0.2s ease;
   position: relative;
-  cursor: pointer;
 }
 
+/* hover + keyboard */
 .s-page:hover,
 .s-page.active {
-  background: linear-gradient(90deg, rgba(59, 130, 246, 0.15), transparent);
+  background: linear-gradient(
+    90deg,
+    rgba(59, 130, 246, 0.15),
+    transparent
+  );
   color: var(--text);
 }
 
+/* left highlight bar */
 .s-page::before {
   content: "➣";
   position: absolute;
@@ -553,598 +435,605 @@ html, body {
   opacity: 1;
 }
 
-/* ============================================
-   SIDEBAR
-   ============================================ */
-#sidebar {
-  position: fixed;
-  top: var(--topbar-height);
-  left: 0;
-  width: var(--sidebar-width);
-  height: calc(100% - var(--topbar-height));
-  background: var(--surface);
-  border-right: 1px solid var(--border);
-  transform: translateX(-100%);
-  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-  z-index: 900;
-  overflow-y: auto;
-  padding: 16px 12px;
+/* smooth appear animation */
+#suggestBox li {
+  animation: fadeIn 0.15s ease;
 }
 
-#sidebar.open {
-  transform: translateX(0);
-}
-
-/* Overlay */
-#sidebarOverlay {
-  position: fixed;
-  inset: var(--topbar-height) 0 0 0;
-  background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(8px);
-  opacity: 0;
-  visibility: hidden;
-  transition: all 0.3s ease;
-  z-index: 850;
-}
-
-#sidebarOverlay.visible {
-  opacity: 1;
-  visibility: visible;
-}
-
-/* Nav Items */
-.nav-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 16px;
-  margin: 4px 0;
-  color: var(--text);
-  text-decoration: none;
-  font-size: 14px;
-  font-weight: 500;
-  border-radius: 10px;
-  transition: all 0.25s ease;
-  position: relative;
-  overflow: hidden;
-}
-
-.nav-item::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 3px;
-  background: var(--accent);
-  transform: scaleY(0);
-  transition: transform 0.25s ease;
-}
-
-.nav-item:hover,
-.nav-item.active {
-  background: var(--hover);
-  color: var(--accent);
-  transform: translateX(4px);
-}
-
-.nav-item:hover::before,
-.nav-item.active::before {
-  transform: scaleY(1);
-}
-
-.nav-icon {
-  width: 22px;
-  height: 22px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 16px;
-}
-
-/* ============================================
-   MAIN FRAME
-   ============================================ */
-#mainFrame {
-  position: fixed;
-  top: var(--topbar-height);
-  left: 0;
-  width: 100%;
-  height: calc(100% - var(--topbar-height));
-  border: none;
-  background: #fff;
-  transition: all 0.35s ease;
-  z-index: 100;
-}
-
-/* ============================================
-   RESPONSIVE
-   ============================================ */
-@media (min-width: 1024px) {
-  #menuBtn { display: none; }
-  #sidebar { transform: translateX(0); }
-  #sidebarOverlay { display: none; }
-  #mainFrame {
-    left: var(--sidebar-width);
-    width: calc(100% - var(--sidebar-width));
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
   }
-  #searchInput.expanded { width: 300px; }
-  #suggestBox {
-    right: auto;
-    left: calc(100% - 380px);
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
-}
-
-@media (min-width: 768px) and (max-width: 1023px) {
-  #searchInput.expanded { width: 240px; }
-}
-
-@media (max-width: 767px) {
-  :root { --topbar-height: 56px; }
-  .owner-name { font-size: 13px; max-width: 120px; }
-  .logo { width: 32px; height: 32px; }
-  #searchInput {
-    width: 38px;
-    height: 38px;
-    padding-left: 38px;
-  }
-  #searchInput.expanded {
-    width: calc(100vw - 140px);
-    position: fixed;
-    right: 12px;
-    z-index: 1001;
-  }
-  #favBtn, #menuBtn {
-    width: 38px;
-    height: 38px;
-  }
-  #suggestBox {
-    top: calc(var(--topbar-height) + 4px);
-    right: 12px;
-    left: 12px;
-    width: auto;
-  }
-}
-
-@media (max-width: 380px) {
-  .owner-name { font-size: 12px; max-width: 100px; }
-  #searchInput.expanded { width: calc(100vw - 120px); }
-}
-
-@supports (padding-top: env(safe-area-inset-top)) {
-  #topbar { padding-top: env(safe-area-inset-top); height: calc(var(--topbar-height) + env(safe-area-inset-top)); }
-  #sidebar, #mainFrame, #sidebarOverlay {
-    top: calc(var(--topbar-height) + env(safe-area-inset-top));
-    height: calc(100% - var(--topbar-height) - env(safe-area-inset-top));
-  }
-  #suggestBox { top: calc(var(--topbar-height) + env(safe-area-inset-top) + 8px); }
-}
-
-@media (pointer: coarse) {
-  .nav-item, #favBtn, #menuBtn, .s-page { min-height: 44px; }
-  .nav-item:active, #favBtn:active, #menuBtn:active { transform: scale(0.95); opacity: 0.8; }
 }
 </style>
 </head>
 
 <body>
 
-<!-- Cinematic Initial Loader -->
-<div id="loader-container">
-  <div class="loader-bg">
-    <div class="loader-grid"></div>
-  </div>
-  <div class="particles">
-    <div class="particle"></div>
-    <div class="particle"></div>
-    <div class="particle"></div>
-    <div class="particle"></div>
-    <div class="particle"></div>
-  </div>
-  
-  <div class="loader-content">
-    <div class="loader-rings">
-      <div class="ring"></div>
-      <div class="ring"></div>
-      <div class="ring"></div>
-    </div>
-    <div class="loader-logo">❰🔹❰❰ 𝑲𝑺 ❱❱🔹❱</div>
-    <div class="loader-progress">
-      <div class="loader-bar" id="loaderBar"></div>
-    </div>
-    <div class="loader-text">Loading KS Experience</div>
-  </div>
+<div id="topbar">
+  <div class="logo"><img src="/image/ks-logo.webp" alt="Logo"></div>
+  <div class="owner-name">❰🔹❰❰ 𝑲𝑺 𝑾𝒂𝒓𝒓𝒊𝒐𝒓 ❱❱🔹❱</div>
+
+  <!-- FAVOURITE BUTTON -->
+<div id="favButton" title="Add to Favorites" aria-label="Add to Favorites" style="cursor:pointer;font-size:20px;user-select:none;">
 </div>
-
-<!-- Topbar -->
-<header id="topbar">
-  <div class="topbar-left">
-    <div class="logo">
-      <img src="/image/ks-logo.webp" alt="KS Warrior Logo">
-    </div>
-    <div class="owner-name">❰🔹❰❰ 𝑲𝑺 𝑾𝒂𝒓𝒓𝒊𝒐𝒓 ❱❱🔹❱</div>
+  <div id="control-right">
+  <!-- NEW SEARCH DESIGN -->
+  <div class="search-container">
+    <div id="searchTrigger" aria-label="Search">
+  <svg class="search-svg" viewBox="0 0 24 24" aria-hidden="true">
+  <circle
+    cx="11"
+    cy="11"
+    r="6.8"
+    fill="none"
+    stroke-width="1.8"
+    stroke-linecap="round"
+  />
+  <line
+    x1="16.2"
+    y1="16.2"
+    x2="20.4"
+    y2="20.4"
+    stroke-width="1.8"
+    stroke-linecap="round"
+  />
+</svg>
+</div>
+    <input id="searchBox" type="text" placeholder="Search pages..." aria-label="Search pages">
   </div>
-  
-  <div class="topbar-right">
-    <div class="search-box">
-      <input type="search" id="searchInput" placeholder="Search pages..." autocomplete="off">
-      <div id="searchIcon">
-        <svg class="search-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="11" cy="11" r="8"></circle>
-          <path d="m21 21-4.35-4.35"></path>
-        </svg>
-      </div>
-    </div>
-    
-    <button id="favBtn" aria-label="Toggle favorite"></button>
-    
-    <button id="menuBtn" aria-label="Toggle menu">
-      <span></span>
-      <span></span>
-      <span></span>
-    </button>
-  </div>
-</header>
 
-<!-- Search Suggestions -->
-<div id="suggestBox" role="listbox"></div>
+  <button id="hamburger" aria-label="Menu">
+  <svg class="menu-svg" viewBox="0 0 24 24" aria-hidden="true">
+    <line x1="4" y1="6" x2="20" y2="6"></line>
+    <line x1="4" y1="12" x2="20" y2="12"></line>
+    <line x1="4" y1="18" x2="20" y2="18"></line>
+  </svg>
+  </button>
+</div>
+</div>
+<ul id="suggestBox" role="listbox" aria-label="Search suggestions"></ul>
 
-<!-- Sidebar Overlay -->
-<div id="sidebarOverlay"></div>
-
-<!-- Sidebar -->
 <nav id="sidebar" aria-label="Main navigation">
-  <a href="#" class="nav-item active" onclick="loadPage('dashboard.html', this); return false;">
-    <span class="nav-icon">📊</span>
-    <span>Dashboard</span>
-  </a>
-  <a href="#" class="nav-item" onclick="loadPage('map.html', this); return false;">
-    <span class="nav-icon">🗺️</span>
-    <span>Sites Map</span>
-  </a>
-  <a href="#" class="nav-item" onclick="loadPage('social.html', this); return false;">
-    <span class="nav-icon">🌐</span>
-    <span>Social Media</span>
-  </a>
-  <a href="#" class="nav-item" onclick="loadPage('about.html', this); return false;">
-    <span class="nav-icon">ℹ️</span>
-    <span>About</span>
-  </a>
+  <a onclick="loadInFrame('dashboard.html')">Dashboard</a>
+  <a onclick="loadInFrame('map.html')">Sites Map</a>
+  <a onclick="loadInFrame('social.html')">Social Media</a>
+  <a onclick="loadInFrame('about.html')">About</a>
 </nav>
 
-<!-- Main Content Frame -->
-<iframe id="mainFrame" title="Main content" sandbox="allow-same-origin allow-scripts allow-popups allow-forms"></iframe>
-
+<iframe id="frame" title="Main content"></iframe>
 <script>
-// ==========================================
-// CINEMATIC LOADER
-// ==========================================
-(function() {
-  const loader = document.getElementById('loader-container');
-  const bar = document.getElementById('loaderBar');
-  let progress = 0;
-  
-  function updateProgress() {
-    progress += Math.random() * 12 + 3;
-    if (progress > 100) progress = 100;
-    bar.style.width = progress + '%';
+document.addEventListener("DOMContentLoaded", () => {
+  // --- ELEMENTS ---
+  const frame = document.getElementById("frame");
+  const topbar = document.getElementById("topbar");
+  const suggestBox = document.getElementById("suggestBox");
+  const searchBox = document.getElementById("searchBox");
+
+  // ---------- PAGE LOADER ----------
+  const pageLoader = document.createElement("div");
+  pageLoader.id = "pageLoader";
+  pageLoader.innerHTML = `
+    <div class="loader-wrapper">
+      <div class="loader-ring">
+        <div class="ring-segment"></div>
+        <div class="ring-segment"></div>
+        <div class="ring-segment"></div>
+        <div class="center-core"></div>
+      </div>
+      <div class="loader-brand">KS</div>
+      <div class="loader-status">
+        <span class="status-text">Loading</span>
+        <span class="status-dots">
+          <span class="s-dot"></span>
+          <span class="s-dot"></span>
+          <span class="s-dot"></span>
+        </span>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(pageLoader);
+
+  // ---------- LOADER CSS (Optimized) ----------
+  const loaderCSS = document.createElement("style");
+  loaderCSS.innerHTML = `
+    #pageLoader {
+      position: fixed;
+      inset: 56px 0 0 0;
+      background: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1200;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
     
-    if (progress < 100) {
-      setTimeout(updateProgress, 100);
-    } else {
-      setTimeout(() => {
-        loader.classList.add('hidden');
-        setTimeout(initApp, 150);
-      }, 400);
+    #pageLoader.active {
+      opacity: 1;
+      pointer-events: all;
     }
+    
+    .loader-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+    
+    /* Optimized Ring Animation - Uses transform only */
+    .loader-ring {
+      position: relative;
+      width: 80px;
+      height: 80px;
+      animation: ringPulse 2s ease-in-out infinite;
+    }
+    
+    @keyframes ringPulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+    
+    .ring-segment {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      border: 3px solid transparent;
+      border-top-color: var(--accent);
+      will-change: transform;
+    }
+    
+    .ring-segment:nth-child(1) {
+      animation: spin1 1.5s linear infinite;
+    }
+    
+    .ring-segment:nth-child(2) {
+      width: 70%;
+      height: 70%;
+      top: 15%;
+      left: 15%;
+      border-top-color: #60a5fa;
+      animation: spin2 1.2s linear infinite reverse;
+    }
+    
+    .ring-segment:nth-child(3) {
+      width: 40%;
+      height: 40%;
+      top: 30%;
+      left: 30%;
+      border-top-color: #93c5fd;
+      animation: spin3 0.8s linear infinite;
+    }
+    
+    @keyframes spin1 {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    
+    @keyframes spin2 {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    
+    @keyframes spin3 {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    
+    .center-core {
+      position: absolute;
+      width: 20%;
+      height: 20%;
+      top: 40%;
+      left: 40%;
+      background: var(--accent);
+      border-radius: 50%;
+      animation: corePulse 1.5s ease-in-out infinite;
+      box-shadow: 0 0 20px var(--accent);
+    }
+    
+    @keyframes corePulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(0.8); opacity: 0.7; }
+    }
+    
+    /* Brand Text */
+    .loader-brand {
+      font-size: 24px;
+      font-weight: 900;
+      letter-spacing: 4px;
+      color: var(--text);
+      opacity: 0;
+      animation: brandFade 0.5s ease 0.3s forwards;
+    }
+    
+    @keyframes brandFade {
+      to { opacity: 1; }
+    }
+    
+    /* Status Text */
+    .loader-status {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--muted);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+    
+    .status-dots {
+      display: flex;
+      gap: 3px;
+    }
+    
+    .s-dot {
+      width: 4px;
+      height: 4px;
+      background: var(--accent);
+      border-radius: 50%;
+      animation: dotBounce 1.4s ease-in-out infinite;
+    }
+    
+    .s-dot:nth-child(1) { animation-delay: 0s; }
+    .s-dot:nth-child(2) { animation-delay: 0.2s; }
+    .s-dot:nth-child(3) { animation-delay: 0.4s; }
+    
+    @keyframes dotBounce {
+      0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+      30% { transform: translateY(-6px); opacity: 1; }
+    }
+  `;
+  document.head.appendChild(loaderCSS);
+
+  // ---------- TOP LOADER ----------
+  const topLoader = document.createElement("div");
+  topLoader.id = "topLoader";
+  document.body.appendChild(topLoader);
+
+  // ---------- TOP LOADER CSS ----------
+  const topLoaderCSS = document.createElement("style");
+  topLoaderCSS.innerHTML = `
+    #topLoader {
+      position: fixed;
+      top: 56px;
+      left: 0;
+      width: 0%;
+      height: 2px;
+      background: var(--accent);
+      z-index: 1300;
+      transition: width 0.2s ease;
+      box-shadow: 0 0 8px var(--accent);
+    }
+  `;
+  document.head.appendChild(topLoaderCSS);
+
+  // ---------- TOP LOADER FUNCTIONS ----------
+  function startTopLoader() {
+    topLoader.style.width = "0%";
+    let width = 0;
+    const interval = setInterval(() => {
+      width += Math.random() * 5;
+      if (width < 90) topLoader.style.width = width + "%";
+    }, 20);
+    return interval;
   }
-  
-  setTimeout(updateProgress, 300);
-})();
 
-// ==========================================
-// APP CORE
-// ==========================================
-function initApp() {
-  const frame = document.getElementById('mainFrame');
-  const sidebar = document.getElementById('sidebar');
-  const menuBtn = document.getElementById('menuBtn');
-  const overlay = document.getElementById('sidebarOverlay');
-  const searchInput = document.getElementById('searchInput');
-  const suggestBox = document.getElementById('suggestBox');
-  const favBtn = document.getElementById('favBtn');
-
-  let searchData = [];
-  let isSearchOpen = false;
-  const FAV_KEY = 'ks-web-fav';
-  const LAST_PAGE_KEY = 'ks-web-last-page';
-
-  // ====================== FAVORITES (Improved from old code) ======================
-  const getFavorites = () => JSON.parse(localStorage.getItem(FAV_KEY) || '[]');
-  const isFavorite = (url) => getFavorites().some(item => {
-    const itemFull = new URL(item.url, location.href).href;
-    const currentFull = new URL(url, location.href).href;
-    return itemFull === currentFull;
-  });
-
-  const updateFavBtn = () => {
-    const current = frame.getAttribute('data-current') || '';
-    const isActive = isFavorite(current);
-
-    // SVGs (filled / empty)
-    const filledSVG = `<svg width="18" height="18" fill="#3b82f6" stroke="#3b82f6" stroke-width="1" viewBox="0 0 24 24"><path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.778 1.4 8.164L12 18.897l-7.334 3.855 1.4-8.164L.132 9.21l8.2-1.192z"/></svg>`;
-    const emptySVG = `<svg width="18" height="18" fill="none" stroke="#f0f0f5" stroke-width="2" viewBox="0 0 24 24"><path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.778 1.4 8.164L12 18.897l-7.334 3.855 1.4-8.164L.132 9.21l8.2-1.192z"/></svg>`;
-
-    favBtn.innerHTML = isActive ? filledSVG : emptySVG;
-    favBtn.classList.toggle('active', isActive);
-  };
-
-  favBtn.addEventListener('click', () => {
-    const current = frame.getAttribute('data-current') || '';
-    if (!current) return;
-
-    const found = searchData.find(item => new URL(item.url, location.href).href === new URL(current, location.href).href);
-    const pageName = found ? found.name : 'Page';
-
-    let favs = getFavorites();
-
-    if (isFavorite(current)) {
-      favs = favs.filter(item => new URL(item.url, location.href).href !== new URL(current, location.href).href);
-    } else {
-      favs.unshift({ name: pageName, url: current, time: Date.now() });
-    }
-
-    localStorage.setItem(FAV_KEY, JSON.stringify(favs));
-    updateFavBtn();
-
-    // Pop animation
-    favBtn.style.transform = 'scale(1.25)';
-    setTimeout(() => { favBtn.style.transform = ''; }, 160);
-  });
-
-  // ====================== SEARCH DATA (Full old structure) ======================
-  fetch('/sitemap.json')
-    .then(r => r.ok ? r.json() : [])
-    .then(data => {
-      const list = [];
-      data.forEach(cat => {
-        const category = cat.category;
-        const icon = cat.icon || '🔹';
-        (cat.sections || []).forEach(sec => {
-          const title = sec.title;
-          (sec.pages || []).forEach(page => {
-            list.push({
-              icon,
-              category,
-              title,
-              name: page.name,
-              url: page.url
-            });
-          });
-        });
-      });
-      searchData = list;
-    })
-    .catch(() => {
-      // Fallback
-      searchData = [
-        { icon: '📊', category: 'Main', title: 'Overview', name: 'Dashboard', url: 'dashboard.html' },
-        { icon: '🗺️', category: 'Main', title: 'Overview', name: 'Sites Map', url: 'map.html' },
-        { icon: '🌐', category: 'Main', title: 'Overview', name: 'Social Media', url: 'social.html' },
-        { icon: 'ℹ️', category: 'Main', title: 'Overview', name: 'About', url: 'about.html' }
-      ];
-    });
-
-  // ====================== SEARCH SUGGESTIONS (Stylish like old) ======================
-  let activeIndex = -1;
-
-  function updateSuggestions() {
-    const query = searchInput.value.trim().toLowerCase();
-    suggestBox.innerHTML = '';
-    activeIndex = -1;
-    if (!query || searchData.length === 0) {
-      suggestBox.classList.remove('visible');
-      return;
-    }
-
-    const matched = searchData.filter(item =>
-      item.name.toLowerCase().includes(query) ||
-      item.title.toLowerCase().includes(query) ||
-      item.category.toLowerCase().includes(query)
-    );
-
-    if (matched.length === 0) {
-      suggestBox.innerHTML = `<div class="suggest-item"><span class="suggest-name" style="color:#8b8b9a">No results found</span></div>`;
-      suggestBox.classList.add('visible');
-      return;
-    }
-
-    // Build tree like old code
-    const tree = {};
-    matched.forEach(i => {
-      tree[i.category] ??= { icon: i.icon, titles: {} };
-      tree[i.category].titles[i.title] ??= [];
-      tree[i.category].titles[i.title].push(i);
-    });
-
-    let html = '';
-    Object.entries(tree).forEach(([category, data]) => {
-      html += `
-        <div class="s-category">
-          <span class="s-icon">${data.icon}</span>
-          <span>${category}</span>
-        </div>
-      `;
-
-      Object.entries(data.titles).forEach(([title, pages]) => {
-        html += `<div class="s-title">${title}</div>`;
-
-        pages.forEach(p => {
-          html += `
-            <div class="s-page" data-url="${p.url}" data-name="${p.name}">
-              ${p.name}
-            </div>
-          `;
-        });
-      });
-    });
-
-    suggestBox.innerHTML = html;
-    suggestBox.classList.add('visible');
+  function finishTopLoader(interval) {
+    clearInterval(interval);
+    topLoader.style.width = "100%";
+    setTimeout(() => { topLoader.style.width = "0%"; }, 300);
   }
 
-  // ====================== PAGE LOADING (Robust like old + new) ======================
-  window.loadPage = function(url, navElement = null, save = true) {
+  // ---------- LOAD FRAME FUNCTION ----------
+  const LAST_PAGE_KEY = "ks-web-last-page";
+  window.loadInFrame = function(url, nameFromSearch = null) {
     if (!url) return;
-    const current = frame.getAttribute('data-current');
-    if (current === url) return;
 
-    frame.setAttribute('data-current', url);
+    // Prevent reload if already loaded
+    if (frame.getAttribute("data-current") === url) return;
+    frame.setAttribute("data-current", url);
 
-    if (save) localStorage.setItem(LAST_PAGE_KEY, url);
+    // Save last page
+    localStorage.setItem(LAST_PAGE_KEY, url);
 
-    // Update active nav
-    document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-    if (navElement) {
-      navElement.classList.add('active');
-    } else {
-      document.querySelectorAll('.nav-item').forEach(el => {
-        if (el.getAttribute('onclick')?.includes(url)) el.classList.add('active');
-      });
-    }
+    // Reset UI
+    document.body.classList.remove("sidebar-open");
+    topbar.classList.remove("search-active");
+    suggestBox.style.display = "none";
+    searchBox.value = "";
 
-    // Close mobile sidebar
-    if (window.innerWidth < 1024 && sidebar.classList.contains('open')) {
-      toggleSidebar();
-    }
+    // Show page loader
+    pageLoader.classList.add("active");
+    const startTime = Date.now();
+    const loaderInterval = startTopLoader();
 
-    // Load page
+    // Set iframe URL
     frame.src = url;
 
-    // Update fav after load
+    // When iframe loads
     frame.onload = () => {
-      updateFavBtn();
-      if (typeof saveRecent === 'function') saveRecent(null, url); // optional recent
+      const elapsed = Date.now() - startTime;
+      const wait = Math.max(1200 - elapsed, 0);
+      setTimeout(() => {
+        pageLoader.classList.remove("active");
+        finishTopLoader(loaderInterval);
+        if (typeof updateFavIcon === "function") updateFavIcon();
+      }, wait);
+
+      if (nameFromSearch) saveToRecent?.(nameFromSearch, url);
     };
   };
 
-  function saveRecent(name, url) {
-    if (!name) return;
-    const key = 'ks-recent';
-    let recent = JSON.parse(localStorage.getItem(key) || '[]');
-    recent = recent.filter(r => r.url !== url);
-    recent.unshift({ name, url, time: Date.now() });
-    localStorage.setItem(key, JSON.stringify(recent.slice(0, 5)));
+  // ---------- RESTORE LAST PAGE ----------
+  const lastPage = localStorage.getItem(LAST_PAGE_KEY);
+  loadInFrame(lastPage || "dashboard.html");
+});
+</script>
+<script>
+const frame = document.getElementById("frame");
+const searchBox = document.getElementById("searchBox");
+const suggestBox = document.getElementById("suggestBox");
+const searchTrigger = document.getElementById("searchTrigger");
+const hamburger = document.getElementById("hamburger");
+const topbar = document.getElementById("topbar");
+
+const RECENT_KEY = "ks-web-recent";
+const MAX_RECENT = 5;
+let searchData = [];
+
+/* Load sitemap.json (icon → category → title → pages) */
+fetch("/sitemap.json")
+  .then(r => r.ok ? r.json() : [])
+  .then(data => {
+    const list = [];
+
+    data.forEach(cat => {
+      const category = cat.category;
+      const icon = cat.icon || "";
+
+      (cat.sections || []).forEach(sec => {
+        const title = sec.title;
+
+        (sec.pages || []).forEach(page => {
+          list.push({
+            icon,
+            category,
+            title,
+            name: page.name,
+            url: page.url
+          });
+        });
+      });
+    });
+
+    searchData = list;
+  })
+  .catch(err => {
+    console.warn("Failed to load sitemap.json:", err);
+    searchData = [];
+  });
+
+/* Save to recent */
+function saveToRecent(name, url) {
+  if (!name || !url) return;
+
+  let recent = JSON.parse(localStorage.getItem(RECENT_KEY) || "[]");
+  recent = recent.filter(item => item.url !== url);
+  recent.unshift({ name, url, time: Date.now() });
+  recent = recent.slice(0, MAX_RECENT);
+  localStorage.setItem(RECENT_KEY, JSON.stringify(recent));
+}
+  
+/* Search suggestions */
+let activeIndex = -1;
+
+function updateSuggestions() {
+  const query = searchBox.value.trim().toLowerCase();
+  suggestBox.innerHTML = "";
+  suggestBox.style.display = "none";
+  activeIndex = -1;
+
+  if (!query || searchData.length === 0) return;
+
+  const matched = searchData.filter(item =>
+    item.name.toLowerCase().includes(query) ||
+    item.title.toLowerCase().includes(query) ||
+    item.category.toLowerCase().includes(query)
+  );
+
+  if (matched.length === 0) {
+    suggestBox.innerHTML =
+      `<li style="background: var(--glass);backdrop-filter: blur(20px) saturate(160%);-webkit-backdrop-filter: blur(20px) saturate(160%);;padding:12px 18px;">No results found</li>`;
+    suggestBox.style.display = "block";
+    return;
   }
 
-  // ====================== SIDEBAR ======================
-  function toggleSidebar() {
-    const isOpen = sidebar.classList.toggle('open');
-    menuBtn.classList.toggle('active', isOpen);
-    overlay.classList.toggle('visible', isOpen);
-  }
-
-  menuBtn.addEventListener('click', e => {
-    e.stopPropagation();
-    toggleSidebar();
+  /* Build tree: icon + category → title → pages */
+  const tree = {};
+  matched.forEach(i => {
+    tree[i.category] ??= { icon: i.icon, titles: {} };
+    tree[i.category].titles[i.title] ??= [];
+    tree[i.category].titles[i.title].push(i);
   });
 
-  overlay.addEventListener('click', toggleSidebar);
+  let html = "";
 
-  // ====================== SEARCH ======================
-  function openSearch() {
-    isSearchOpen = true;
-    searchInput.classList.add('expanded');
-    searchInput.focus();
-    updateSuggestions();
-  }
+  Object.entries(tree).forEach(([category, data]) => {
+    html += `
+      <li class="s-category">
+        <span class="s-icon">${data.icon}</span>
+        <span>${category}</span>
+      </li>
+    `;
 
-  function closeSearch() {
-    isSearchOpen = false;
-    searchInput.classList.remove('expanded');
-    searchInput.value = '';
-    suggestBox.classList.remove('visible');
-  }
+    Object.entries(data.titles).forEach(([title, pages]) => {
+      html += `<li class="s-title">${title}</li>`;
 
-  searchInput.addEventListener('click', e => {
-    e.stopPropagation();
-    if (!isSearchOpen) openSearch();
+      pages.forEach(p => {
+        html += `
+          <li class="s-page" tabindex="0" role="option"
+              data-url="${p.url}"
+              data-name="${p.name}">
+              ${p.name}
+          </li>
+        `;
+      });
+    });
   });
 
-  searchInput.addEventListener('focus', openSearch);
-  searchInput.addEventListener('input', updateSuggestions);
-
-  searchInput.addEventListener('keydown', e => {
-    const items = suggestBox.querySelectorAll('.s-page');
-    if (items.length === 0) return;
-
-    if (e.key === 'ArrowDown') {
-      e.preventDefault();
-      activeIndex = (activeIndex + 1) % items.length;
-    } else if (e.key === 'ArrowUp') {
-      e.preventDefault();
-      activeIndex = (activeIndex - 1 + items.length) % items.length;
-    } else if (e.key === 'Enter') {
-      e.preventDefault();
-      if (activeIndex >= 0 && items[activeIndex]) {
-        const item = items[activeIndex];
-        loadPage(item.dataset.url, null);
-        closeSearch();
-      }
-      return;
-    } else if (e.key === 'Escape') {
-      closeSearch();
-      return;
-    }
-
-    items.forEach((item, i) => item.classList.toggle('active', i === activeIndex));
-  });
-
-  suggestBox.addEventListener('click', e => {
-    const pageEl = e.target.closest('.s-page');
-    if (pageEl) {
-      loadPage(pageEl.dataset.url, null);
-      closeSearch();
-    }
-  });
-
-  // Close search on outside click
-  document.addEventListener('click', e => {
-    if (!e.target.closest('.search-box') && !e.target.closest('#suggestBox')) {
-      closeSearch();
-    }
-  });
-
-  // ====================== INITIAL LOAD ======================
-  const lastPage = localStorage.getItem(LAST_PAGE_KEY) || 'dashboard.html';
-  loadPage(lastPage, null, false);
-
-  // Initial fav state
-  frame.onload = updateFavBtn;
-
-  // Keyboard escape
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') {
-      if (sidebar.classList.contains('open')) toggleSidebar();
-      if (isSearchOpen) closeSearch();
-    }
-  });
-
-  // Responsive reload fix
-  let lastWidth = window.innerWidth;
-  window.addEventListener('resize', () => {
-    const newWidth = window.innerWidth;
-    if ((lastWidth < 1024 && newWidth >= 1024) || (lastWidth >= 1024 && newWidth < 1024)) {
-      location.reload();
-    }
-    lastWidth = newWidth;
-  });
+  suggestBox.innerHTML = html;
+  suggestBox.style.display = "block";
 }
 
-// Touch class
-if (window.matchMedia('(pointer: coarse)').matches) {
-  document.body.classList.add('touch');
-}
+searchBox.addEventListener("input", updateSuggestions);
+
+searchBox.addEventListener("keydown", (e) => {
+  const items = [...suggestBox.querySelectorAll("li[role='option']")];
+  if (items.length === 0) return;
+
+  if (e.key === "ArrowDown") {
+    e.preventDefault();
+    activeIndex = (activeIndex + 1) % items.length;
+  } else if (e.key === "ArrowUp") {
+    e.preventDefault();
+    activeIndex = (activeIndex - 1 + items.length) % items.length;
+  } else if (e.key === "Enter") {
+    e.preventDefault();
+    if (activeIndex >= 0) {
+      const item = items[activeIndex];
+      loadInFrame(item.dataset.url, item.dataset.name);
+    }
+    return;
+  } else if (e.key === "Escape") {
+    topbar.classList.remove("search-active");
+    suggestBox.style.display = "none";
+    searchBox.value = "";
+    searchBox.blur();
+    return;
+  }
+
+  items.forEach(i => i.classList.remove("active"));
+  if (activeIndex >= 0) items[activeIndex].classList.add("active");
+});
+
+suggestBox.addEventListener("click", (e) => {
+  const li = e.target.closest("li[role='option']");
+  if (li) {
+    loadInFrame(li.dataset.url, li.dataset.name);
+  }
+});
+
+/* Activate search */
+searchTrigger.addEventListener("click", (e) => {
+  e.stopPropagation();
+  topbar.classList.add("search-active");
+  searchBox.focus();
+  updateSuggestions();
+});
+
+/* Close search on outside click */
+document.addEventListener("click", (e) => {
+  if (!topbar.contains(e.target) && !suggestBox.contains(e.target)) {
+    topbar.classList.remove("search-active");
+    suggestBox.style.display = "none";
+    searchBox.value = "";
+  }
+});
+
+suggestBox.addEventListener("click", (e) => e.stopPropagation());
+
+hamburger.addEventListener("click", () => {
+  document.body.classList.toggle("sidebar-open");
+});
+
+frame.addEventListener("load", () => {
+  if (window.innerWidth >= 768) {
+    document.body.classList.remove("sidebar-open");
+  }
+});
+</script>
+<script>
+const FAV_KEY = "ks-web-fav";
+const favButton = document.getElementById("favButton");
+
+// Get favorites from localStorage
+const getFavorites = () => JSON.parse(localStorage.getItem(FAV_KEY) || "[]");
+
+// Check if a URL is in favorites
+const isFavorite = (url) => getFavorites().some(item => new URL(item.url, location.href).href === url);
+
+// Update star icon and color
+const updateFavIcon = () => {
+  const frameUrl = frame.src;
+
+  // SVG icons as strings (no xmlns)
+  const filledStarSVG = `
+  <svg class="fav-svg" width="18" height="18"
+       fill="#F5F5F5"
+       stroke="#F5F5F5"
+       stroke-width="1"
+       viewBox="0 0 24 24">
+    <path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.778 1.4 8.164L12 18.897l-7.334 3.855 1.4-8.164L.132 9.21l8.2-1.192z"/>
+  </svg>
+`;
+
+const emptyStarSVG = `
+  <svg class="fav-svg" width="18" height="18"
+       fill="none"
+       stroke="#F5F5F5"
+       stroke-width="2"
+       viewBox="0 0 24 24">
+    <path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.778 1.4 8.164L12 18.897l-7.334 3.855 1.4-8.164L.132 9.21l8.2-1.192z"/>
+  </svg>
+`;
+
+  if (isFavorite(frameUrl)) {
+    favButton.innerHTML = filledStarSVG;
+    favButton.classList.add("filled");
+  } else {
+    favButton.innerHTML = emptyStarSVG;
+    favButton.classList.remove("filled");
+  }
+};
+
+// Add or remove current iframe page from favorites
+favButton.addEventListener("click", () => {
+  const frameUrl = frame.src;
+  const found = searchData.find(item => new URL(item.url, location.href).href === frameUrl);
+  const pageName = found ? found.name : frameUrl;
+
+  let favs = getFavorites();
+
+  if (isFavorite(frameUrl)) {
+    // Remove from favorites
+    favs = favs.filter(item => new URL(item.url, location.href).href !== frameUrl);
+  } else {
+    // Add to favorites
+    favs.unshift({ name: pageName, url: frameUrl, time: Date.now() });
+  }
+
+  localStorage.setItem(FAV_KEY, JSON.stringify(favs));
+  updateFavIcon();
+
+  // Optional: small "pop" animation
+  favButton.style.transform = "scale(1.4)";
+  setTimeout(() => favButton.style.transform = "", 150);
+});
+
+// Update star when iframe loads
+frame.addEventListener("load", updateFavIcon);
+
+// Update on page load
+window.addEventListener("DOMContentLoaded", updateFavIcon);
 </script>
 </body>
 </html>
