@@ -1,0 +1,77 @@
+.setup-page{
+  font-family:system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
+  background:linear-gradient(180deg,#000,#0a0a0a);
+  color:#fff;
+  padding:40px 18px;
+  text-align:center;
+  min-height:calc(100vh - 56px);
+}
+.setup-page h1{ font-size:30px; font-weight:800; }
+.setup-page h2{ font-size:22px; font-weight:700; margin-bottom:20px; }
+.setup-page .subtitle{ font-size:14px; color:#9c9c9c; margin-top:6px; }
+.platform-select{
+  margin-top:26px;
+  padding:12px 20px;
+  font-size:15px;
+  background:#12121c;
+  color:#fff;
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:8px;
+  cursor:pointer;
+}
+.setup-page .section{
+  max-width:900px;
+  margin:25px auto;
+  animation:fadeUp .35s ease;
+  text-align:left;
+}
+.setup-page .card{
+  text-align:left;
+  margin:10px 0;
+  background:#12121c;
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:8px;
+  padding:15px;
+}
+.setup-page .card p{ font-size:14px; margin-bottom:10px; }
+.setup-page .card label{ display:block; font-size:12.5px; margin-bottom:5px; }
+.setup-page .card input{
+  width:100%;
+  padding:10px;
+  background:#0a0a0a;
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:8px;
+  color:#00ff9c;
+  font-size:12px;
+  margin-bottom:10px;
+}
+.setup-page .code{
+  background:#000;
+  border:1px solid rgba(255,255,255,0.08);
+  padding:14px;
+  border-radius:8px;
+  font-size:12px;
+  color:#00ff9c;
+  overflow-x:auto;
+  margin-bottom:10px;
+  white-space:pre-wrap;
+  word-break:break-word;
+}
+.setup-page .btn{
+  padding:9px 18px;
+  border-radius:8px;
+  font-size:13.5px;
+  cursor:pointer;
+  border:1px solid rgba(255,255,255,0.08);
+  background:#000;
+  color:#fff;
+  margin:0 5px 8px 0;
+}
+.setup-page .btn-primary{
+  background:#fff;
+  color:#000;
+  font-weight:700;
+  border:none;
+  margin:10px;
+}
+@keyframes fadeUp{ from{opacity:0; transform:translateY(15px);} to{opacity:1; transform:translateY(0);} }
