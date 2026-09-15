@@ -30,6 +30,7 @@ export default function Dashboard() {
   }, []);
 
   useEffect(() => {
+    if (typeof window !== "undefined" && window.matchMedia("(max-width: 768px)").matches) return;
     const el = heroRef.current;
     if (!el) return;
     const onMove = (e: MouseEvent) => {
@@ -55,6 +56,8 @@ export default function Dashboard() {
   }, [news.length]);
 
   const handleTilt = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (typeof window !== "undefined" && window.matchMedia("(max-width: 768px)").matches) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const el = e.currentTarget;
     const rect = el.getBoundingClientRect();
     const x = e.clientX - rect.left;
@@ -67,6 +70,7 @@ export default function Dashboard() {
     el.style.setProperty("--my", `${(y / rect.height) * 100}%`);
   };
   const resetTilt = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (typeof window !== "undefined" && window.matchMedia("(max-width: 768px)").matches) return;
     e.currentTarget.style.setProperty("--rx", "0deg");
     e.currentTarget.style.setProperty("--ry", "0deg");
   };

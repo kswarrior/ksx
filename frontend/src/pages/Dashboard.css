@@ -648,21 +648,61 @@
   .hs-content{ grid-template-columns: 1fr; }
   .hs-visual{ max-width: 420px; margin: 0 auto; width:100%; }
 }
+@media (max-width: 768px){
+  /* Phone: kill laggy 3D, blur, heavy animations */
+  .dashboard{ --dash-gap: 16px; padding: 12px 10px 36px; }
+  .hero{ min-height: 0; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
+  .hero-bg .orb, .hero-bg .cube, .hero-bg .grid-floor, .hero-bg .stars, .hero-scroll{ display: none !important; }
+  .hero-bg{ background: linear-gradient(180deg, #070a1a 0%, #050510 100%) !important; }
+  .hero-content{ padding: 16px 14px; gap: 16px; }
+  .hero-title{ font-size: clamp(26px, 8vw, 30px); line-height: 1; letter-spacing: -1px; }
+  .hero-title .t1{ font-size: 0.5em; }
+  .hero-subtitle{ font-size: 13px; line-height: 1.5; max-width: 100%; }
+  .hero-actions{ flex-direction: column; align-items: stretch; gap: 8px; }
+  .hero-actions .btn{ justify-content: center; width: 100%; }
+  .hero-badges{ gap: 6px; }
+  .badge{ font-size: 10px; padding: 5px 8px; }
+  .hero-stage-wrap{ max-width: 100%; }
+  .stage-card, .feature-card, .stat, .panel-3d, .highlight-showcase, .cta-final{ backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }
+  .stage-card{ background: rgba(18,18,28,0.96) !important; }
+  .features{ gap: 10px; }
+  .feature-card{ min-height: auto; padding: 14px; }
+  .feature-card .f-icon{ width: 36px; height: 36px; font-size: 16px; margin-bottom: 10px; }
+  .feature-card h3{ font-size: 13px; }
+  .feature-card p{ font-size: 12px; }
+  .news.news-3d{ padding: 12px; }
+  .news-viewport{ height: 110px; }
+  .news-3d .news-slide{ padding: 14px; gap: 10px; }
+  .news-3d .news-icon{ width: 40px; height: 40px; font-size: 16px; }
+  .news-3d .news-title{ font-size: 14px; }
+  .news-3d .news-desc{ font-size: 12px; }
+  .panel-3d{ padding: 14px; }
+  .highlight-showcase, .cta-final{ padding: 16px; }
+  .hs-card{ transform: none !important; }
+  .cta-final h2{ font-size: 20px; }
+  .cta-final p{ font-size: 12px; }
+  /* Disable hover tilt on touch */
+  .feature-card, .stat, .panel-3d, .stage-card{ transform: none !important; transition: border-color 0.2s, background 0.2s !important; }
+}
 @media (max-width: 620px){
-  .dashboard{ padding: 16px 12px 48px; gap:20px; }
-  .hero{ border-radius:20px; }
-  .hero-content{ padding:20px 16px; gap:22px; }
-  .hero-title{ font-size: 36px; }
-  .hero-subtitle{ font-size:13px; }
-  .hero-actions{ gap:10px; }
-  .btn{ padding:11px 16px; font-size:13px; }
-  .stats-strip{ grid-template-columns: 1fr 1fr; gap:12px; }
-  .stat{ padding:14px; }
-  .stat-k{ font-size:18px; }
+  .dashboard{ padding: 14px 10px 32px; gap:16px; }
+  .hero{ border-radius:14px; }
+  .hero-content{ padding:16px 12px; gap:16px; }
+  .hero-title{ font-size: 28px; }
+  .hero-subtitle{ font-size:12px; }
+  .hero-actions{ gap:8px; }
+  .btn{ padding:10px 14px; font-size:13px; }
+  .stats-strip{ grid-template-columns: 1fr 1fr; gap:10px; }
+  .stat{ padding:12px; gap:10px; }
+  .stat-icon{ width:36px; height:36px; font-size:16px; }
+  .stat-k{ font-size:16px; }
   .features{ grid-template-columns: 1fr; }
   .grid{ grid-template-columns: 1fr; }
-  .news-viewport{ height: 146px; }
-  .cta-final{ padding: 26px 16px; }
+  .news-viewport{ height: 112px; }
+  .cta-final{ padding: 18px 14px; }
+}
+@media (hover: none) and (pointer: coarse){
+  .feature-card:hover, .stat:hover, .panel-3d:hover, .stage-card:hover{ transform: none !important; }
 }
 @media (prefers-reduced-motion: reduce){
   .orb, .cube, .grid-floor, .stars, .float-pill, .hero-scroll i::after{ animation: none !important; }
