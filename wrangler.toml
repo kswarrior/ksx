@@ -9,7 +9,6 @@ compatibility_flags = ["nodejs_compat"]
 directory = "frontend/dist"
 binding = "ASSETS"
 not_found_handling = "single-page-application"
-run_worker_first = false
 
 [vars]
 # FRONTEND_URL = "https://ksx.pages.dev"
