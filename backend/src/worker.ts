@@ -108,9 +108,13 @@ app.notFound(async (c) => {
     const assets = (c.env as any)?.ASSETS;
     if (assets) {
       const url = new URL(c.req.url);
-      const res = await assets.fetch(new Request(new URL("/index.html", url.origin).toString(), c.req.raw as any));
-      if (res && res.status < 400) {
-        return new Response(res.body, {
+      // Always serve index.html for SPA routes (no file extension)
+      const indexReq = new Request(new URL("/index.html", url.origin).toString());
+      const res = await assets.fetch(indexReq);
+      if (res) {
+        // Clone response with 200 and correct headers
+        const body = await res.arrayBuffer();
+        return new Response(body, {
           status: 200,
           headers: {
             "Content-Type": "text/html;charset=utf-8",
@@ -119,7 +123,9 @@ app.notFound(async (c) => {
         });
       }
     }
-  } catch {}
+  } catch (e) {
+    console.error("SPA fallback failed", e);
+  }
   return c.text("Not found", 404);
 });
 
