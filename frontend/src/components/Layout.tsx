@@ -283,19 +283,6 @@ export default function Layout() {
       </ul>
 
       <nav id="sidebar" aria-label="Main navigation" className={sidebarOpen ? "open" : ""}>
-        <div className="sb-head">
-          <div className="sb-logo-wrap">
-            <img src="/image/ks-logo.webp" alt="KS" onError={(e) => ((e.currentTarget.style.display = "none"))} />
-          </div>
-          <div className="sb-brand">
-            <span className="sb-brand-name">KS Warrior</span>
-            <span className="sb-brand-sub">Creator Hub • v3.0</span>
-          </div>
-          <span className="sb-live" aria-hidden><i />LIVE</span>
-        </div>
-
-        <div className="sb-divider" />
-
         <div className="sb-nav">
           <Link
             to="/dashboard"
@@ -309,7 +296,6 @@ export default function Layout() {
               </svg>
             </span>
             <span className="sb-label">Dashboard</span>
-            <span className="sb-arrow" aria-hidden>↗</span>
           </Link>
 
           <Link
@@ -324,7 +310,6 @@ export default function Layout() {
               </svg>
             </span>
             <span className="sb-label">Sites Map</span>
-            <span className="sb-badge">NEW</span>
           </Link>
 
           <Link
@@ -339,7 +324,6 @@ export default function Layout() {
               </svg>
             </span>
             <span className="sb-label">Social Media</span>
-            <span className="sb-arrow" aria-hidden>↗</span>
           </Link>
 
           <Link
@@ -354,20 +338,7 @@ export default function Layout() {
               </svg>
             </span>
             <span className="sb-label">About</span>
-            <span className="sb-arrow" aria-hidden>↗</span>
           </Link>
-        </div>
-
-        <div className="sb-foot">
-          <Link to="/map" className="sb-foot-card" onClick={() => { if (!isDesktop()) setSidebarOpen(false); }}>
-            <span className="sb-foot-icon">✦</span>
-            <span className="sb-foot-text">
-              <strong>Explore all builds</strong>
-              <small>Minecraft • Hosting • VPS • AI</small>
-            </span>
-            <span className="sb-foot-arrow">→</span>
-          </Link>
-          <div className="sb-copy">© 2026 KS Warrior • Crafted with ♥</div>
         </div>
       </nav>
 
