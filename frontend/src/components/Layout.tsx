@@ -83,10 +83,24 @@ export default function Layout() {
     } catch { /* ignore */ }
   };
 
+  // Keep sidebar always open on desktop
+  useEffect(() => {
+    const mql = window.matchMedia("(min-width: 900px)");
+    const onChange = (e: MediaQueryListEvent) => {
+      setSidebarOpen(e.matches);
+    };
+    // sync on mount (in case of resize before mount)
+    if (mql.matches) setSidebarOpen(true);
+    mql.addEventListener("change", onChange);
+    return () => mql.removeEventListener("change", onChange);
+  }, []);
+
+  const isDesktop = () => typeof window !== "undefined" && window.matchMedia("(min-width: 900px)").matches;
+
   const handleNav = (url: string, name?: string) => {
     // normalize url: sitemap urls are like /minecraft/... -> map to react routes
     // For now navigate directly; if url starts with "/" navigate there, else dashboard
-    setSidebarOpen(false);
+    if (!isDesktop()) setSidebarOpen(false);
     setSearchActive(false);
     setQuery("");
     if (name) saveRecent(name, url);
@@ -218,7 +232,7 @@ export default function Layout() {
             />
           </div>
 
-          <button id="hamburger" aria-label="Menu" onClick={() => setSidebarOpen((o) => !o)}>
+          <button id="hamburger" aria-label="Menu" onClick={() => { if (!isDesktop()) setSidebarOpen((o) => !o); }}>
             <svg className="menu-svg" viewBox="0 0 24 24" aria-hidden="true">
               <line x1="4" y1="6" x2="20" y2="6" />
               <line x1="4" y1="12" x2="20" y2="12" />
@@ -269,22 +283,22 @@ export default function Layout() {
       </ul>
 
       <nav id="sidebar" aria-label="Main navigation" className={sidebarOpen ? "open" : ""}>
-        <Link to="/dashboard" onClick={() => setSidebarOpen(false)}>Dashboard</Link>
-        <Link to="/map" onClick={() => setSidebarOpen(false)}>Sites Map</Link>
-        <Link to="/social" onClick={() => setSidebarOpen(false)}>Social Media</Link>
-        <Link to="/about" onClick={() => setSidebarOpen(false)}>About</Link>
+        <Link to="/dashboard" onClick={() => { if (!isDesktop()) setSidebarOpen(false); }}>Dashboard</Link>
+        <Link to="/map" onClick={() => { if (!isDesktop()) setSidebarOpen(false); }}>Sites Map</Link>
+        <Link to="/social" onClick={() => { if (!isDesktop()) setSidebarOpen(false); }}>Social Media</Link>
+        <Link to="/about" onClick={() => { if (!isDesktop()) setSidebarOpen(false); }}>About</Link>
         <div style={{ marginTop: 12, borderTop: "1px solid var(--border)", paddingTop: 12 }}>
           <div style={{ padding: "6px 24px", fontSize: 12, color: "var(--muted)", textTransform: "uppercase", letterSpacing: 0.5 }}>
             Minecraft
           </div>
-          <Link to="/minecraft/hosting/free" onClick={() => setSidebarOpen(false)}>Free Hosting</Link>
-          <Link to="/minecraft/java/launcher" onClick={() => setSidebarOpen(false)}>Java Launcher</Link>
-          <Link to="/minecraft/java/downloader" onClick={() => setSidebarOpen(false)}>Mod Downloader</Link>
-          <Link to="/minecraft/bedrock/ks-client" onClick={() => setSidebarOpen(false)}>KS Client</Link>
+          <Link to="/minecraft/hosting/free" onClick={() => { if (!isDesktop()) setSidebarOpen(false); }}>Free Hosting</Link>
+          <Link to="/minecraft/java/launcher" onClick={() => { if (!isDesktop()) setSidebarOpen(false); }}>Java Launcher</Link>
+          <Link to="/minecraft/java/downloader" onClick={() => { if (!isDesktop()) setSidebarOpen(false); }}>Mod Downloader</Link>
+          <Link to="/minecraft/bedrock/ks-client" onClick={() => { if (!isDesktop()) setSidebarOpen(false); }}>KS Client</Link>
           <div style={{ padding: "6px 24px", fontSize: 12, color: "var(--muted)", textTransform: "uppercase", letterSpacing: 0.5, marginTop: 8 }}>
             VPS
           </div>
-          <Link to="/vps/hosting/free" onClick={() => setSidebarOpen(false)}>Free VPS List</Link>
+          <Link to="/vps/hosting/free" onClick={() => { if (!isDesktop()) setSidebarOpen(false); }}>Free VPS List</Link>
         </div>
       </nav>
 
@@ -292,7 +306,7 @@ export default function Layout() {
         <Outlet />
       </div>
 
-      {sidebarOpen && <div className="sidebar-backdrop" onClick={() => setSidebarOpen(false)} />}
+      {sidebarOpen && !isDesktop() && <div className="sidebar-backdrop" onClick={() => setSidebarOpen(false)} />}
     </>
   );
 }
