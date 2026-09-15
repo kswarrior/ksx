@@ -1,0 +1,13 @@
+name = "ksx-backend"
+main = "backend/src/worker.ts"
+compatibility_date = "2024-12-01"
+compatibility_flags = ["nodejs_compat"]
+
+# Single Worker serving API + frontend assets (frontend/dist)
+# Build must run before deploy: `npm run build`
+[assets]
+directory = "frontend/dist"
+not_found_handling = "single-page-application"
+
+[vars]
+# FRONTEND_URL = "https://ksx.pages.dev"
