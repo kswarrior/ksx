@@ -1,0 +1,89 @@
+.customip-page{
+  background:#000;
+  color:#fff;
+  min-height:calc(100vh - 56px);
+  padding:40px 18px;
+  text-align:center;
+}
+.customip-page h1.title{ font-size:28px; font-weight:900; margin-bottom:10px; }
+.customip-page h2.my-name{ font-size:20px; font-weight:600; color:#aaa; margin-bottom:40px; }
+.customip-page h1.injoy{ font-size:22px; font-weight:800; text-align:center; margin:40px 0 20px; }
+.all-step{
+  max-width:960px;
+  margin:auto;
+  padding:0 16px 60px;
+  display:grid;
+  gap:28px;
+  text-align:left;
+}
+.step-one, .step-two{
+  background:rgba(18,18,28,0.85);
+  border-radius:12px;
+  padding:28px;
+  border:1px solid rgba(255,255,255,0.12);
+  backdrop-filter:blur(20px);
+}
+.step{
+  font-size:18px;
+  font-weight:900;
+  margin-bottom:12px;
+}
+.step pre{
+  font-family:inherit;
+  display:inline-block;
+  background:#fff;
+  color:#000;
+  padding:4px 14px;
+  border-radius:999px;
+}
+input.ip-input{
+  flex:1;
+  min-width:200px;
+  padding:10px 14px;
+  border-radius:8px;
+  border:none;
+  outline:none;
+  font-size:16px;
+  background:rgba(255,255,255,0.05);
+  color:#fff;
+}
+button.ip-search{
+  padding:10px 20px;
+  border:none;
+  border-radius:8px;
+  background:#fff;
+  color:#000;
+  font-weight:700;
+  cursor:pointer;
+}
+.result-box{
+  margin-top:20px;
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(255,255,255,0.12);
+  border-radius:12px;
+  padding:16px;
+}
+.label{ font-weight:700; color:#fff; }
+.copy-btn{
+  background:#fff;
+  border:none;
+  border-radius:6px;
+  color:#000;
+  font-weight:700;
+  padding:2px 8px;
+  cursor:pointer;
+  margin-left:8px;
+  font-size:12px;
+}
+a.discord{
+  display:inline-block;
+  text-align:center;
+  font-weight:700;
+  background:#fff;
+  color:#000;
+  padding:10px 24px;
+  border-radius:999px;
+  text-decoration:none;
+  margin:20px auto 0;
+}
+.end{ text-align:center; font-size:13px; color:#aaa; margin-top:8px; }
