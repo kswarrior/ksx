@@ -1,6 +1,7 @@
 import { useEffect, useState, useMemo, useRef, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { api, SitemapCategory } from "../lib/api";
+import { RECENT_KEY, MAX_RECENT } from "../hooks/useLocalStorage";
 import "./MapPage.css";
 
 type FilterCat = string; // "All" | category name
@@ -128,6 +129,17 @@ export default function MapPage() {
     setQuery("");
     setActiveCat("All");
     searchRef.current?.focus();
+  }, []);
+
+  const saveRecent = useCallback((name: string, url: string, logo: string, category: string, title: string) => {
+    try {
+      const raw = localStorage.getItem(RECENT_KEY);
+      let recent: { name: string; url: string; time: number; logo?: string; category?: string; title?: string }[] = raw ? JSON.parse(raw) : [];
+      recent = recent.filter((r) => r.url !== url);
+      recent.unshift({ name, url, time: Date.now(), logo, category, title });
+      recent = recent.slice(0, MAX_RECENT);
+      localStorage.setItem(RECENT_KEY, JSON.stringify(recent));
+    } catch {}
   }, []);
 
   if (loading) {
@@ -339,6 +351,7 @@ export default function MapPage() {
                                   to={p.url}
                                   className="mp-page"
                                   aria-label={p.name}
+                                  onClick={() => saveRecent(p.name, p.url, p.logo, cat.category, sec.title)}
                                 >
                                   <span className="mp-page-icon" dangerouslySetInnerHTML={{ __html: p.logo }} />
                                   <span className="mp-page-name">{p.name}</span>
