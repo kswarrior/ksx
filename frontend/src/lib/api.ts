@@ -14,6 +14,7 @@ export type SearchItem = {
   title: string;
   name: string;
   url: string;
+  logo: string;
 };
 
 export type MinecraftHosting = {

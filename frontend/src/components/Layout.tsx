@@ -31,6 +31,7 @@ export default function Layout() {
               title: sec.title,
               name: p.name,
               url: p.url,
+              logo: p.logo,
             });
           });
         });
@@ -72,12 +73,19 @@ export default function Layout() {
     setActiveIndex(-1);
   }, [query, sitemap]);
 
-  const saveRecent = (name: string, url: string) => {
+  const saveRecent = (item: SearchItem | { name: string; url: string; logo?: string; category?: string; title?: string }) => {
     try {
       const raw = localStorage.getItem(RECENT_KEY);
       let recent: RecentItem[] = raw ? JSON.parse(raw) : [];
-      recent = recent.filter((r) => r.url !== url);
-      recent.unshift({ name, url, time: Date.now() });
+      recent = recent.filter((r) => r.url !== item.url);
+      recent.unshift({
+        name: item.name,
+        url: item.url,
+        time: Date.now(),
+        logo: (item as SearchItem).logo,
+        category: (item as SearchItem).category,
+        title: (item as SearchItem).title,
+      });
       recent = recent.slice(0, MAX_RECENT);
       localStorage.setItem(RECENT_KEY, JSON.stringify(recent));
     } catch { /* ignore */ }

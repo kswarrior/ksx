@@ -21,8 +21,8 @@ export function useLocalStorage<T>(key: string, initial: T) {
   return [value, setValue] as const;
 }
 
-export type RecentItem = { name: string; url: string; time: number };
-export type FavItem = { name: string; url: string; time: number };
+export type RecentItem = { name: string; url: string; time: number; logo?: string; category?: string; title?: string };
+export type FavItem = { name: string; url: string; time: number; logo?: string; category?: string; title?: string };
 
 export const RECENT_KEY = "ks-web-recent";
 export const FAV_KEY = "ks-web-fav";

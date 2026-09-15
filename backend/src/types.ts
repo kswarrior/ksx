@@ -44,4 +44,5 @@ export interface SearchItem {
   title: string;
   name: string;
   url: string;
+  logo: string;
 }

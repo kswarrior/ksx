@@ -27,6 +27,7 @@ router.get("/search", (req, res) => {
           title: sec.title,
           name: page.name,
           url: page.url,
+          logo: page.logo,
         });
       }
     }
