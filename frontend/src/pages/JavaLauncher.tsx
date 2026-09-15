@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import "./JavaLauncher.css";
 
 type Launcher = {
@@ -96,7 +96,7 @@ function Stars({ n }: { n: number }) {
     <div className="launcher-stat">
       {Array.from({ length: 5 }).map((_, i) => (
         <svg key={i} viewBox="0 0 24 24">
-          <path fill={i < n ? "#ffd54a" : "#ddd"} d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.79 1.402 8.168L12 18.896 4.664 23.158l1.402-8.168L.132 9.2l8.2-1.192z" />
+          <path fill={i < n ? "#ffd54a" : "rgba(255,255,255,0.18)"} d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.79 1.402 8.168L12 18.896 4.664 23.158l1.402-8.168L.132 9.2l8.2-1.192z" />
         </svg>
       ))}
     </div>
@@ -105,34 +105,65 @@ function Stars({ n }: { n: number }) {
 
 export default function JavaLauncher() {
   const [q, setQ] = useState("");
-  const filtered = launchers.filter((l) => l.name.toLowerCase().includes(q.toLowerCase()));
+  const [filter, setFilter] = useState<"All"|"PC"|"Android">("All");
+  const filtered = useMemo(()=> launchers.filter((l) => {
+    if (filter!=="All" && l.platform!==filter) return false;
+    if (q && !l.name.toLowerCase().includes(q.toLowerCase())) return false;
+    return true;
+  }), [q, filter]);
+
   return (
     <div className="jl-page">
-      <h1>Minecraft Java Launcher For Android & PC</h1>
-      <input className="filter" placeholder="Search launcher by name" value={q} onChange={(e) => setQ(e.target.value)} />
-      <div className="launcher-list">
-        {filtered.map((l) => (
-          <div key={l.name} className="launcher-card">
-            <div className="top-row">
-              <div className="launcher-logo">{l.logo}</div>
-              <div>
-                <div className="launcher-name">{l.name}</div>
-                <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
-                  <Stars n={l.stars} />
-                  <span className="platform-badge">{l.platform}</span>
+      <div className="jl-bg" aria-hidden>
+        <div className="jl-bg-grad" />
+        <div className="jl-bg-orb o1" />
+        <div className="jl-bg-orb o2" />
+      </div>
+      <div className="jl-shell">
+        <header className="jl-header">
+          <div className="jl-kicker"><span className="jl-kicker-dot" /> JAVA EDITION • LAUNCHERS</div>
+          <h1 className="jl-title">Minecraft Java <span>Launchers</span></h1>
+          <p className="jl-sub">PC & Android launchers for Java Edition — modpacks, shaders, snapshots. Search, filter & download.</p>
+          <div className="jl-search-wrap">
+            <div className="jl-search">
+              <svg viewBox="0 0 24 24" aria-hidden><circle cx="11" cy="11" r="6.5"/><path d="M16 16 L20 20"/></svg>
+              <input placeholder="Search launcher by name…" value={q} onChange={(e)=>setQ(e.target.value)} aria-label="Search launcher" spellCheck={false} />
+              {q && <button onClick={()=>setQ("")} style={{width:34,height:34,borderRadius:999,border:"1px solid rgba(255,255,255,0.1)",background:"rgba(255,255,255,0.06)",color:"#fff",display:"grid",placeItems:"center",cursor:"pointer",flexShrink:0}}>✕</button>}
+            </div>
+            <div className="jl-filters">
+              {(["All","PC","Android"] as const).map(v=> (
+                <button key={v} className={`jl-pill ${filter===v?"active":""}`} onClick={()=>setFilter(v)}>{v} {v==="All"?`• ${launchers.length}`: v==="PC"?`• ${launchers.filter(x=>x.platform==="PC").length}`:`• ${launchers.filter(x=>x.platform==="Android").length}`}</button>
+              ))}
+            </div>
+            <div className="jl-stats"><strong>{filtered.length}</strong> of <strong>{launchers.length}</strong> launchers</div>
+          </div>
+        </header>
+
+        <div className="launcher-list">
+          {filtered.map((l) => (
+            <article key={l.name} className="launcher-card">
+              <div className="top-row">
+                <div className="launcher-logo" aria-hidden>{l.logo}</div>
+                <div style={{minWidth:0, flex:1}}>
+                  <div className="launcher-name">{l.name}</div>
+                  <div style={{ display: "flex", gap: 6, alignItems: "center", marginTop:6, flexWrap:"wrap" }}>
+                    <Stars n={l.stars} />
+                    <span className="platform-badge">{l.platform}</span>
+                  </div>
                 </div>
               </div>
-            </div>
-            <ul className="launcher-info">
-              {l.info.map((line) => (
-                <li key={line}>{line}</li>
-              ))}
-            </ul>
-            <a href={l.link} target="_blank" rel="noreferrer">
-              <button className="download-btn">Download</button>
-            </a>
-          </div>
-        ))}
+              <ul className="launcher-info">
+                {l.info.map((line) => (
+                  <li key={line}>{line}</li>
+                ))}
+              </ul>
+              <a href={l.link} target="_blank" rel="noreferrer" style={{marginTop:"auto"}}>
+                <button className="download-btn">Download ↗</button>
+              </a>
+            </article>
+          ))}
+        </div>
+        {filtered.length===0 && <div style={{textAlign:"center", padding:32, color:"var(--jl-muted)", background:"rgba(14,14,24,0.9)", border:"1px solid var(--jl-border)", borderRadius:16, marginTop:14}}>No launchers match search.</div>}
       </div>
     </div>
   );

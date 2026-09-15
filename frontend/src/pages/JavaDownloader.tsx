@@ -26,7 +26,6 @@ export default function JavaDownloader() {
   const [showDetail, setShowDetail] = useState(false);
   const [detailData, setDetailData] = useState<Record<string, unknown> | null>(null);
 
-  // loaders per type
   const loaderOptions: Record<string, string[]> = {
     mod: ["forge", "fabric", "quilt", "neoforge"],
     plugin: ["paper", "purpur", "spigot", "bukkit", "folia", "velocity", "waterfall"],
@@ -36,7 +35,6 @@ export default function JavaDownloader() {
   };
 
   useEffect(() => {
-    // load game versions
     fetch(`${API}/tag/game_version`)
       .then((r) => r.json())
       .then((d: { version: string }[]) => setVersionsList(d.slice(0, 80).map((x) => x.version)))
@@ -84,71 +82,84 @@ export default function JavaDownloader() {
 
   return (
     <div className="jd-page">
-      <div className="dashboard">
-        <div id="Title">Modrinth Downloader</div>
-        <div className="controls">
-          <select value={type} onChange={(e) => { setType(e.target.value); setLoader(""); }} className="form-element select-element">
-            <option value="">All Types</option>
-            <option value="mod">Mod</option>
-            <option value="plugin">Plugin</option>
-            <option value="resourcepack">Resourcepack</option>
-            <option value="shader">Shader</option>
-            <option value="datapack">Datapack</option>
-          </select>
-          <select value={loader} onChange={(e) => setLoader(e.target.value)} className="form-element select-element">
-            <option value="">All Loaders</option>
-            {(loaderOptions[type] || []).map((l) => (
-              <option key={l} value={l}>{l}</option>
-            ))}
-          </select>
-          <select value={version} onChange={(e) => setVersion(e.target.value)} className="form-element select-element">
-            <option value="">All Versions</option>
-            {versionsList.map((v) => (
-              <option key={v} value={v}>{v}</option>
-            ))}
-          </select>
-          <select value={sort} onChange={(e) => setSort(e.target.value)} className="form-element select-element">
-            <option value="relevance">Relevance</option>
-            <option value="downloads">Downloads</option>
-            <option value="newest">Newest</option>
-            <option value="updated">Updated</option>
-          </select>
-          <input type="text" placeholder="Search by name" value={query} onChange={(e) => setQuery(e.target.value)} className="form-element" onKeyDown={(e) => e.key === "Enter" && searchContent()} />
-          <button onClick={searchContent} className="form-element button-element">🔍</button>
-        </div>
-
-        {loading && <div id="loading">Loading...</div>}
-        {!loading && results.length === 0 && <div className="empty">No results. Try search.</div>}
-        <div className="grid">
-          {results.map((p) => (
-            <div key={p.project_id} className="card" onClick={() => openDetails(p)}>
-              <img className="icon" src={p.icon_url || "https://via.placeholder.com/64"} alt="" />
-              <div className="info">
-                <h3>{p.title}</h3>
-                <p>{p.description}</p>
-                <p style={{ fontSize: 12, color: "#d4d4d4", marginTop: 6 }}>{p.downloads.toLocaleString()} downloads • {p.project_type}</p>
-              </div>
+      <div className="jd-bg" aria-hidden>
+        <div className="jd-bg-grad" />
+        <div className="jd-bg-orb o1" />
+        <div className="jd-bg-orb o2" />
+      </div>
+      <div className="jd-shell">
+        <header className="jd-header">
+          <div className="jd-kicker"><span className="jd-kicker-dot" /> UNIVERSAL • DOWNLOADER</div>
+          <h1 className="jd-title">Modrinth <span>Downloader</span></h1>
+          <p className="jd-sub">Mods, plugins, shaders & packs from Modrinth — fast search, lag-less cards, instant details.</p>
+          <div className="jd-controls">
+            <div className="jd-row1">
+              <select value={type} onChange={(e) => { setType(e.target.value); setLoader(""); }} className="jd-select">
+                <option value="">All Types</option>
+                <option value="mod">Mod</option>
+                <option value="plugin">Plugin</option>
+                <option value="resourcepack">Resourcepack</option>
+                <option value="shader">Shader</option>
+                <option value="datapack">Datapack</option>
+              </select>
+              <select value={loader} onChange={(e) => setLoader(e.target.value)} className="jd-select">
+                <option value="">All Loaders</option>
+                {(loaderOptions[type] || []).map((l) => (
+                  <option key={l} value={l}>{l}</option>
+                ))}
+              </select>
+              <select value={version} onChange={(e) => setVersion(e.target.value)} className="jd-select">
+                <option value="">All Versions</option>
+                {versionsList.map((v) => (
+                  <option key={v} value={v}>{v}</option>
+                ))}
+              </select>
+              <select value={sort} onChange={(e) => setSort(e.target.value)} className="jd-select">
+                <option value="relevance">Relevance</option>
+                <option value="downloads">Downloads</option>
+                <option value="newest">Newest</option>
+                <option value="updated">Updated</option>
+              </select>
             </div>
+            <div className="jd-row1">
+              <input type="text" placeholder="Search by name (press Enter)" value={query} onChange={(e) => setQuery(e.target.value)} className="jd-input" onKeyDown={(e) => e.key === "Enter" && searchContent()} />
+              <button onClick={searchContent} className="jd-btn">🔍 Search</button>
+            </div>
+          </div>
+        </header>
+
+        {loading && <div className="jd-loading">Searching Modrinth…</div>}
+        {!loading && results.length === 0 && <div className="jd-empty">No results. Try different filters or search term.</div>}
+        <div className="jd-grid">
+          {results.map((p) => (
+            <article key={p.project_id} className="jd-card" onClick={() => openDetails(p)}>
+              <img className="jd-icon" src={p.icon_url || "https://via.placeholder.com/64"} alt="" loading="lazy" decoding="async" />
+              <div className="jd-info">
+                <h3 title={p.title}>{p.title}</h3>
+                <p>{p.description}</p>
+                <div className="jd-meta">{p.downloads.toLocaleString()} downloads • {p.project_type}</div>
+              </div>
+            </article>
           ))}
         </div>
       </div>
 
       {showDetail && selected && (
-        <div className="modal active" onClick={() => setShowDetail(false)}>
-          <div className="modal-content full-modal" onClick={(e) => e.stopPropagation()}>
-            <span className="close" onClick={() => setShowDetail(false)}>&times;</span>
+        <div className="jd-modal" onClick={() => setShowDetail(false)}>
+          <div className="jd-modal-content" onClick={(e) => e.stopPropagation()}>
+            <span className="jd-close" onClick={() => setShowDetail(false)}>&times;</span>
             <div style={{ display: "flex", gap: 16, alignItems: "center", marginBottom: 16 }}>
-              <img src={selected.icon_url || "https://via.placeholder.com/64"} alt="" style={{ width: 64, height: 64, borderRadius: 14 }} />
-              <div>
-                <h1 style={{ fontSize: 22 }}>{detailData ? String((detailData as { title: string }).title) : selected.title}</h1>
-                <p style={{ color: "#a8a8a8" }}>{selected.description}</p>
+              <img src={selected.icon_url || "https://via.placeholder.com/64"} alt="" style={{ width: 64, height: 64, borderRadius: 14, border:"1px solid rgba(255,255,255,0.12)" }} />
+              <div style={{minWidth:0}}>
+                <h2 style={{ fontSize: 18, fontWeight:900, letterSpacing:-0.4 }}>{detailData ? String((detailData as { title: string }).title) : selected.title}</h2>
+                <p style={{ color: "#9aa0b4", fontSize:13, marginTop:4, lineHeight:1.5 }}>{selected.description}</p>
               </div>
             </div>
-            <button className="form-element button-element" onClick={() => { if (detailData) window.open(`https://modrinth.com/${(detailData as { project_type: string }).project_type}/${(detailData as { slug: string }).slug}`, "_blank"); }}>
-              View on Modrinth
+            <button className="jd-btn" onClick={() => { if (detailData) window.open(`https://modrinth.com/${(detailData as { project_type: string }).project_type}/${(detailData as { slug: string }).slug}`, "_blank"); }}>
+              View on Modrinth ↗
             </button>
-            <div style={{ marginTop: 16, color: "#a8a8a8", fontSize: 14, lineHeight: 1.6 }}>
-              {detailData ? String((detailData as { body: string }).body || "").slice(0, 2000) : "Loading..."}
+            <div style={{ marginTop: 16, color: "#9aa0b4", fontSize: 13, lineHeight: 1.6, whiteSpace:"pre-wrap", wordBreak:"break-word", background:"rgba(255,255,255,0.04)", border:"1px solid rgba(255,255,255,0.06)", padding:14, borderRadius:12 }}>
+              {detailData ? String((detailData as { body: string }).body || "").slice(0, 2500) || "No description" : "Loading..."}
             </div>
           </div>
         </div>
