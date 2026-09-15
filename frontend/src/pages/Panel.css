@@ -1,0 +1,54 @@
+.panel-page {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 28px 16px;
+}
+.panel-title {
+  text-align: center;
+  font-size: clamp(2rem, 6vw, 2.8rem);
+  font-weight: 900;
+  letter-spacing: -1px;
+  margin-bottom: 2.2rem;
+  background: linear-gradient(90deg,#f0f0f0,#ffffff,#e0e0e0);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-size: 200% auto;
+  animation: shine 6s linear infinite;
+}
+@keyframes shine { to { background-position: 200% center; } }
+.panel-section {
+  background: rgba(18,18,28,0.92);
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.11);
+  padding: 28px;
+  margin-bottom: 28px;
+  backdrop-filter: blur(16px);
+}
+.panel-section h2 { font-size: 1.25rem; font-weight: 800; margin-bottom: 1.1rem; }
+.codespre {
+  background: #0a0a12;
+  color: #e0e0ff;
+  border-radius: 10px;
+  padding: 1rem;
+  font-family: "JetBrains Mono","Consolas",monospace;
+  font-size: 0.86rem;
+  overflow-x: auto;
+  border: 1px solid rgba(255,255,255,0.11);
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+.panel-btn {
+  background: transparent;
+  color: #f8f9fa;
+  border: 1px solid rgba(255,255,255,0.11);
+  padding: 0.72rem 1.4rem;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.92rem;
+  cursor: pointer;
+  margin-top: 0.8rem;
+  margin-right: 0.6rem;
+}
+.panel-btn:hover { background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.3); }
+.copied { margin-left: 0.9rem; font-size: 0.84rem; color: #4ade80; opacity: 0; transition: opacity 0.4s ease; }
+.copied.show { opacity: 1; }
