@@ -586,6 +586,11 @@
   transition: transform 0.35s cubic-bezier(0.22,1,0.36,1);
 }
 .highlight-showcase:hover .hs-card{ transform: perspective(800px) rotateY(-2deg) rotateX(2deg) translateZ(8px); }
+.highlight-showcase.highlight-fixed{ transform: none !important; transition: border-color 0.2s, box-shadow 0.2s !important; }
+.highlight-showcase.highlight-fixed:hover{ transform: none !important; border-color: rgba(255,255,255,0.10) !important; box-shadow: none !important; }
+.highlight-showcase.highlight-fixed .hs-card{ transform: none !important; transition: none !important; }
+.highlight-showcase.highlight-fixed:hover .hs-card{ transform: none !important; }
+.highlight-showcase.highlight-fixed .hs-orb{ animation: none !important; }
 .hs-card-head{ display:flex; align-items:center; gap:6px; padding:12px 14px; border-bottom:1px solid rgba(255,255,255,0.06); background: rgba(255,255,255,0.02); }
 .hs-card-head i{ width:9px; height:9px; border-radius:50%; background: rgba(255,255,255,0.14); }
 .hs-card-head i:nth-child(1){ background:#ff5f57; }
