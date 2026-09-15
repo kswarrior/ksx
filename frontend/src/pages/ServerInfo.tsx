@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "./ServerInfo.css";
 
 type McStatus = Record<string, unknown>;
 
@@ -19,19 +20,56 @@ export default function ServerInfo() {
     } finally { setLoading(false); }
   }
 
+  const online = data ? Boolean((data as { online?: boolean }).online) : null;
+  const players = data ? (data as { players?: { online?: number; max?: number } }).players : null;
+
   return (
-    <div style={{ background: "#000", color: "#fff", minHeight: "calc(100vh - 56px)", display: "flex", flexDirection: "column", alignItems: "center", padding: "40px 16px" }}>
-      <h1 style={{ fontSize: 28, fontWeight: 900, marginBottom: 10, textAlign: "center" }}>Minecraft Server Info</h1>
-      <p style={{ color: "#aaa", marginBottom: 20 }}>Enter the IP to fetch server details</p>
-      <div style={{ display: "flex", gap: 8, flexWrap: "wrap", justifyContent: "center" }}>
-        <input value={ip} onChange={(e) => setIp(e.target.value)} placeholder="Enter server IP" style={{ padding: "12px 16px", borderRadius: 12, border: "1px solid rgba(255,255,255,0.12)", background: "rgba(28,28,40,0.9)", color: "#fff", minWidth: 260 }} />
-        <button onClick={fetchInfo} style={{ padding: "12px 20px", borderRadius: 12, background: "#fff", color: "#000", fontWeight: 700, border: "none", cursor: "pointer" }}>{loading ? "Loading..." : "Search"}</button>
+    <div className="si-page">
+      <div className="si-bg" aria-hidden>
+        <div className="si-bg-grad" />
+        <div className="si-bg-orb o1" />
+        <div className="si-bg-orb o2" />
       </div>
-      {data && (
-        <pre style={{ marginTop: 30, background: "rgba(18,18,28,0.85)", padding: 20, borderRadius: 12, width: "100%", maxWidth: 600, overflow: "auto", border: "1px solid rgba(255,255,255,0.12)", whiteSpace: "pre-wrap", wordBreak: "break-word", fontSize: 13 }}>
-          {JSON.stringify(data, null, 2)}
-        </pre>
-      )}
+      <div className="si-shell">
+        <header className="si-header">
+          <div className="si-kicker"><span className="si-kicker-dot" /> SERVER • STATICS</div>
+          <h1 className="si-title">Minecraft Server <span>Info</span></h1>
+          <p className="si-sub">Enter any Java/Bedrock IP — get status, players, MOTD & version instantly.</p>
+          <div className="si-search">
+            <input className="si-input" value={ip} onChange={(e) => setIp(e.target.value)} placeholder="Enter server IP (e.g. play.hypixel.net)" aria-label="Server IP" onKeyDown={(e)=> e.key==="Enter" && fetchInfo()} />
+            <button className="si-btn" onClick={fetchInfo}>{loading ? "Checking…" : "Search ↗"}</button>
+          </div>
+        </header>
+
+        {data && (
+          <div className="si-card">
+            <div style={{display:"flex", gap:8, alignItems:"center", flexWrap:"wrap"}}>
+              <span style={{padding:"6px 10px", borderRadius:999, fontSize:12, fontWeight:900, background: online ? "rgba(74,222,128,0.15)" : "rgba(239,68,68,0.15)", color: online ? "#4ade80" : "#ef4444", border:"1px solid rgba(255,255,255,0.08)"}}>{online ? "● Online" : "● Offline"}</span>
+              {players && <span style={{fontSize:12, color:"var(--si-muted)"}}>{players.online} / {players.max} players</span>}
+              <button className="si-btn" style={{marginLeft:"auto", padding:"8px 12px", fontSize:12, background:"rgba(255,255,255,0.06)", color:"#fff", border:"1px solid rgba(255,255,255,0.12)"}} onClick={()=> navigator.clipboard.writeText(JSON.stringify(data,null,2))}>Copy JSON</button>
+            </div>
+
+            {players && (
+              <div className="si-grid">
+                <div className="si-stat"><b>Online</b><span>{players.online ?? "—"}</span></div>
+                <div className="si-stat"><b>Max</b><span>{players.max ?? "—"}</span></div>
+                <div className="si-stat"><b>IP</b><span style={{fontSize:12, wordBreak:"break-all"}}>{String((data as { ip?:string }).ip || ip)}</span></div>
+                <div className="si-stat"><b>Port</b><span>{String((data as { port?:number }).port || "25565")}</span></div>
+              </div>
+            )}
+
+            <pre className="si-pre">{JSON.stringify(data, null, 2)}</pre>
+          </div>
+        )}
+
+        {!data && (
+          <div className="si-card" style={{textAlign:"center", color:"var(--si-muted)", fontSize:13}}>
+            <div style={{fontSize:22, marginBottom:8}}>🔍</div>
+            <div style={{fontWeight:800, color:"var(--si-text)", marginBottom:6}}>No query yet</div>
+            <div>Enter a server IP above to see live stats. Example: play.cubecraft.net</div>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

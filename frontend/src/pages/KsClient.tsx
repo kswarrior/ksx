@@ -1,36 +1,62 @@
+import "./KsClient.css";
+
 export default function KsClient() {
+  const feats = [
+    "Better Minecraft performance",
+    "Less lag and smoother gameplay",
+    "Quick and easy settings",
+    "3D Mace model",
+    "3D Shield (front & side)",
+    "3D Bow and Crossbow",
+    "3D Player Skin Totem",
+    "New and modern UI",
+    "Armor and offhand HUD",
+    "Player health indicator",
+    "Item durability viewer",
+    "Bright and beautiful textures",
+    "Clear water visuals",
+    "Low fire effect for visibility",
+    "Overall smooth gameplay",
+  ];
   return (
-    <div style={{ background: "#000", color: "#fff", minHeight: "calc(100vh - 56px)", display: "flex", flexDirection: "column", alignItems: "center", padding: "25px 16px" }}>
-      <header style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 4, width: "100%", maxWidth: 900, marginBottom: 40 }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
-          <img src="/image/ks-logo.webp" alt="KS Client Logo" style={{ height: 75, width: 75, borderRadius: "25%", border: "2px solid #1e1e1e" }} />
-          <div>
-            <h1 style={{ fontSize: 36, fontWeight: 900, margin: 0 }}>KS Client</h1>
-            <p style={{ fontSize: 16, color: "#aaaaaa", marginTop: 4 }}>Bedrock (PE)</p>
+    <div className="ks-page">
+      <div className="ks-bg" aria-hidden>
+        <div className="ks-bg-grad" />
+        <div className="ks-bg-orb o1" />
+        <div className="ks-bg-orb o2" />
+      </div>
+      <div className="ks-shell">
+        <header className="ks-header">
+          <div className="ks-brand">
+            <div className="ks-logo"><img src="/image/ks-logo.webp" alt="KS Client Logo" loading="lazy" /></div>
+            <div>
+              <div className="ks-title">KS <span>Client</span></div>
+              <div className="ks-subtitle">Bedrock (PE) • Less lag • 3D • Modern UI</div>
+            </div>
+          </div>
+          <a href="https://www.mediafire.com/file/o78xzmld09b5nw9/KS_Client_V3.mcpack/file" target="_blank" rel="noreferrer" className="ks-dl">
+            ⬇ Download .mcpack
+          </a>
+        </header>
+
+        <div className="ks-card">
+          <div className="ks-card-title">✨ What you get</div>
+          <div style={{color:"var(--ks-muted)", fontSize:13, lineHeight:1.6}}>Packed for performance + visuals. One tap install, works on Bedrock PE.</div>
+          <div className="ks-feat">
+            {feats.map((t,i)=> (
+              <span key={t}><i>{i+1}</i> {t}</span>
+            ))}
+          </div>
+          <div style={{marginTop:14, display:"flex", gap:10, flexWrap:"wrap"}}>
+            <a href="https://www.mediafire.com/file/o78xzmld09b5nw9/KS_Client_V3.mcpack/file" target="_blank" rel="noreferrer" className="ks-dl" style={{background:"linear-gradient(135deg,#8b5cf6,#3b82f6)", color:"#fff", borderColor:"transparent"}}>Get KS Client V3 ↗</a>
+            <span style={{fontSize:12, color:"var(--ks-muted)", alignSelf:"center"}}>Tap to download • Import in Minecraft PE</span>
           </div>
         </div>
-        <a href="https://www.mediafire.com/file/o78xzmld09b5nw9/KS_Client_V3.mcpack/file" target="_blank" rel="noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: 10, fontWeight: 800, background: "linear-gradient(135deg,#ffffff,#dcdcdc)", color: "#000", padding: "14px 26px", borderRadius: 999, textDecoration: "none", fontSize: 14 }}>
-          ⬇
-        </a>
-      </header>
-      <div style={{ background: "#1e1e1e", borderRadius: 12, padding: 25, maxWidth: 720, width: "100%", textAlign: "left", marginBottom: 40, lineHeight: 1.5, fontSize: 14 }}>
-        With this client, you will get:<br />
-        1) Better Minecraft performance<br />
-        2) Less lag and smoother gameplay<br />
-        3) Quick and easy settings<br />
-        4) 3D Mace<br />
-        5) 3D Shield (front and side view)<br />
-        6) 3D Bow and Crossbow<br />
-        7) 3D Player Skin Totem<br />
-        8) New and modern UI<br />
-        9) Armor and offhand HUD<br />
-        10) Player health indicator<br />
-        11) Item durability viewer<br />
-        12) Bright and beautiful textures<br />
-        13) Clear water visuals<br />
-        14) Low fire effect for better visibility<br />
-        15) Overall smooth gameplay<br />
-        And much more… Download and see for yourself!
+
+        <div className="ks-card" style={{textAlign:"center"}}>
+          <div style={{fontWeight:900, fontSize:14, marginBottom:6}}>How to install</div>
+          <div style={{color:"var(--ks-muted)", fontSize:12, lineHeight:1.6}}>1) Download .mcpack • 2) Open with Minecraft PE • 3) Enable in Resource Packs • 4) Restart world • Enjoy smooth 3D visuals.</div>
+        </div>
       </div>
     </div>
   );
