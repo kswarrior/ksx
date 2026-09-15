@@ -93,10 +93,14 @@ app.get("/api/hosting/vps", (c) => {
   return c.json({ count: result.length, data: result });
 });
 
+// Legacy JSON paths for backward compat (old static fetch("free.json"))
+app.get("/minecraft/hosting/free.json", (c) => c.json(mcHosting));
+app.get("/vps/hosting/list/free.json", (c) => c.json(vpsHosting));
+app.get("/sitemap.json", (c) => c.json(sitemap));
+
 // Fallback for static assets: if `assets` binding is configured, Worker will serve `frontend/dist` automatically.
 // For API 404s, return JSON
 app.notFound((c) => {
-  // If request looks like API, return JSON, else let assets handle (butassets runs before worker in new Workers Sites)
   if (c.req.path.startsWith("/api/")) return c.json({ error: "Not found" }, 404);
   return c.text("Not found", 404);
 });
