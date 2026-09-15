@@ -40,7 +40,7 @@ app.get("/api/sitemap/search", (c) => {
     for (const cat of sitemap) {
         for (const sec of cat.sections) {
             for (const page of sec.pages) {
-                flat.push({ category: cat.category, icon: cat.icon, title: sec.title, name: page.name, url: page.url });
+                flat.push({ category: cat.category, icon: cat.icon, title: sec.title, name: page.name, url: page.url, logo: page.logo });
             }
         }
     }
@@ -91,10 +91,31 @@ app.get("/minecraft/hosting/free.json", (c) => c.json(mcHosting));
 app.get("/vps/hosting/list/free.json", (c) => c.json(vpsHosting));
 app.get("/sitemap.json", (c) => c.json(sitemap));
 // Fallback for static assets: if `assets` binding is configured, Worker will serve `frontend/dist` automatically.
-// For API 404s, return JSON
-app.notFound((c) => {
+// For API 404s, return JSON. For SPA routes, serve index.html (supports client-side routing)
+app.notFound(async (c) => {
     if (c.req.path.startsWith("/api/"))
         return c.json({ error: "Not found" }, 404);
+    // SPA fallback: serve index.html via ASSETS binding when available
+    try {
+        // @ts-ignore - ASSETS is injected by Wrangler when [assets] is configured
+        const assets = c.env?.ASSETS;
+        if (assets) {
+            const url = new URL(c.req.url);
+            const indexReq = new Request(new URL("/index.html", url.origin).toString());
+            const res = await assets.fetch(indexReq);
+            if (res) {
+                const body = await res.arrayBuffer();
+                return new Response(body, {
+                    status: 200,
+                    headers: {
+                        "Content-Type": "text/html;charset=utf-8",
+                        "Cache-Control": "no-cache",
+                    },
+                });
+            }
+        }
+    }
+    catch { }
     return c.text("Not found", 404);
 });
 export default app;
