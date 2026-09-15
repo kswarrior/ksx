@@ -16,4 +16,17 @@ export default defineConfig({
   preview: {
     port: 4173,
   },
+  build: {
+    target: "esnext",
+    cssCodeSplit: true,
+    sourcemap: false,
+    chunkSizeWarningLimit: 600,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ["react", "react-dom", "react-router-dom"],
+        },
+      },
+    },
+  },
 });
