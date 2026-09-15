@@ -41,3 +41,13 @@ a { color: inherit; text-decoration: none; }
   border-radius: var(--radius);
   padding: 28px;
 }
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Lag-less helpers: respect reduced motion, disable heavy effects on low-end */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+@media (hover: none) and (pointer: coarse) {
+  /* keep :hover not sticky on touch */
+}

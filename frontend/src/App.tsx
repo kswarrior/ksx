@@ -13,7 +13,6 @@ const Social = lazy(() => import("./pages/Social"));
 const About = lazy(() => import("./pages/About"));
 const MinecraftHosting = lazy(() => import("./pages/MinecraftHosting"));
 const VpsHosting = lazy(() => import("./pages/VpsHosting"));
-const PanelPages = lazy(() => import("./pages/PanelPages"));
 const JavaLauncher = lazy(() => import("./pages/JavaLauncher"));
 const JavaDownloader = lazy(() => import("./pages/JavaDownloader"));
 const KsClient = lazy(() => import("./pages/KsClient"));
