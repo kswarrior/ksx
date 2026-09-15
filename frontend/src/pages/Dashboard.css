@@ -708,3 +708,4 @@
   .orb, .cube, .grid-floor, .stars, .float-pill, .hero-scroll i::after{ animation: none !important; }
 }
 
+/* mobile perf fix 2026-09-15 */
