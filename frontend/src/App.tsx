@@ -7,7 +7,11 @@ import About from "./pages/About";
 import MinecraftHosting from "./pages/MinecraftHosting";
 import VpsHosting from "./pages/VpsHosting";
 import { PterodactylPage, PufferPage, SkyportPage } from "./pages/PanelPages";
+import JavaLauncher from "./pages/JavaLauncher";
+import KsClient from "./pages/KsClient";
+import ServerInfo from "./pages/ServerInfo";
 import GenericPlaceholder from "./pages/GenericPlaceholder";
+import NotFound from "./pages/NotFound";
 import "./styles/global.css";
 import "./pages/Panel.css";
 
@@ -33,11 +37,18 @@ export default function App() {
           <Route path="minecraft/make-hosting/skyport" element={<SkyportPage />} />
           <Route path="minecraft/make-hosting/skyport.html" element={<SkyportPage />} />
 
+          <Route path="minecraft/java/launcher" element={<JavaLauncher />} />
+          <Route path="minecraft/java/launcher.html" element={<JavaLauncher />} />
+          <Route path="minecraft/bedrock/ks-client" element={<KsClient />} />
+          <Route path="minecraft/bedrock/ks-client.html" element={<KsClient />} />
+          <Route path="minecraft/server/statics" element={<ServerInfo />} />
+          <Route path="minecraft/server/statics.html" element={<ServerInfo />} />
+
           {/* Fallback for other migrated pages */}
           <Route path="minecraft/*" element={<GenericPlaceholder />} />
           <Route path="vps/*" element={<GenericPlaceholder />} />
 
-          <Route path="*" element={<GenericPlaceholder />} />
+          <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
     </BrowserRouter>

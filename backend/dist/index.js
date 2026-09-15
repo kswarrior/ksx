@@ -2,6 +2,9 @@ import express from "express";
 import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
+import path from "node:path";
+import fs from "node:fs";
+import { fileURLToPath } from "node:url";
 import sitemapRouter from "./routes/sitemap.js";
 import hostingRouter from "./routes/hosting.js";
 import metaRouter from "./routes/meta.js";
@@ -15,10 +18,23 @@ app.use(express.json());
 app.use("/api/sitemap", sitemapRouter);
 app.use("/api/hosting", hostingRouter);
 app.use("/api", metaRouter);
-// 404
-app.use((_req, res) => {
-    res.status(404).json({ error: "Not found" });
-});
+// Serve frontend in production (if built)
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const frontendDist = path.resolve(__dirname, "../../frontend/dist");
+if (fs.existsSync(frontendDist)) {
+    app.use(express.static(frontendDist));
+    // SPA fallback – serve index.html for non-API routes
+    app.get("*", (_req, res) => {
+        res.sendFile(path.join(frontendDist, "index.html"));
+    });
+}
+else {
+    // 404 for API-only mode
+    app.use((_req, res) => {
+        res.status(404).json({ error: "Not found" });
+    });
+}
 // Error handler
 app.use((err, _req, res, _next) => {
     console.error(err);
