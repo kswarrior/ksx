@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import "./PaidPluginFree.css";
 
 type Plugin = { name: string; link: string };
@@ -22,24 +22,42 @@ const plugins: Plugin[] = [
 
 export default function PaidPluginFree() {
   const [q, setQ] = useState("");
-  const filtered = plugins.filter((p) => p.name.toLowerCase().includes(q.toLowerCase()));
+  const filtered = useMemo(()=> plugins.filter((p) => p.name.toLowerCase().includes(q.toLowerCase())), [q]);
   return (
     <div className="paid-page">
-      <h1>Minecraft Paid Plugins For Free</h1>
-      <div className="search-box">
-        <input placeholder="Search plugin name..." value={q} onChange={(e) => setQ(e.target.value)} />
+      <div className="paid-bg" aria-hidden>
+        <div className="paid-bg-grad" />
+        <div className="paid-bg-orb o1" />
+        <div className="paid-bg-orb o2" />
       </div>
-      <div className="container-wrapper">
-        {filtered.map((p) => (
-          <div key={p.name} className="ppf-container">
-            <h2>{p.name}</h2>
-            <a href={p.link} className="download-btn" target="_blank" rel="noreferrer">
-              Download
-            </a>
+      <div className="paid-shell">
+        <header className="paid-header">
+          <div className="paid-kicker"><span className="paid-kicker-dot" /> MAKE SERVER • PLUGINS</div>
+          <h1 className="paid-title">Paid Plugins <span>For Free</span></h1>
+          <p className="paid-sub">Premium plugins unlocked — lifesteal, itemsadder, enchantments & more. Search & download.</p>
+          <div className="paid-search-wrap">
+            <div className="paid-search">
+              <svg viewBox="0 0 24 24" aria-hidden><circle cx="11" cy="11" r="6.5"/><path d="M16 16 L20 20"/></svg>
+              <input placeholder="Search plugin name…" value={q} onChange={(e)=>setQ(e.target.value)} aria-label="Search plugin" spellCheck={false} />
+              {q && <button onClick={()=>setQ("")} style={{width:34,height:34,borderRadius:999,border:"1px solid rgba(255,255,255,0.1)",background:"rgba(255,255,255,0.06)",color:"#fff",display:"grid",placeItems:"center",cursor:"pointer",flexShrink:0}}>✕</button>}
+            </div>
+            <div className="paid-stats"><strong>{filtered.length}</strong> of <strong>{plugins.length}</strong> plugins</div>
           </div>
-        ))}
+        </header>
+
+        <div className="paid-grid">
+          {filtered.map((p) => (
+            <article key={p.name} className="paid-card">
+              <div className="paid-icon">🧩</div>
+              <h3 title={p.name}>{p.name}</h3>
+              <a href={p.link} className="download-btn" target="_blank" rel="noreferrer">
+                Download ↗
+              </a>
+            </article>
+          ))}
+        </div>
+        {filtered.length === 0 && <div className="paid-empty">No plugins match “{q}”.</div>}
       </div>
-      {filtered.length === 0 && <div style={{ textAlign: "center", color: "#aaa", marginTop: 20 }}>No plugins found</div>}
     </div>
   );
 }

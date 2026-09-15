@@ -1,79 +1,53 @@
+/* PAID PLUGINS - stylish + lag-less */
 .paid-page{
-  background:#000;
-  color:#fff;
-  min-height:calc(100vh - 56px);
-  padding:32px 18px;
+  --pp-bg:#07080e; --pp-card:rgba(18,18,28,0.96); --pp-border:rgba(255,255,255,0.09); --pp-border2:rgba(255,255,255,0.14);
+  --pp-text:#f0f0f6; --pp-muted:#9aa0b4; --pp-radius:16px;
+  position:relative; min-height:calc(100vh - 56px); background:var(--pp-bg); color:var(--pp-text); overflow-x:clip; isolation:isolate;
 }
-.paid-page h1{
-  text-align:center;
-  font-size:28px;
-  font-weight:900;
-  margin-bottom:36px;
-  letter-spacing:0.5px;
+.paid-bg{position:fixed; inset:0; z-index:-1; pointer-events:none; background:var(--pp-bg);}
+.paid-bg-grad{position:absolute; inset:0; background:
+  radial-gradient(900px 500px at 15% 0%, rgba(245,158,11,0.14), transparent 60%),
+  radial-gradient(800px 600px at 95% 10%, rgba(139,92,246,0.12), transparent 65%),
+  linear-gradient(180deg, #0f0a12 0%, #07080e 55%, #08080f 100%);}
+.paid-bg-orb{position:absolute; border-radius:50%; filter:blur(34px); opacity:0.5; mix-blend-mode:screen;}
+.paid-bg-orb.o1{width:520px;height:520px; left:-120px; top:-140px; background:radial-gradient(circle at 30% 30%, #fbbf24 0%, #f59e0b 42%, transparent 72%); animation:ppOrb 10s ease-in-out infinite;}
+.paid-bg-orb.o2{width:460px;height:460px; right:-100px; top:12%; background:radial-gradient(circle at 30% 30%, #a78bfa 0%, #8b5cf6 44%, transparent 72%); animation:ppOrb 12s ease-in-out infinite reverse;}
+@keyframes ppOrb{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-14px) scale(1.03)}}
+.paid-shell{max-width:1120px; margin:0 auto; padding:18px 16px 40px;}
+.paid-header{background:rgba(14,14,24,0.92); border:1px solid var(--pp-border); border-radius:20px; padding:22px 18px 18px; backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); box-shadow:0 10px 40px rgba(0,0,0,0.45); position:relative; overflow:hidden;}
+.paid-header::before{content:""; position:absolute; inset:0; border-radius:inherit; background:radial-gradient(700px 260px at 20% 0%, rgba(245,158,11,0.10), transparent 60%); pointer-events:none;}
+.paid-kicker{position:relative; display:inline-flex; align-items:center; gap:8px; font-size:11px; letter-spacing:1.4px; font-weight:800; color:rgba(255,255,255,0.7); background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.08); padding:6px 10px; border-radius:999px;}
+.paid-kicker-dot{width:7px;height:7px; border-radius:50%; background:#f59e0b; box-shadow:0 0 10px #f59e0b;}
+.paid-title{position:relative; margin:14px 0 8px; font-size:clamp(24px,5vw,34px); font-weight:900; letter-spacing:-1.2px; line-height:1;}
+.paid-title span{background:linear-gradient(90deg,#fbbf24 0%,#f472b6 45%,#a78bfa 100%); -webkit-background-clip:text; background-clip:text; color:transparent;}
+.paid-sub{position:relative; color:var(--pp-muted); font-size:13px; line-height:1.6; max-width:620px;}
+.paid-search-wrap{position:relative; margin-top:16px;}
+.paid-search{position:relative; display:flex; align-items:center; background:rgba(255,255,255,0.06); border:1px solid var(--pp-border); border-radius:14px; padding:0 12px; transition:border-color .2s, background .2s, box-shadow .2s;}
+.paid-search:focus-within{border-color:rgba(245,158,11,0.45); background:rgba(255,255,255,0.08); box-shadow:0 0 0 4px rgba(245,158,11,0.12);}
+.paid-search svg{width:20px;height:20px; stroke:#aab0c0; stroke-width:1.9; fill:none; stroke-linecap:round;}
+.paid-search input{flex:1; min-width:0; height:44px; background:transparent; border:none; outline:none; color:var(--pp-text); font-size:14px; padding:0 10px;}
+.paid-search input::placeholder{color:rgba(255,255,255,0.45);}
+.paid-stats{margin-top:10px; font-size:12px; color:var(--pp-muted);} .paid-stats strong{color:var(--pp-text); font-weight:800;}
+.paid-grid{max-width:1120px; margin:16px auto 0; display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:14px;}
+.paid-card{background:var(--pp-card); border:1px solid var(--pp-border); border-radius:var(--pp-radius); padding:18px; text-align:center; contain:layout paint style; content-visibility:auto; contain-intrinsic-size:180px; transition:border-color .2s, box-shadow .2s, transform .18s, background .2s; position:relative; overflow:hidden; display:flex; flex-direction:column; gap:12px;}
+.paid-card::before{content:""; position:absolute; inset:0; border-radius:inherit; background:radial-gradient(500px 200px at 20% 0%, rgba(245,158,11,0.08), transparent 60%); opacity:0; transition:opacity .22s; pointer-events:none;}
+.paid-card:hover::before{opacity:1;}
+.paid-card:hover{border-color:var(--pp-border2); box-shadow:0 14px 36px rgba(0,0,0,0.38); transform:translateY(-2px); background:rgba(22,22,34,0.98);}
+.paid-card h3{font-size:14px; font-weight:900; letter-spacing:-0.3px; min-height:20px;}
+.paid-card .download-btn{display:inline-flex; align-items:center; justify-content:center; gap:8px; width:100%; padding:11px; font-size:13px; font-weight:800; border-radius:999px; background:#fff; color:#000; text-decoration:none; transition:transform .15s, background .2s, box-shadow .2s; border:1px solid transparent;}
+.paid-card .download-btn:hover{transform:translateY(-1px); background:#f0f0f0; box-shadow:0 8px 18px rgba(0,0,0,0.18);}
+.paid-card .download-btn:active{transform:scale(0.97);}
+.paid-icon{width:44px; height:44px; border-radius:12px; display:grid; place-items:center; background:linear-gradient(135deg,#f59e0b,#ef4444); color:#fff; font-size:18px; margin:0 auto; box-shadow:0 6px 16px rgba(245,158,11,0.24);}
+.paid-empty{text-align:center; padding:28px; color:var(--pp-muted); background:rgba(14,14,24,0.9); border:1px solid var(--pp-border); border-radius:16px; margin-top:14px;}
+@media(max-width:768px){
+  .paid-bg-orb{display:none !important;}
+  .paid-bg-grad{background:linear-gradient(180deg, #0f0a12 0%, #07080e 100%) !important;}
+  .paid-shell{padding:12px 10px 28px;}
+  .paid-header{padding:16px 14px 14px; border-radius:16px; backdrop-filter:none !important; -webkit-backdrop-filter:none !important; background:rgba(14,14,24,0.98) !important;}
+  .paid-title{font-size:22px;}
+  .paid-grid{grid-template-columns:1fr; gap:12px;}
+  .paid-card{border-radius:14px; contain-intrinsic-size:160px;}
+  .paid-search input{height:42px; font-size:13px;}
 }
-.container-wrapper{
-  max-width:1200px;
-  margin:auto;
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-  gap:28px;
-}
-.ppf-container{
-  background:rgba(18,18,28,0.85);
-  backdrop-filter:blur(18px);
-  border:1px solid rgba(255,255,255,0.12);
-  border-radius:14px;
-  padding:26px 22px;
-  text-align:center;
-  transition:all 0.45s ease;
-  position:relative;
-  overflow:hidden;
-}
-.ppf-container::after{
-  content:'';
-  position:absolute;
-  top:0; left:-100%;
-  width:55%; height:100%;
-  background:linear-gradient(90deg, transparent, rgba(255,255,255,0.18), transparent);
-  transition:left 0.7s ease;
-  pointer-events:none;
-}
-.ppf-container:hover::after{ left:120%; }
-.ppf-container:hover{
-  transform:translateY(-10px) scale(1.05);
-  background:rgba(40,40,55,0.95);
-  box-shadow:0 18px 40px rgba(0,0,0,0.35);
-}
-.ppf-container h2{
-  font-size:18px;
-  font-weight:800;
-  margin-bottom:18px;
-}
-.ppf-container .download-btn{
-  display:inline-block;
-  width:100%;
-  padding:14px;
-  font-size:14px;
-  font-weight:800;
-  border-radius:12px;
-  background:#ffffff;
-  color:#000;
-  text-decoration:none;
-  transition:all .35s ease;
-}
-.ppf-container .download-btn:hover{ transform:scale(1.08); }
-.search-box{
-  max-width:420px;
-  margin:0 auto 40px;
-}
-.search-box input{
-  width:100%;
-  padding:14px 16px;
-  border-radius:14px;
-  border:1px solid rgba(255,255,255,0.12);
-  background:rgba(28,28,40,0.9);
-  color:#fff;
-  font-size:15px;
-  outline:none;
-}
-.search-box input:focus{ border-color:#fff; box-shadow:0 0 20px rgba(255,255,255,0.35); }
+@media(hover:none) and (pointer:coarse){ .paid-card:hover{transform:none !important; box-shadow:0 8px 28px rgba(0,0,0,0.3);} .paid-card:hover::before{opacity:0;} }
+@media(prefers-reduced-motion:reduce){ .paid-bg-orb{animation:none !important;} .paid-card{transition:none !important;} }
