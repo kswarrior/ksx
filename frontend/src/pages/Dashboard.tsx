@@ -105,15 +105,15 @@ export default function Dashboard() {
 
         <div className="hero-content">
           <div className="hero-left">
-            <div className="eyebrow"><span className="eyebrow-dot" />KS WARRIOR • CREATOR • HOSTING • VPS • AI<span className="eyebrow-pulse">LIVE</span></div>
+            <div className="eyebrow"><span className="eyebrow-dot" />KS HUB • BY KS WARRIOR<span className="eyebrow-pulse">LIVE</span></div>
             <h1 className="hero-title">
-              <span className="t1">I am</span>
-              <span className="t2">KS Warrior</span>
+              <span className="t1">Welcome to</span>
+              <span className="t2">KS HUB</span>
               <span className="t3">I Build Many Things</span>
-              <span className="t-glow" aria-hidden>Many Things</span>
+              <span className="t-glow" aria-hidden>KS HUB</span>
             </h1>
             <p className="hero-subtitle">
-              Minecraft • Website • Hosting • VPS • AI — many builds, many tools, one place. Explore the whole KS ecosystem, not just servers.
+              One hub for Minecraft • Website • Hosting • VPS • AI — many builds, many tools, one KS HUB.
             </p>
             <div className="hero-actions">
               <button className="btn btn-primary" onClick={() => navigate("/map")}><span>Explore My Builds</span><i>→</i></button>
