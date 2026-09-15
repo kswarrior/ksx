@@ -9,6 +9,9 @@ import { fileURLToPath } from "node:url";
 import sitemapRouter from "./routes/sitemap.js";
 import hostingRouter from "./routes/hosting.js";
 import metaRouter from "./routes/meta.js";
+import sitemapData from "./data/sitemap.json" with { type: "json" };
+import mcData from "./data/minecraft-hosting.json" with { type: "json" };
+import vpsData from "./data/vps-hosting.json" with { type: "json" };
 
 const app = express();
 const PORT = Number(process.env.PORT ?? 4000);
@@ -22,6 +25,11 @@ app.use(express.json());
 app.use("/api/sitemap", sitemapRouter);
 app.use("/api/hosting", hostingRouter);
 app.use("/api", metaRouter);
+
+// Legacy JSON for old static fetch("free.json") compatibility
+app.get("/minecraft/hosting/free.json", (_req, res) => res.json(mcData));
+app.get("/vps/hosting/list/free.json", (_req, res) => res.json(vpsData));
+app.get("/sitemap.json", (_req, res) => res.json(sitemapData));
 
 // Serve frontend in production (if built)
 const __filename = fileURLToPath(import.meta.url);

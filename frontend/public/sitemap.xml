@@ -1,14 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-
-  <url>
-    <loc>https://ksx.pages.dev/minecraft/hosting/make-own/pterodactyl.html</loc>
-    <lastmod>2026-02-08</lastmod>
-  </url>
-
-  <url>
-    <loc>https://ksx.pages.dev/minecraft/hosting/make-own/puffer.html</loc>
-    <lastmod>2026-02-08</lastmod>
-  </url>
-
+  <url><loc>https://ksx.pages.dev/</loc><lastmod>2026-09-15</lastmod></url>
+  <url><loc>https://ksx.pages.dev/about</loc><lastmod>2026-09-15</lastmod></url>
+  <url><loc>https://ksx.pages.dev/dashboard</loc><lastmod>2026-09-15</lastmod></url>
+  <url><loc>https://ksx.pages.dev/map</loc><lastmod>2026-09-15</lastmod></url>
+  <url><loc>https://ksx.pages.dev/minecraft/bedrock/ks-client.html</loc><lastmod>2026-09-15</lastmod></url>
+  <url><loc>https://ksx.pages.dev/minecraft/hosting/free.html</loc><lastmod>2026-09-15</lastmod></url>
+  <url><loc>https://ksx.pages.dev/minecraft/java/downloader.html</loc><lastmod>2026-09-15</lastmod></url>
+  <url><loc>https://ksx.pages.dev/minecraft/java/launcher.html</loc><lastmod>2026-09-15</lastmod></url>
+  <url><loc>https://ksx.pages.dev/minecraft/make-hosting/pterodactyl.html</loc><lastmod>2026-09-15</lastmod></url>
+  <url><loc>https://ksx.pages.dev/minecraft/make-hosting/puffer.html</loc><lastmod>2026-09-15</lastmod></url>
+  <url><loc>https://ksx.pages.dev/minecraft/make-hosting/skyport.html</loc><lastmod>2026-09-15</lastmod></url>
+  <url><loc>https://ksx.pages.dev/minecraft/make-server/custom-ip.html</loc><lastmod>2026-09-15</lastmod></url>
+  <url><loc>https://ksx.pages.dev/minecraft/make-server/paid-plugin-free.html</loc><lastmod>2026-09-15</lastmod></url>
+  <url><loc>https://ksx.pages.dev/minecraft/make-server/server.jar-downloader.html</loc><lastmod>2026-09-15</lastmod></url>
+  <url><loc>https://ksx.pages.dev/minecraft/make-server/setup-server-in-vps.html</loc><lastmod>2026-09-15</lastmod></url>
+  <url><loc>https://ksx.pages.dev/minecraft/server/bot.html</loc><lastmod>2026-09-15</lastmod></url>
+  <url><loc>https://ksx.pages.dev/minecraft/server/statics.html</loc><lastmod>2026-09-15</lastmod></url>
+  <url><loc>https://ksx.pages.dev/social</loc><lastmod>2026-09-15</lastmod></url>
+  <url><loc>https://ksx.pages.dev/vps/hosting/list/free.html</loc><lastmod>2026-09-15</lastmod></url>
 </urlset>
