@@ -287,19 +287,6 @@ export default function Layout() {
         <Link to="/map" onClick={() => { if (!isDesktop()) setSidebarOpen(false); }}>Sites Map</Link>
         <Link to="/social" onClick={() => { if (!isDesktop()) setSidebarOpen(false); }}>Social Media</Link>
         <Link to="/about" onClick={() => { if (!isDesktop()) setSidebarOpen(false); }}>About</Link>
-        <div style={{ marginTop: 12, borderTop: "1px solid var(--border)", paddingTop: 12 }}>
-          <div style={{ padding: "6px 24px", fontSize: 12, color: "var(--muted)", textTransform: "uppercase", letterSpacing: 0.5 }}>
-            Minecraft
-          </div>
-          <Link to="/minecraft/hosting/free" onClick={() => { if (!isDesktop()) setSidebarOpen(false); }}>Free Hosting</Link>
-          <Link to="/minecraft/java/launcher" onClick={() => { if (!isDesktop()) setSidebarOpen(false); }}>Java Launcher</Link>
-          <Link to="/minecraft/java/downloader" onClick={() => { if (!isDesktop()) setSidebarOpen(false); }}>Mod Downloader</Link>
-          <Link to="/minecraft/bedrock/ks-client" onClick={() => { if (!isDesktop()) setSidebarOpen(false); }}>KS Client</Link>
-          <div style={{ padding: "6px 24px", fontSize: 12, color: "var(--muted)", textTransform: "uppercase", letterSpacing: 0.5, marginTop: 8 }}>
-            VPS
-          </div>
-          <Link to="/vps/hosting/free" onClick={() => { if (!isDesktop()) setSidebarOpen(false); }}>Free VPS List</Link>
-        </div>
       </nav>
 
       <div id="content" className={sidebarOpen ? "sidebar-open" : ""}>
