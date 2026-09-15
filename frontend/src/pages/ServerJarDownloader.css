@@ -1,59 +1,53 @@
+/* JAR DOWNLOADER - stylish + lag-less */
 .jar-page{
-  font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
-  background:radial-gradient(circle at top, #111, #000 60%);
-  color:#fff;
-  min-height:calc(100vh - 56px);
-  display:flex;
-  justify-content:center;
-  padding:30px 16px;
+  --j-bg:#07080e; --j-card:rgba(18,18,28,0.96); --j-border:rgba(255,255,255,0.09); --j-text:#f0f0f6; --j-muted:#9aa0b4;
+  position:relative; min-height:calc(100vh - 56px); background:var(--j-bg); color:var(--j-text); overflow-x:clip; isolation:isolate;
 }
-.jar-page .container{
-  width:100%;
-  max-width:720px;
-  padding:50px 35px;
+.jar-bg{position:fixed; inset:0; z-index:-1; pointer-events:none; background:var(--j-bg);}
+.jar-bg-grad{position:absolute; inset:0; background:
+  radial-gradient(900px 500px at 15% 0%, rgba(59,130,246,0.14), transparent 60%),
+  radial-gradient(800px 600px at 95% 10%, rgba(139,92,246,0.12), transparent 65%),
+  linear-gradient(180deg, #070a1c 0%, #07080e 55%, #08080f 100%);}
+.jar-bg-orb{position:absolute; border-radius:50%; filter:blur(34px); opacity:0.5; mix-blend-mode:screen;}
+.jar-bg-orb.o1{width:520px;height:520px; left:-120px; top:-140px; background:radial-gradient(circle at 30% 30%, #60a5fa 0%, #3b82f6 42%, transparent 72%); animation:jarOrb 10s ease-in-out infinite;}
+.jar-bg-orb.o2{width:460px;height:460px; right:-100px; top:12%; background:radial-gradient(circle at 30% 30%, #a78bfa 0%, #8b5cf6 44%, transparent 72%); animation:jarOrb 12s ease-in-out infinite reverse;}
+@keyframes jarOrb{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-14px) scale(1.03)}}
+.jar-shell{max-width:780px; margin:0 auto; padding:18px 16px 40px;}
+.jar-header{background:rgba(14,14,24,0.92); border:1px solid var(--j-border); border-radius:20px; padding:22px 18px; backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); box-shadow:0 10px 40px rgba(0,0,0,0.45); position:relative; overflow:hidden; text-align:center;}
+.jar-header::before{content:""; position:absolute; inset:0; border-radius:inherit; background:radial-gradient(700px 260px at 50% 0%, rgba(59,130,246,0.10), transparent 60%); pointer-events:none;}
+.jar-kicker{position:relative; display:inline-flex; align-items:center; gap:8px; font-size:11px; letter-spacing:1.4px; font-weight:800; color:rgba(255,255,255,0.7); background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.08); padding:6px 10px; border-radius:999px;}
+.jar-kicker-dot{width:7px;height:7px; border-radius:50%; background:#3b82f6; box-shadow:0 0 10px #3b82f6;}
+.jar-title{position:relative; margin:12px 0 8px; font-size:clamp(24px,5vw,32px); font-weight:900; letter-spacing:-1.2px; line-height:1;}
+.jar-title span{background:linear-gradient(90deg,#60a5fa 0%,#a78bfa 55%,#f472b6 100%); -webkit-background-clip:text; background-clip:text; color:transparent;}
+.jar-sub{position:relative; color:var(--j-muted); font-size:13px; line-height:1.6;}
+.jar-card{background:var(--j-card); border:1px solid var(--j-border); border-radius:16px; padding:20px; margin-top:14px; contain:layout paint style; content-visibility:auto; contain-intrinsic-size:220px;}
+.jar-row{display:flex; gap:12px; margin-bottom:14px; flex-wrap:wrap;}
+.jar-group{flex:1; min-width:160px; display:flex; flex-direction:column; gap:6px;}
+.jar-group label{font-size:11px; font-weight:800; color:var(--j-muted); letter-spacing:0.5px; text-transform:uppercase;}
+.jar-group select, .jar-group input{width:100%; padding:12px 14px; background:rgba(10,10,18,0.9); border:1px solid var(--j-border); border-radius:12px; color:var(--j-text); font-size:13px; outline:none; transition:border-color .2s, box-shadow .2s;}
+.jar-group select:focus, .jar-group input:focus{border-color:rgba(59,130,246,0.4); box-shadow:0 0 0 4px rgba(59,130,246,0.12);}
+.jar-btn{width:100%; margin-top:6px; background:#fff; color:#000; border:none; border-radius:999px; padding:13px; font-weight:900; font-size:14px; cursor:pointer; transition:transform .15s, background .2s, box-shadow .2s;}
+.jar-btn:hover{background:#f0f0f0; transform:translateY(-1px); box-shadow:0 8px 18px rgba(0,0,0,0.18);}
+.jar-btn:active{transform:scale(0.97);}
+.jar-btn.secondary{background:rgba(255,255,255,0.06); color:#fff; border:1px solid var(--j-border);}
+.jar-btn.secondary:hover{background:rgba(255,255,255,0.1);}
+.jar-result{margin-top:16px; background:rgba(14,14,24,0.92); border:1px solid var(--j-border); border-radius:16px; padding:16px;}
+.jar-status{font-size:13px; margin-bottom:10px; padding:8px 12px; border-radius:999px; display:inline-flex; align-items:center; gap:8px; font-weight:700;}
+.jar-status.loading{color:#9aa0b4; background:rgba(255,255,255,0.06); border:1px solid var(--j-border);}
+.jar-status.loading::before{content:""; width:14px; height:14px; border:2px solid rgba(255,255,255,0.2); border-top-color:#60a5fa; border-radius:50%; animation:spin .7s linear infinite;}
+.jar-status.success{color:#4ade80; background:rgba(74,222,128,0.12); border:1px solid rgba(74,222,128,0.18);}
+.jar-status.error{color:#f87171; background:rgba(239,68,68,0.12); border:1px solid rgba(239,68,68,0.18);}
+@keyframes spin{to{transform:rotate(360deg)}}
+.jar-url{font-size:12px; background:rgba(10,10,18,0.96); border:1px solid var(--j-border); border-radius:10px; padding:12px; width:100%; color:var(--j-text); word-break:break-all;}
+.jar-actions{display:flex; gap:10px; margin-top:12px;}
+.jar-actions button{flex:1; margin-top:0;}
+@media(max-width:768px){
+  .jar-bg-orb{display:none !important;}
+  .jar-bg-grad{background:linear-gradient(180deg, #070a1c 0%, #07080e 100%) !important;}
+  .jar-shell{padding:12px 10px 28px;}
+  .jar-header{padding:16px 14px; border-radius:16px; backdrop-filter:none !important; -webkit-backdrop-filter:none !important; background:rgba(14,14,24,0.98) !important;}
+  .jar-title{font-size:22px;}
+  .jar-card{padding:16px; border-radius:14px;}
+  .jar-row{flex-direction:column;}
 }
-.jar-page h1{ font-size:25px; font-weight:900; }
-.jar-page .subtitle{ margin-top:6px; font-size:14px; color:#9a9a9a; margin-bottom:32px; }
-.form-group{ display:flex; flex-direction:column; gap:8px; flex:1; }
-.jar-page label{ font-size:15px; }
-.jar-page .row{ display:flex; gap:14px; margin-bottom:18px; }
-.jar-page select, .jar-page input{
-  background:#0f0f0f;
-  color:#fff;
-  border:1px solid rgba(255,255,255,.12);
-  border-radius:10px;
-  padding:14px 15px;
-  font-size:15px;
-  width:100%;
-}
-.jar-page button{
-  width:100%;
-  margin-top:8px;
-  background:#fff;
-  color:#000;
-  border:none;
-  border-radius:10px;
-  padding:15px;
-  font-weight:900;
-  font-size:15px;
-  cursor:pointer;
-}
-.jar-page button.secondary{
-  background:transparent;
-  color:#fff;
-  border:1px solid rgba(255,255,255,.12);
-}
-.result{
-  margin-top:28px;
-  background:#141414;
-  border:1px solid rgba(255,255,255,.12);
-  border-radius:14px;
-  padding:18px;
-}
-.status{ font-size:14px; margin-bottom:14px; }
-.status.loading{ color:#9a9a9a }
-.status.success{ color:#7dff9a }
-.status.error{ color:#ff6b6b }
-.actions{ display:flex; gap:10px; margin-top:12px; }
-.actions button{ flex:1; margin-top:0; }
-#url{ font-size:13px; background:#060606; cursor:text; }
+@media(prefers-reduced-motion:reduce){ .jar-bg-orb, .jar-status.loading::before{animation:none !important;} }

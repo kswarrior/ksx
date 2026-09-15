@@ -12,6 +12,7 @@ export default function ServerJarDownloader() {
   const [url, setUrl] = useState("");
   const [status, setStatus] = useState<{ text: string; kind: "loading" | "success" | "error" } | null>(null);
   const [show, setShow] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   function updatePlaceholder() {
     if (type === "spigot") return "Not required";
@@ -69,7 +70,7 @@ export default function ServerJarDownloader() {
         throw new Error("Unsupported type");
       }
       setUrl(downloadUrl);
-      setStatus({ text: "Found!", kind: "success" });
+      setStatus({ text: "Found! Ready to download.", kind: "success" });
     } catch (e) {
       const msg = e instanceof Error ? e.message : String(e);
       setStatus({ text: msg, kind: "error" });
@@ -80,49 +81,61 @@ export default function ServerJarDownloader() {
     if (url) window.open(url, "_blank");
   }
   function copyURL() {
-    if (url) navigator.clipboard.writeText(url);
+    if (url) { navigator.clipboard.writeText(url); setCopied(true); setTimeout(()=>setCopied(false),1200); }
   }
 
   return (
     <div className="jar-page">
-      <div className="container">
-        <h1>MC Server.jar Downloader</h1>
-        <div className="subtitle">Fast, clean & direct server downloads</div>
-        <div className="row">
-          <div className="form-group">
-            <label>Server Type</label>
-            <select value={type} onChange={(e) => setType(e.target.value)}>
-              <option value="paper">Paper</option>
-              <option value="folia">Folia</option>
-              <option value="purpur">Purpur</option>
-              <option value="velocity">Velocity</option>
-              <option value="waterfall">Waterfall</option>
-              <option value="vanilla">Vanilla</option>
-              <option value="fabric">Fabric</option>
-              <option value="quilt">Quilt</option>
-              <option value="forge">Forge</option>
-              <option value="neoforge">NeoForge (Not complete)</option>
-              <option value="spigot">Spigot</option>
-            </select>
+      <div className="jar-bg" aria-hidden>
+        <div className="jar-bg-grad" />
+        <div className="jar-bg-orb o1" />
+        <div className="jar-bg-orb o2" />
+      </div>
+      <div className="jar-shell">
+        <header className="jar-header">
+          <div className="jar-kicker"><span className="jar-kicker-dot" /> MAKE SERVER • JAR</div>
+          <h1 className="jar-title">MC Server<span>.jar</span> Downloader</h1>
+          <p className="jar-sub">Fast, clean & direct server downloads — Paper, Purpur, Vanilla & more.</p>
+        </header>
+
+        <div className="jar-card">
+          <div className="jar-row">
+            <div className="jar-group">
+              <label>Server Type</label>
+              <select value={type} onChange={(e) => setType(e.target.value)}>
+                <option value="paper">Paper</option>
+                <option value="folia">Folia</option>
+                <option value="purpur">Purpur</option>
+                <option value="velocity">Velocity</option>
+                <option value="waterfall">Waterfall</option>
+                <option value="vanilla">Vanilla</option>
+                <option value="fabric">Fabric</option>
+                <option value="quilt">Quilt</option>
+                <option value="forge">Forge</option>
+                <option value="neoforge">NeoForge (Not complete)</option>
+                <option value="spigot">Spigot</option>
+              </select>
+            </div>
+            <div className="jar-group">
+              <label>Version</label>
+              <input placeholder={updatePlaceholder()} value={version} onChange={(e) => setVersion(e.target.value)} />
+            </div>
           </div>
-          <div className="form-group">
-            <label>Version</label>
-            <input placeholder={updatePlaceholder()} value={version} onChange={(e) => setVersion(e.target.value)} />
-          </div>
+          <button className="jar-btn" onClick={startFetch}>🔍 Find Server.jar</button>
+
+          {show && (
+            <div className="jar-result">
+              {status && <div className={`jar-status ${status.kind}`}>{status.text}</div>}
+              <input className="jar-url" readOnly value={url} placeholder="https://..." />
+              {url && (
+                <div className="jar-actions">
+                  <button className="jar-btn" onClick={downloadJar}>⬇ Download</button>
+                  <button className="jar-btn secondary" onClick={copyURL}>{copied ? "Copied ✓" : "⎘ Copy URL"}</button>
+                </div>
+              )}
+            </div>
+          )}
         </div>
-        <button onClick={startFetch}>Find Server.jar</button>
-        {show && (
-          <div className="result" style={{ display: "block" }}>
-            {status && <div className={`status ${status.kind}`}>{status.text}</div>}
-            <input id="url" readOnly value={url} placeholder="https://..." />
-            {url && (
-              <div className="actions" style={{ display: "flex" }}>
-                <button onClick={downloadJar}>Download</button>
-                <button className="secondary" onClick={copyURL}>Copy URL</button>
-              </div>
-            )}
-          </div>
-        )}
       </div>
     </div>
   );
