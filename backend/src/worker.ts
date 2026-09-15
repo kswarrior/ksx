@@ -99,9 +99,27 @@ app.get("/vps/hosting/list/free.json", (c) => c.json(vpsHosting));
 app.get("/sitemap.json", (c) => c.json(sitemap));
 
 // Fallback for static assets: if `assets` binding is configured, Worker will serve `frontend/dist` automatically.
-// For API 404s, return JSON
-app.notFound((c) => {
+// For API 404s, return JSON. For SPA routes, serve index.html (supports client-side routing)
+app.notFound(async (c) => {
   if (c.req.path.startsWith("/api/")) return c.json({ error: "Not found" }, 404);
+  // SPA fallback: serve index.html via ASSETS binding when available
+  try {
+    // @ts-ignore - ASSETS is injected by Wrangler when [assets] is configured
+    const assets = (c.env as any)?.ASSETS;
+    if (assets) {
+      const url = new URL(c.req.url);
+      const res = await assets.fetch(new Request(new URL("/index.html", url.origin).toString(), c.req.raw as any));
+      if (res && res.status < 400) {
+        return new Response(res.body, {
+          status: 200,
+          headers: {
+            "Content-Type": "text/html;charset=utf-8",
+            "Cache-Control": "no-cache",
+          },
+        });
+      }
+    }
+  } catch {}
   return c.text("Not found", 404);
 });
 
