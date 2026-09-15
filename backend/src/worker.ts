@@ -106,16 +106,12 @@ app.notFound(async (c) => {
   try {
     // @ts-ignore - ASSETS is injected by Wrangler when [assets] is configured
     const assets = (c.env as any)?.ASSETS;
-    console.log("notFound SPA", c.req.path, "env keys", Object.keys(c.env as any), "has ASSETS", !!assets);
     if (assets) {
       const url = new URL(c.req.url);
       const indexReq = new Request(new URL("/index.html", url.origin).toString());
-      console.log("fetching index.html via ASSETS", indexReq.url);
       const res = await assets.fetch(indexReq);
-      console.log("ASSETS fetch status", res.status);
       if (res) {
         const body = await res.arrayBuffer();
-        console.log("serving index.html", body.byteLength);
         return new Response(body, {
           status: 200,
           headers: {
@@ -124,12 +120,8 @@ app.notFound(async (c) => {
           },
         });
       }
-    } else {
-      console.log("ASSETS binding not found, c.env", c.env);
     }
-  } catch (e) {
-    console.error("SPA fallback failed", e);
-  }
+  } catch {}
   return c.text("Not found", 404);
 });
 
