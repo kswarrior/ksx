@@ -1,0 +1,23 @@
+.social-main{padding:2rem; background:#000; min-height:calc(100vh - 56px);}
+.social-stats{ display:flex; flex-wrap:wrap; gap:15px; margin-top:25px; }
+.social-card{
+  display:flex; align-items:center; gap:10px;
+  color:#fff; padding:1rem; border-radius:10px;
+  min-width:175px; max-width:300px; height:75px; font-size:10px;
+  box-shadow:0 4px 12px rgba(0,0,0,.2); text-decoration:none;
+  transition:transform .2s ease; flex:1 1 calc(33% - 15px);
+}
+.social-card:hover{transform:scale(1.03)}
+@media(max-width:600px){ .social-card{flex:1 1 100%;max-width:100%}}
+.social-logo{ width:48px; height:48px; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,.35); border-radius:12px; }
+.social-logo svg{ width:26px; height:26px; }
+.social-card:active{ transform:scale(.97); }
+.social-content{display:flex;flex-direction:column}
+.social-stats h3{font-size:15px}
+.social-stats p{font-size:12px}
+.yt{ background:radial-gradient(circle at 40% 120%,#FF0000 0%,#FF4C4C 25%,#CC0000 50%,#990000 75%,#1A1A1A 100%); background-size:200% 200%; animation:youtubeGlow 3s ease infinite; }
+@keyframes youtubeGlow{0%{background-position:0 0}50%{background-position:100% 100%}100%{background-position:0 0}}
+.discord{ background:radial-gradient(circle,#5865F2,#7289DA,#4E5AB7,#2C2F33); background-size:400% 400%; animation:rotateGradient 6s linear infinite; }
+@keyframes rotateGradient{0%{background-position:0 50%}25%{background-position:50% 100%}50%{background-position:100% 50%}75%{background-position:50% 0}100%{background-position:0 50%}}
+.insta{ background:radial-gradient(circle at 30% 107%,#fdf497 0%,#fdf497 5%,#fd5949 45%,#d6249f 60%,#285AEB 90%); background-size:200% 200%; animation:instaGlow 4s ease infinite; }
+@keyframes instaGlow{0%{background-position:0 0}25%{background-position:100% 0}50%{background-position:100% 100%}75%{background-position:0 100%}100%{background-position:0 0}}
