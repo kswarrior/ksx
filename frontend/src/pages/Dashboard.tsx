@@ -248,8 +248,8 @@ export default function Dashboard() {
         </section>
       </div>
 
-      {/* HIGHLIGHT - whole website, not server */}
-      <section className="highlight-showcase" onMouseMove={handleTilt} onMouseLeave={resetTilt}>
+      {/* HIGHLIGHT - whole website, not server - fixed */}
+      <section className="highlight-showcase highlight-fixed">
         <div className="hs-bg" /><div className="hs-orb" />
         <div className="hs-content">
           <div className="hs-left">
@@ -273,16 +273,6 @@ export default function Dashboard() {
         </div>
       </section>
 
-      {/* FINAL CTA - generic */}
-      <section className="cta-final" onMouseMove={handleTilt} onMouseLeave={resetTilt}>
-        <div className="cta-bg" />
-        <h2>Welcome to the KS Warrior hub</h2>
-        <p>Many things, many builds — Minecraft, website, hosting, VPS & AI. This dashboard is your home.</p>
-        <div className="cta-actions">
-          <button className="btn btn-primary btn-lg" onClick={() => navigate("/map")}>Explore Builds <i>→</i></button>
-          <button className="btn btn-glass" onClick={() => navigate("/about")}>About KS</button>
-        </div>
-      </section>
     </div>
   );
 }
