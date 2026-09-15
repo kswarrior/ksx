@@ -339,7 +339,6 @@ export default function MapPage() {
                                   to={p.url}
                                   className="mp-page"
                                   aria-label={p.name}
-                                  prefetch="intent"
                                 >
                                   <span className="mp-page-icon" dangerouslySetInnerHTML={{ __html: p.logo }} />
                                   <span className="mp-page-name">{p.name}</span>
