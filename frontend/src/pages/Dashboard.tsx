@@ -109,7 +109,7 @@ export default function Dashboard() {
             <h1 className="hero-title">
               <span className="t1">Welcome to</span>
               <span className="t2">KS HUB</span>
-              <span className="t3">I Build Many Things</span>
+              <span className="t3">Explore and Enjoy</span>
               <span className="t-glow" aria-hidden>KS HUB</span>
             </h1>
             <p className="hero-subtitle">
