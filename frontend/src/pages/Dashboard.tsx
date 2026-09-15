@@ -132,14 +132,13 @@ export default function Dashboard() {
           <div className="hero-stage-wrap">
             <div className="hero-stage" style={{ transform: `perspective(1200px) rotateY(${mouse.x * 0.45}deg) rotateX(${mouse.y * 0.45}deg)` }} onMouseMove={handleTilt} onMouseLeave={resetTilt}>
               <div className="stage-card stage-main" style={{ textAlign: "center", padding: "22px" }}>
-                <div className="stage-tag">KS WARRIOR • WHOLE WEBSITE</div>
-                <div style={{ fontSize: 32, margin: "10px 0" }}>🌌</div>
-                <div className="stage-title" style={{ justifyContent: "center", fontSize: 15 }}>Minecraft • Website • Hosting • VPS • AI</div>
-                <div className="stage-sub" style={{ justifyContent: "center", marginTop: 6 }}>Many builds, many tools — one KS hub</div>
+                <div className="stage-tag">KS HUB</div>
+                <div style={{ fontSize: 36, margin: "10px 0" }}>⬢</div>
+                <div className="stage-title" style={{ justifyContent: "center", fontSize: 18, fontWeight: 900, letterSpacing: -0.5 }}>KS HUB</div>
+                <div className="stage-sub" style={{ justifyContent: "center", marginTop: 6 }}>Minecraft • Website • Hosting • VPS • AI</div>
                 <div style={{ display: "flex", gap: 8, justifyContent: "center", marginTop: 16, flexWrap: "wrap" }}>
-                  <span style={{ background: "rgba(59,130,246,0.15)", border: "1px solid rgba(59,130,246,0.3)", padding: "6px 10px", borderRadius: 999, fontSize: 11, fontWeight: 800 }}>⛏️ Minecraft</span>
-                  <span style={{ background: "rgba(139,92,246,0.15)", border: "1px solid rgba(139,92,246,0.3)", padding: "6px 10px", borderRadius: 999, fontSize: 11, fontWeight: 800 }}>🤖 AI</span>
-                  <span style={{ background: "rgba(6,182,212,0.15)", border: "1px solid rgba(6,182,212,0.3)", padding: "6px 10px", borderRadius: 999, fontSize: 11, fontWeight: 800 }}>☁️ Hosting</span>
+                  <span style={{ background: "rgba(59,130,246,0.15)", border: "1px solid rgba(59,130,246,0.3)", padding: "6px 10px", borderRadius: 999, fontSize: 11, fontWeight: 800 }}>One Hub</span>
+                  <span style={{ background: "rgba(139,92,246,0.15)", border: "1px solid rgba(139,92,246,0.3)", padding: "6px 10px", borderRadius: 999, fontSize: 11, fontWeight: 800 }}>Many Builds</span>
                 </div>
                 <div className="stage-glow" />
               </div>
