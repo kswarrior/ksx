@@ -637,9 +637,12 @@
 
 /* ---------- RESPONSIVE ---------- */
 @media (max-width: 1020px){
-  .hero-content{ grid-template-columns: 1fr; padding: 26px 22px; }
-  .hero-stage-wrap{ order:-1; max-width:520px; margin:0 auto; width:100%; }
+  .hero-content{ grid-template-columns: 1fr; padding: 26px 22px; gap: 28px; }
+  .hero-stage-wrap{ order: 2; max-width:520px; margin:0 auto; width:100%; }
   .hero{ min-height: auto; }
+  .hero-stage{ transform: none !important; }
+  .stage-floating{ position: relative; inset: auto; margin-top: 14px; justify-content:center; }
+  .stage-secondary.s1, .stage-secondary.s2{ transform: none !important; }
   .stats-strip{ grid-template-columns: repeat(2,1fr); }
   .features{ grid-template-columns: repeat(2,1fr); }
   .hs-content{ grid-template-columns: 1fr; }
