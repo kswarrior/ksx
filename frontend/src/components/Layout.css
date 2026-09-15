@@ -200,7 +200,11 @@
   transition: padding-left 0.4s ease;
 }
 @media (min-width: 900px) {
+  #content,
   #content.sidebar-open { padding-left: 220px; }
+  #sidebar { left: 0; }
+  #hamburger { display: none; }
+  .sidebar-backdrop { display: none !important; }
 }
 
 .sidebar-backdrop {

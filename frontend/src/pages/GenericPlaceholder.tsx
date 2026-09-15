@@ -11,7 +11,7 @@ export default function GenericPlaceholder() {
         migrated to React.
       </p>
       <p style={{ color: "#9aa0aa", marginTop: 12 }}>
-        Original static file preserved at <code>{path}.html</code> — API routing will replace iframe content gradually.
+        Original file: <code>{path.endsWith(".html") ? path : `${path}.html`}</code> — migrated to React Router.
       </p>
       <pre style={{ marginTop: 20, background: "#0f0f18", padding: 16, borderRadius: 10, overflow: "auto", border: "1px solid #24242c" }}>
         {JSON.stringify(params, null, 2)}

@@ -8,7 +8,7 @@ export default function Layout() {
   const [sitemap, setSitemap] = useState<SearchItem[]>([]);
   const [query, setQuery] = useState("");
   const [searchActive, setSearchActive] = useState(false);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(() => typeof window !== "undefined" ? window.matchMedia("(min-width: 900px)").matches : false);
   const [suggestions, setSuggestions] = useState<SearchItem[]>([]);
   const [activeIndex, setActiveIndex] = useState(-1);
   const [isFav, setIsFav] = useState(false);
