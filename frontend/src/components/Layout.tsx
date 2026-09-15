@@ -283,10 +283,92 @@ export default function Layout() {
       </ul>
 
       <nav id="sidebar" aria-label="Main navigation" className={sidebarOpen ? "open" : ""}>
-        <Link to="/dashboard" onClick={() => { if (!isDesktop()) setSidebarOpen(false); }}>Dashboard</Link>
-        <Link to="/map" onClick={() => { if (!isDesktop()) setSidebarOpen(false); }}>Sites Map</Link>
-        <Link to="/social" onClick={() => { if (!isDesktop()) setSidebarOpen(false); }}>Social Media</Link>
-        <Link to="/about" onClick={() => { if (!isDesktop()) setSidebarOpen(false); }}>About</Link>
+        <div className="sb-head">
+          <div className="sb-logo-wrap">
+            <img src="/image/ks-logo.webp" alt="KS" onError={(e) => ((e.currentTarget.style.display = "none"))} />
+          </div>
+          <div className="sb-brand">
+            <span className="sb-brand-name">KS Warrior</span>
+            <span className="sb-brand-sub">Creator Hub • v3.0</span>
+          </div>
+          <span className="sb-live" aria-hidden><i />LIVE</span>
+        </div>
+
+        <div className="sb-divider" />
+
+        <div className="sb-nav">
+          <Link
+            to="/dashboard"
+            onClick={() => { if (!isDesktop()) setSidebarOpen(false); }}
+            className={`sb-link ${(location.pathname === "/" || location.pathname === "/dashboard" || location.pathname.startsWith("/dashboard")) ? "active" : ""}`}
+            style={{ ["--i" as string]: 0 } as React.CSSProperties}
+          >
+            <span className="sb-icon sb-icon-dash" aria-hidden>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="3" y="3" width="7" height="7" rx="1.6" /><rect x="14" y="3" width="7" height="7" rx="1.6" /><rect x="3" y="14" width="7" height="7" rx="1.6" /><rect x="14" y="14" width="7" height="7" rx="1.6" />
+              </svg>
+            </span>
+            <span className="sb-label">Dashboard</span>
+            <span className="sb-arrow" aria-hidden>↗</span>
+          </Link>
+
+          <Link
+            to="/map"
+            onClick={() => { if (!isDesktop()) setSidebarOpen(false); }}
+            className={`sb-link ${location.pathname.startsWith("/map") ? "active" : ""}`}
+            style={{ ["--i" as string]: 1 } as React.CSSProperties}
+          >
+            <span className="sb-icon sb-icon-map" aria-hidden>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M1 6l7-3 7 3 7-3v14l-7 3-7-3-7 3z" /><path d="M8 3v14M15 6v14" />
+              </svg>
+            </span>
+            <span className="sb-label">Sites Map</span>
+            <span className="sb-badge">NEW</span>
+          </Link>
+
+          <Link
+            to="/social"
+            onClick={() => { if (!isDesktop()) setSidebarOpen(false); }}
+            className={`sb-link ${location.pathname.startsWith("/social") ? "active" : ""}`}
+            style={{ ["--i" as string]: 2 } as React.CSSProperties}
+          >
+            <span className="sb-icon sb-icon-social" aria-hidden>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" /><path d="M8.6 10.7L15.4 6.8M8.6 13.3L15.4 17.2" />
+              </svg>
+            </span>
+            <span className="sb-label">Social Media</span>
+            <span className="sb-arrow" aria-hidden>↗</span>
+          </Link>
+
+          <Link
+            to="/about"
+            onClick={() => { if (!isDesktop()) setSidebarOpen(false); }}
+            className={`sb-link ${location.pathname.startsWith("/about") ? "active" : ""}`}
+            style={{ ["--i" as string]: 3 } as React.CSSProperties}
+          >
+            <span className="sb-icon sb-icon-about" aria-hidden>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="9" /><path d="M12 11.5v5M12 8.5h.01" />
+              </svg>
+            </span>
+            <span className="sb-label">About</span>
+            <span className="sb-arrow" aria-hidden>↗</span>
+          </Link>
+        </div>
+
+        <div className="sb-foot">
+          <Link to="/map" className="sb-foot-card" onClick={() => { if (!isDesktop()) setSidebarOpen(false); }}>
+            <span className="sb-foot-icon">✦</span>
+            <span className="sb-foot-text">
+              <strong>Explore all builds</strong>
+              <small>Minecraft • Hosting • VPS • AI</small>
+            </span>
+            <span className="sb-foot-arrow">→</span>
+          </Link>
+          <div className="sb-copy">© 2026 KS Warrior • Crafted with ♥</div>
+        </div>
       </nav>
 
       <div id="content" className={sidebarOpen ? "sidebar-open" : ""}>
