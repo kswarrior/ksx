@@ -1,0 +1,52 @@
+.bot-page{
+  font-family:system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
+  background:linear-gradient(180deg,#000,#0a0a0a);
+  color:#fff;
+  padding:40px 18px;
+  text-align:center;
+  min-height:calc(100vh - 56px);
+}
+.bot-page h1{ font-size:28px; font-weight:800; }
+.subtitle{ font-size:14px; color:#9c9c9c; margin-top:6px; max-width:800px; margin-left:auto; margin-right:auto; }
+.bot-page .section{ max-width:900px; margin:25px auto; }
+.bot-page .card{
+  text-align:left;
+  margin:12px 0;
+  background:#12121c;
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:8px;
+  padding:15px;
+}
+.bot-page .card p{ font-size:15px; margin-bottom:15px; font-weight:750; }
+.bot-page .card label{ color:gray; font-size:14px; display:block; margin-top:8px; }
+.bot-page .code{
+  background:#000;
+  border:1px solid rgba(255,255,255,0.08);
+  padding:14px;
+  border-radius:8px;
+  font-size:12px;
+  color:#00ff9c;
+  overflow-x:auto;
+  margin-bottom:10px;
+  white-space:pre-wrap;
+  word-break:break-word;
+}
+.bot-page input{
+  width:100%;
+  padding:10px;
+  margin:8px 0;
+  background:#0a0a0a;
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:8px;
+  color:#00ff9c;
+}
+.bot-page .btn{
+  padding:8px 16px;
+  border-radius:8px;
+  border:1px solid rgba(255,255,255,0.08);
+  background:#000;
+  color:#fff;
+  cursor:pointer;
+  margin-top:6px;
+}
+.bot-page .btn:hover{ background:#1e1e2a; }
