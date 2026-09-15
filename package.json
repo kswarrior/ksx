@@ -6,11 +6,15 @@
   "workspaces": ["backend", "frontend"],
   "scripts": {
     "dev:backend": "npm run dev --prefix backend",
+    "dev:worker": "npm run dev:worker --prefix backend",
     "dev:frontend": "npm run dev --prefix frontend",
     "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
     "build": "npm run build --prefix backend && npm run build --prefix frontend",
     "start": "npm run start --prefix backend",
-    "typecheck": "npm run typecheck --prefix backend && npm run typecheck --prefix frontend"
+    "typecheck": "npm run typecheck --prefix backend && npm run typecheck --prefix frontend",
+    "deploy:frontend": "npm run deploy --prefix frontend",
+    "deploy": "npm run build && npm run deploy --prefix backend",
+    "deploy:worker": "npm run build --prefix frontend && npm run deploy:worker --prefix backend"
   },
   "devDependencies": {
     "concurrently": "^8.2.2"
