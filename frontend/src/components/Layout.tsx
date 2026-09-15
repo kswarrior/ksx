@@ -105,23 +105,29 @@ export default function Layout() {
 
   const isDesktop = () => typeof window !== "undefined" && window.matchMedia("(min-width: 900px)").matches;
 
-  const handleNav = (url: string, name?: string) => {
-    // normalize url: sitemap urls are like /minecraft/... -> map to react routes
-    // For now navigate directly; if url starts with "/" navigate there, else dashboard
+  const handleNav = (url: string, name?: string, logo?: string) => {
     if (!isDesktop()) setSidebarOpen(false);
     setSearchActive(false);
     setQuery("");
-    if (name) saveRecent(name, url);
-    // ensure leading slash
+    // find full item for logo
+    const full = sitemap.find((s) => s.url === url);
+    if (name) {
+      saveRecent(
+        full ?? { name, url, logo }
+      );
+    }
     const path = url.startsWith("/") ? url : `/${url}`;
-    // if route doesn't exist, still navigate — will show iframe-like fallback or 404
     navigate(path);
+  };
+
+  const handleNavItem = (it: SearchItem) => {
+    handleNav(it.url, it.name, it.logo);
   };
 
   const toggleFav = () => {
     const curUrl = location.pathname;
-    const curName =
-      sitemap.find((s) => s.url === curUrl)?.name ?? curUrl;
+    const cur = sitemap.find((s) => s.url === curUrl);
+    const curName = cur?.name ?? curUrl;
     try {
       const raw = localStorage.getItem(FAV_KEY);
       let favs: FavItem[] = raw ? JSON.parse(raw) : [];
@@ -129,7 +135,14 @@ export default function Layout() {
       if (exists) {
         favs = favs.filter((f) => f.url !== curUrl);
       } else {
-        favs.unshift({ name: curName, url: curUrl, time: Date.now() });
+        favs.unshift({
+          name: curName,
+          url: curUrl,
+          time: Date.now(),
+          logo: cur?.logo,
+          category: cur?.category,
+          title: cur?.title,
+        });
       }
       localStorage.setItem(FAV_KEY, JSON.stringify(favs));
       setIsFav(!exists);
@@ -148,7 +161,7 @@ export default function Layout() {
       e.preventDefault();
       if (activeIndex >= 0) {
         const it = suggestions[activeIndex];
-        handleNav(it.url, it.name);
+        handleNavItem(it);
       }
     } else if (e.key === "Escape") {
       setSearchActive(false);
@@ -277,9 +290,14 @@ export default function Layout() {
                         key={`${p.category}-${p.title}-${p.name}`}
                         className={`s-page ${idx === activeIndex ? "active" : ""}`}
                         role="option"
-                        onClick={() => handleNav(p.url, p.name)}
+                        onClick={() => handleNavItem(p)}
                       >
-                        {p.name}
+                        <span className="s-page-logo" dangerouslySetInnerHTML={{ __html: p.logo }} />
+                        <span className="s-page-info">
+                          <span className="s-page-name">{p.name}</span>
+                          <span className="s-page-sub">{p.title} • {p.category}</span>
+                        </span>
+                        <span className="s-page-go" aria-hidden>↗</span>
                       </li>
                     );
                   })}

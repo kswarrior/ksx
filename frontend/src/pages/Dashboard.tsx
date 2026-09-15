@@ -224,7 +224,19 @@ export default function Dashboard() {
             ) : (
               recent.map((item) => (
                 <div key={item.url} className="list-item" onClick={() => navigate(item.url)}>
-                  <span className="li-dot" /><span className="name">{item.name}</span><span className="time">{timeAgo(item.time)}</span><span className="li-arrow">→</span>
+                  {item.logo ? (
+                    <span className="li-icon" dangerouslySetInnerHTML={{ __html: item.logo }} />
+                  ) : (
+                    <span className="li-dot" />
+                  )}
+                  <span className="li-text">
+                    <span className="name">{item.name}</span>
+                    {(item.title || item.category) && (
+                      <span className="li-sub">{[item.title, item.category].filter(Boolean).join(" • ")}</span>
+                    )}
+                  </span>
+                  <span className="time">{timeAgo(item.time)}</span>
+                  <span className="li-arrow">→</span>
                 </div>
               ))
             )}
@@ -239,7 +251,18 @@ export default function Dashboard() {
             ) : (
               fav.map((item) => (
                 <div key={item.url} className="list-item" onClick={() => navigate(item.url)}>
-                  <span className="li-star">★</span><span className="name">{item.name}</span><span className="li-arrow">→</span>
+                  {item.logo ? (
+                    <span className="li-icon fav" dangerouslySetInnerHTML={{ __html: item.logo }} />
+                  ) : (
+                    <span className="li-star">★</span>
+                  )}
+                  <span className="li-text">
+                    <span className="name">{item.name}</span>
+                    {(item.title || item.category) && (
+                      <span className="li-sub">{[item.title, item.category].filter(Boolean).join(" • ")}</span>
+                    )}
+                  </span>
+                  <span className="li-arrow">→</span>
                 </div>
               ))
             )}
