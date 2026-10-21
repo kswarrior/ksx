@@ -691,6 +691,12 @@
   border: 1px solid rgba(255, 255, 255, 0.06);
   font-size: 20px;
 }
+.mp-empty-icon {
+  color: var(--mp-muted);
+}
+.mp-error-icon {
+  color: #f87171;
+}
 .mp-empty h3,
 .mp-error h2 {
   font-size: 16px;
