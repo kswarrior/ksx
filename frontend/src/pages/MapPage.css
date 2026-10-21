@@ -101,6 +101,7 @@
   box-shadow: var(--mp-shadow);
   position: relative;
   overflow: visible;
+  z-index: 30;
 }
 .mp-header::before {
   content: "";

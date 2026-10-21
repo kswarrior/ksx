@@ -17,7 +17,7 @@
 @keyframes hOrb{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-14px) scale(1.03)}}
 
 .h-shell{max-width:1120px; margin:0 auto; padding:18px 16px 40px;}
-.h-header{background:rgba(15, 15, 15,0.92); border:1px solid var(--h-border); border-radius:5px; padding:12px; backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); box-shadow:0 10px 40px rgba(0, 0, 0,0.45); position:relative; overflow:visible;}
+.h-header{background:rgba(15, 15, 15,0.92); border:1px solid var(--h-border); border-radius:5px; padding:12px; backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); box-shadow:0 10px 40px rgba(0, 0, 0,0.45); position:relative; overflow:visible; z-index:30;}
 .h-header::before{content:""; position:absolute; inset:0; border-radius:inherit; background:radial-gradient(700px 260px at 20% 0%, rgba(122, 122, 122,0.12), transparent 60%); pointer-events:none;}
 .h-kicker{position:relative; display:inline-flex; align-items:center; gap:8px; font-size:11px; letter-spacing:1.4px; font-weight:800; color:rgba(255, 255, 255,0.7); background:rgba(255, 255, 255,0.06); border:1px solid rgba(255, 255, 255,0.08); padding:6px 10px; border-radius:8px;}
 .h-kicker-dot{width:7px; height:7px; border-radius:50%; background:#898989; box-shadow:0 0 10px #898989;}
