@@ -205,10 +205,12 @@
 #suggestBox li { padding: 12px 18px; cursor: pointer; transition: background 0.2s ease; }
 #suggestBox li:hover, #suggestBox li.active { background: var(--hover); }
 
-.s-icon { display: inline-grid; place-items: center; width: 22px; height: 22px; margin-right: 8px; border-radius: 6px; background: rgba(255,255,255,0.08); color: var(--accent); font-size: 13px; flex-shrink: 0; }
-.s-icon svg { width: 16px; height: 16px; }
-.s-category { display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 800; color: var(--accent); padding: 14px 16px 8px; margin-top: 4px; cursor: default; text-transform: uppercase; letter-spacing: 0.7px; opacity: 0.95; }
-.s-title { font-size: 11px; font-weight: 800; color: var(--muted); padding: 8px 16px 6px; margin: 0 8px; opacity: 0.9; cursor: default; position: relative; letter-spacing: 0.5px; text-transform: uppercase; background: rgba(255,255,255,0.04); border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); }
+.s-icon { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 8px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.08); color: var(--accent); flex-shrink: 0; }
+.s-icon svg { width: 18px; height: 18px; display: block; }
+.s-category { display: flex; align-items: center; gap: 11px; font-size: 15px; font-weight: 900; color: #fff; padding: 16px 16px 8px; margin-top: 4px; cursor: default; text-transform: uppercase; letter-spacing: 0.5px; }
+.s-title { display: flex; align-items: center; gap: 10px; font-size: 13.5px; font-weight: 800; color: var(--text); padding: 8px 16px 6px; cursor: default; letter-spacing: -0.2px; }
+.s-title-icon { width: 22px; height: 22px; display: grid; place-items: center; flex-shrink: 0; color: var(--accent); }
+.s-title-icon svg { width: 18px; height: 18px; display: block; }
 .s-page {
   display: flex;
   align-items: center;
