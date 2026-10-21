@@ -24,6 +24,10 @@ html, body {
 
 a { color: inherit; text-decoration: none; }
 
+* { -webkit-tap-highlight-color: transparent; }
+a:focus:not(:focus-visible), button:focus:not(:focus-visible) { outline: none; }
+::selection { background: rgba(212, 212, 212, 0.28); color: #fff; }
+
 ::-webkit-scrollbar { width: 4px; height: 4px; }
 ::-webkit-scrollbar-track { background: #050505; }
 ::-webkit-scrollbar-thumb { background: #3f3f3f; border-radius: 999px; }
