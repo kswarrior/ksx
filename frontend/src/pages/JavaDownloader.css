@@ -26,6 +26,7 @@
 .jd-row1{display:flex; flex-wrap:wrap; gap:10px; align-items:center;}
 .jd-filter-fields{display:flex; flex-direction:column; gap:8px;}
 .jd-select, .jd-input{padding:11px 14px; background:rgba(255, 255, 255,0.06); border:1px solid var(--jd-border); border-radius:5px; color:var(--jd-text); font-size:13px; outline:none; transition:border-color .2s, background .2s, box-shadow .2s;}
+.jd-select{border-radius:6px;}
 .jd-select:focus, .jd-input:focus{border-color:rgba(137, 137, 137,0.4); background:rgba(255, 255, 255,0.08); box-shadow:0 0 0 4px rgba(137, 137, 137,0.12);}
 .jd-select{appearance:none; padding-right:32px; background-image:url("data:image/svg+xml;charset=UTF-8,%3Csvg fill='%23ffffff' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 10px center; background-size:16px;}
 .jd-input{flex:1; min-width:160px;}
@@ -54,7 +55,7 @@
   .jd-header{padding:10px; border-radius:5px; backdrop-filter:none !important; -webkit-backdrop-filter:none !important; background:rgba(15, 15, 15,0.98) !important;}
   .jd-title{font-size:22px;}
   .jd-row1{flex-direction:column; align-items:stretch;}
-  .jd-select, .jd-input{width:100%;}
+  .jd-select, .jd-input, .jd-search{width:100%;}
   .jd-grid{grid-template-columns:1fr; gap:12px;}
   .jd-card{border-radius:5px; contain-intrinsic-size:120px;}
 }

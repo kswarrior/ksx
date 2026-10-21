@@ -14,7 +14,9 @@ export default function FilterMenu({ children, activeCount = 0, label = "Filters
   useEffect(() => {
     if (!open) return;
     const onPointer = (event: MouseEvent) => {
-      if (!wrapRef.current?.contains(event.target as Node)) setOpen(false);
+      const target = event.target as Element | null;
+      if (target?.closest(".ks-select-menu")) return;
+      if (!wrapRef.current?.contains(target as Node)) setOpen(false);
     };
     const onKey = (event: KeyboardEvent) => {
       if (event.key === "Escape") setOpen(false);

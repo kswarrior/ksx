@@ -2,6 +2,7 @@ import { Suspense, useCallback, useEffect, useState, useRef } from "react";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { api, SearchItem } from "../lib/api";
 import Icon from "./Icon";
+import { TextField } from "./ui";
 import { PIN_KEY, LAST_PAGE_KEY, RECENT_KEY, MAX_RECENT, RecentItem, PinItem, readPins } from "../hooks/useLocalStorage";
 import "./Layout.css";
 
@@ -272,7 +273,7 @@ export default function Layout() {
                 <line x1="16.2" y1="16.2" x2="20.4" y2="20.4" strokeWidth={1.8} strokeLinecap="round" />
               </svg>
             </div>
-            <input
+            <TextField
               id="searchBox"
               ref={searchRef}
               type="text"

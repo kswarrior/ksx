@@ -19,7 +19,11 @@
   box-shadow:0 18px 50px rgba(0,0,0,0.6);
 }
 .filter-panel select,
-.filter-panel input{width:100%;}
+.filter-panel input,
+.filter-panel .ks-select,
+.filter-panel .ks-select-trigger,
+.filter-panel .jd-select{width:100%;}
+.filter-panel .ks-select-trigger{border-radius:5px;}
 .filter-panel .h-filters,
 .filter-panel .jl-filters,
 .filter-panel .mp-filters{display:flex; flex-wrap:wrap; gap:8px; overflow:visible; margin:0; padding:0;}
