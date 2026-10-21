@@ -1,5 +1,6 @@
 import { useEffect, useState, useMemo, useRef, useCallback } from "react";
 import { Link } from "react-router-dom";
+import FilterMenu from "../components/FilterMenu";
 import { api, SitemapCategory } from "../lib/api";
 import Icon from "../components/Icon";
 import { RECENT_KEY, MAX_RECENT } from "../hooks/useLocalStorage";
@@ -204,25 +205,54 @@ export default function MapPage() {
         <header className="mp-header">
           {/* search */}
           <div className="mp-search-wrap">
-            <div className="mp-search">
-              <svg className="mp-search-icon" viewBox="0 0 24 24" aria-hidden>
-                <circle cx="11" cy="11" r="6.5" />
-                <path d="M16 16 L20 20" />
-              </svg>
-              <input
-                ref={searchRef}
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                placeholder="Search pages, sections, categories…"
-                aria-label="Search map"
-                spellCheck={false}
-                autoComplete="off"
-              />
-              {query ? (
-                <button className="mp-search-clear" onClick={() => setQuery("")} aria-label="Clear search">
-                  <Icon name="close" size={14} />
-                </button>
-              ) : null}
+            <div className="mp-search-row">
+              <div className="mp-search">
+                <svg className="mp-search-icon" viewBox="0 0 24 24" aria-hidden>
+                  <circle cx="11" cy="11" r="6.5" />
+                  <path d="M16 16 L20 20" />
+                </svg>
+                <input
+                  ref={searchRef}
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  placeholder="Search pages, sections, categories…"
+                  aria-label="Search map"
+                  spellCheck={false}
+                  autoComplete="off"
+                />
+                {query ? (
+                  <button className="mp-search-clear" onClick={() => setQuery("")} aria-label="Clear search">
+                    <Icon name="close" size={14} />
+                  </button>
+                ) : null}
+              </div>
+              <FilterMenu activeCount={activeCat === "All" ? 0 : 1}>
+                <div className="mp-filters" role="tablist" aria-label="Category filters">
+                  <button
+                    className={`mp-pill ${activeCat === "All" ? "active" : ""}`}
+                    onClick={() => setActiveCat("All")}
+                    role="tab"
+                    aria-selected={activeCat === "All"}
+                  >
+                    All <em>{totalPages}</em>
+                  </button>
+                  {data.map((c) => {
+                    const count = c.sections.reduce((a, s) => a + s.pages.length, 0);
+                    return (
+                      <button
+                        key={c.category}
+                        className={`mp-pill ${activeCat === c.category ? "active" : ""}`}
+                        onClick={() => setActiveCat(c.category)}
+                        role="tab"
+                        aria-selected={activeCat === c.category}
+                      >
+                        <span className="mp-pill-icon" dangerouslySetInnerHTML={{ __html: c.icon }} />
+                        {c.category} <em>{count}</em>
+                      </button>
+                    );
+                  })}
+                </div>
+              </FilterMenu>
             </div>
 
             <div className="mp-search-meta">
@@ -245,32 +275,6 @@ export default function MapPage() {
             </div>
           </div>
 
-          {/* filters */}
-          <div className="mp-filters" role="tablist" aria-label="Category filters">
-            <button
-              className={`mp-pill ${activeCat === "All" ? "active" : ""}`}
-              onClick={() => setActiveCat("All")}
-              role="tab"
-              aria-selected={activeCat === "All"}
-            >
-              All <em>{totalPages}</em>
-            </button>
-            {data.map((c) => {
-              const count = c.sections.reduce((a, s) => a + s.pages.length, 0);
-              return (
-                <button
-                  key={c.category}
-                  className={`mp-pill ${activeCat === c.category ? "active" : ""}`}
-                  onClick={() => setActiveCat(c.category)}
-                  role="tab"
-                  aria-selected={activeCat === c.category}
-                >
-                  <span className="mp-pill-icon" dangerouslySetInnerHTML={{ __html: c.icon }} />
-                  {c.category} <em>{count}</em>
-                </button>
-              );
-            })}
-          </div>
         </header>
 
         {/* results */}

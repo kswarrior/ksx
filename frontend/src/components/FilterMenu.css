@@ -1,7 +1,7 @@
 .filter-menu{position:relative; flex-shrink:0; display:flex;}
 .filter-toggle{
   height:44px; padding:0 12px; display:inline-flex; align-items:center; gap:8px;
-  border:1px solid rgba(255,255,255,0.12); border-radius:5px;
+  border:1px solid rgba(255,255,255,0.12); border-radius:6px;
   background:rgba(255,255,255,0.06); color:#f5f5f5;
   font-size:13px; font-weight:800; cursor:pointer; white-space:nowrap;
   transition:background .2s, border-color .2s, color .2s;
@@ -10,7 +10,7 @@
 .filter-ico{width:17px; height:17px; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round;}
 .filter-chev{width:14px; height:14px; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; transition:transform .2s;}
 .filter-toggle.open .filter-chev{transform:rotate(180deg);}
-.filter-count{min-width:18px; height:18px; padding:0 5px; display:inline-grid; place-items:center; border-radius:999px; background:#fff; color:#000; font-size:10px; font-weight:900;}
+.filter-count{min-width:18px; height:18px; padding:0 5px; display:inline-grid; place-items:center; border-radius:8px; background:#fff; color:#000; font-size:10px; font-weight:900;}
 .filter-panel{
   position:absolute; top:calc(100% + 8px); right:0; z-index:60;
   width:min(340px, calc(100vw - 24px)); padding:12px;

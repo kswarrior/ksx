@@ -1,0 +1,366 @@
+/* Custom controls — replaces native select / input UI across the app */
+
+/* ---------- Select ---------- */
+.ks-select {
+  position: relative;
+  display: inline-flex;
+  max-width: 100%;
+  flex-shrink: 0;
+  vertical-align: middle;
+  color: inherit;
+  font: inherit;
+}
+
+.ks-select-trigger {
+  width: 100%;
+  min-height: 40px;
+  margin: 0;
+  padding: 10px 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.06);
+  color: inherit;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.2;
+  text-align: left;
+  cursor: pointer;
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+  transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+}
+
+.ks-select-trigger::-moz-focus-inner {
+  border: 0;
+}
+
+.ks-select-trigger:hover {
+  background: rgba(255, 255, 255, 0.09);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.ks-select-trigger:focus-visible,
+.ks-select-trigger.is-open {
+  border-color: rgba(160, 160, 160, 0.5);
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 0 0 4px rgba(160, 160, 160, 0.12);
+}
+
+.ks-select-trigger:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.ks-select-value {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ks-select-value.is-placeholder {
+  color: rgba(255, 255, 255, 0.48);
+  font-weight: 500;
+}
+
+.ks-select-chevron {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.7;
+  transition: transform 0.2s;
+}
+
+.ks-select-trigger.is-open .ks-select-chevron {
+  transform: rotate(180deg);
+}
+
+.ks-select-menu {
+  position: fixed;
+  z-index: 2147483000;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: #111214;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 8px;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.62);
+  color: #f1f1f1;
+  font-size: 13px;
+  animation: ksSelectIn 0.12s ease;
+}
+
+@keyframes ksSelectIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.ks-select-search {
+  padding: 8px 8px 6px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.ks-select-search-input {
+  width: 100%;
+  height: 34px;
+  padding: 0 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.06);
+  color: #f5f5f5;
+  font-family: inherit;
+  font-size: 12px;
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.ks-select-search-input:focus {
+  border-color: rgba(160, 160, 160, 0.5);
+  box-shadow: 0 0 0 3px rgba(160, 160, 160, 0.12);
+}
+
+.ks-select-search-input::placeholder {
+  color: rgba(255, 255, 255, 0.42);
+}
+
+.ks-select-list {
+  flex: 1;
+  min-height: 0;
+  padding: 6px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  outline: none;
+}
+
+.ks-select-option {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 10px;
+  border: 0;
+  border-radius: 5px;
+  background: transparent;
+  color: #e8e8e8;
+  font-family: inherit;
+  font-size: 13px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.ks-select-option:hover,
+.ks-select-option.is-active {
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+}
+
+.ks-select-option.is-selected {
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  font-weight: 800;
+}
+
+.ks-select-option:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.ks-select-option-label {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ks-select-check {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0;
+}
+
+.ks-select-option.is-selected .ks-select-check {
+  opacity: 1;
+}
+
+.ks-select-empty {
+  padding: 14px 12px;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 12px;
+  text-align: center;
+}
+
+/* ---------- Text input ---------- */
+.ks-input {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  padding: 10px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 5px;
+  background: rgba(11, 11, 11, 0.9);
+  color: inherit;
+  font-family: inherit;
+  font-size: 13px;
+  line-height: 1.4;
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+}
+
+.ks-input::placeholder {
+  color: rgba(255, 255, 255, 0.42);
+}
+
+.ks-input:hover {
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.ks-input:focus {
+  border-color: rgba(160, 160, 160, 0.5);
+  box-shadow: 0 0 0 4px rgba(160, 160, 160, 0.12);
+}
+
+.ks-input:disabled,
+.ks-input[readonly] {
+  cursor: default;
+}
+
+.ks-input:disabled {
+  opacity: 0.55;
+}
+
+/* Kill native number spinners everywhere */
+.ks-input[type="number"]::-webkit-outer-spin-button,
+.ks-input[type="number"]::-webkit-inner-spin-button {
+  margin: 0;
+  -webkit-appearance: none;
+}
+
+.ks-input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* ---------- Search input ---------- */
+.ks-search {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 12px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.06);
+  color: inherit;
+  transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+}
+
+.ks-search:focus-within {
+  border-color: rgba(160, 160, 160, 0.5);
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 0 0 4px rgba(160, 160, 160, 0.12);
+}
+
+.ks-search-icon {
+  display: inline-flex;
+  flex-shrink: 0;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.ks-search-icon svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.9;
+  stroke-linecap: round;
+}
+
+.ks-search-input {
+  flex: 1;
+  min-width: 0;
+  height: 44px;
+  padding: 0 8px;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: inherit;
+  font-family: inherit;
+  font-size: 14px;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.ks-search-input::placeholder {
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.ks-search-clear {
+  width: 32px;
+  height: 32px;
+  margin-left: 2px;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  color: #ffffff;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+}
+
+.ks-search .ks-search-clear svg {
+  width: 12px;
+  height: 12px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+}
+
+.ks-search-clear:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.ks-search-clear:active {
+  transform: scale(0.92);
+}
+
+.ks-search-clear:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.5);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ks-select-menu {
+    animation: none;
+  }
+}

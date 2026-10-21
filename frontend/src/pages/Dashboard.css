@@ -50,7 +50,7 @@
 .panel-head h2{ font-size:15px; font-weight:900; letter-spacing:-0.4px; display:flex; align-items:center; gap:9px; }
 .panel-icon{ width:30px; height:30px; display:grid; place-items:center; background: rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.08); border-radius:10px; font-size:14px; }
 .panel-icon svg{ display:block; }
-.panel-count{ background: rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.08); padding:4px 9px; border-radius:999px; font-size:11px; font-weight:800; color: var(--dash-muted); }
+.panel-count{ background: rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.08); padding:4px 9px; border-radius:8px; font-size:11px; font-weight:800; color: var(--dash-muted); }
 .panel-body{ display:flex; flex-direction:column; gap:10px; }
 .list-item{
   background: rgba(255,255,255,0.045);
@@ -87,7 +87,7 @@
 .li-text{ flex:1; min-width:0; display:flex; flex-direction:column; gap:2px; }
 .name{ font-size:13px; font-weight:700; letter-spacing:-0.2px; line-height:1.2; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .li-sub{ font-size:11px; font-weight:500; color: var(--dash-muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-.time{ font-size:11px; color: var(--dash-muted); background: rgba(255,255,255,0.06); padding:4px 7px; border-radius:999px; border:1px solid rgba(255,255,255,0.06); flex-shrink:0; }
+.time{ font-size:11px; color: var(--dash-muted); background: rgba(255,255,255,0.06); padding:4px 7px; border-radius:8px; border:1px solid rgba(255,255,255,0.06); flex-shrink:0; }
 .li-arrow{ font-size:12px; color: rgba(255,255,255,0.3); transition: transform 0.2s, color 0.2s; flex-shrink:0; width:24px; height:24px; display:grid; place-items:center; background: rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.06); border-radius:999px; }
 .list-item:hover .li-arrow{ transform: translateX(2px); color:#0a0a0a; background: linear-gradient(135deg,#f5f5f5,#9a9a9a); border-color: transparent; }
 
@@ -97,7 +97,7 @@
 .empty-sub{ font-size:12px; color: var(--dash-muted); max-width:260px; line-height:1.5; }
 .empty-cta{
   margin-top:6px; background: rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.12); color:white;
-  padding:8px 14px; border-radius:999px; font-size:12px; font-weight:750; cursor:pointer; transition: all 0.2s;
+  padding:8px 14px; border-radius:6px; font-size:12px; font-weight:750; cursor:pointer; transition: all 0.2s;
 }
 .empty-cta:hover{ background:white; color:#0a0a0a; }
 
@@ -116,7 +116,7 @@
 .news-left h2{ display:flex; align-items:center; gap:9px; font-size:18px; font-weight:900; letter-spacing:-0.5px; }
 .news-controls{ display:flex; gap:8px; }
 .news-controls button{
-  width:36px; height:36px; border-radius:999px; display:grid; place-items:center;
+  width:36px; height:36px; border-radius:6px; display:grid; place-items:center;
   background: rgba(255,255,255,0.06); border:1px solid var(--dash-border); color:white; cursor:pointer;
   font-size:16px; transition: all 0.2s;
 }
@@ -148,7 +148,7 @@
 .news-footer{ display:flex; align-items:center; justify-content:space-between; gap:12px; margin-top:10px; }
 .news-dots{ display:flex; gap:8px; }
 .news-dots button{
-  width:28px; height:6px; border-radius:999px; border:none; cursor:pointer;
+  width:28px; height:6px; border-radius:6px; border:none; cursor:pointer;
   background: rgba(255,255,255,0.14); transition: all 0.35s;
 }
 .news-dots button.active{ background: white; width:34px; box-shadow:0 0 14px rgba(255,255,255,0.45); }

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Icon from "../components/Icon";
 import "./CustomIP.css";
 
 type IpInfo = {
@@ -44,7 +45,7 @@ export default function CustomIP() {
       if (!trimmed.includes(":")) {
         const resolved = await resolveDomain(trimmed);
         if (!resolved) {
-          setError("❌ Domain cannot be resolved.");
+          setError("Domain cannot be resolved.");
           setLoading(false);
           return;
         }
@@ -55,12 +56,12 @@ export default function CustomIP() {
       const res = await fetch(`https://ipapi.co/${targetIP}/json/`);
       const data = await res.json();
       if (data.error) {
-        setError(`❌ ${data.reason || "Invalid IP Address"}`);
+        setError(data.reason || "Invalid IP Address");
       } else {
         setResult(data);
       }
     } catch {
-      setError("❌ Failed to fetch IP info");
+      setError("Failed to fetch IP info");
     } finally {
       setLoading(false);
     }
@@ -86,14 +87,14 @@ export default function CustomIP() {
             <p>Enter your server IP or domain to fetch location & ISP info.</p>
             <div className="ci-input-row">
               <input className="ci-input" placeholder="e.g. aternos.org or 8.8.8.8" value={input} onChange={(e) => setInput(e.target.value)} onKeyDown={(e)=> e.key==="Enter" && loadIPInfo()} />
-              <button className="ci-btn" onClick={loadIPInfo}>{loading ? "Checking…" : "Search ↗"}</button>
+              <button className="ci-btn" onClick={loadIPInfo}><><Icon name="search" size={14} /> {loading ? "Checking…" : "Search"}</></button>
             </div>
             <div className="ci-result">
-              {loading && <p>🔍 Fetching data...</p>}
-              {error && <p style={{ color: "#f87171", fontWeight: 800 }}>{error}</p>}
+              {loading && <p style={{ display: "flex", alignItems: "center", gap: 6 }}><Icon name="search" size={14} /> Fetching data...</p>}
+              {error && <p style={{ color: "#f87171", fontWeight: 800, display: "flex", alignItems: "center", gap: 6 }}><Icon name="warning" size={14} /> {error}</p>}
               {result && (
                 <>
-                  <p><b>IP Address:</b> <span>{result.ip} <button className="ci-copy" onClick={() => copyToClipboard(result.ip)}>{copied?"Copied ✓":"Copy"}</button></span></p>
+                  <p><b>IP Address:</b> <span>{result.ip} <button className="ci-copy" onClick={() => copyToClipboard(result.ip)}><><Icon name={copied ? "check" : "copy"} size={12} /> {copied ? "Copied" : "Copy"}</></button></span></p>
                   <p><b>City:</b> <span>{result.city || "N/A"}</span></p>
                   <p><b>Region:</b> <span>{result.region || "N/A"}</span></p>
                   <p><b>Country:</b> <span>{result.country_name || "N/A"}</span></p>
@@ -113,9 +114,9 @@ export default function CustomIP() {
         </div>
 
         <div className="ci-footer">
-          <div style={{fontWeight:900, fontSize:18, letterSpacing:-0.4}}>Enjoy Custom IP ✨</div>
-          <a href="https://zhhdy.com" target="_blank" rel="noreferrer">Join Discord ↗</a>
-          <span>For more things like this — also support me 💙</span>
+          <div style={{fontWeight:900, fontSize:18, letterSpacing:-0.4}}><Icon name="sparkles" size={16} /> Enjoy Custom IP</div>
+          <a href="https://zhhdy.com" target="_blank" rel="noreferrer"><Icon name="external-link" size={13} /> Join Discord</a>
+          <span>For more things like this — also support me <Icon name="heart" size={13} style={{ color: "#60a5fa" }} /></span>
         </div>
       </div>
     </div>

@@ -1,7 +1,31 @@
 import { useEffect, useMemo, useState } from "react";
 import { api, MinecraftHosting } from "../lib/api";
 import FilterMenu from "../components/FilterMenu";
+import { SearchField, Select, type SelectOption } from "../components/ui";
 import "./Hosting.css";
+
+const uptimeOptions: SelectOption[] = [
+  { value: "", label: "Uptime • All" },
+  { value: "good", label: "24/7 only" },
+  { value: "danger", label: "non-24/7" },
+];
+
+const locationOptions: SelectOption[] = [
+  { value: "", label: "Location • All" },
+  { value: "india", label: "India" },
+  { value: "singapore", label: "Singapore" },
+  { value: "france", label: "France" },
+  { value: "germany", label: "Germany" },
+  { value: "usa", label: "USA" },
+];
+
+const ramOptions: SelectOption[] = [
+  { value: "", label: "RAM • All" },
+  { value: "1", label: "≥1 GB" },
+  { value: "2", label: "≥2 GB" },
+  { value: "4", label: "≥4 GB" },
+  { value: "6", label: "≥6 GB" },
+];
 
 export default function MinecraftHostingPage() {
   const [data, setData] = useState<MinecraftHosting[]>([]);
@@ -42,34 +66,37 @@ export default function MinecraftHostingPage() {
         <header className="h-header">
           <div className="h-search-wrap">
             <div className="h-search-row">
-              <div className="h-search">
-                <svg viewBox="0 0 24 24" aria-hidden><circle cx="11" cy="11" r="6.5"/><path d="M16 16 L20 20"/></svg>
-                <input placeholder="Search hosting name…" value={q} onChange={(e)=>setQ(e.target.value)} aria-label="Search hosting" spellCheck={false} />
-                {q && <button className="h-search-btn" onClick={()=>setQ("")} aria-label="Clear">✕</button>}
-              </div>
+              <SearchField
+                className="h-search"
+                value={q}
+                onValueChange={setQ}
+                placeholder="Search hosting name…"
+                ariaLabel="Search hosting"
+              />
               <FilterMenu activeCount={[uptime, location, ram].filter(Boolean).length}>
                 <div className="h-filters">
-                  <select className="h-select" value={uptime} onChange={(e)=>setUptime(e.target.value)} aria-label="Uptime">
-                    <option value="">Uptime • All</option>
-                    <option value="good">24/7 only</option>
-                    <option value="danger">non-24/7</option>
-                  </select>
-                  <select className="h-select" value={location} onChange={(e)=>setLocation(e.target.value)} aria-label="Location">
-                    <option value="">Location • All</option>
-                    <option value="india">India</option>
-                    <option value="singapore">Singapore</option>
-                    <option value="france">France</option>
-                    <option value="germany">Germany</option>
-                    <option value="usa">USA</option>
-                  </select>
-                  <select className="h-select" value={ram} onChange={(e)=>setRam(e.target.value)} aria-label="RAM">
-                    <option value="">RAM • All</option>
-                    <option value="1">≥1 GB</option>
-                    <option value="2">≥2 GB</option>
-                    <option value="4">≥4 GB</option>
-                    <option value="6">≥6 GB</option>
-                  </select>
-                  {(q||uptime||location||ram) && <button className="h-filter" onClick={clearFilters}>Clear filters ✕</button>}
+                  <Select
+                    className="h-select"
+                    value={uptime}
+                    onChange={setUptime}
+                    options={uptimeOptions}
+                    ariaLabel="Uptime"
+                  />
+                  <Select
+                    className="h-select"
+                    value={location}
+                    onChange={setLocation}
+                    options={locationOptions}
+                    ariaLabel="Location"
+                  />
+                  <Select
+                    className="h-select"
+                    value={ram}
+                    onChange={setRam}
+                    options={ramOptions}
+                    ariaLabel="RAM"
+                  />
+                  {(q||uptime||location||ram) && <button className="h-filter" onClick={clearFilters}>Clear filters <Icon name="close" size={12} /></button>}
                 </div>
               </FilterMenu>
             </div>
@@ -83,7 +110,7 @@ export default function MinecraftHostingPage() {
           </div>
         ) : filtered.length === 0 ? (
           <div className="h-empty">
-            <div style={{fontSize:28, marginBottom:8}}>🔍</div>
+            <div style={{marginBottom:8, color:"var(--h-muted)"}}><Icon name="search" size={26} /></div>
             <div style={{fontWeight:900, marginBottom:6}}>No matches</div>
             <div style={{color:"var(--h-muted)", fontSize:13, marginBottom:12}}>Try adjusting filters or search term.</div>
             <button className="h-card-btn" onClick={clearFilters}>Clear filters</button>
@@ -94,7 +121,7 @@ export default function MinecraftHostingPage() {
               <article key={h.name} className="h-card">
                 <div className="h-card-top">
                   <div className="h-card-name" title={h.name}>{h.name}</div>
-                  <a className="h-card-btn" href={h.link} target="_blank" rel="noreferrer">Visit ↗</a>
+                  <a className="h-card-btn" href={h.link} target="_blank" rel="noreferrer"><Icon name="external-link" size={12} /> Visit</a>
                 </div>
                 <div className="h-specs">
                   <span><b>{h.ram} GB</b> RAM</span>
@@ -102,7 +129,7 @@ export default function MinecraftHostingPage() {
                   <span><b>{h.disk} GB</b> Disk</span>
                 </div>
                 <div className="h-card-bottom">
-                  <span>📍 {h.location}</span>
+                  <span style={{display:"inline-flex", alignItems:"center", gap:6}}><Icon name="map-pin" size={13} /> {h.location}</span>
                   <span className={`h-tag ${h.uptime==="good"?"good":h.uptime==="warning"?"warn":"bad"}`}>{h.uptime==="good"?"24/7":h.uptime==="warning"?"Partial":"non-24/7"}</span>
                 </div>
               </article>

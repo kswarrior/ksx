@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { api, VpsHosting } from "../lib/api";
+import { SearchField } from "../components/ui";
 import "./Vps.css";
 
 export default function VpsHostingPage() {
@@ -25,11 +26,13 @@ export default function VpsHostingPage() {
       <div className="v-shell">
         <header className="v-header">
           <div className="v-search-wrap">
-            <div className="v-search">
-              <svg viewBox="0 0 24 24" aria-hidden><circle cx="11" cy="11" r="6.5"/><path d="M16 16 L20 20"/></svg>
-              <input placeholder="Search VPS by name…" value={q} onChange={(e)=>setQ(e.target.value)} aria-label="Search VPS" spellCheck={false} />
-              {q && <button onClick={()=>setQ("")} style={{width:34,height:34,borderRadius:5,border:"1px solid rgba(255,255,255,0.1)",background:"rgba(255,255,255,0.06)",color:"#fff",display:"grid",placeItems:"center",cursor:"pointer",flexShrink:0}}>✕</button>}
-            </div>
+            <SearchField
+              className="v-search"
+              value={q}
+              onValueChange={setQ}
+              placeholder="Search VPS by name…"
+              ariaLabel="Search VPS"
+            />
             <div className="v-stats">{loading ? "Loading…" : <><strong>{filtered.length}</strong> of <strong>{list.length}</strong> providers</>}</div>
           </div>
         </header>
@@ -38,7 +41,7 @@ export default function VpsHostingPage() {
           <div className="v-grid">{[0,1,2,3,4,5].map(i=> <div key={i} className="v-skel" />)}</div>
         ) : filtered.length===0 ? (
           <div className="v-empty">
-            <div style={{fontSize:28, marginBottom:8}}>🔍</div>
+            <div style={{marginBottom:8, color:"var(--v-muted)"}}><Icon name="search" size={26} /></div>
             <div style={{fontWeight:900, marginBottom:6}}>No VPS found</div>
             <div style={{color:"var(--v-muted)", fontSize:13}}>Try different search term.</div>
           </div>
@@ -48,7 +51,7 @@ export default function VpsHostingPage() {
               <article key={vps.name} className="v-card">
                 <div className="v-card-top">
                   <div className="v-card-name" title={vps.name}>{vps.name}</div>
-                  <button className="v-visit" onClick={()=>window.open(vps.link,"_blank")}>Visit ↗</button>
+                  <button className="v-visit" onClick={()=>window.open(vps.link,"_blank")}><Icon name="external-link" size={12} /> Visit</button>
                 </div>
                 <div className="v-meta">
                   <div className="v-meta-row">
@@ -56,12 +59,12 @@ export default function VpsHostingPage() {
                     <span><b>{vps.cpu}</b> CPU</span>
                     <span><b>{vps.disk}</b> Disk</span>
                   </div>
-                  <div style={{fontSize:12, color:"var(--v-muted)"}}>📍 {vps.location}</div>
+                  <div style={{fontSize:12, color:"var(--v-muted)", display:"flex", alignItems:"center", gap:6}}><Icon name="map-pin" size={13} /> {vps.location}</div>
                 </div>
                 <div className="v-tags">
-                  <span className={`v-pill ${vps.renew?"yes":"no"}`}>{vps.renew?"✓ Renew":"✕ Renew"}</span>
-                  <span className={`v-pill ${vps.sudo?"yes":"no"}`}>{vps.sudo?"✓ Sudo":"✕ Sudo"}</span>
-                  <span className={`v-pill ${vps.alwaysOn?"yes":"no"}`}>{vps.alwaysOn?"✓ 24/7":"✕ 24/7"}</span>
+                  <span className={`v-pill ${vps.renew?"yes":"no"}`}><><Icon name={vps.renew ? "check" : "close"} size={12} /> Renew</></span>
+                  <span className={`v-pill ${vps.sudo?"yes":"no"}`}><><Icon name={vps.sudo ? "check" : "close"} size={12} /> Sudo</></span>
+                  <span className={`v-pill ${vps.alwaysOn?"yes":"no"}`}><><Icon name={vps.alwaysOn ? "check" : "close"} size={12} /> 24/7</></span>
                 </div>
               </article>
             ))}

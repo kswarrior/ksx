@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import FilterMenu from "../components/FilterMenu";
+import { SearchField } from "../components/ui";
 import "./JavaLauncher.css";
 
 type Launcher = {
@@ -124,11 +125,13 @@ export default function JavaLauncher() {
         <header className="jl-header">
           <div className="jl-search-wrap">
             <div className="jl-search-row">
-              <div className="jl-search">
-                <svg viewBox="0 0 24 24" aria-hidden><circle cx="11" cy="11" r="6.5"/><path d="M16 16 L20 20"/></svg>
-                <input placeholder="Search launcher by name…" value={q} onChange={(e)=>setQ(e.target.value)} aria-label="Search launcher" spellCheck={false} />
-                {q && <button onClick={()=>setQ("")} aria-label="Clear search" style={{width:34,height:34,borderRadius:5,border:"1px solid rgba(255,255,255,0.1)",background:"rgba(255,255,255,0.06)",color:"#fff",display:"grid",placeItems:"center",cursor:"pointer",flexShrink:0}}><Icon name="close" size={14} /></button>}
-              </div>
+              <SearchField
+                className="jl-search"
+                value={q}
+                onValueChange={setQ}
+                placeholder="Search launcher by name…"
+                ariaLabel="Search launcher"
+              />
               <FilterMenu activeCount={filter === "All" ? 0 : 1}>
                 <div className="jl-filters">
                   {(["All","PC","Android"] as const).map(v=> (

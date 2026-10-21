@@ -137,12 +137,7 @@ export default function Dashboard() {
         <div className="panel-body pin-grid">
           {pins.length === 0 ? (
             <div className="empty">
-              <div className="empty-icon">
-                <PinIcon size={18} />
-              </div>
-              <div className="empty-title">No pinned pages</div>
-              <div className="empty-sub">Tap the pin icon on any page to pin it here</div>
-              <button className="empty-cta" onClick={() => navigate("/map")}>Explore Map</button>
+              <div className="empty-title">No pinned yet</div>
             </div>
           ) : (
             pins.map((item) => (
@@ -175,10 +170,7 @@ export default function Dashboard() {
         <div className="panel-body">
           {recentTop.length === 0 ? (
             <div className="empty">
-              <div className="empty-icon"><ClockIcon size={20} /></div>
-              <div className="empty-title">No recent pages</div>
-              <div className="empty-sub">Pages you visit will appear here instantly</div>
-              <button className="empty-cta" onClick={() => navigate("/map")}>Browse Map</button>
+              <div className="empty-title">No recent yet</div>
             </div>
           ) : (
             recentTop.map((item) => (

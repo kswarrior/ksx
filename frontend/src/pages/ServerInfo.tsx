@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Icon from "../components/Icon";
 import "./ServerInfo.css";
 
 type McStatus = Record<string, unknown>;
@@ -34,7 +35,7 @@ export default function ServerInfo() {
         <header className="si-header">
           <div className="si-search">
             <input className="si-input" value={ip} onChange={(e) => setIp(e.target.value)} placeholder="Enter server IP (e.g. play.hypixel.net)" aria-label="Server IP" onKeyDown={(e)=> e.key==="Enter" && fetchInfo()} />
-            <button className="si-btn" onClick={fetchInfo}>{loading ? "Checking…" : "Search ↗"}</button>
+            <button className="si-btn" onClick={fetchInfo}><><Icon name="search" size={14} /> {loading ? "Checking…" : "Search"}</></button>
           </div>
         </header>
 
@@ -61,7 +62,7 @@ export default function ServerInfo() {
 
         {!data && (
           <div className="si-card" style={{textAlign:"center", color:"var(--si-muted)", fontSize:13}}>
-            <div style={{fontSize:22, marginBottom:8}}>🔍</div>
+            <div style={{marginBottom:8, color:"var(--si-muted)"}}><Icon name="search" size={22} /></div>
             <div style={{fontWeight:800, color:"var(--si-text)", marginBottom:6}}>No query yet</div>
             <div>Enter a server IP above to see live stats. Example: play.cubecraft.net</div>
           </div>

@@ -34,11 +34,13 @@ export default function PaidPluginFree() {
       <div className="paid-shell">
         <header className="paid-header">
           <div className="paid-search-wrap">
-            <div className="paid-search">
-              <svg viewBox="0 0 24 24" aria-hidden><circle cx="11" cy="11" r="6.5"/><path d="M16 16 L20 20"/></svg>
-              <input placeholder="Search plugin name…" value={q} onChange={(e)=>setQ(e.target.value)} aria-label="Search plugin" spellCheck={false} />
-              {q && <button onClick={()=>setQ("")} aria-label="Clear search" style={{width:34,height:34,borderRadius:5,border:"1px solid rgba(255,255,255,0.1)",background:"rgba(255,255,255,0.06)",color:"#fff",display:"grid",placeItems:"center",cursor:"pointer",flexShrink:0}}><Icon name="close" size={14} /></button>}
-            </div>
+            <SearchField
+              className="paid-search"
+              value={q}
+              onValueChange={setQ}
+              placeholder="Search plugin name…"
+              ariaLabel="Search plugin"
+            />
             <div className="paid-stats"><strong>{filtered.length}</strong> of <strong>{plugins.length}</strong> plugins</div>
           </div>
         </header>
