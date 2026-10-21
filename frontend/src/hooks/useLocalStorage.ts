@@ -22,9 +22,23 @@ export function useLocalStorage<T>(key: string, initial: T) {
 }
 
 export type RecentItem = { name: string; url: string; time: number; logo?: string; category?: string; title?: string };
-export type FavItem = { name: string; url: string; time: number; logo?: string; category?: string; title?: string };
+export type PinItem = { name: string; url: string; time: number; logo?: string; category?: string; title?: string };
 
 export const RECENT_KEY = "ks-web-recent";
-export const FAV_KEY = "ks-web-fav";
+export const PIN_KEY = "ks-web-pin";
+export const LEGACY_FAV_KEY = "ks-web-fav";
 export const LAST_PAGE_KEY = "ks-web-last-page";
 export const MAX_RECENT = 5;
+
+export function readPins(): PinItem[] {
+  try {
+    const raw = localStorage.getItem(PIN_KEY);
+    if (raw) return JSON.parse(raw);
+    const legacy = localStorage.getItem(LEGACY_FAV_KEY);
+    if (legacy) {
+      localStorage.setItem(PIN_KEY, legacy);
+      return JSON.parse(legacy);
+    }
+  } catch {}
+  return [];
+}
