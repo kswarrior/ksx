@@ -23,7 +23,7 @@
 .filter-panel .ks-select,
 .filter-panel .ks-select-trigger,
 .filter-panel .jd-select{width:100%;}
-.filter-panel .ks-select-trigger{border-radius:5px;}
+.filter-panel .ks-select-trigger{border-radius:6px;}
 .filter-panel .h-filters,
 .filter-panel .jl-filters,
 .filter-panel .mp-filters{display:flex; flex-wrap:wrap; gap:8px; overflow:visible; margin:0; padding:0;}
