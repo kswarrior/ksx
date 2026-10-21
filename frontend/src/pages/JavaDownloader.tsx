@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import FilterMenu from "../components/FilterMenu";
 import "./JavaDownloader.css";
 
 type Project = {
@@ -91,36 +92,38 @@ export default function JavaDownloader() {
         <header className="jd-header">
           <div className="jd-controls">
             <div className="jd-row1">
-              <select value={type} onChange={(e) => { setType(e.target.value); setLoader(""); }} className="jd-select">
-                <option value="">All Types</option>
-                <option value="mod">Mod</option>
-                <option value="plugin">Plugin</option>
-                <option value="resourcepack">Resourcepack</option>
-                <option value="shader">Shader</option>
-                <option value="datapack">Datapack</option>
-              </select>
-              <select value={loader} onChange={(e) => setLoader(e.target.value)} className="jd-select">
-                <option value="">All Loaders</option>
-                {(loaderOptions[type] || []).map((l) => (
-                  <option key={l} value={l}>{l}</option>
-                ))}
-              </select>
-              <select value={version} onChange={(e) => setVersion(e.target.value)} className="jd-select">
-                <option value="">All Versions</option>
-                {versionsList.map((v) => (
-                  <option key={v} value={v}>{v}</option>
-                ))}
-              </select>
-              <select value={sort} onChange={(e) => setSort(e.target.value)} className="jd-select">
-                <option value="relevance">Relevance</option>
-                <option value="downloads">Downloads</option>
-                <option value="newest">Newest</option>
-                <option value="updated">Updated</option>
-              </select>
-            </div>
-            <div className="jd-row1">
               <input type="text" placeholder="Search by name (press Enter)" value={query} onChange={(e) => setQuery(e.target.value)} className="jd-input" onKeyDown={(e) => e.key === "Enter" && searchContent()} />
               <button onClick={searchContent} className="jd-btn">🔍 Search</button>
+              <FilterMenu activeCount={[type, loader, version, sort !== "relevance" ? sort : ""].filter(Boolean).length}>
+                <div className="jd-filter-fields">
+                  <select value={type} onChange={(e) => { setType(e.target.value); setLoader(""); }} className="jd-select">
+                    <option value="">All Types</option>
+                    <option value="mod">Mod</option>
+                    <option value="plugin">Plugin</option>
+                    <option value="resourcepack">Resourcepack</option>
+                    <option value="shader">Shader</option>
+                    <option value="datapack">Datapack</option>
+                  </select>
+                  <select value={loader} onChange={(e) => setLoader(e.target.value)} className="jd-select">
+                    <option value="">All Loaders</option>
+                    {(loaderOptions[type] || []).map((l) => (
+                      <option key={l} value={l}>{l}</option>
+                    ))}
+                  </select>
+                  <select value={version} onChange={(e) => setVersion(e.target.value)} className="jd-select">
+                    <option value="">All Versions</option>
+                    {versionsList.map((v) => (
+                      <option key={v} value={v}>{v}</option>
+                    ))}
+                  </select>
+                  <select value={sort} onChange={(e) => setSort(e.target.value)} className="jd-select">
+                    <option value="relevance">Relevance</option>
+                    <option value="downloads">Downloads</option>
+                    <option value="newest">Newest</option>
+                    <option value="updated">Updated</option>
+                  </select>
+                </div>
+              </FilterMenu>
             </div>
           </div>
         </header>
