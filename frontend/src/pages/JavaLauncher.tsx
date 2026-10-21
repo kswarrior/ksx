@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import FilterMenu from "../components/FilterMenu";
 import "./JavaLauncher.css";
 
 type Launcher = {
@@ -122,15 +123,19 @@ export default function JavaLauncher() {
       <div className="jl-shell">
         <header className="jl-header">
           <div className="jl-search-wrap">
-            <div className="jl-search">
-              <svg viewBox="0 0 24 24" aria-hidden><circle cx="11" cy="11" r="6.5"/><path d="M16 16 L20 20"/></svg>
-              <input placeholder="Search launcher by name…" value={q} onChange={(e)=>setQ(e.target.value)} aria-label="Search launcher" spellCheck={false} />
-              {q && <button onClick={()=>setQ("")} style={{width:34,height:34,borderRadius:5,border:"1px solid rgba(255,255,255,0.1)",background:"rgba(255,255,255,0.06)",color:"#fff",display:"grid",placeItems:"center",cursor:"pointer",flexShrink:0}}>✕</button>}
-            </div>
-            <div className="jl-filters">
-              {(["All","PC","Android"] as const).map(v=> (
-                <button key={v} className={`jl-pill ${filter===v?"active":""}`} onClick={()=>setFilter(v)}>{v} {v==="All"?`• ${launchers.length}`: v==="PC"?`• ${launchers.filter(x=>x.platform==="PC").length}`:`• ${launchers.filter(x=>x.platform==="Android").length}`}</button>
-              ))}
+            <div className="jl-search-row">
+              <div className="jl-search">
+                <svg viewBox="0 0 24 24" aria-hidden><circle cx="11" cy="11" r="6.5"/><path d="M16 16 L20 20"/></svg>
+                <input placeholder="Search launcher by name…" value={q} onChange={(e)=>setQ(e.target.value)} aria-label="Search launcher" spellCheck={false} />
+                {q && <button onClick={()=>setQ("")} style={{width:34,height:34,borderRadius:5,border:"1px solid rgba(255,255,255,0.1)",background:"rgba(255,255,255,0.06)",color:"#fff",display:"grid",placeItems:"center",cursor:"pointer",flexShrink:0}}>✕</button>}
+              </div>
+              <FilterMenu activeCount={filter === "All" ? 0 : 1}>
+                <div className="jl-filters">
+                  {(["All","PC","Android"] as const).map(v=> (
+                    <button key={v} className={`jl-pill ${filter===v?"active":""}`} onClick={()=>setFilter(v)}>{v} {v==="All"?`• ${launchers.length}`: v==="PC"?`• ${launchers.filter(x=>x.platform==="PC").length}`:`• ${launchers.filter(x=>x.platform==="Android").length}`}</button>
+                  ))}
+                </div>
+              </FilterMenu>
             </div>
             <div className="jl-stats"><strong>{filtered.length}</strong> of <strong>{launchers.length}</strong> launchers</div>
           </div>
