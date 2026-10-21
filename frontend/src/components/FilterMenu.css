@@ -30,6 +30,7 @@
 .filter-panel .h-filters{flex-direction:column; align-items:stretch;}
 .filter-panel .h-filter,
 .filter-panel .h-select{width:100%;}
+.filter-panel .h-filters .ks-select{width:100%;}
 .filter-panel .mp-pill,
 .filter-panel .jl-pill{flex:0 0 auto;}
 @media(max-width:480px){

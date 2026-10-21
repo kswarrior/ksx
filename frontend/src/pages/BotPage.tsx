@@ -86,13 +86,13 @@ createBot()
         <div className="bot-card">
           <h3><Icon name="terminal" size={16} /> Install Node.js</h3>
           <pre className="bot-code">{installCode}</pre>
-          <button className="bot-btn" onClick={() => copy(installCode,1)}><><Icon name={copiedIdx===1 ? "check" : "copy"} size={14} />{copiedIdx===1 ? "Copied" : "Copy Code"}</></button>
+          <button className="bot-btn" onClick={() => copy(installCode,1)}><Icon name={copiedIdx===1 ? "check" : "copy"} size={14} />{copiedIdx===1 ? "Copied" : "Copy Code"}</button>
         </div>
 
         <div className="bot-card">
           <h3><Icon name="folder" size={16} /> Create project folder</h3>
           <pre className="bot-code">{projectCode}</pre>
-          <button className="bot-btn" onClick={() => copy(projectCode,2)}><><Icon name={copiedIdx===2 ? "check" : "copy"} size={14} />{copiedIdx===2 ? "Copied" : "Copy Code"}</></button>
+          <button className="bot-btn" onClick={() => copy(projectCode,2)}><Icon name={copiedIdx===2 ? "check" : "copy"} size={14} />{copiedIdx===2 ? "Copied" : "Copy Code"}</button>
         </div>
 
         <div className="bot-card">
@@ -127,7 +127,7 @@ createBot()
           <TextField className="bot-input" value={viewDistance} onChange={(e) => setViewDistance(e.target.value)} placeholder="far or normal" />
           <div style={{display:"flex", gap:8, marginTop:12, flexWrap:"wrap"}}>
             <button className="bot-btn primary" onClick={generateBotCode}><Icon name="zap" size={14} /> Generate bot.js</button>
-            <button className="bot-btn" onClick={() => copy(generated,3)}><><Icon name={copiedIdx===3 ? "check" : "copy"} size={14} />{copiedIdx===3 ? "Copied" : "Copy Generated"}</></button>
+            <button className="bot-btn" onClick={() => copy(generated,3)}><Icon name={copiedIdx===3 ? "check" : "copy"} size={14} />{copiedIdx===3 ? "Copied" : "Copy Generated"}</button>
           </div>
           <pre className="bot-code" style={{marginTop:12}}>{generated}</pre>
           <p style={{marginTop:8, color:"#a3a3a3", fontSize:11}}>Paste the copied code into bot.js</p>
@@ -136,7 +136,7 @@ createBot()
         <div className="bot-card">
           <h3><Icon name="play" size={16} /> Run the bot</h3>
           <pre className="bot-code">node bot.js</pre>
-          <button className="bot-btn" onClick={() => copy("node bot.js",4)}><><Icon name={copiedIdx===4 ? "check" : "copy"} size={14} />{copiedIdx===4 ? "Copied" : "Copy Code"}</></button>
+          <button className="bot-btn" onClick={() => copy("node bot.js",4)}><Icon name={copiedIdx===4 ? "check" : "copy"} size={14} />{copiedIdx===4 ? "Copied" : "Copy Code"}</button>
           <p style={{marginTop:10, color:"#a3a3a3", fontSize:11, lineHeight:1.6}}>Tip: Use <code style={{background:"rgba(255,255,255,0.06)", padding:"2px 6px", borderRadius:5}}>screen -S bot</code> then run, detach with Ctrl+A+D, reattach with <code style={{background:"rgba(255,255,255,0.06)", padding:"2px 6px", borderRadius:5}}>screen -r bot</code> or <code style={{background:"rgba(255,255,255,0.06)", padding:"2px 6px", borderRadius:5}}>nohup node bot.js &amp;</code></p>
         </div>
 

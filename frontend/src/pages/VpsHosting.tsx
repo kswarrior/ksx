@@ -63,9 +63,9 @@ export default function VpsHostingPage() {
                   <div style={{fontSize:12, color:"var(--v-muted)", display:"flex", alignItems:"center", gap:6}}><Icon name="map-pin" size={13} /> {vps.location}</div>
                 </div>
                 <div className="v-tags">
-                  <span className={`v-pill ${vps.renew?"yes":"no"}`}><><Icon name={vps.renew ? "check" : "close"} size={12} /> Renew</></span>
-                  <span className={`v-pill ${vps.sudo?"yes":"no"}`}><><Icon name={vps.sudo ? "check" : "close"} size={12} /> Sudo</></span>
-                  <span className={`v-pill ${vps.alwaysOn?"yes":"no"}`}><><Icon name={vps.alwaysOn ? "check" : "close"} size={12} /> 24/7</></span>
+                  <span className={`v-pill ${vps.renew?"yes":"no"}`}><Icon name={vps.renew ? "check" : "close"} size={12} /> Renew</span>
+                  <span className={`v-pill ${vps.sudo?"yes":"no"}`}><Icon name={vps.sudo ? "check" : "close"} size={12} /> Sudo</span>
+                  <span className={`v-pill ${vps.alwaysOn?"yes":"no"}`}><Icon name={vps.alwaysOn ? "check" : "close"} size={12} /> 24/7</span>
                 </div>
               </article>
             ))}

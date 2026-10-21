@@ -87,20 +87,20 @@ export default function SetupServer() {
                 <div className="setup-card">
                   <h3>Root Folder (if needed)</h3>
                   <pre className="setup-code">sudo su</pre>
-                  <button className="setup-btn" onClick={() => copy("sudo su","su")}><><Icon name={copied==="su" ? "check" : "copy"} size={13} /> {copied==="su" ? "Copied" : "Copy"}</></button>
+                  <button className="setup-btn" onClick={() => copy("sudo su","su")}><Icon name={copied==="su" ? "check" : "copy"} size={13} /> {copied==="su" ? "Copied" : "Copy"}</button>
                 </div>
               )}
               {(platform === "vps" || platform === "vm") && (
                 <div className="setup-card">
                   <h3>Update System & Install wget</h3>
                   <pre className="setup-code">apt update -y && apt upgrade -y && apt install wget -y</pre>
-                  <button className="setup-btn" onClick={() => copy("apt update -y && apt upgrade -y && apt install wget -y","apt")}><><Icon name={copied==="apt" ? "check" : "copy"} size={13} /> {copied==="apt" ? "Copied" : "Copy"}</></button>
+                  <button className="setup-btn" onClick={() => copy("apt update -y && apt upgrade -y && apt install wget -y","apt")}><Icon name={copied==="apt" ? "check" : "copy"} size={13} /> {copied==="apt" ? "Copied" : "Copy"}</button>
                 </div>
               )}
               <div className="setup-card">
                 <h3><Icon name="coffee" size={15} /> Install Latest Java (Oracle JDK 25)</h3>
                 <pre className="setup-code">{javaInstall}</pre>
-                <button className="setup-btn" onClick={() => copy(javaInstall,"java")}><><Icon name={copied==="java" ? "check" : "copy"} size={13} /> {copied==="java" ? "Copied" : "Copy"}</></button>
+                <button className="setup-btn" onClick={() => copy(javaInstall,"java")}><Icon name={copied==="java" ? "check" : "copy"} size={13} /> {copied==="java" ? "Copied" : "Copy"}</button>
               </div>
               <div className="setup-card">
                 <h3><Icon name="package" size={15} /> Download MC Server JAR</h3>
@@ -110,7 +110,7 @@ export default function SetupServer() {
                 <TextField value={mcUrl} onChange={(e) => setMcUrl(e.target.value)} placeholder="https://..." />
                 <button className="setup-btn primary" onClick={genMc}><Icon name="zap" size={13} /> Generate Command</button>
                 {mcCode && <pre className="setup-code">{mcCode}</pre>}
-                {mcCode && <button className="setup-btn" onClick={() => copy(mcCode,"mc")}><><Icon name={copied==="mc" ? "check" : "copy"} size={13} /> {copied==="mc" ? "Copied" : "Copy"}</></button>}
+                {mcCode && <button className="setup-btn" onClick={() => copy(mcCode,"mc")}><Icon name={copied==="mc" ? "check" : "copy"} size={13} /> {copied==="mc" ? "Copied" : "Copy"}</button>}
               </div>
               <div className="setup-card">
                 <h3><Icon name="globe" size={15} /> Setup MC Server IP Address</h3>
@@ -121,7 +121,7 @@ export default function SetupServer() {
                 <TextField value={token} onChange={(e) => setToken(e.target.value)} placeholder="Paste token here" />
                 <button className="setup-btn primary" onClick={genConfig}><Icon name="zap" size={13} /> Generate Config</button>
                 {configCode && <pre className="setup-code">{configCode}</pre>}
-                {configCode && <button className="setup-btn" onClick={() => copy(configCode,"cfg")}><><Icon name={copied==="cfg" ? "check" : "copy"} size={13} /> {copied==="cfg" ? "Copied" : "Copy"}</></button>}
+                {configCode && <button className="setup-btn" onClick={() => copy(configCode,"cfg")}><Icon name={copied==="cfg" ? "check" : "copy"} size={13} /> {copied==="cfg" ? "Copied" : "Copy"}</button>}
               </div>
               <div className="setup-card">
                 <h3><Icon name="rocket" size={15} /> Start Server</h3>
@@ -129,7 +129,7 @@ export default function SetupServer() {
                 <TextField type="text" inputMode="numeric" value={ram} onChange={(e) => setRam(e.target.value)} />
                 <button className="setup-btn primary" onClick={genStart}><Icon name="zap" size={13} /> Generate Start</button>
                 {startCode && <pre className="setup-code">{startCode}</pre>}
-                {startCode && <button className="setup-btn" onClick={() => copy(startCode,"start")}><><Icon name={copied==="start" ? "check" : "copy"} size={13} /> {copied==="start" ? "Copied" : "Copy"}</></button>}
+                {startCode && <button className="setup-btn" onClick={() => copy(startCode,"start")}><Icon name={copied==="start" ? "check" : "copy"} size={13} /> {copied==="start" ? "Copied" : "Copy"}</button>}
               </div>
             </>
           )}

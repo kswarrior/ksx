@@ -36,7 +36,7 @@ export default function ServerInfo() {
         <header className="si-header">
           <div className="si-search">
             <TextField className="si-input" value={ip} onChange={(e) => setIp(e.target.value)} placeholder="Enter server IP (e.g. play.hypixel.net)" aria-label="Server IP" onKeyDown={(e)=> e.key==="Enter" && fetchInfo()} />
-            <button className="si-btn" onClick={fetchInfo}><><Icon name="search" size={14} /> {loading ? "Checking…" : "Search"}</></button>
+            <button className="si-btn" onClick={fetchInfo}><Icon name="search" size={14} /> {loading ? "Checking…" : "Search"}</button>
           </div>
         </header>
 

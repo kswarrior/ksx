@@ -88,14 +88,14 @@ export default function CustomIP() {
             <p>Enter your server IP or domain to fetch location & ISP info.</p>
             <div className="ci-input-row">
               <TextField className="ci-input" placeholder="e.g. aternos.org or 8.8.8.8" value={input} onChange={(e) => setInput(e.target.value)} onKeyDown={(e)=> e.key==="Enter" && loadIPInfo()} />
-              <button className="ci-btn" onClick={loadIPInfo}><><Icon name="search" size={14} /> {loading ? "Checking…" : "Search"}</></button>
+              <button className="ci-btn" onClick={loadIPInfo}><Icon name="search" size={14} /> {loading ? "Checking…" : "Search"}</button>
             </div>
             <div className="ci-result">
               {loading && <p style={{ display: "flex", alignItems: "center", gap: 6 }}><Icon name="search" size={14} /> Fetching data...</p>}
               {error && <p style={{ color: "#f87171", fontWeight: 800, display: "flex", alignItems: "center", gap: 6 }}><Icon name="warning" size={14} /> {error}</p>}
               {result && (
                 <>
-                  <p><b>IP Address:</b> <span>{result.ip} <button className="ci-copy" onClick={() => copyToClipboard(result.ip)}><><Icon name={copied ? "check" : "copy"} size={12} /> {copied ? "Copied" : "Copy"}</></button></span></p>
+                  <p><b>IP Address:</b> <span>{result.ip} <button className="ci-copy" onClick={() => copyToClipboard(result.ip)}><Icon name={copied ? "check" : "copy"} size={12} /> {copied ? "Copied" : "Copy"}</button></span></p>
                   <p><b>City:</b> <span>{result.city || "N/A"}</span></p>
                   <p><b>Region:</b> <span>{result.region || "N/A"}</span></p>
                   <p><b>Country:</b> <span>{result.country_name || "N/A"}</span></p>

@@ -24,8 +24,9 @@
 .jar-row{display:flex; gap:12px; margin-bottom:14px; flex-wrap:wrap;}
 .jar-group{flex:1; min-width:160px; display:flex; flex-direction:column; gap:6px;}
 .jar-group label{font-size:11px; font-weight:800; color:var(--j-muted); letter-spacing:0.5px; text-transform:uppercase;}
-.jar-group select, .jar-group input{width:100%; padding:12px 14px; background:rgba(11, 11, 11,0.9); border:1px solid var(--j-border); border-radius:5px; color:var(--j-text); font-size:13px; outline:none; transition:border-color .2s, box-shadow .2s;}
-.jar-group select:focus, .jar-group input:focus{border-color:rgba(122, 122, 122,0.4); box-shadow:0 0 0 4px rgba(122, 122, 122,0.12);}
+.jar-group .ks-select{width:100%;}
+.jar-group .ks-select-trigger, .jar-group .ks-input{width:100%; padding:12px 14px; background:rgba(11, 11, 11,0.9); border:1px solid var(--j-border); border-radius:6px; color:var(--j-text); font-size:13px; outline:none; transition:border-color .2s, box-shadow .2s;}
+.jar-group .ks-select-trigger:focus, .jar-group .ks-input:focus{border-color:rgba(122, 122, 122,0.4); box-shadow:0 0 0 4px rgba(122, 122, 122,0.12);}
 .jar-btn{width:100%; margin-top:6px; background:#ffffff; color:#000000; border:none; border-radius:6px; padding:13px; font-weight:900; font-size:14px; cursor:pointer; transition:transform .15s, background .2s, box-shadow .2s; display:inline-flex; align-items:center; justify-content:center; gap:8px;}
 .jar-btn:hover{background:#f0f0f0; transform:translateY(-1px); box-shadow:0 8px 18px rgba(0, 0, 0,0.18);}
 .jar-btn:active{transform:scale(0.97);}
