@@ -45,7 +45,7 @@ export default function Dashboard() {
     <div className="dashboard">
       <section className="news news-3d">
         <div className="news-head">
-          <div className="news-left"><h2>📰 Updates & News</h2><span>NEW</span><p>For the whole KS website</p></div>
+          <div className="news-left"><h2>📰 Updates & News</h2></div>
           <div className="news-controls">
             <button aria-label="Prev" onClick={() => setNewsIndex((i) => (i - 1 + news.length) % news.length)}>‹</button>
             <button aria-label="Next" onClick={() => setNewsIndex((i) => (i + 1) % news.length)}>›</button>
