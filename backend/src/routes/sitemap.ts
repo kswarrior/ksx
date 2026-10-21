@@ -25,6 +25,7 @@ router.get("/search", (req, res) => {
           category: cat.category,
           icon: cat.icon,
           title: sec.title,
+          sectionIcon: sec.icon,
           name: page.name,
           url: page.url,
           logo: page.logo,

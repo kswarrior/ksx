@@ -45,6 +45,7 @@ export default function Layout() {
                 category: cat.category,
                 icon: cat.icon,
                 title: sec.title,
+                sectionIcon: sec.icon,
                 name: p.name,
                 url: p.url,
                 logo: p.logo,
@@ -219,11 +220,11 @@ export default function Layout() {
 
   // Group suggestions for rendering like original: category → title → pages
   const grouped = (() => {
-    const tree: Record<string, { icon: string; titles: Record<string, SearchItem[]> }> = {};
+    const tree: Record<string, { icon: string; titles: Record<string, { icon: string; pages: SearchItem[] }> }> = {};
     suggestions.forEach((i) => {
       if (!tree[i.category]) tree[i.category] = { icon: i.icon, titles: {} };
-      if (!tree[i.category].titles[i.title]) tree[i.category].titles[i.title] = [];
-      tree[i.category].titles[i.title].push(i);
+      if (!tree[i.category].titles[i.title]) tree[i.category].titles[i.title] = { icon: i.sectionIcon, pages: [] };
+      tree[i.category].titles[i.title].pages.push(i);
     });
     return tree;
   })();
@@ -328,10 +329,13 @@ export default function Layout() {
                 <span className="s-icon" dangerouslySetInnerHTML={{ __html: data.icon }} />
                 <span>{category}</span>
               </li>
-              {Object.entries(data.titles).map(([title, pages]) => (
+              {Object.entries(data.titles).map(([title, group]) => (
                 <div key={title}>
-                  <li className="s-title">{title}</li>
-                  {pages.map((p) => {
+                  <li className="s-title">
+                    {group.icon && <span className="s-title-icon" dangerouslySetInnerHTML={{ __html: group.icon }} aria-hidden />}
+                    <span>{title}</span>
+                  </li>
+                  {group.pages.map((p) => {
                     flatIndex++;
                     const idx = flatIndex;
                     return (
