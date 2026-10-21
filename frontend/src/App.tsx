@@ -1,8 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { lazy, Suspense } from "react";
+import { lazy } from "react";
 import Layout from "./components/Layout";
 import "./styles/global.css";
-import "./pages/Panel.css";
 
 // eager only for critical landing
 import Dashboard from "./pages/Dashboard";
@@ -30,20 +29,11 @@ const PterodactylPage = lazy(() => import("./pages/PanelPages").then(m => ({ def
 const PufferPage = lazy(() => import("./pages/PanelPages").then(m => ({ default: m.PufferPage })));
 const SkyportPage = lazy(() => import("./pages/PanelPages").then(m => ({ default: m.SkyportPage })));
 
-function PageSpinner() {
-  return (
-    <div style={{ display: "grid", placeItems: "center", minHeight: "50vh", color: "var(--muted)" }}>
-      <div style={{ width: 36, height: 36, border: "3px solid rgba(255,255,255,0.12)", borderTopColor: "#3b82f6", borderRadius: "50%", animation: "spin 0.8s linear infinite" }} />
-    </div>
-  );
-}
-
 export default function App() {
   return (
     <BrowserRouter>
-      <Suspense fallback={<PageSpinner />}>
-        <Routes>
-          <Route element={<Layout />}>
+      <Routes>
+        <Route element={<Layout />}>
             <Route index element={<Dashboard />} />
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="" element={<Dashboard />} />

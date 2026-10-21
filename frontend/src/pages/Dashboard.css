@@ -655,6 +655,15 @@
 @keyframes scrollDot{ 0%{ transform: translate(-50%,0); opacity:1; } 70%{ transform: translate(-50%,10px); opacity:0; } 100%{ opacity:0; } }
 @keyframes floatY{ 0%,100%{ transform: translateY(0); } 50%{ transform: translateY(-6px); } }
 
+/* Skip rendering below-the-fold blocks until they are close to the viewport */
+.features,
+.news.news-3d,
+.grid,
+.highlight-showcase {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 320px;
+}
+
 /* ---------- RESPONSIVE ---------- */
 @media (max-width: 1020px){
   .hero-content{ grid-template-columns: 1fr; padding: 26px 22px; gap: 28px; }
