@@ -110,18 +110,79 @@
 }
 #hamburger:hover .menu-svg { stroke: var(--accent); transform: scale(1.1); }
 
-#favButton {
+#pinButton {
   cursor: pointer;
   color: var(--accent);
-  font-size: 20px;
-  font-weight: 900;
   user-select: none;
-  transition: transform 0.2s ease, color 0.2s ease;
+  transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
   display: grid; place-items: center;
-  width: 30px; height: 30px;
+  width: 32px; height: 32px;
+  border-radius: 9px;
+  flex-shrink: 0;
 }
-#favButton:hover { transform: scale(1.2); }
-#favButton.filled { color: var(--accent); }
+#pinButton:hover { transform: scale(1.08); background: var(--hover); }
+#pinButton.pinned { color: var(--accent-hover); }
+.pin-svg { display: block; }
+
+#moreWrap { position: relative; flex-shrink: 0; }
+#moreButton {
+  width: 40px; height: 40px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text);
+  cursor: pointer;
+  display: grid; place-items: center;
+  transition: background 0.2s, border-color 0.2s;
+}
+#moreButton:hover, #moreButton[aria-expanded="true"] { background: var(--hover); border-color: var(--accent); }
+#moreMenu {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  min-width: 190px;
+  background: var(--top);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 8px;
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.55);
+  animation: moreIn 0.16s ease;
+  z-index: 1001;
+}
+@keyframes moreIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: none; }
+}
+.more-title {
+  padding: 6px 9px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.9px;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.more-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 9px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 650;
+  color: var(--text);
+}
+.more-pill {
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: var(--muted);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border);
+  padding: 3px 7px;
+  border-radius: 999px;
+}
 
 #suggestBox {
   position: fixed;
