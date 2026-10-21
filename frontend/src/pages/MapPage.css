@@ -100,7 +100,7 @@
   -webkit-backdrop-filter: blur(16px);
   box-shadow: var(--mp-shadow);
   position: relative;
-  overflow: hidden;
+  overflow: visible;
 }
 .mp-header::before {
   content: "";
@@ -170,6 +170,8 @@
   flex-direction: column;
   gap: 10px;
 }
+.mp-search-row{display:flex; align-items:stretch; gap:10px;}
+.mp-search-row .mp-search{flex:1; min-width:0;}
 .mp-search {
   position: relative;
   display: flex;

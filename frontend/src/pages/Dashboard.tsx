@@ -1,6 +1,7 @@
 import { useEffect, useState, type ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import { RECENT_KEY, RecentItem, PinItem, readPins } from "../hooks/useLocalStorage";
+import Icon from "../components/Icon";
 import "./Dashboard.css";
 
 function timeAgo(ts: number): string {
@@ -108,8 +109,8 @@ export default function Dashboard() {
         <div className="news-head">
           <div className="news-left"><h2><span className="panel-icon" style={{ color: "#f2c94c" }}><NewsIcon size={16} /></span> Updates & News</h2></div>
           <div className="news-controls">
-            <button aria-label="Prev" onClick={() => setNewsIndex((i) => (i - 1 + news.length) % news.length)}>‹</button>
-            <button aria-label="Next" onClick={() => setNewsIndex((i) => (i + 1) % news.length)}>›</button>
+            <button aria-label="Prev" onClick={() => setNewsIndex((i) => (i - 1 + news.length) % news.length)}><Icon name="chevron-left" size={16} /></button>
+            <button aria-label="Next" onClick={() => setNewsIndex((i) => (i + 1) % news.length)}><Icon name="chevron-right" size={16} /></button>
           </div>
         </div>
         <div className="news-viewport">
@@ -155,7 +156,7 @@ export default function Dashboard() {
                     <span className="li-sub">{[item.title, item.category].filter(Boolean).join(" • ")}</span>
                   )}
                 </span>
-                <span className="li-arrow">→</span>
+                <span className="li-arrow" aria-hidden><Icon name="arrow-right" size={14} /></span>
               </div>
             ))
           )}
@@ -187,7 +188,7 @@ export default function Dashboard() {
                   )}
                 </span>
                 <span className="time">{timeAgo(item.time)}</span>
-                <span className="li-arrow">→</span>
+                <span className="li-arrow" aria-hidden><Icon name="arrow-right" size={14} /></span>
               </div>
             ))
           )}

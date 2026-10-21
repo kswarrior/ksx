@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import FilterMenu from "../components/FilterMenu";
+import { SearchField, Select, type SelectOption } from "../components/ui";
 import "./JavaDownloader.css";
 
 type Project = {
@@ -13,6 +14,22 @@ type Project = {
 };
 
 const API = "https://api.modrinth.com/v2";
+
+const typeOptions: SelectOption[] = [
+  { value: "", label: "All Types" },
+  { value: "mod", label: "Mod" },
+  { value: "plugin", label: "Plugin" },
+  { value: "resourcepack", label: "Resourcepack" },
+  { value: "shader", label: "Shader" },
+  { value: "datapack", label: "Datapack" },
+];
+
+const sortOptions: SelectOption[] = [
+  { value: "relevance", label: "Relevance" },
+  { value: "downloads", label: "Downloads" },
+  { value: "newest", label: "Newest" },
+  { value: "updated", label: "Updated" },
+];
 
 export default function JavaDownloader() {
   const [query, setQuery] = useState("");
@@ -92,36 +109,53 @@ export default function JavaDownloader() {
         <header className="jd-header">
           <div className="jd-controls">
             <div className="jd-row1">
-              <input type="text" placeholder="Search by name (press Enter)" value={query} onChange={(e) => setQuery(e.target.value)} className="jd-input" onKeyDown={(e) => e.key === "Enter" && searchContent()} />
-              <button onClick={searchContent} className="jd-btn">🔍 Search</button>
+              <SearchField
+                className="jd-search"
+                value={query}
+                onValueChange={setQuery}
+                placeholder="Search by name (press Enter)"
+                ariaLabel="Search projects"
+                onKeyDown={(e) => e.key === "Enter" && searchContent()}
+              />
+              <button onClick={searchContent} className="jd-btn"><Icon name="search" size={15} /> Search</button>
               <FilterMenu activeCount={[type, loader, version, sort !== "relevance" ? sort : ""].filter(Boolean).length}>
                 <div className="jd-filter-fields">
-                  <select value={type} onChange={(e) => { setType(e.target.value); setLoader(""); }} className="jd-select">
-                    <option value="">All Types</option>
-                    <option value="mod">Mod</option>
-                    <option value="plugin">Plugin</option>
-                    <option value="resourcepack">Resourcepack</option>
-                    <option value="shader">Shader</option>
-                    <option value="datapack">Datapack</option>
-                  </select>
-                  <select value={loader} onChange={(e) => setLoader(e.target.value)} className="jd-select">
-                    <option value="">All Loaders</option>
-                    {(loaderOptions[type] || []).map((l) => (
-                      <option key={l} value={l}>{l}</option>
-                    ))}
-                  </select>
-                  <select value={version} onChange={(e) => setVersion(e.target.value)} className="jd-select">
-                    <option value="">All Versions</option>
-                    {versionsList.map((v) => (
-                      <option key={v} value={v}>{v}</option>
-                    ))}
-                  </select>
-                  <select value={sort} onChange={(e) => setSort(e.target.value)} className="jd-select">
-                    <option value="relevance">Relevance</option>
-                    <option value="downloads">Downloads</option>
-                    <option value="newest">Newest</option>
-                    <option value="updated">Updated</option>
-                  </select>
+                  <Select
+                    className="jd-select"
+                    value={type}
+                    onChange={(next) => { setType(next); setLoader(""); }}
+                    options={typeOptions}
+                    ariaLabel="Project type"
+                  />
+                  <Select
+                    className="jd-select"
+                    value={loader}
+                    onChange={setLoader}
+                    options={[
+                      { value: "", label: "All Loaders" },
+                      ...(loaderOptions[type] || []).map((l) => ({ value: l, label: l })),
+                    ]}
+                    ariaLabel="Loader"
+                  />
+                  <Select
+                    className="jd-select"
+                    value={version}
+                    onChange={setVersion}
+                    options={[
+                      { value: "", label: "All Versions" },
+                      ...versionsList.map((v) => ({ value: v, label: v })),
+                    ]}
+                    searchable
+                    searchPlaceholder="Search versions…"
+                    ariaLabel="Game version"
+                  />
+                  <Select
+                    className="jd-select"
+                    value={sort}
+                    onChange={setSort}
+                    options={sortOptions}
+                    ariaLabel="Sort by"
+                  />
                 </div>
               </FilterMenu>
             </div>
@@ -147,7 +181,7 @@ export default function JavaDownloader() {
       {showDetail && selected && (
         <div className="jd-modal" onClick={() => setShowDetail(false)}>
           <div className="jd-modal-content" onClick={(e) => e.stopPropagation()}>
-            <span className="jd-close" onClick={() => setShowDetail(false)}>&times;</span>
+            <button type="button" className="jd-close" onClick={() => setShowDetail(false)} aria-label="Close"><Icon name="close" size={18} /></button>
             <div style={{ display: "flex", gap: 16, alignItems: "center", marginBottom: 16 }}>
               <img src={selected.icon_url || "https://via.placeholder.com/64"} alt="" style={{ width: 64, height: 64, borderRadius:5, border:"1px solid rgba(255,255,255,0.12)" }} />
               <div style={{minWidth:0}}>
@@ -156,7 +190,7 @@ export default function JavaDownloader() {
               </div>
             </div>
             <button className="jd-btn" onClick={() => { if (detailData) window.open(`https://modrinth.com/${(detailData as { project_type: string }).project_type}/${(detailData as { slug: string }).slug}`, "_blank"); }}>
-              View on Modrinth ↗
+              <Icon name="external-link" size={14} /> View on Modrinth
             </button>
             <div style={{ marginTop: 16, color: "#a3a3a3", fontSize: 13, lineHeight: 1.6, whiteSpace:"pre-wrap", wordBreak:"break-word", background:"rgba(255,255,255,0.04)", border:"1px solid rgba(255,255,255,0.06)", padding:14, borderRadius:5 }}>
               {detailData ? String((detailData as { body: string }).body || "").slice(0, 2500) || "No description" : "Loading..."}

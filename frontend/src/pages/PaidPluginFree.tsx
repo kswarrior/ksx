@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import Icon from "../components/Icon";
+import { SearchField } from "../components/ui";
 import "./PaidPluginFree.css";
 
 type Plugin = { name: string; link: string };

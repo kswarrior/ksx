@@ -19,9 +19,9 @@
 .h-shell{max-width:1120px; margin:0 auto; padding:18px 16px 40px;}
 .h-header{background:rgba(15, 15, 15,0.92); border:1px solid var(--h-border); border-radius:5px; padding:12px; backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); box-shadow:0 10px 40px rgba(0, 0, 0,0.45); position:relative; overflow:visible;}
 .h-header::before{content:""; position:absolute; inset:0; border-radius:inherit; background:radial-gradient(700px 260px at 20% 0%, rgba(122, 122, 122,0.12), transparent 60%); pointer-events:none;}
-.h-kicker{position:relative; display:inline-flex; align-items:center; gap:8px; font-size:11px; letter-spacing:1.4px; font-weight:800; color:rgba(255, 255, 255,0.7); background:rgba(255, 255, 255,0.06); border:1px solid rgba(255, 255, 255,0.08); padding:6px 10px; border-radius:999px;}
+.h-kicker{position:relative; display:inline-flex; align-items:center; gap:8px; font-size:11px; letter-spacing:1.4px; font-weight:800; color:rgba(255, 255, 255,0.7); background:rgba(255, 255, 255,0.06); border:1px solid rgba(255, 255, 255,0.08); padding:6px 10px; border-radius:8px;}
 .h-kicker-dot{width:7px; height:7px; border-radius:50%; background:#898989; box-shadow:0 0 10px #898989;}
-.h-kicker-count{margin-left:6px; background:linear-gradient(135deg,#7a7a7a,#7c7c7c); color:#ffffff; padding:2px 8px; border-radius:999px; font-size:10px;}
+.h-kicker-count{margin-left:6px; background:linear-gradient(135deg,#7a7a7a,#7c7c7c); color:#ffffff; padding:2px 8px; border-radius:8px; font-size:10px;}
 .h-title{position:relative; margin:14px 0 8px; font-size:clamp(26px,5vw,38px); font-weight:900; letter-spacing:-1.2px; line-height:1;}
 .h-title span{background:linear-gradient(90deg,#9a9a9a 0%,#a0a0a0 55%,#a1a1a1 100%); -webkit-background-clip:text; background-clip:text; color:transparent;}
 .h-sub{position:relative; color:var(--h-muted); font-size:13px; line-height:1.6; max-width:620px;}
@@ -34,12 +34,12 @@
 .h-search svg{width:20px;height:20px; flex-shrink:0; stroke:#b0b0b0; stroke-width:1.9; fill:none; stroke-linecap:round;}
 .h-search input{flex:1; min-width:0; height:44px; background:transparent; border:none; outline:none; color:var(--h-text); font-size:14px; padding:0 10px;}
 .h-search input::placeholder{color:rgba(255, 255, 255,0.45);}
-.h-search-btn{width:34px;height:34px; border-radius:999px; border:1px solid rgba(255, 255, 255,0.1); background:rgba(255, 255, 255,0.06); color:#ffffff; cursor:pointer; display:grid; place-items:center; flex-shrink:0; transition:background .2s, transform .15s;}
+.h-search-btn{width:34px;height:34px; border-radius:6px; border:1px solid rgba(255, 255, 255,0.1); background:rgba(255, 255, 255,0.06); color:#ffffff; cursor:pointer; display:grid; place-items:center; flex-shrink:0; transition:background .2s, transform .15s;}
 .h-search-btn:hover{background:rgba(255, 255, 255,0.12);} .h-search-btn:active{transform:scale(0.92);}
 
 .h-filters{display:flex; gap:8px; overflow-x:auto; padding:2px 2px 2px; scrollbar-width:none; -webkit-overflow-scrolling:touch;}
 .h-filters::-webkit-scrollbar{display:none;}
-.h-filter{background:rgba(255, 255, 255,0.05); border:1px solid var(--h-border); padding:10px 14px; border-radius:999px; color:var(--h-text); font-size:13px; font-weight:700; white-space:nowrap; cursor:pointer; display:inline-flex; align-items:center; gap:7px; flex-shrink:0; transition:background .2s, border-color .2s, transform .15s;}
+.h-filter{background:rgba(255, 255, 255,0.05); border:1px solid var(--h-border); padding:10px 14px; border-radius:6px; color:var(--h-text); font-size:13px; font-weight:700; white-space:nowrap; cursor:pointer; display:inline-flex; align-items:center; gap:7px; flex-shrink:0; transition:background .2s, border-color .2s, transform .15s;}
 .h-filter.active{background:linear-gradient(135deg,#7a7a7a,#757575 60%,#7c7c7c); border-color:transparent; color:#ffffff; box-shadow:0 8px 20px rgba(122, 122, 122,0.35);}
 .h-filter:hover{border-color:var(--h-border-2); background:rgba(255, 255, 255,0.08); transform:translateY(-1px);}
 .h-select{padding:10px 14px; border-radius:5px; border:1px solid rgba(255, 255, 255,0.12); background:rgba(255, 255, 255,0.06); color:#ffffff; font-size:13px; font-weight:600; outline:none;}
@@ -50,13 +50,13 @@
 .h-card:hover{border-color:var(--h-border-2); box-shadow:0 14px 36px rgba(0, 0, 0,0.38); transform:translateY(-2px); background:rgba(23, 23, 23,0.98);}
 .h-card-top{display:flex; justify-content:space-between; align-items:center; gap:10px;}
 .h-card-name{font-weight:900; font-size:15px; letter-spacing:-0.3px; flex:1; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
-.h-card-btn{padding:8px 14px; border-radius:999px; border:1px solid rgba(255, 255, 255,0.12); background:#ffffff; color:#000000; font-size:12px; font-weight:800; cursor:pointer; text-decoration:none; transition:transform .15s, background .2s; flex-shrink:0;}
+.h-card-btn{padding:8px 14px; border-radius:6px; border:1px solid rgba(255, 255, 255,0.12); background:#ffffff; color:#000000; font-size:12px; font-weight:800; cursor:pointer; text-decoration:none; transition:transform .15s, background .2s; flex-shrink:0;}
 .h-card-btn:hover{background:#f0f0f0; transform:translateY(-1px);} .h-card-btn:active{transform:scale(0.97);}
 .h-specs{display:flex; gap:10px; flex-wrap:wrap; font-size:12px; color:var(--h-muted);}
 .h-specs b{color:var(--h-text); font-weight:800;}
-.h-specs span{background:rgba(255, 255, 255,0.05); border:1px solid rgba(255, 255, 255,0.06); padding:5px 9px; border-radius:999px; display:inline-flex; gap:6px; align-items:center;}
+.h-specs span{background:rgba(255, 255, 255,0.05); border:1px solid rgba(255, 255, 255,0.06); padding:5px 9px; border-radius:8px; display:inline-flex; gap:6px; align-items:center;}
 .h-card-bottom{display:flex; justify-content:space-between; align-items:center; gap:10px; font-size:12px; color:var(--h-muted); border-top:1px solid rgba(255, 255, 255,0.06); padding-top:10px;}
-.h-tag{padding:5px 10px; border-radius:999px; font-size:11px; font-weight:900; letter-spacing:0.3px;}
+.h-tag{padding:5px 10px; border-radius:8px; font-size:11px; font-weight:900; letter-spacing:0.3px;}
 .h-tag.good{background:rgba(34,197,94,.15); color:#4ade80; border:1px solid rgba(34,197,94,.25);}
 .h-tag.warn{background:rgba(245,158,11,.14); color:#fbbf24; border:1px solid rgba(245,158,11,.25);}
 .h-tag.bad{background:rgba(239,68,68,.14); color:#f87171; border:1px solid rgba(239,68,68,.25);}

@@ -17,7 +17,7 @@
 .jd-shell{max-width:1120px; margin:0 auto; padding:18px 16px 40px;}
 .jd-header{background:rgba(15, 15, 15,0.92); border:1px solid var(--jd-border); border-radius:5px; padding:12px; backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); box-shadow:0 10px 40px rgba(0, 0, 0,0.45); position:relative; overflow:visible;}
 .jd-header::before{content:""; position:absolute; inset:0; border-radius:inherit; background:radial-gradient(700px 260px at 20% 0%, rgba(137, 137, 137,0.10), transparent 60%); pointer-events:none;}
-.jd-kicker{position:relative; display:inline-flex; align-items:center; gap:8px; font-size:11px; letter-spacing:1.4px; font-weight:800; color:rgba(255, 255, 255,0.7); background:rgba(255, 255, 255,0.06); border:1px solid rgba(255, 255, 255,0.08); padding:6px 10px; border-radius:999px;}
+.jd-kicker{position:relative; display:inline-flex; align-items:center; gap:8px; font-size:11px; letter-spacing:1.4px; font-weight:800; color:rgba(255, 255, 255,0.7); background:rgba(255, 255, 255,0.06); border:1px solid rgba(255, 255, 255,0.08); padding:6px 10px; border-radius:8px;}
 .jd-kicker-dot{width:7px;height:7px; border-radius:50%; background:#898989; box-shadow:0 0 10px #898989;}
 .jd-title{position:relative; margin:14px 0 8px; font-size:clamp(24px,5vw,36px); font-weight:900; letter-spacing:-1.2px; line-height:1;}
 .jd-title span{background:linear-gradient(90deg,#a7a7a7 0%,#9a9a9a 55%,#a0a0a0 100%); -webkit-background-clip:text; background-clip:text; color:transparent;}
@@ -29,7 +29,7 @@
 .jd-select:focus, .jd-input:focus{border-color:rgba(137, 137, 137,0.4); background:rgba(255, 255, 255,0.08); box-shadow:0 0 0 4px rgba(137, 137, 137,0.12);}
 .jd-select{appearance:none; padding-right:32px; background-image:url("data:image/svg+xml;charset=UTF-8,%3Csvg fill='%23ffffff' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 10px center; background-size:16px;}
 .jd-input{flex:1; min-width:160px;}
-.jd-btn{padding:11px 18px; background:#ffffff; color:#000000; border:none; border-radius:999px; font-weight:800; font-size:13px; cursor:pointer; transition:transform .15s, background .2s; display:inline-flex; align-items:center; gap:8px;}
+.jd-btn{padding:11px 18px; background:#ffffff; color:#000000; border:none; border-radius:6px; font-weight:800; font-size:13px; cursor:pointer; transition:transform .15s, background .2s; display:inline-flex; align-items:center; gap:8px;}
 .jd-btn:hover{background:#f0f0f0; transform:translateY(-1px);} .jd-btn:active{transform:scale(0.97);}
 .jd-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:14px; margin-top:16px;}
 .jd-card{background:var(--jd-card); border:1px solid var(--jd-border); border-radius:5px; padding:16px; display:flex; gap:14px; cursor:pointer; contain:layout paint style; content-visibility:auto; contain-intrinsic-size:140px; transition:border-color .2s, box-shadow .2s, transform .18s, background .2s;}
@@ -45,7 +45,7 @@
 .jd-empty{text-align:center; padding:34px 18px; background:rgba(15, 15, 15,0.9); border:1px solid var(--jd-border); border-radius:5px; color:var(--jd-muted); font-size:13px;}
 .jd-modal{position:fixed; inset:0; background:rgba(0, 0, 0,0.62); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); z-index:1000; display:flex; align-items:center; justify-content:center; padding:16px;}
 .jd-modal-content{background:rgba(19, 19, 19,0.98); border:1px solid var(--jd-border); border-radius:5px; padding:20px; width:100%; max-width:780px; max-height:90vh; overflow:auto; box-shadow:0 20px 60px rgba(0, 0, 0,0.5);}
-.jd-close{float:right; font-size:24px; cursor:pointer; width:36px; height:36px; display:grid; place-items:center; border-radius:999px; background:rgba(255, 255, 255,0.06); border:1px solid var(--jd-border); transition:background .2s;}
+.jd-close{float:right; font-size:24px; cursor:pointer; width:36px; height:36px; display:grid; place-items:center; border-radius:6px; background:rgba(255, 255, 255,0.06); border:1px solid var(--jd-border); transition:background .2s;}
 .jd-close:hover{background:rgba(255, 255, 255,0.1);}
 @media(max-width:768px){
   .jd-bg-orb{display:none !important;}

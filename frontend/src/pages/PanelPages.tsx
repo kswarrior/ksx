@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Icon, { type IconName } from "../components/Icon";
 import "./Panel.css";
 
 type PanelProps = {
@@ -6,14 +7,14 @@ type PanelProps = {
   subtitle?: string;
   kicker?: string;
   links?: { label: string; href: string }[];
-  commands: { label: string; code: string }[];
+  commands: { label: string; code: string; icon?: IconName }[];
 };
 
-function CopySection({ label, code }: { label: string; code: string }) {
+function CopySection({ label, code, icon }: { label: string; code: string; icon?: IconName }) {
   const [copied, setCopied] = useState(false);
   return (
     <div className="p-card">
-      <h2>{label}</h2>
+      <h2>{icon && <Icon name={icon} size={16} />} {label}</h2>
       <pre className="codespre">{code}</pre>
       <div style={{ display: "flex", alignItems: "center", marginTop: 12, flexWrap: "wrap", gap: 8 }}>
         <button
@@ -24,9 +25,9 @@ function CopySection({ label, code }: { label: string; code: string }) {
             setTimeout(() => setCopied(false), 1200);
           }}
         >
-          ⎘ Copy Command
+          <Icon name={copied ? "check" : "copy"} size={14} /> {copied ? "Copied" : "Copy Command"}
         </button>
-        <span className={`copied ${copied ? "show" : ""}`}>Copied ✓</span>
+        <span className={`copied ${copied ? "show" : ""}`}><Icon name="check" size={12} /> Copied</span>
       </div>
     </div>
   );
@@ -43,18 +44,18 @@ export default function PanelPages({ title, subtitle, kicker, links, commands }:
       <div className="p-shell">
         {links && links.length > 0 && (
           <div className="p-card">
-            <h2>🔗 Useful Links</h2>
+            <h2><Icon name="link" size={16} /> Useful Links</h2>
             <div className="p-links" style={{ marginTop: 10 }}>
               {links.map((l) => (
                 <button key={l.href} className="panel-btn" onClick={() => window.open(l.href, "_blank")}>
-                  {l.label} ↗
+                  {l.label} <Icon name="external-link" size={12} />
                 </button>
               ))}
             </div>
           </div>
         )}
         {commands.map((c) => (
-          <CopySection key={c.label} label={c.label} code={c.code} />
+          <CopySection key={c.label} label={c.label} code={c.code} icon={c.icon} />
         ))}
       </div>
     </div>
@@ -73,8 +74,8 @@ export function PterodactylPage() {
         { label: "YouTube Tutorials", href: "https://youtube.com/results?search_query=pterodactyl+panel+install" },
       ]}
       commands={[
-        { label: "🚀 Install Pterodactyl Panel", code: "bash <(curl -sSL https://ksweb.vercel.app/code/moh/pterodactyl/panel)" },
-        { label: "🛰️ Install Wings", code: "bash <(curl -sSL https://ksweb.vercel.app/code/moh/pterodactyl/wings)" },
+        { label: "Install Pterodactyl Panel", icon: "rocket", code: "bash <(curl -sSL https://ksweb.vercel.app/code/moh/pterodactyl/panel)" },
+        { label: "Install Wings", icon: "satellite", code: "bash <(curl -sSL https://ksweb.vercel.app/code/moh/pterodactyl/wings)" },
       ]}
     />
   );
@@ -87,7 +88,7 @@ export function PufferPage() {
       kicker="MAKE HOSTING • PUFFER"
       subtitle="Lightweight, fast & modern panel — perfect for small VPS & free hosts."
       commands={[
-        { label: "📦 Install PufferPanel", code: "bash <(curl -sSL https://ksweb.vercel.app/code/moh/puffer/install)" },
+        { label: "Install PufferPanel", icon: "package", code: "bash <(curl -sSL https://ksweb.vercel.app/code/moh/puffer/install)" },
       ]}
     />
   );
@@ -100,7 +101,7 @@ export function SkyportPage() {
       kicker="MAKE HOSTING • SKYPORT"
       subtitle="Next-gen Skyport — sleek UI, blazing fast, easy deploy."
       commands={[
-        { label: "☁️ Install Skyport", code: "bash <(curl -sSL https://ksweb.vercel.app/code/moh/skyport/install)" },
+        { label: "Install Skyport", icon: "cloud", code: "bash <(curl -sSL https://ksweb.vercel.app/code/moh/skyport/install)" },
       ]}
     />
   );
