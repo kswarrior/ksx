@@ -90,7 +90,7 @@ export default function CustomIP() {
             </div>
             <div className="ci-result">
               {loading && <p>🔍 Fetching data...</p>}
-              {error && <p style={{ color: "#f5f5f5", fontWeight: 800 }}>{error}</p>}
+              {error && <p style={{ color: "#f87171", fontWeight: 800 }}>{error}</p>}
               {result && (
                 <>
                   <p><b>IP Address:</b> <span>{result.ip} <button className="ci-copy" onClick={() => copyToClipboard(result.ip)}>{copied?"Copied ✓":"Copy"}</button></span></p>

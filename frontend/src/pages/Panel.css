@@ -32,7 +32,7 @@
 .panel-btn:active{transform:scale(0.97);}
 .panel-btn.primary{background:#ffffff; color:#000000; border-color:transparent;}
 .panel-btn.primary:hover{background:#f0f0f0;}
-.copied{margin-left:10px; font-size:12px; font-weight:800; color:#a7a7a7; opacity:0; transition:opacity .25s;}
+.copied{margin-left:10px; font-size:12px; font-weight:800; color:#4ade80; opacity:0; transition:opacity .25s;}
 .copied.show{opacity:1;}
 .p-links{display:flex; gap:10px; flex-wrap:wrap;}
 @media(max-width:768px){
