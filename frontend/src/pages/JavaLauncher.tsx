@@ -160,7 +160,7 @@ export default function JavaLauncher() {
             </article>
           ))}
         </div>
-        {filtered.length===0 && <div style={{textAlign:"center", padding:32, color:"var(--jl-muted)", background:"rgba(14,14,24,0.9)", border:"1px solid var(--jl-border)", borderRadius:5, marginTop:14}}>No launchers match search.</div>}
+        {filtered.length===0 && <div style={{textAlign:"center", padding:32, color:"var(--jl-muted)", background:"rgba(14,14,14,0.9)", border:"1px solid var(--jl-border)", borderRadius:5, marginTop:14}}>No launchers match search.</div>}
       </div>
     </div>
   );

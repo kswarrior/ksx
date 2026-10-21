@@ -26,7 +26,7 @@ export default function GenericPlaceholder() {
           <p style={{color:"var(--ab-muted)", fontSize:13, lineHeight:1.6}}>
             Original file: <code style={{background:"rgba(255,255,255,0.06)", padding:"2px 6px", borderRadius:5}}>{path.endsWith(".html") ? path : `${path}.html`}</code> — migrating to React Router.
           </p>
-          <pre style={{marginTop:14, background:"rgba(10,10,18,0.96)", padding:14, borderRadius:5, overflow:"auto", border:"1px solid rgba(255,255,255,0.09)", fontSize:12, textAlign:"left", color:"#d4d4d4"}}>
+          <pre style={{marginTop:14, background:"rgba(10,10,10,0.96)", padding:14, borderRadius:5, overflow:"auto", border:"1px solid rgba(255,255,255,0.09)", fontSize:12, textAlign:"left", color:"#d4d4d4"}}>
             {JSON.stringify(params, null, 2)}
           </pre>
           <div className="ab-actions" style={{marginTop:16}}>

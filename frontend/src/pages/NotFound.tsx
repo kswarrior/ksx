@@ -10,15 +10,10 @@ export default function NotFound() {
         <div className="ab-bg-orb o2" />
       </div>
       <div className="ab-shell">
-        <header className="ab-header">
-          <div className="ab-kicker"><span className="ab-kicker-dot" /> 404 • NOT FOUND</div>
-          <h1 className="ab-title">404</h1>
-          <p className="ab-sub">Page not found — check the map for available pages.</p>
-        </header>
         <div className="ab-card">
-          <div style={{fontSize:40, marginBottom:8}}>🔍</div>
-          <div style={{fontWeight:900, marginBottom:6}}>Oops, missing page</div>
-          <p style={{color:"var(--ab-muted)", fontSize:13}}>The URL you visited doesn’t exist.</p>
+          <div className="ab-status-code">404</div>
+          <div className="ab-status-title">Page not found</div>
+          <p className="ab-status-text">The URL you visited doesn’t exist. Check the map for available pages.</p>
           <div className="ab-actions">
             <Link to="/dashboard" className="ab-btn primary">Go to Dashboard</Link>
             <Link to="/map" className="ab-btn">Browse Map</Link>

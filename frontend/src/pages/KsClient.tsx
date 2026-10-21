@@ -35,7 +35,7 @@ export default function KsClient() {
             ))}
           </div>
           <div style={{marginTop:14, display:"flex", gap:10, flexWrap:"wrap"}}>
-            <a href="https://www.mediafire.com/file/o78xzmld09b5nw9/KS_Client_V3.mcpack/file" target="_blank" rel="noreferrer" className="ks-dl" style={{background:"linear-gradient(135deg,#8b5cf6,#3b82f6)", color:"#fff", borderColor:"transparent"}}>Get KS Client V3 ↗</a>
+            <a href="https://www.mediafire.com/file/o78xzmld09b5nw9/KS_Client_V3.mcpack/file" target="_blank" rel="noreferrer" className="ks-dl" style={{background:"#fff", color:"#000", borderColor:"transparent"}}>Get KS Client V3 ↗</a>
             <span style={{fontSize:12, color:"var(--ks-muted)", alignSelf:"center"}}>Tap to download • Import in Minecraft PE</span>
           </div>
         </div>
