@@ -1,5 +1,3 @@
-The ultimate Minecraft hub — free hosting lists, VPS picks, launchers, mod downloaders, server setups & more. Built with ❤️ for the community. Fast, stylish, lag-less.
-
 ## KS Warrior Hub
 
 One hub for Minecraft • Website • Hosting • VPS • AI — many builds, many tools, one KS Hub. Explore everything from the [map](/map), pin pages, stay updated.
