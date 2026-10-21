@@ -24,9 +24,6 @@ export default function VpsHostingPage() {
       </div>
       <div className="v-shell">
         <header className="v-header">
-          <div className="v-kicker"><span className="v-kicker-dot" /> VPS • HOSTING <span className="v-kicker-count">{list.length} providers</span></div>
-          <h1 className="v-title">Free VPS <span>List</span></h1>
-          <p className="v-sub">Zero-cost VPS for dev, bots & servers. Search instantly, check RAM/CPU/disk & renew/sudo status.</p>
           <div className="v-search-wrap">
             <div className="v-search">
               <svg viewBox="0 0 24 24" aria-hidden><circle cx="11" cy="11" r="6.5"/><path d="M16 16 L20 20"/></svg>

@@ -147,9 +147,6 @@ export default function MapPage() {
       <div className="map-page">
         <div className="mp-shell">
           <div className="mp-header mp-skeleton-header">
-            <div className="sk sk-title" />
-            <div className="sk sk-sub" />
-            <div className="sk sk-search" />
             <div className="sk-pills">
               <span className="sk sk-pill" />
               <span className="sk sk-pill" />
@@ -202,21 +199,8 @@ export default function MapPage() {
       </div>
 
       <div className="mp-shell">
-        {/* header */}
+        {/* toolbar */}
         <header className="mp-header">
-          <div className="mp-kicker">
-            <span className="mp-kicker-dot" />
-            KS WARRIOR • SITEMAP
-            <span className="mp-kicker-count">{totalPages} pages</span>
-          </div>
-
-          <h1 className="mp-title">
-            Network <span>Map</span>
-          </h1>
-          <p className="mp-sub">
-            Explore everything — Minecraft, VPS, panels & tools. Search or filter, tap any card to jump in.
-          </p>
-
           {/* search */}
           <div className="mp-search-wrap">
             <div className="mp-search">
