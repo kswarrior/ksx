@@ -255,7 +255,7 @@ async function getInstagramStats(config: ResolvedConfig): Promise<SocialStat> {
   if (config.instagramAccessToken && config.instagramUserId) {
     try {
       const graphUrl =
-        `https://graph.facebook.com/v21.0/${encodeURIComponent(config.instagramUserId)}` +
+        `https://graph.facebook.com/v23.0/${encodeURIComponent(config.instagramUserId)}` +
         "?fields=followers_count,username" +
         `&access_token=${encodeURIComponent(config.instagramAccessToken)}`;
       const res = await fetchWithTimeout(graphUrl, { headers: { Accept: "application/json" } });
