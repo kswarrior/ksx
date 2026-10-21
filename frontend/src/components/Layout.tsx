@@ -1,8 +1,16 @@
-import { useEffect, useState, useRef } from "react";
+import { Suspense, useCallback, useEffect, useState, useRef } from "react";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { api, SearchItem } from "../lib/api";
 import { FAV_KEY, LAST_PAGE_KEY, RECENT_KEY, MAX_RECENT, RecentItem, FavItem } from "../hooks/useLocalStorage";
 import "./Layout.css";
+
+function PageSpinner() {
+  return (
+    <div style={{ display: "grid", placeItems: "center", minHeight: "50vh", color: "var(--muted)" }}>
+      <div style={{ width: 36, height: 36, border: "3px solid rgba(255,255,255,0.12)", borderTopColor: "#3b82f6", borderRadius: "50%", animation: "spin 0.8s linear infinite" }} />
+    </div>
+  );
+}
 
 export default function Layout() {
   const [sitemap, setSitemap] = useState<SearchItem[]>([]);
@@ -18,27 +26,40 @@ export default function Layout() {
   const searchRef = useRef<HTMLInputElement>(null);
   const suggestRef = useRef<HTMLUListElement>(null);
 
-  // Load sitemap flat for search
-  useEffect(() => {
-    api.getSitemap().then((data) => {
-      const flat: SearchItem[] = [];
-      data.forEach((cat) => {
-        cat.sections.forEach((sec) => {
-          sec.pages.forEach((p) => {
-            flat.push({
-              category: cat.category,
-              icon: cat.icon,
-              title: sec.title,
-              name: p.name,
-              url: p.url,
-              logo: p.logo,
+  // Defer sitemap loading so it never competes with first paint
+  const sitemapRequested = useRef(false);
+  const loadSitemap = useCallback(() => {
+    if (sitemapRequested.current) return;
+    sitemapRequested.current = true;
+    api
+      .getSitemap()
+      .then((data) => {
+        const flat: SearchItem[] = [];
+        data.forEach((cat) => {
+          cat.sections.forEach((sec) => {
+            sec.pages.forEach((p) => {
+              flat.push({
+                category: cat.category,
+                icon: cat.icon,
+                title: sec.title,
+                name: p.name,
+                url: p.url,
+                logo: p.logo,
+              });
             });
           });
         });
+        setSitemap(flat);
+      })
+      .catch(() => {
+        sitemapRequested.current = false;
       });
-      setSitemap(flat);
-    });
   }, []);
+
+  useEffect(() => {
+    const id = window.setTimeout(loadSitemap, 1200);
+    return () => window.clearTimeout(id);
+  }, [loadSitemap]);
 
   // Persist last page + fav detection
   useEffect(() => {
@@ -125,6 +146,7 @@ export default function Layout() {
   };
 
   const toggleFav = () => {
+    loadSitemap();
     const curUrl = location.pathname;
     const cur = sitemap.find((s) => s.url === curUrl);
     const curName = cur?.name ?? curUrl;

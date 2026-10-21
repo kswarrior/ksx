@@ -34,53 +34,52 @@ export default function App() {
     <BrowserRouter>
       <Routes>
         <Route element={<Layout />}>
-            <Route index element={<Dashboard />} />
-            <Route path="dashboard" element={<Dashboard />} />
-            <Route path="" element={<Dashboard />} />
-            <Route path="map" element={<MapPage />} />
-            <Route path="social" element={<Social />} />
-            <Route path="about" element={<About />} />
+          <Route index element={<Dashboard />} />
+          <Route path="dashboard" element={<Dashboard />} />
+          <Route path="" element={<Dashboard />} />
+          <Route path="map" element={<MapPage />} />
+          <Route path="social" element={<Social />} />
+          <Route path="about" element={<About />} />
 
-            <Route path="minecraft/hosting/free" element={<MinecraftHosting />} />
-            <Route path="minecraft/hosting/free.html" element={<MinecraftHosting />} />
-            <Route path="vps/hosting/free" element={<VpsHosting />} />
-            <Route path="vps/hosting/list/free" element={<VpsHosting />} />
-            <Route path="vps/hosting/list/free.html" element={<VpsHosting />} />
+          <Route path="minecraft/hosting/free" element={<MinecraftHosting />} />
+          <Route path="minecraft/hosting/free.html" element={<MinecraftHosting />} />
+          <Route path="vps/hosting/free" element={<VpsHosting />} />
+          <Route path="vps/hosting/list/free" element={<VpsHosting />} />
+          <Route path="vps/hosting/list/free.html" element={<VpsHosting />} />
 
-            <Route path="minecraft/make-hosting/pterodactyl" element={<PterodactylPage />} />
-            <Route path="minecraft/make-hosting/pterodactyl.html" element={<PterodactylPage />} />
-            <Route path="minecraft/make-hosting/puffer" element={<PufferPage />} />
-            <Route path="minecraft/make-hosting/puffer.html" element={<PufferPage />} />
-            <Route path="minecraft/make-hosting/skyport" element={<SkyportPage />} />
-            <Route path="minecraft/make-hosting/skyport.html" element={<SkyportPage />} />
+          <Route path="minecraft/make-hosting/pterodactyl" element={<PterodactylPage />} />
+          <Route path="minecraft/make-hosting/pterodactyl.html" element={<PterodactylPage />} />
+          <Route path="minecraft/make-hosting/puffer" element={<PufferPage />} />
+          <Route path="minecraft/make-hosting/puffer.html" element={<PufferPage />} />
+          <Route path="minecraft/make-hosting/skyport" element={<SkyportPage />} />
+          <Route path="minecraft/make-hosting/skyport.html" element={<SkyportPage />} />
 
-            <Route path="minecraft/java/launcher" element={<JavaLauncher />} />
-            <Route path="minecraft/java/launcher.html" element={<JavaLauncher />} />
-            <Route path="minecraft/java/downloader" element={<JavaDownloader />} />
-            <Route path="minecraft/java/downloader.html" element={<JavaDownloader />} />
-            <Route path="minecraft/bedrock/ks-client" element={<KsClient />} />
-            <Route path="minecraft/bedrock/ks-client.html" element={<KsClient />} />
-            <Route path="minecraft/server/statics" element={<ServerInfo />} />
-            <Route path="minecraft/server/statics.html" element={<ServerInfo />} />
-            <Route path="minecraft/server/bot" element={<BotPage />} />
-            <Route path="minecraft/server/bot.html" element={<BotPage />} />
-            <Route path="minecraft/make-server/setup-server-in-vps" element={<SetupServer />} />
-            <Route path="minecraft/make-server/setup-server-in-vps.html" element={<SetupServer />} />
-            <Route path="minecraft/make-server/server.jar-downloader" element={<ServerJarDownloader />} />
-            <Route path="minecraft/make-server/server.jar-downloader.html" element={<ServerJarDownloader />} />
-            <Route path="minecraft/make-server/paid-plugin-free" element={<PaidPluginFree />} />
-            <Route path="minecraft/make-server/paid-plugin-free.html" element={<PaidPluginFree />} />
-            <Route path="minecraft/make-server/custom-ip" element={<CustomIP />} />
-            <Route path="minecraft/make-server/custom-ip.html" element={<CustomIP />} />
+          <Route path="minecraft/java/launcher" element={<JavaLauncher />} />
+          <Route path="minecraft/java/launcher.html" element={<JavaLauncher />} />
+          <Route path="minecraft/java/downloader" element={<JavaDownloader />} />
+          <Route path="minecraft/java/downloader.html" element={<JavaDownloader />} />
+          <Route path="minecraft/bedrock/ks-client" element={<KsClient />} />
+          <Route path="minecraft/bedrock/ks-client.html" element={<KsClient />} />
+          <Route path="minecraft/server/statics" element={<ServerInfo />} />
+          <Route path="minecraft/server/statics.html" element={<ServerInfo />} />
+          <Route path="minecraft/server/bot" element={<BotPage />} />
+          <Route path="minecraft/server/bot.html" element={<BotPage />} />
+          <Route path="minecraft/make-server/setup-server-in-vps" element={<SetupServer />} />
+          <Route path="minecraft/make-server/setup-server-in-vps.html" element={<SetupServer />} />
+          <Route path="minecraft/make-server/server.jar-downloader" element={<ServerJarDownloader />} />
+          <Route path="minecraft/make-server/server.jar-downloader.html" element={<ServerJarDownloader />} />
+          <Route path="minecraft/make-server/paid-plugin-free" element={<PaidPluginFree />} />
+          <Route path="minecraft/make-server/paid-plugin-free.html" element={<PaidPluginFree />} />
+          <Route path="minecraft/make-server/custom-ip" element={<CustomIP />} />
+          <Route path="minecraft/make-server/custom-ip.html" element={<CustomIP />} />
 
-            {/* Fallback for legacy .html with generic handler */}
-            <Route path="minecraft/*" element={<GenericPlaceholder />} />
-            <Route path="vps/*" element={<GenericPlaceholder />} />
+          {/* Fallback for legacy .html with generic handler */}
+          <Route path="minecraft/*" element={<GenericPlaceholder />} />
+          <Route path="vps/*" element={<GenericPlaceholder />} />
 
-            <Route path="*" element={<NotFound />} />
-          </Route>
-        </Routes>
-      </Suspense>
+          <Route path="*" element={<NotFound />} />
+        </Route>
+      </Routes>
     </BrowserRouter>
   );
 }
