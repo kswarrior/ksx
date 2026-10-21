@@ -229,25 +229,25 @@ export default function Layout() {
           </svg>
         </button>
 
-        <div
-          id="favButton"
-          title={isFav ? "Remove from Favorites" : "Add to Favorites"}
-          onClick={toggleFav}
-          className={isFav ? "filled" : ""}
-          aria-label="Favorite"
-        >
-          {isFav ? (
-            <svg className="fav-svg" width="18" height="18" fill="#F5F5F5" stroke="#F5F5F5" strokeWidth={1} viewBox="0 0 24 24">
-              <path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.778 1.4 8.164L12 18.897l-7.334 3.855 1.4-8.164L.132 9.21l8.2-1.192z" />
-            </svg>
-          ) : (
-            <svg className="fav-svg" width="18" height="18" fill="none" stroke="#F5F5F5" strokeWidth={2} viewBox="0 0 24 24">
-              <path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.778 1.4 8.164L12 18.897l-7.334 3.855 1.4-8.164L.132 9.21l8.2-1.192z" />
-            </svg>
-          )}
-        </div>
-
         <div id="control-right">
+          <div
+            id="favButton"
+            title={isFav ? "Remove from Favorites" : "Add to Favorites"}
+            onClick={toggleFav}
+            className={isFav ? "filled" : ""}
+            aria-label="Favorite"
+          >
+            {isFav ? (
+              <svg className="fav-svg" width="18" height="18" fill="#F5F5F5" stroke="#F5F5F5" strokeWidth={1} viewBox="0 0 24 24">
+                <path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.778 1.4 8.164L12 18.897l-7.334 3.855 1.4-8.164L.132 9.21l8.2-1.192z" />
+              </svg>
+            ) : (
+              <svg className="fav-svg" width="18" height="18" fill="none" stroke="#F5F5F5" strokeWidth={2} viewBox="0 0 24 24">
+                <path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.778 1.4 8.164L12 18.897l-7.334 3.855 1.4-8.164L.132 9.21l8.2-1.192z" />
+              </svg>
+            )}
+          </div>
+
           <div className="search-container">
             <div
               id="searchTrigger"
