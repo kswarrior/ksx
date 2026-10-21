@@ -265,7 +265,7 @@ export default function Layout() {
                 e.stopPropagation();
                 setSearchActive(true);
                 loadSitemap();
-                setTimeout(() => searchRef.current?.focus(), 50);
+                requestAnimationFrame(() => searchRef.current?.focus({ preventScroll: true }));
               }}
             >
               <svg className="search-svg" viewBox="0 0 24 24" aria-hidden="true">
