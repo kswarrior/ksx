@@ -112,14 +112,12 @@ export default function Layout() {
     } catch { /* ignore */ }
   };
 
-  // Keep sidebar always open on desktop
+  // Close the drawer when switching to mobile; desktop keeps user's toggle
   useEffect(() => {
     const mql = window.matchMedia("(min-width: 900px)");
     const onChange = (e: MediaQueryListEvent) => {
-      setSidebarOpen(e.matches);
+      if (!e.matches) setSidebarOpen(false);
     };
-    // sync on mount (in case of resize before mount)
-    if (mql.matches) setSidebarOpen(true);
     mql.addEventListener("change", onChange);
     return () => mql.removeEventListener("change", onChange);
   }, []);
@@ -223,10 +221,13 @@ export default function Layout() {
   return (
     <>
       <div id="topbar" className={searchActive ? "search-active" : ""}>
-        <Link to="/" className="logo">
-          <img src="/image/ks-logo.webp" alt="Logo" onError={(e) => ((e.currentTarget.style.display = "none"))} />
-        </Link>
-        <div className="owner-name">❰🔹❰❰ 𝑲𝑺 𝑾𝒂𝒓𝒓𝒊𝒐𝒓 ❱❱🔹❱</div>
+        <button id="hamburger" aria-label="Menu" onClick={() => setSidebarOpen((o) => !o)}>
+          <svg className="menu-svg" viewBox="0 0 24 24" aria-hidden="true">
+            <line x1="4" y1="6" x2="20" y2="6" />
+            <line x1="4" y1="12" x2="20" y2="12" />
+            <line x1="4" y1="18" x2="20" y2="18" />
+          </svg>
+        </button>
 
         <div
           id="favButton"
@@ -275,14 +276,6 @@ export default function Layout() {
               onFocus={() => { setSearchActive(true); loadSitemap(); }}
             />
           </div>
-
-          <button id="hamburger" aria-label="Menu" onClick={() => { if (!isDesktop()) setSidebarOpen((o) => !o); }}>
-            <svg className="menu-svg" viewBox="0 0 24 24" aria-hidden="true">
-              <line x1="4" y1="6" x2="20" y2="6" />
-              <line x1="4" y1="12" x2="20" y2="12" />
-              <line x1="4" y1="18" x2="20" y2="18" />
-            </svg>
-          </button>
         </div>
       </div>
 
