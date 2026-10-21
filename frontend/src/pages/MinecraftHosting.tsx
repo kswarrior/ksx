@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { api, MinecraftHosting } from "../lib/api";
+import FilterMenu from "../components/FilterMenu";
 import "./Hosting.css";
 
 export default function MinecraftHostingPage() {
@@ -40,33 +41,37 @@ export default function MinecraftHostingPage() {
       <div className="h-shell">
         <header className="h-header">
           <div className="h-search-wrap">
-            <div className="h-search">
-              <svg viewBox="0 0 24 24" aria-hidden><circle cx="11" cy="11" r="6.5"/><path d="M16 16 L20 20"/></svg>
-              <input placeholder="Search hosting name…" value={q} onChange={(e)=>setQ(e.target.value)} aria-label="Search hosting" spellCheck={false} />
-              {q && <button className="h-search-btn" onClick={()=>setQ("")} aria-label="Clear">✕</button>}
-            </div>
-            <div className="h-filters">
-              <select className="h-select" value={uptime} onChange={(e)=>setUptime(e.target.value)} aria-label="Uptime">
-                <option value="">Uptime • All</option>
-                <option value="good">24/7 only</option>
-                <option value="danger">non-24/7</option>
-              </select>
-              <select className="h-select" value={location} onChange={(e)=>setLocation(e.target.value)} aria-label="Location">
-                <option value="">Location • All</option>
-                <option value="india">India</option>
-                <option value="singapore">Singapore</option>
-                <option value="france">France</option>
-                <option value="germany">Germany</option>
-                <option value="usa">USA</option>
-              </select>
-              <select className="h-select" value={ram} onChange={(e)=>setRam(e.target.value)} aria-label="RAM">
-                <option value="">RAM • All</option>
-                <option value="1">≥1 GB</option>
-                <option value="2">≥2 GB</option>
-                <option value="4">≥4 GB</option>
-                <option value="6">≥6 GB</option>
-              </select>
-              {(q||uptime||location||ram) && <button className="h-filter" onClick={clearFilters}>Clear ✕</button>}
+            <div className="h-search-row">
+              <div className="h-search">
+                <svg viewBox="0 0 24 24" aria-hidden><circle cx="11" cy="11" r="6.5"/><path d="M16 16 L20 20"/></svg>
+                <input placeholder="Search hosting name…" value={q} onChange={(e)=>setQ(e.target.value)} aria-label="Search hosting" spellCheck={false} />
+                {q && <button className="h-search-btn" onClick={()=>setQ("")} aria-label="Clear">✕</button>}
+              </div>
+              <FilterMenu activeCount={[uptime, location, ram].filter(Boolean).length}>
+                <div className="h-filters">
+                  <select className="h-select" value={uptime} onChange={(e)=>setUptime(e.target.value)} aria-label="Uptime">
+                    <option value="">Uptime • All</option>
+                    <option value="good">24/7 only</option>
+                    <option value="danger">non-24/7</option>
+                  </select>
+                  <select className="h-select" value={location} onChange={(e)=>setLocation(e.target.value)} aria-label="Location">
+                    <option value="">Location • All</option>
+                    <option value="india">India</option>
+                    <option value="singapore">Singapore</option>
+                    <option value="france">France</option>
+                    <option value="germany">Germany</option>
+                    <option value="usa">USA</option>
+                  </select>
+                  <select className="h-select" value={ram} onChange={(e)=>setRam(e.target.value)} aria-label="RAM">
+                    <option value="">RAM • All</option>
+                    <option value="1">≥1 GB</option>
+                    <option value="2">≥2 GB</option>
+                    <option value="4">≥4 GB</option>
+                    <option value="6">≥6 GB</option>
+                  </select>
+                  {(q||uptime||location||ram) && <button className="h-filter" onClick={clearFilters}>Clear filters ✕</button>}
+                </div>
+              </FilterMenu>
             </div>
             <div className="h-stats">{loading ? "Loading…" : <><strong>{filtered.length}</strong> of <strong>{data.length}</strong> providers</>}</div>
           </div>
