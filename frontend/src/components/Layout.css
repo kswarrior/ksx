@@ -211,6 +211,10 @@
 .s-title { display: flex; align-items: center; gap: 10px; font-size: 13.5px; font-weight: 800; color: var(--text); padding: 8px 16px 6px; cursor: default; letter-spacing: -0.2px; }
 .s-title-icon { width: 22px; height: 22px; display: grid; place-items: center; flex-shrink: 0; color: var(--accent); }
 .s-title-icon svg { width: 18px; height: 18px; display: block; }
+#suggestBox .s-category { padding: 16px 16px 8px; cursor: default; }
+#suggestBox .s-title { padding: 8px 16px 6px; cursor: default; }
+#suggestBox .s-category:hover,
+#suggestBox .s-title:hover { background: transparent; }
 .s-page {
   display: flex;
   align-items: center;
