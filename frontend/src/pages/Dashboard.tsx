@@ -28,9 +28,9 @@ export default function Dashboard() {
   }, []);
 
   const news: NewsItem[] = [
-    { title: "KS Website 3.0", desc: "New glass UI, faster search and a lighter build — made for the whole KS ecosystem.", icon: "✨", gradient: "linear-gradient(135deg,#3b82f6 0%,#8b5cf6 100%)" },
-    { title: "Explore Everything", desc: "Minecraft, Hosting, VPS, Website tools & AI — all in one place.", icon: "🌐", gradient: "linear-gradient(135deg,#06b6d4 0%,#3b82f6 100%)" },
-    { title: "KS Infinity AI", desc: "Your copilot for Minecraft, hosting & builds — ask anything.", icon: "🤖", gradient: "linear-gradient(135deg,#ec4899 0%,#8b5cf6 100%)" },
+    { title: "KS Website 3.0", desc: "New glass UI, faster search and a lighter build — made for the whole KS ecosystem.", icon: "✨", gradient: "linear-gradient(135deg,#f5f5f5 0%,#9a9a9a 100%)" },
+    { title: "Explore Everything", desc: "Minecraft, Hosting, VPS, Website tools & AI — all in one place.", icon: "🌐", gradient: "linear-gradient(135deg,#d4d4d4 0%,#737373 100%)" },
+    { title: "KS Infinity AI", desc: "Your copilot for Minecraft, hosting & builds — ask anything.", icon: "🤖", gradient: "linear-gradient(135deg,#a3a3a3 0%,#525252 100%)" },
   ];
 
   useEffect(() => {
