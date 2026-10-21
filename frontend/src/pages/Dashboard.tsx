@@ -138,7 +138,6 @@ export default function Dashboard() {
           <div className="news-progress"><i style={{ width: `${((newsIndex + 1) / news.length) * 100}%` }} /></div>
         </div>
       </section>
-
     </div>
   );
 }
