@@ -1,6 +1,7 @@
 import { useEffect, useState, useMemo, useRef, useCallback } from "react";
 import { Link } from "react-router-dom";
 import FilterMenu from "../components/FilterMenu";
+import { SearchField } from "../components/ui";
 import { api, SitemapCategory } from "../lib/api";
 import Icon from "../components/Icon";
 import { RECENT_KEY, MAX_RECENT } from "../hooks/useLocalStorage";
@@ -206,26 +207,14 @@ export default function MapPage() {
           {/* search */}
           <div className="mp-search-wrap">
             <div className="mp-search-row">
-              <div className="mp-search">
-                <svg className="mp-search-icon" viewBox="0 0 24 24" aria-hidden>
-                  <circle cx="11" cy="11" r="6.5" />
-                  <path d="M16 16 L20 20" />
-                </svg>
-                <input
-                  ref={searchRef}
-                  value={query}
-                  onChange={(e) => setQuery(e.target.value)}
-                  placeholder="Search pages, sections, categories…"
-                  aria-label="Search map"
-                  spellCheck={false}
-                  autoComplete="off"
-                />
-                {query ? (
-                  <button className="mp-search-clear" onClick={() => setQuery("")} aria-label="Clear search">
-                    <Icon name="close" size={14} />
-                  </button>
-                ) : null}
-              </div>
+              <SearchField
+                ref={searchRef}
+                className="mp-search"
+                value={query}
+                onValueChange={setQuery}
+                placeholder="Search pages, sections, categories…"
+                ariaLabel="Search map"
+              />
               <FilterMenu activeCount={activeCat === "All" ? 0 : 1}>
                 <div className="mp-filters" role="tablist" aria-label="Category filters">
                   <button

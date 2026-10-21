@@ -50,7 +50,7 @@
 .h-card:hover{border-color:var(--h-border-2); box-shadow:0 14px 36px rgba(0, 0, 0,0.38); transform:translateY(-2px); background:rgba(23, 23, 23,0.98);}
 .h-card-top{display:flex; justify-content:space-between; align-items:center; gap:10px;}
 .h-card-name{font-weight:900; font-size:15px; letter-spacing:-0.3px; flex:1; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
-.h-card-btn{padding:8px 14px; border-radius:6px; border:1px solid rgba(255, 255, 255,0.12); background:#ffffff; color:#000000; font-size:12px; font-weight:800; cursor:pointer; text-decoration:none; transition:transform .15s, background .2s; flex-shrink:0;}
+.h-card-btn{padding:8px 14px; border-radius:6px; border:1px solid rgba(255, 255, 255,0.12); background:#ffffff; color:#000000; font-size:12px; font-weight:800; cursor:pointer; text-decoration:none; transition:transform .15s, background .2s; flex-shrink:0; display:inline-flex; align-items:center; gap:6px;}
 .h-card-btn:hover{background:#f0f0f0; transform:translateY(-1px);} .h-card-btn:active{transform:scale(0.97);}
 .h-specs{display:flex; gap:10px; flex-wrap:wrap; font-size:12px; color:var(--h-muted);}
 .h-specs b{color:var(--h-text); font-weight:800;}

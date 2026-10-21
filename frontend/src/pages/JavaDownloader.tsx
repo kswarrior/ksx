@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import FilterMenu from "../components/FilterMenu";
+import Icon from "../components/Icon";
 import { SearchField, Select, type SelectOption } from "../components/ui";
 import "./JavaDownloader.css";
 

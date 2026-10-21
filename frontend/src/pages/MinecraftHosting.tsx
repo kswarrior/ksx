@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { api, MinecraftHosting } from "../lib/api";
 import FilterMenu from "../components/FilterMenu";
+import Icon from "../components/Icon";
 import { SearchField, Select, type SelectOption } from "../components/ui";
 import "./Hosting.css";
 

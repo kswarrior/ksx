@@ -45,7 +45,7 @@
 .jd-empty{text-align:center; padding:34px 18px; background:rgba(15, 15, 15,0.9); border:1px solid var(--jd-border); border-radius:5px; color:var(--jd-muted); font-size:13px;}
 .jd-modal{position:fixed; inset:0; background:rgba(0, 0, 0,0.62); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); z-index:1000; display:flex; align-items:center; justify-content:center; padding:16px;}
 .jd-modal-content{background:rgba(19, 19, 19,0.98); border:1px solid var(--jd-border); border-radius:5px; padding:20px; width:100%; max-width:780px; max-height:90vh; overflow:auto; box-shadow:0 20px 60px rgba(0, 0, 0,0.5);}
-.jd-close{float:right; font-size:24px; cursor:pointer; width:36px; height:36px; display:grid; place-items:center; border-radius:6px; background:rgba(255, 255, 255,0.06); border:1px solid var(--jd-border); transition:background .2s;}
+.jd-close{float:right; padding:0; color:inherit; font:inherit; cursor:pointer; width:36px; height:36px; display:grid; place-items:center; border-radius:6px; background:rgba(255, 255, 255,0.06); border:1px solid var(--jd-border); transition:background .2s;}
 .jd-close:hover{background:rgba(255, 255, 255,0.1);}
 @media(max-width:768px){
   .jd-bg-orb{display:none !important;}

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Icon from "../components/Icon";
+import { TextField } from "../components/ui";
 import "./ServerInfo.css";
 
 type McStatus = Record<string, unknown>;
@@ -34,7 +35,7 @@ export default function ServerInfo() {
       <div className="si-shell">
         <header className="si-header">
           <div className="si-search">
-            <input className="si-input" value={ip} onChange={(e) => setIp(e.target.value)} placeholder="Enter server IP (e.g. play.hypixel.net)" aria-label="Server IP" onKeyDown={(e)=> e.key==="Enter" && fetchInfo()} />
+            <TextField className="si-input" value={ip} onChange={(e) => setIp(e.target.value)} placeholder="Enter server IP (e.g. play.hypixel.net)" aria-label="Server IP" onKeyDown={(e)=> e.key==="Enter" && fetchInfo()} />
             <button className="si-btn" onClick={fetchInfo}><><Icon name="search" size={14} /> {loading ? "Checking…" : "Search"}</></button>
           </div>
         </header>

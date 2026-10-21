@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Icon from "../components/Icon";
+import { TextField } from "../components/ui";
 import "./CustomIP.css";
 
 type IpInfo = {
@@ -86,7 +87,7 @@ export default function CustomIP() {
             <h3><span>1</span> Resolve IP / Domain</h3>
             <p>Enter your server IP or domain to fetch location & ISP info.</p>
             <div className="ci-input-row">
-              <input className="ci-input" placeholder="e.g. aternos.org or 8.8.8.8" value={input} onChange={(e) => setInput(e.target.value)} onKeyDown={(e)=> e.key==="Enter" && loadIPInfo()} />
+              <TextField className="ci-input" placeholder="e.g. aternos.org or 8.8.8.8" value={input} onChange={(e) => setInput(e.target.value)} onKeyDown={(e)=> e.key==="Enter" && loadIPInfo()} />
               <button className="ci-btn" onClick={loadIPInfo}><><Icon name="search" size={14} /> {loading ? "Checking…" : "Search"}</></button>
             </div>
             <div className="ci-result">

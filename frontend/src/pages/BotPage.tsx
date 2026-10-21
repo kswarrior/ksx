@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Icon from "../components/Icon";
+import { TextField } from "../components/ui";
 import "./BotPage.css";
 
 export default function BotPage() {
@@ -97,33 +98,33 @@ createBot()
         <div className="bot-card">
           <h3><Icon name="sliders" size={16} /> Enter your server details</h3>
           <label className="bot-label">Server IP</label>
-          <input className="bot-input" value={ip} onChange={(e) => setIp(e.target.value)} placeholder="e.g., yourserver.aternos.me" />
+          <TextField className="bot-input" value={ip} onChange={(e) => setIp(e.target.value)} placeholder="e.g., yourserver.aternos.me" />
           <label className="bot-label">Server Port</label>
-          <input className="bot-input" value={port} onChange={(e) => setPort(e.target.value)} placeholder="e.g., 25565" />
+          <TextField className="bot-input" type="text" inputMode="numeric" value={port} onChange={(e) => setPort(e.target.value)} placeholder="e.g., 25565" />
           <label className="bot-label">Bot Username</label>
-          <input className="bot-input" value={botName} onChange={(e) => setBotName(e.target.value)} placeholder="Bot's in-game name" />
+          <TextField className="bot-input" value={botName} onChange={(e) => setBotName(e.target.value)} placeholder="Bot's in-game name" />
           <label className="bot-label">Owner Username</label>
-          <input className="bot-input" value={owner} onChange={(e) => setOwner(e.target.value)} placeholder="Your in-game name" />
+          <TextField className="bot-input" value={owner} onChange={(e) => setOwner(e.target.value)} placeholder="Your in-game name" />
           <div style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:10}}>
             <div>
               <label className="bot-label">Reconnect Delay (s)</label>
-              <input className="bot-input" value={reconnectDelay} onChange={(e) => setReconnectDelay(e.target.value)} placeholder="5" />
+              <TextField className="bot-input" type="text" inputMode="numeric" value={reconnectDelay} onChange={(e) => setReconnectDelay(e.target.value)} placeholder="5" />
             </div>
             <div>
               <label className="bot-label">Eat Threshold</label>
-              <input className="bot-input" value={eatThreshold} onChange={(e) => setEatThreshold(e.target.value)} placeholder="15" />
+              <TextField className="bot-input" type="text" inputMode="numeric" value={eatThreshold} onChange={(e) => setEatThreshold(e.target.value)} placeholder="15" />
             </div>
             <div>
               <label className="bot-label">Jump Interval (s)</label>
-              <input className="bot-input" value={jumpInterval} onChange={(e) => setJumpInterval(e.target.value)} placeholder="45" />
+              <TextField className="bot-input" type="text" inputMode="numeric" value={jumpInterval} onChange={(e) => setJumpInterval(e.target.value)} placeholder="45" />
             </div>
             <div>
               <label className="bot-label">Walk Interval (s)</label>
-              <input className="bot-input" value={walkInterval} onChange={(e) => setWalkInterval(e.target.value)} placeholder="60" />
+              <TextField className="bot-input" type="text" inputMode="numeric" value={walkInterval} onChange={(e) => setWalkInterval(e.target.value)} placeholder="60" />
             </div>
           </div>
           <label className="bot-label">View Distance</label>
-          <input className="bot-input" value={viewDistance} onChange={(e) => setViewDistance(e.target.value)} placeholder="far or normal" />
+          <TextField className="bot-input" value={viewDistance} onChange={(e) => setViewDistance(e.target.value)} placeholder="far or normal" />
           <div style={{display:"flex", gap:8, marginTop:12, flexWrap:"wrap"}}>
             <button className="bot-btn primary" onClick={generateBotCode}><Icon name="zap" size={14} /> Generate bot.js</button>
             <button className="bot-btn" onClick={() => copy(generated,3)}><><Icon name={copiedIdx===3 ? "check" : "copy"} size={14} />{copiedIdx===3 ? "Copied" : "Copy Generated"}</></button>
