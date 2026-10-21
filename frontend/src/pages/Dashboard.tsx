@@ -139,29 +139,6 @@ export default function Dashboard() {
         </div>
       </section>
 
-      <section className="highlight-showcase highlight-fixed">
-        <div className="hs-bg" /><div className="hs-orb" />
-        <div className="hs-content">
-          <div className="hs-left">
-            <div className="hs-badge"><span>✦</span> HIGHLIGHT • WHOLE WEBSITE</div>
-            <h2>Everything from <em>KS Warrior</em> in one hub</h2>
-            <p>Minecraft, website guides, hosting, VPS and AI — all my builds in one place. Pick your path and start.</p>
-            <div className="hs-actions">
-              <button className="btn btn-primary" onClick={() => navigate("/map")}><span>Browse All Builds</span> <i>↗</i></button>
-              <span className="hs-hint">Minecraft • Website • Hosting • VPS • AI</span>
-            </div>
-          </div>
-          <div className="hs-visual">
-            <div className="hs-card">
-              <div className="hs-card-head"><i /><i /><i /><span>ks warrior hub</span></div>
-              <div className="hs-lines"><span style={{ width: "88%" }} /><span style={{ width: "64%" }} /><span style={{ width: "92%" }} className="accent" /><span style={{ width: "72%" }} /></div>
-              <div className="hs-bubble"><span>What did KS build today?</span></div>
-              <div className="hs-bubble reply"><span>New hosting guide + AI update live!</span></div>
-            </div>
-            <div className="hs-glow" />
-          </div>
-        </div>
-      </section>
     </div>
   );
 }
