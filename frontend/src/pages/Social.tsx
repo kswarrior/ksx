@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+import { api, type SocialStat, type SocialStats } from "../lib/api";
 import "./Social.css";
 
 const ArrowIcon = () => (
@@ -7,7 +9,51 @@ const ArrowIcon = () => (
   </svg>
 );
 
+function useLiveSocialStats(): SocialStats | null {
+  const [stats, setStats] = useState<SocialStats | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const load = () => {
+      api
+        .getSocialStats()
+        .then((data) => {
+          if (!cancelled) setStats(data);
+        })
+        .catch(() => {
+          if (!cancelled) setStats(null);
+        });
+    };
+
+    load();
+    const timer = window.setInterval(load, 5 * 60 * 1000);
+
+    return () => {
+      cancelled = true;
+      window.clearInterval(timer);
+    };
+  }, []);
+
+  return stats;
+}
+
+function statLine(stat: SocialStat | undefined, fallback: string): string {
+  if (stat?.available && stat.display) {
+    return `${stat.display} ${stat.label} • ${fallback}`;
+  }
+  if (stat?.error && /expired|invalid/i.test(stat.error)) {
+    return `Invite expired • ${fallback}`;
+  }
+  return fallback;
+}
+
 export default function Social() {
+  const stats = useLiveSocialStats();
+  const youtube = stats?.platforms.youtube;
+  const discord = stats?.platforms.discord;
+  const instagram = stats?.platforms.instagram;
+
   return (
     <div className="social-page">
       <div className="so-bg" aria-hidden>
@@ -17,7 +63,7 @@ export default function Social() {
       </div>
       <div className="so-shell">
         <div className="so-grid">
-          <a href="https://youtube.com/@ks_warrior_pro" target="_blank" rel="noreferrer" className="so-card yt">
+          <a href={youtube?.url ?? "https://youtube.com/@ks_warrior_pro"} target="_blank" rel="noreferrer" className="so-card yt">
             <div className="so-logo" aria-hidden>
               <svg viewBox="0 0 24 24">
                 <path
@@ -28,14 +74,14 @@ export default function Social() {
                 />
               </svg>
             </div>
-            <div className="so-content">
+            <div className="so-content" aria-live="polite">
               <h3>YouTube</h3>
-              <p>135+ subscribers • Tutorials &amp; builds</p>
+              <p title={youtube?.error}>{statLine(youtube, "Tutorials & builds")}</p>
             </div>
             <span className="so-arrow"><ArrowIcon /></span>
           </a>
 
-          <a href="https://discord.gg/2kAYnH655h" target="_blank" rel="noreferrer" className="so-card discord">
+          <a href={discord?.url ?? "https://discord.gg/2kAYnH655h"} target="_blank" rel="noreferrer" className="so-card discord">
             <div className="so-logo" aria-hidden>
               <svg viewBox="0 0 24 24">
                 <path
@@ -44,14 +90,14 @@ export default function Social() {
                 />
               </svg>
             </div>
-            <div className="so-content">
-              <h3>Discord</h3>
-              <p>1250+ members • Help &amp; community</p>
+            <div className="so-content" aria-live="polite">
+              <h3>{discord?.name ?? "Discord"}</h3>
+              <p title={discord?.error}>{statLine(discord, "Help & community")}</p>
             </div>
             <span className="so-arrow"><ArrowIcon /></span>
           </a>
 
-          <a href="https://instagram.com/ks_warrior_pro" target="_blank" rel="noreferrer" className="so-card insta">
+          <a href={instagram?.url ?? "https://instagram.com/ks_warrior_pro"} target="_blank" rel="noreferrer" className="so-card insta">
             <div className="so-logo" aria-hidden>
               <svg viewBox="0 0 24 24">
                 <path
@@ -60,9 +106,9 @@ export default function Social() {
                 />
               </svg>
             </div>
-            <div className="so-content">
+            <div className="so-content" aria-live="polite">
               <h3>Instagram</h3>
-              <p>10+ followers • Behind the scenes</p>
+              <p title={instagram?.error}>{statLine(instagram, "Behind the scenes")}</p>
             </div>
             <span className="so-arrow"><ArrowIcon /></span>
           </a>

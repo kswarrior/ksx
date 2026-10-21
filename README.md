@@ -45,6 +45,11 @@ npm run dev:frontend     # Vite
 Env:
 - `PORT` (Express only, default 4000)
 - `VITE_API_BASE` — `""` for same-origin (Worker assets), or `https://ksx-backend.<subdomain>.workers.dev` if deploying separately
+- `YOUTUBE_HANDLE` (optional, default `ks_warrior_pro`)
+- `YOUTUBE_API_KEY` (optional; live subscriber count uses the YouTube Data API, otherwise the public channel page)
+- `DISCORD_INVITE_CODE` (optional, default `2kAYnH655h`; accepts a code or full invite URL)
+- `INSTAGRAM_USERNAME` (optional, default `ks_warrior_pro`)
+- `INSTAGRAM_ACCESS_TOKEN` + `INSTAGRAM_USER_ID` (optional; official Graph API follower count, otherwise the public profile)
 
 ## Build
 
@@ -100,7 +105,10 @@ GET /api/sitemap
 GET /api/sitemap/search?q=hosting
 GET /api/hosting/minecraft?q=&uptime=good&location=india&ram=4
 GET /api/hosting/vps?q=&renew=true&sudo=true&alwaysOn=true
+GET /api/social
 ```
+
+`/api/social` returns the current YouTube subscriber, Discord member, and Instagram follower counts that power the Social page. Responses are cached for 5 minutes; each platform reports `available: false` (never a fabricated number) when its live source cannot be reached. Discord counts require a valid invite, and Instagram falls back to a public reader when no Graph API credentials are set.
 
 Search mimics original `s-*` grouping; `localStorage` keys `ks-web-recent`/`ks-web-fav`/`ks-web-last-page` preserved.
 
