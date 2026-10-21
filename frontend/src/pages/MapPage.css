@@ -1,14 +1,14 @@
 /* ===== MAP PAGE — rewritten: fast, responsive, good UI ===== */
 .map-page {
-  --mp-bg: #07080e;
-  --mp-card: rgba(18, 18, 28, 0.96);
-  --mp-card-2: rgba(22, 22, 34, 0.98);
+  --mp-bg: #0a0a0a;
+  --mp-card: rgba(18, 18, 18, 0.96);
+  --mp-card-2: rgba(24, 24, 24, 0.98);
   --mp-border: rgba(255, 255, 255, 0.09);
   --mp-border-strong: rgba(255, 255, 255, 0.14);
-  --mp-text: #f0f0f6;
-  --mp-muted: #9aa0b4;
-  --mp-accent: #3b82f6;
-  --mp-accent-2: #8b5cf6;
+  --mp-text: #f5f5f5;
+  --mp-muted: #a3a3a3;
+  --mp-accent: #d4d4d4;
+  --mp-accent-2: #8a8a8a;
   --mp-radius: 16px;
   --mp-radius-sm: 12px;
   --mp-shadow: 0 10px 40px rgba(0, 0, 0, 0.45);
@@ -33,10 +33,10 @@
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(900px 500px at 15% 0%, rgba(59, 130, 246, 0.16), transparent 60%),
-    radial-gradient(800px 600px at 95% 10%, rgba(139, 92, 246, 0.14), transparent 65%),
-    radial-gradient(700px 500px at 60% 100%, rgba(236, 72, 153, 0.08), transparent 70%),
-    linear-gradient(180deg, #070a1c 0%, #07080e 55%, #08080f 100%);
+    radial-gradient(900px 500px at 15% 0%, rgba(255, 255, 255, 0.06), transparent 60%),
+    radial-gradient(800px 600px at 95% 10%, rgba(255, 255, 255, 0.045), transparent 65%),
+    radial-gradient(700px 500px at 60% 100%, rgba(255, 255, 255, 0.03), transparent 70%),
+    linear-gradient(180deg, #0a0a0a 0%, #0a0a0a 55%, #0b0b0b 100%);
 }
 .mp-bg-orb {
   position: absolute;
@@ -51,7 +51,7 @@
   height: 520px;
   left: -120px;
   top: -140px;
-  background: radial-gradient(circle at 30% 30%, #60a5fa 0%, #3b82f6 42%, transparent 72%);
+  background: radial-gradient(circle at 30% 30%, #d4d4d4 0%, #737373 42%, transparent 72%);
   animation: mpOrb 10s ease-in-out infinite;
 }
 .mp-bg-orb.o2 {
@@ -59,7 +59,7 @@
   height: 460px;
   right: -100px;
   top: 12%;
-  background: radial-gradient(circle at 30% 30%, #a78bfa 0%, #8b5cf6 44%, transparent 72%);
+  background: radial-gradient(circle at 30% 30%, #a3a3a3 0%, #525252 44%, transparent 72%);
   animation: mpOrb 12s ease-in-out infinite reverse;
 }
 .mp-bg-grid {
@@ -69,8 +69,8 @@
   bottom: -20%;
   height: 46%;
   background:
-    linear-gradient(rgba(59, 130, 246, 0.07) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(59, 130, 246, 0.07) 1px, transparent 1px);
+    linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
   background-size: 56px 56px;
   transform: perspective(600px) rotateX(68deg);
   transform-origin: center top;
@@ -92,7 +92,7 @@
 
 /* ---------- HEADER ---------- */
 .mp-header {
-  background: rgba(14, 14, 24, 0.92);
+  background: rgba(13, 13, 13, 0.92);
   border: 1px solid var(--mp-border);
   border-radius: 20px;
   padding: 22px 18px 18px;
@@ -107,7 +107,7 @@
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  background: radial-gradient(700px 260px at 20% 0%, rgba(59, 130, 246, 0.12), transparent 60%);
+  background: radial-gradient(700px 260px at 20% 0%, rgba(255, 255, 255, 0.06), transparent 60%);
   pointer-events: none;
 }
 .mp-kicker {
@@ -128,13 +128,13 @@
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: #22c55e;
-  box-shadow: 0 0 10px #22c55e;
+  background: #d4d4d4;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.45);
 }
 .mp-kicker-count {
   margin-left: 6px;
-  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-  color: white;
+  background: linear-gradient(135deg, #f5f5f5, #9a9a9a);
+  color: #0a0a0a;
   padding: 2px 8px;
   border-radius: 999px;
   font-size: 10px;
@@ -149,7 +149,7 @@
   line-height: 1;
 }
 .mp-title span {
-  background: linear-gradient(90deg, #60a5fa 0%, #a78bfa 55%, #f472b6 100%);
+  background: linear-gradient(90deg, #f5f5f5 0%, #bdbdbd 55%, #8a8a8a 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -181,15 +181,15 @@
   transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
 }
 .mp-search:focus-within {
-  border-color: rgba(59, 130, 246, 0.5);
+  border-color: rgba(255, 255, 255, 0.4);
   background: rgba(255, 255, 255, 0.08);
-  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.12);
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.08);
 }
 .mp-search-icon {
   width: 20px;
   height: 20px;
   flex-shrink: 0;
-  stroke: #aab0c0;
+  stroke: #a3a3a3;
   stroke-width: 1.9;
   fill: none;
   stroke-linecap: round;
@@ -249,7 +249,7 @@
   appearance: none;
   border: none;
   background: none;
-  color: #60a5fa;
+  color: #d4d4d4;
   font-size: 12px;
   font-weight: 700;
   cursor: pointer;
@@ -299,7 +299,7 @@
   display: grid;
   place-items: center;
   border-radius: 6px;
-  background: rgba(59, 130, 246, 0.14);
+  background: rgba(255, 255, 255, 0.08);
   flex-shrink: 0;
 }
 .mp-pill-icon svg {
@@ -322,15 +322,16 @@
   transform: translateY(-1px);
 }
 .mp-pill.active {
-  background: linear-gradient(135deg, #3b82f6, #6366f1 60%, #8b5cf6);
+  background: linear-gradient(135deg, #f5f5f5, #bdbdbd);
   border-color: transparent;
-  color: white;
-  box-shadow: 0 8px 20px rgba(59, 130, 246, 0.35);
+  color: #0a0a0a;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
 }
+.mp-pill.active .mp-pill-icon { background: rgba(0, 0, 0, 0.55); }
 .mp-pill.active em {
-  background: rgba(255, 255, 255, 0.18);
-  border-color: rgba(255, 255, 255, 0.14);
-  color: white;
+  background: rgba(0, 0, 0, 0.12);
+  border-color: rgba(0, 0, 0, 0.18);
+  color: #0a0a0a;
 }
 .mp-pill:active {
   transform: scale(0.98);
@@ -408,8 +409,9 @@
   border-radius: 12px;
   display: grid;
   place-items: center;
-  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-  box-shadow: 0 8px 18px rgba(59, 130, 246, 0.3);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.06));
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.35);
   flex-shrink: 0;
 }
 .mp-cat-icon svg {
@@ -518,7 +520,7 @@
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.06);
   flex-shrink: 0;
-  color: #c7d2fe;
+  color: #d4d4d4;
 }
 .mp-sec-icon svg {
   width: 16px;
@@ -533,9 +535,9 @@
 .mp-sec-count {
   font-size: 11px;
   font-weight: 800;
-  background: rgba(59, 130, 246, 0.14);
-  border: 1px solid rgba(59, 130, 246, 0.18);
-  color: #93c5fd;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #d4d4d4;
   padding: 3px 8px;
   border-radius: 999px;
 }
@@ -579,10 +581,10 @@
   gap: 10px;
   min-height: 44px;
   padding: 10px 12px;
-  background: rgba(18, 18, 28, 0.98);
+  background: rgba(18, 18, 18, 0.98);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 999px;
-  color: #e8eaf2;
+  color: #f0f0f0;
   font-size: 13px;
   font-weight: 650;
   line-height: 1.2;
@@ -599,16 +601,16 @@
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  background: radial-gradient(300px 120px at 20% 50%, rgba(59, 130, 246, 0.14), transparent 60%);
+  background: radial-gradient(300px 120px at 20% 50%, rgba(255, 255, 255, 0.08), transparent 60%);
   opacity: 0;
   transition: opacity 0.22s;
   pointer-events: none;
 }
 .mp-page:hover {
   transform: translateY(-2px);
-  border-color: rgba(99, 102, 241, 0.45);
-  background: rgba(24, 24, 38, 1);
-  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.28), 0 0 16px rgba(59, 130, 246, 0.14);
+  border-color: rgba(255, 255, 255, 0.4);
+  background: rgba(30, 30, 30, 1);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.28), 0 0 16px rgba(255, 255, 255, 0.08);
 }
 .mp-page:hover::before {
   opacity: 1;
@@ -617,7 +619,7 @@
   transform: scale(0.98);
 }
 .mp-page:focus-visible {
-  outline: 2px solid #60a5fa;
+  outline: 2px solid #d4d4d4;
   outline-offset: 2px;
 }
 .mp-page-icon {
@@ -658,8 +660,8 @@
   transition: background 0.2s, color 0.2s, transform 0.2s;
 }
 .mp-page:hover .mp-page-arrow {
-  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-  color: white;
+  background: linear-gradient(135deg, #f5f5f5, #9a9a9a);
+  color: #0a0a0a;
   border-color: transparent;
   transform: translate(1px, -1px);
 }
@@ -669,7 +671,7 @@
 .mp-error {
   text-align: center;
   padding: 34px 18px;
-  background: rgba(14, 14, 24, 0.9);
+  background: rgba(13, 13, 13, 0.9);
   border: 1px solid var(--mp-border);
   border-radius: 16px;
   margin-top: 16px;
@@ -720,9 +722,10 @@
   transform: scale(0.97);
 }
 .mp-btn-primary {
-  background: linear-gradient(135deg, #3b82f6, #6366f1 60%, #8b5cf6);
+  background: linear-gradient(135deg, #f5f5f5, #9a9a9a);
   border-color: transparent;
-  box-shadow: 0 8px 20px rgba(59, 130, 246, 0.32);
+  color: #0a0a0a;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.32);
 }
 .mp-btn-primary:hover {
   filter: brightness(1.05);
@@ -739,7 +742,7 @@
   flex-wrap: wrap;
   margin-top: 18px;
   padding: 14px;
-  color: #7a8196;
+  color: #8a8a8a;
   font-size: 12px;
 }
 .mp-footer-dot {
@@ -823,7 +826,7 @@
     display: none !important;
   }
   .mp-bg-gradient {
-    background: linear-gradient(180deg, #070a1c 0%, #07080e 100%) !important;
+    background: linear-gradient(180deg, #0a0a0a 0%, #0b0b0b 100%) !important;
   }
   .mp-shell {
     padding: 12px 10px 28px;
@@ -833,7 +836,7 @@
     border-radius: 16px;
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
-    background: rgba(14, 14, 24, 0.98) !important;
+    background: rgba(13, 13, 13, 0.98) !important;
   }
   .mp-title {
     font-size: 26px;
@@ -967,6 +970,6 @@
   .mp-category {
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
-    background: rgba(18, 18, 28, 0.88);
+    background: rgba(18, 18, 18, 0.88);
   }
 }
