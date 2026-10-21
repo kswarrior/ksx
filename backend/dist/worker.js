@@ -1,5 +1,6 @@
 import { Hono } from "hono";
 import { cors } from "hono/cors";
+import { getSocialStats } from "./social.js";
 // Vite/Workers JSON import — with nodejs_compat we can use import assertions
 // For wrangler, use `import ... with {type:"json"}` or `import ... from "...json"` with bundler.
 // We inline import via `import * as` fallback for compatibility.
@@ -27,8 +28,14 @@ app.get("/api/stats", (c) => {
             "GET /api/sitemap/search?q=",
             "GET /api/hosting/minecraft?q=&uptime=&location=&ram=",
             "GET /api/hosting/vps?q=&renew=&sudo=&alwaysOn=",
+            "GET /api/social",
         ],
     });
+});
+app.get("/api/social", async (c) => {
+    const stats = await getSocialStats(c.env);
+    c.header("Cache-Control", "public, max-age=300, s-maxage=300, stale-while-revalidate=600");
+    return c.json(stats);
 });
 // Sitemap
 app.get("/api/sitemap", (c) => c.json(sitemap));
