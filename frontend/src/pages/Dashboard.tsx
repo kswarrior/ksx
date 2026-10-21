@@ -134,7 +134,7 @@ export default function Dashboard() {
           <h2><span className="panel-icon" style={{ color: "#ff6b6b" }}><PinIcon size={16} /></span> Pin</h2>
           <span className="panel-count">{pins.length}</span>
         </div>
-        <div className="panel-body">
+        <div className="panel-body pin-grid">
           {pins.length === 0 ? (
             <div className="empty">
               <div className="empty-icon">
