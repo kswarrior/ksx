@@ -1,7 +1,7 @@
 import { Suspense, useCallback, useEffect, useState, useRef } from "react";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { api, SearchItem } from "../lib/api";
-import { FAV_KEY, LAST_PAGE_KEY, RECENT_KEY, MAX_RECENT, RecentItem, FavItem } from "../hooks/useLocalStorage";
+import { PIN_KEY, LAST_PAGE_KEY, RECENT_KEY, MAX_RECENT, RecentItem, PinItem, readPins } from "../hooks/useLocalStorage";
 import "./Layout.css";
 
 function PageSpinner() {
@@ -19,7 +19,8 @@ export default function Layout() {
   const [sidebarOpen, setSidebarOpen] = useState(() => typeof window !== "undefined" ? window.matchMedia("(min-width: 900px)").matches : false);
   const [suggestions, setSuggestions] = useState<SearchItem[]>([]);
   const [activeIndex, setActiveIndex] = useState(-1);
-  const [isFav, setIsFav] = useState(false);
+  const [isPinned, setIsPinned] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -61,20 +62,30 @@ export default function Layout() {
     return () => window.clearTimeout(id);
   }, [loadSitemap]);
 
-  // Persist last page + fav detection
+  // Persist last page + pin detection
   useEffect(() => {
     localStorage.setItem(LAST_PAGE_KEY, location.pathname);
-    const checkFav = () => {
-      try {
-        const favs: FavItem[] = JSON.parse(localStorage.getItem(FAV_KEY) || "[]");
-        const cur = location.pathname;
-        setIsFav(favs.some((f) => f.url === cur || f.url === window.location.href));
-      } catch {
-        setIsFav(false);
-      }
-    };
-    checkFav();
+    const cur = location.pathname;
+    setIsPinned(readPins().some((p) => p.url === cur || p.url === window.location.href));
+    setMenuOpen(false);
   }, [location.pathname]);
+
+  // Close the 3-dot menu on outside click / Escape
+  useEffect(() => {
+    if (!menuOpen) return;
+    const onDown = (e: MouseEvent) => {
+      if (!(e.target as Element).closest("#moreWrap")) setMenuOpen(false);
+    };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setMenuOpen(false);
+    };
+    document.addEventListener("mousedown", onDown);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("mousedown", onDown);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [menuOpen]);
 
   // Filter suggestions
   useEffect(() => {
@@ -143,29 +154,26 @@ export default function Layout() {
     handleNav(it.url, it.name, it.logo);
   };
 
-  const toggleFav = () => {
+  const togglePin = () => {
     loadSitemap();
     const curUrl = location.pathname;
     const cur = sitemap.find((s) => s.url === curUrl);
     const curName = cur?.name ?? curUrl;
     try {
-      const raw = localStorage.getItem(FAV_KEY);
-      let favs: FavItem[] = raw ? JSON.parse(raw) : [];
-      const exists = favs.some((f) => f.url === curUrl);
-      if (exists) {
-        favs = favs.filter((f) => f.url !== curUrl);
-      } else {
-        favs.unshift({
-          name: curName,
-          url: curUrl,
-          time: Date.now(),
-          logo: cur?.logo,
-          category: cur?.category,
-          title: cur?.title,
-        });
-      }
-      localStorage.setItem(FAV_KEY, JSON.stringify(favs));
-      setIsFav(!exists);
+      const pins: PinItem[] = readPins();
+      const exists = pins.some((p) => p.url === curUrl);
+      const next = exists
+        ? pins.filter((p) => p.url !== curUrl)
+        : [{
+            name: curName,
+            url: curUrl,
+            time: Date.now(),
+            logo: cur?.logo,
+            category: cur?.category,
+            title: cur?.title,
+          }, ...pins];
+      localStorage.setItem(PIN_KEY, JSON.stringify(next));
+      setIsPinned(!exists);
     } catch { /* ignore */ }
   };
 
@@ -230,23 +238,20 @@ export default function Layout() {
         </button>
 
         <div id="control-right">
-          <div
-            id="favButton"
-            title={isFav ? "Remove from Favorites" : "Add to Favorites"}
-            onClick={toggleFav}
-            className={isFav ? "filled" : ""}
-            aria-label="Favorite"
-          >
-            {isFav ? (
-              <svg className="fav-svg" width="18" height="18" fill="#F5F5F5" stroke="#F5F5F5" strokeWidth={1} viewBox="0 0 24 24">
-                <path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.778 1.4 8.164L12 18.897l-7.334 3.855 1.4-8.164L.132 9.21l8.2-1.192z" />
+          {!isSidebarPage && (
+            <div
+              id="pinButton"
+              title={isPinned ? "Unpin page" : "Pin page"}
+              onClick={togglePin}
+              className={isPinned ? "pinned" : ""}
+              aria-label={isPinned ? "Unpin page" : "Pin page"}
+            >
+              <svg className="pin-svg" width="18" height="18" viewBox="0 0 24 24" fill={isPinned ? "#F5F5F5" : "none"} stroke="#F5F5F5" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 17v5" />
+                <path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z" />
               </svg>
-            ) : (
-              <svg className="fav-svg" width="18" height="18" fill="none" stroke="#F5F5F5" strokeWidth={2} viewBox="0 0 24 24">
-                <path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.778 1.4 8.164L12 18.897l-7.334 3.855 1.4-8.164L.132 9.21l8.2-1.192z" />
-              </svg>
-            )}
-          </div>
+            </div>
+          )}
 
           <div className="search-container">
             <div
@@ -275,6 +280,30 @@ export default function Layout() {
               onKeyDown={onKeyDown}
               onFocus={() => { setSearchActive(true); loadSitemap(); }}
             />
+          </div>
+
+          <div id="moreWrap">
+            <button
+              id="moreButton"
+              aria-label="More options"
+              aria-expanded={menuOpen}
+              onClick={() => setMenuOpen((o) => !o)}
+            >
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
+                <circle cx="12" cy="5" r="1.7" />
+                <circle cx="12" cy="12" r="1.7" />
+                <circle cx="12" cy="19" r="1.7" />
+              </svg>
+            </button>
+            {menuOpen && (
+              <div id="moreMenu" role="menu">
+                <div className="more-title">Menu</div>
+                <div className="more-item" role="menuitem" aria-disabled="true">
+                  <span>Coming soon</span>
+                  <span className="more-pill">soon</span>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>

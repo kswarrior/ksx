@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { FAV_KEY, RECENT_KEY, RecentItem, FavItem } from "../hooks/useLocalStorage";
+import { RECENT_KEY, RecentItem, PinItem, readPins } from "../hooks/useLocalStorage";
 import "./Dashboard.css";
 
 function timeAgo(ts: number): string {
@@ -16,14 +16,14 @@ type NewsItem = { title: string; desc: string; icon: string; gradient: string };
 
 export default function Dashboard() {
   const [recent, setRecent] = useState<RecentItem[]>([]);
-  const [fav, setFav] = useState<FavItem[]>([]);
+  const [pins, setPins] = useState<PinItem[]>([]);
   const [newsIndex, setNewsIndex] = useState(0);
   const navigate = useNavigate();
 
   useEffect(() => {
     try {
       setRecent(JSON.parse(localStorage.getItem(RECENT_KEY) || "[]"));
-      setFav(JSON.parse(localStorage.getItem(FAV_KEY) || "[]"));
+      setPins(readPins());
     } catch {}
   }, []);
 
@@ -82,10 +82,10 @@ export default function Dashboard() {
         <section className="panel panel-3d">
           <div className="panel-head">
             <h2><span className="panel-icon">⭐</span> Pin</h2>
-            <span className="panel-count">{fav.length}</span>
+            <span className="panel-count">{pins.length}</span>
           </div>
           <div className="panel-body">
-            {fav.length === 0 ? (
+            {pins.length === 0 ? (
               <div className="empty">
                 <div className="empty-icon">☆</div>
                 <div className="empty-title">No pinned pages</div>
@@ -93,10 +93,10 @@ export default function Dashboard() {
                 <button className="empty-cta" onClick={() => navigate("/map")}>Explore Map</button>
               </div>
             ) : (
-              fav.map((item) => (
+              pins.map((item) => (
                 <div key={item.url} className="list-item" onClick={() => navigate(item.url)}>
                   {item.logo ? (
-                    <span className="li-icon fav" dangerouslySetInnerHTML={{ __html: item.logo }} />
+                    <span className="li-icon pin" dangerouslySetInnerHTML={{ __html: item.logo }} />
                   ) : (
                     <span className="li-star">★</span>
                   )}

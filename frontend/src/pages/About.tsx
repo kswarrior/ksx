@@ -21,7 +21,7 @@ export default function About() {
           <div style={{fontSize:40, marginBottom:10}}>⛏️</div>
           <div style={{fontWeight:900, fontSize:16, letterSpacing:-0.3}}>KS Warrior Hub</div>
           <div style={{color:"var(--ab-muted)", fontSize:13, lineHeight:1.6, marginTop:8, maxWidth:560, marginLeft:"auto", marginRight:"auto"}}>
-            One hub for Minecraft • Website • Hosting • VPS • AI — many builds, many tools, one KS Hub. Explore everything from the map, save favorites, stay updated.
+            One hub for Minecraft • Website • Hosting • VPS • AI — many builds, many tools, one KS Hub. Explore everything from the map, pin pages, stay updated.
           </div>
           <div className="ab-stats">
             <div className="ab-stat"><b>15+</b><span>Tools</span></div>
