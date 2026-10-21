@@ -1,5 +1,3 @@
-# About KS Warrior
-
 The ultimate Minecraft hub — free hosting lists, VPS picks, launchers, mod downloaders, server setups & more. Built with ❤️ for the community. Fast, stylish, lag-less.
 
 ## KS Warrior Hub
