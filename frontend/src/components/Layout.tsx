@@ -254,6 +254,7 @@ export default function Layout() {
               onClick={(e) => {
                 e.stopPropagation();
                 setSearchActive(true);
+                loadSitemap();
                 setTimeout(() => searchRef.current?.focus(), 50);
               }}
             >
@@ -271,7 +272,7 @@ export default function Layout() {
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               onKeyDown={onKeyDown}
-              onFocus={() => setSearchActive(true)}
+              onFocus={() => { setSearchActive(true); loadSitemap(); }}
             />
           </div>
 
@@ -391,7 +392,9 @@ export default function Layout() {
       </nav>
 
       <div id="content" className={sidebarOpen ? "sidebar-open" : ""}>
-        <Outlet />
+        <Suspense fallback={<PageSpinner />}>
+          <Outlet />
+        </Suspense>
       </div>
 
       {sidebarOpen && !isDesktop() && <div className="sidebar-backdrop" onClick={() => setSidebarOpen(false)} />}
