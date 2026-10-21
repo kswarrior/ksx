@@ -74,7 +74,10 @@ const SearchField = forwardRef<HTMLInputElement, SearchFieldProps>(
             type="button"
             className="ks-search-clear"
             aria-label={clearLabel}
-            onClick={() => onValueChange("")}
+            onClick={(event) => {
+              onValueChange("");
+              event.currentTarget.parentElement?.querySelector("input")?.focus();
+            }}
           >
             <svg viewBox="0 0 24 24" aria-hidden>
               <path d="M6 6l12 12M18 6L6 18" />
