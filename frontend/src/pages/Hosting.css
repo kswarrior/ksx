@@ -17,7 +17,7 @@
 @keyframes hOrb{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-14px) scale(1.03)}}
 
 .h-shell{max-width:1120px; margin:0 auto; padding:18px 16px 40px;}
-.h-header{background:rgba(15, 15, 15,0.92); border:1px solid var(--h-border); border-radius:5px; padding:12px; backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); box-shadow:0 10px 40px rgba(0, 0, 0,0.45); position:relative; overflow:hidden;}
+.h-header{background:rgba(15, 15, 15,0.92); border:1px solid var(--h-border); border-radius:5px; padding:12px; backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); box-shadow:0 10px 40px rgba(0, 0, 0,0.45); position:relative; overflow:visible;}
 .h-header::before{content:""; position:absolute; inset:0; border-radius:inherit; background:radial-gradient(700px 260px at 20% 0%, rgba(122, 122, 122,0.12), transparent 60%); pointer-events:none;}
 .h-kicker{position:relative; display:inline-flex; align-items:center; gap:8px; font-size:11px; letter-spacing:1.4px; font-weight:800; color:rgba(255, 255, 255,0.7); background:rgba(255, 255, 255,0.06); border:1px solid rgba(255, 255, 255,0.08); padding:6px 10px; border-radius:999px;}
 .h-kicker-dot{width:7px; height:7px; border-radius:50%; background:#898989; box-shadow:0 0 10px #898989;}
@@ -27,6 +27,8 @@
 .h-sub{position:relative; color:var(--h-muted); font-size:13px; line-height:1.6; max-width:620px;}
 
 .h-search-wrap{position:relative; margin-top:0; display:flex; flex-direction:column; gap:10px;}
+.h-search-row{display:flex; align-items:stretch; gap:10px;}
+.h-search{flex:1; min-width:0;}
 .h-search{position:relative; display:flex; align-items:center; gap:8px; background:rgba(255, 255, 255,0.06); border:1px solid var(--h-border); border-radius:5px; padding:0 12px; transition:border-color .2s, background .2s, box-shadow .2s;}
 .h-search:focus-within{border-color:rgba(122, 122, 122,0.5); background:rgba(255, 255, 255,0.08); box-shadow:0 0 0 4px rgba(122, 122, 122,0.12);}
 .h-search svg{width:20px;height:20px; flex-shrink:0; stroke:#b0b0b0; stroke-width:1.9; fill:none; stroke-linecap:round;}
