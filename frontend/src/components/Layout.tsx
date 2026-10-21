@@ -154,6 +154,8 @@ export default function Layout() {
     handleNav(it.url, it.name, it.logo);
   };
 
+  const isSidebarPage = location.pathname === "/" || /^\/(dashboard|map|social|about)(\/|$)/.test(location.pathname);
+
   const togglePin = () => {
     loadSitemap();
     const curUrl = location.pathname;
