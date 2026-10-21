@@ -11,22 +11,19 @@ const uptimeOptions: SelectOption[] = [
   { value: "danger", label: "non-24/7" },
 ];
 
-const locationOptions: SelectOption[] = [
-  { value: "", label: "Location • All" },
-  { value: "india", label: "India" },
-  { value: "singapore", label: "Singapore" },
-  { value: "france", label: "France" },
-  { value: "germany", label: "Germany" },
-  { value: "usa", label: "USA" },
-];
-
 const ramOptions: SelectOption[] = [
   { value: "", label: "RAM • All" },
   { value: "1", label: "≥1 GB" },
   { value: "2", label: "≥2 GB" },
   { value: "4", label: "≥4 GB" },
   { value: "6", label: "≥6 GB" },
+  { value: "8", label: "≥8 GB" },
+  { value: "16", label: "≥16 GB" },
 ];
+
+const isAlwaysOn = (value: string) => value === "good" || value.startsWith("excellent");
+
+const uptimeLabel = (value: string) => isAlwaysOn(value) ? "24/7" : value === "warning" ? "Partial" : "non-24/7";
 
 export default function MinecraftHostingPage() {
   const [data, setData] = useState<MinecraftHosting[]>([]);
@@ -46,9 +43,17 @@ export default function MinecraftHostingPage() {
     return () => { alive = false; };
   }, []);
 
+  const locationOptions = useMemo<SelectOption[]>(() => [
+    { value: "", label: "Location • All" },
+    ...Array.from(new Set(data.map((h) => h.location).filter(Boolean)))
+      .sort()
+      .map((value) => ({ value, label: value })),
+  ], [data]);
+
   const filtered = useMemo(() => data.filter((h) => {
     if (q && !h.name.toLowerCase().includes(q.toLowerCase())) return false;
-    if (uptime && h.uptime !== uptime) return false;
+    if (uptime === "good" && !isAlwaysOn(h.uptime)) return false;
+    if (uptime === "danger" && isAlwaysOn(h.uptime)) return false;
     if (location && !h.location.toLowerCase().includes(location.toLowerCase())) return false;
     if (ram && Number(h.ram) < Number(ram)) return false;
     return true;
@@ -131,7 +136,7 @@ export default function MinecraftHostingPage() {
                 </div>
                 <div className="h-card-bottom">
                   <span style={{display:"inline-flex", alignItems:"center", gap:6}}><Icon name="map-pin" size={13} /> {h.location}</span>
-                  <span className={`h-tag ${h.uptime==="good"?"good":h.uptime==="warning"?"warn":"bad"}`}>{h.uptime==="good"?"24/7":h.uptime==="warning"?"Partial":"non-24/7"}</span>
+                  <span className={`h-tag ${isAlwaysOn(h.uptime)?"good":h.uptime==="warning"?"warn":"bad"}`}>{uptimeLabel(h.uptime)}</span>
                 </div>
               </article>
             ))}

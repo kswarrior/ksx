@@ -37,6 +37,7 @@ export interface SearchItem {
     category: string;
     icon: string;
     title: string;
+    sectionIcon: string;
     name: string;
     url: string;
     logo: string;
