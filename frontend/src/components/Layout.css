@@ -4,7 +4,7 @@
   --panel: #151515;
   --border: #262626;
   --text: #e6e6e6;
-  --muted: #9aa0aa;
+  --muted: #a3a3a3;
   --accent: #d4d4d4;
   --accent-hover: #ffffff;
   --hover: #1f1f1f;
@@ -104,7 +104,7 @@
   stroke-linejoin: round;
   transition: stroke 0.25s ease, transform 0.25s ease, filter 0.25s ease;
 }
-#searchTrigger:hover .search-svg { stroke: var(--accent); transform: scale(1.15); filter: drop-shadow(0 0 6px rgba(59,130,246,0.6)); }
+#searchTrigger:hover .search-svg { stroke: var(--accent); transform: scale(1.15); filter: drop-shadow(0 0 6px rgba(255,255,255,0.35)); }
 #topbar.search-active .search-svg { stroke: var(--accent); }
 
 #hamburger {
@@ -163,7 +163,7 @@
 #suggestBox li { padding: 12px 18px; cursor: pointer; transition: background 0.2s ease; }
 #suggestBox li:hover, #suggestBox li.active { background: var(--hover); }
 
-.s-icon { display: inline-grid; place-items: center; width: 22px; height: 22px; margin-right: 8px; border-radius: 6px; background: rgba(59,130,246,0.15); color: var(--accent); font-size: 13px; flex-shrink: 0; }
+.s-icon { display: inline-grid; place-items: center; width: 22px; height: 22px; margin-right: 8px; border-radius: 6px; background: rgba(255,255,255,0.08); color: var(--accent); font-size: 13px; flex-shrink: 0; }
 .s-icon svg { width: 16px; height: 16px; }
 .s-category { display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 800; color: var(--accent); padding: 14px 16px 8px; margin-top: 4px; cursor: default; text-transform: uppercase; letter-spacing: 0.7px; opacity: 0.95; }
 .s-title { font-size: 11px; font-weight: 800; color: var(--muted); padding: 8px 16px 6px; margin: 0 8px; opacity: 0.9; cursor: default; position: relative; letter-spacing: 0.5px; text-transform: uppercase; background: rgba(255,255,255,0.04); border-radius: 6px; border: 1px solid rgba(255,255,255,0.05); }
@@ -187,7 +187,7 @@
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  background: linear-gradient(90deg, rgba(59,130,246,0.12), transparent 70%);
+  background: linear-gradient(90deg, rgba(255,255,255,0.08), transparent 70%);
   opacity: 0;
   transition: opacity 0.2s;
   pointer-events: none;
