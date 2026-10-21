@@ -175,7 +175,7 @@ export default function Dashboard() {
         <div className="panel-body">
           {recentTop.length === 0 ? (
             <div className="empty">
-              <div className="empty-icon">◌</div>
+              <div className="empty-icon"><ClockIcon size={20} /></div>
               <div className="empty-title">No recent pages</div>
               <div className="empty-sub">Pages you visit will appear here instantly</div>
               <button className="empty-cta" onClick={() => navigate("/map")}>Browse Map</button>
