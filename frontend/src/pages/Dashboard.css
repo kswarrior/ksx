@@ -61,7 +61,7 @@
 .list-item:hover::before{ left:100%; }
 .list-item:hover{ background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.12); transform: translateX(6px) scale(1.015); }
 .li-dot{ width:8px; height:8px; border-radius:50%; background:#e5e5e5; box-shadow:0 0 10px rgba(255,255,255,0.35); flex-shrink:0; }
-.li-star{ color:#d4d4d4; font-size:12px; flex-shrink:0; width:28px; height:28px; display:grid; place-items:center; background: rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.14); border-radius:9px; }
+.li-pin{ color:#d4d4d4; font-size:12px; flex-shrink:0; width:28px; height:28px; display:grid; place-items:center; background: rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.14); border-radius:9px; }
 .li-icon{
   width:34px; height:34px; border-radius:10px;
   display:grid; place-items:center;
