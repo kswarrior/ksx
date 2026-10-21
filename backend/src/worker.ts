@@ -1,6 +1,13 @@
 import { Hono } from "hono";
 import { cors } from "hono/cors";
-import type { SitemapCategory, SearchItem, MinecraftHosting, VpsHosting } from "./types.js";
+import { getSocialStats } from "./social.js";
+import type {
+  SitemapCategory,
+  SearchItem,
+  MinecraftHosting,
+  VpsHosting,
+  SocialEnv,
+} from "./types.js";
 
 // Vite/Workers JSON import — with nodejs_compat we can use import assertions
 // For wrangler, use `import ... with {type:"json"}` or `import ... from "...json"` with bundler.
@@ -13,7 +20,7 @@ const sitemap = sitemapData as SitemapCategory[];
 const mcHosting = mcData as MinecraftHosting[];
 const vpsHosting = vpsData as VpsHosting[];
 
-const app = new Hono();
+const app = new Hono<{ Bindings: SocialEnv }>();
 
 // Global middleware
 app.use("*", cors({ origin: "*", allowMethods: ["GET", "POST", "OPTIONS"], allowHeaders: ["Content-Type"] }));
@@ -34,8 +41,18 @@ app.get("/api/stats", (c) => {
       "GET /api/sitemap/search?q=",
       "GET /api/hosting/minecraft?q=&uptime=&location=&ram=",
       "GET /api/hosting/vps?q=&renew=&sudo=&alwaysOn=",
+      "GET /api/social",
     ],
   });
+});
+
+app.get("/api/social", async (c) => {
+  const stats = await getSocialStats(c.env);
+  c.header(
+    "Cache-Control",
+    "public, max-age=300, s-maxage=300, stale-while-revalidate=600"
+  );
+  return c.json(stats);
 });
 
 // Sitemap

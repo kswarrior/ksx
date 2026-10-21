@@ -40,6 +40,34 @@ export type VpsHosting = {
   link: string;
 };
 
+export type SocialPlatformName = "youtube" | "discord" | "instagram";
+
+export type SocialStat = {
+  platform: SocialPlatformName;
+  url: string;
+  handle: string;
+  label: "subscribers" | "members" | "followers";
+  count: number | null;
+  display: string | null;
+  available: boolean;
+  source:
+    | "youtube-api"
+    | "youtube-page"
+    | "discord-invite"
+    | "instagram-graph"
+    | "instagram-public"
+    | "unavailable";
+  online?: number | null;
+  name?: string;
+  error?: string;
+  fetchedAt: string;
+};
+
+export type SocialStats = {
+  updatedAt: string;
+  platforms: Record<SocialPlatformName, SocialStat>;
+};
+
 const API_BASE = import.meta.env.VITE_API_BASE ?? "";
 
 async function fetchJson<T>(url: string): Promise<T> {
@@ -64,4 +92,5 @@ export const api = {
       `/api/hosting/vps${qs}`
     );
   },
+  getSocialStats: () => fetchJson<SocialStats>("/api/social"),
 };
