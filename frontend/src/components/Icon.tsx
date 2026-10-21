@@ -179,7 +179,7 @@ const ICONS: Record<IconName, ReactNode> = {
 };
 
 export function isIconName(value: string): value is IconName {
-  return value in ICONS;
+  return Object.prototype.hasOwnProperty.call(ICONS, value);
 }
 
 type IconProps = SVGProps<SVGSVGElement> & {
