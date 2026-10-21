@@ -250,8 +250,8 @@
   transition: background 0.2s, color 0.2s, transform 0.2s;
 }
 .s-page:hover .s-page-go, .s-page.active .s-page-go {
-  background: linear-gradient(135deg,#3b82f6,#8b5cf6);
-  color: #fff;
+  background: linear-gradient(135deg,#f5f5f5,#9a9a9a);
+  color: #0a0a0a;
   border-color: transparent;
   transform: translate(1px,-1px);
 }
