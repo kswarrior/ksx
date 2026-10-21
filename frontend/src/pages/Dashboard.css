@@ -48,7 +48,7 @@
 .panel.panel-bare:hover{ border-color: transparent; box-shadow: none; }
 .panel-head{ display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; }
 .panel-head h2{ font-size:15px; font-weight:900; letter-spacing:-0.4px; display:flex; align-items:center; gap:9px; }
-.panel-icon{ width:30px; height:30px; display:grid; place-items:center; background: rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.08); border-radius:10px; font-size:14px; filter: grayscale(1); }
+.panel-icon{ width:30px; height:30px; display:grid; place-items:center; background: rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.08); border-radius:10px; font-size:14px; }
 .panel-count{ background: rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.08); padding:4px 9px; border-radius:999px; font-size:11px; font-weight:800; color: var(--dash-muted); }
 .panel-body{ display:flex; flex-direction:column; gap:10px; }
 .list-item{
@@ -112,7 +112,7 @@
 }
 .news-head{ display:flex; justify-content:space-between; align-items:flex-start; gap:12px; margin-bottom:14px; }
 .news-left{ display:flex; align-items:center; gap:12px; min-width:0; }
-.news-left h2{ font-size:18px; font-weight:900; letter-spacing:-0.5px; filter: grayscale(1); }
+.news-left h2{ font-size:18px; font-weight:900; letter-spacing:-0.5px; }
 .news-controls{ display:flex; gap:8px; }
 .news-controls button{
   width:36px; height:36px; border-radius:999px; display:grid; place-items:center;
@@ -134,7 +134,7 @@
 }
 .news-3d .news-icon{
   width:54px; height:54px; border-radius:14px; display:grid; place-items:center; font-size:22px; color:white; flex-shrink:0;
-  box-shadow: 0 10px 24px rgba(0,0,0,0.25); border:1px solid rgba(255,255,255,0.10); filter: grayscale(1);
+  box-shadow: 0 10px 24px rgba(0,0,0,0.25); border:1px solid rgba(255,255,255,0.10);
 }
 .news-body{ min-width:0; }
 .news-3d .news-title{ font-size:16px; font-weight:900; letter-spacing:-0.4px; margin-bottom:6px; }
