@@ -1,14 +1,14 @@
 :root {
-  --bg: #0a0a0f;
-  --top: #0b0b10;
-  --panel: #15151b;
-  --border: #24242c;
-  --text: #e6e6eb;
+  --bg: #0a0a0a;
+  --top: #0b0b0b;
+  --panel: #151515;
+  --border: #262626;
+  --text: #e6e6e6;
   --muted: #9aa0aa;
-  --accent: #3b82f6;
-  --accent-hover: #2563eb;
-  --hover: #1f1f2a;
-  --glass: rgba(20, 20, 30, 0.85);
+  --accent: #d4d4d4;
+  --accent-hover: #ffffff;
+  --hover: #1f1f1f;
+  --glass: rgba(20, 20, 20, 0.85);
 }
 
 #topbar {
