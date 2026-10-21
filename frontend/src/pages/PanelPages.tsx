@@ -41,12 +41,6 @@ export default function PanelPages({ title, subtitle, kicker, links, commands }:
         <div className="panel-bg-orb o2" />
       </div>
       <div className="p-shell">
-        <header className="p-header">
-          <div className="p-kicker"><span className="p-kicker-dot" /> {kicker || "PANEL • INSTALL"}</div>
-          <h1 className="p-title">{title}</h1>
-          <p className="p-sub">{subtitle || "One-click install commands — copy, paste in VPS & deploy in minutes. Optimized for lag-less setup."}</p>
-        </header>
-
         {links && links.length > 0 && (
           <div className="p-card">
             <h2>🔗 Useful Links</h2>

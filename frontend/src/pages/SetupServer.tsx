@@ -45,9 +45,6 @@ export default function SetupServer() {
       </div>
       <div className="setup-shell">
         <header className="setup-header">
-          <div className="setup-kicker"><span className="setup-kicker-dot" /> MAKE SERVER • VPS</div>
-          <h1 className="setup-title">MC Server <span>Without Hosting</span></h1>
-          <p className="setup-sub">By KS Warrior • Permanent Free IP • Choose platform, copy commands & deploy. Lag-less steps.</p>
           <select className="setup-select" value={platform} onChange={(e) => setPlatform(e.target.value as Platform)}>
             <option value="codesandbox">CodeSandbox</option>
             <option value="github">GitHub Codespaces</option>

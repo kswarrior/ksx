@@ -81,12 +81,6 @@ createBot()
         <div className="bot-bg-orb o2" />
       </div>
       <div className="bot-shell">
-        <header className="bot-header">
-          <div className="bot-kicker"><span className="bot-kicker-dot" /> SERVER • BOTS</div>
-          <h1 className="bot-title">Minecraft <span>Bot</span></h1>
-          <p className="bot-sub">By KS Warrior • Node.js + mineflayer • No paid hosting • PVP, mining, auto-equip, anti-AFK.</p>
-        </header>
-
         <div className="bot-card">
           <h3>1️⃣ Install Node.js</h3>
           <pre className="bot-code">{installCode}</pre>

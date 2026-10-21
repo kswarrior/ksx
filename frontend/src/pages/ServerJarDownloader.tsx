@@ -92,12 +92,6 @@ export default function ServerJarDownloader() {
         <div className="jar-bg-orb o2" />
       </div>
       <div className="jar-shell">
-        <header className="jar-header">
-          <div className="jar-kicker"><span className="jar-kicker-dot" /> MAKE SERVER • JAR</div>
-          <h1 className="jar-title">MC Server<span>.jar</span> Downloader</h1>
-          <p className="jar-sub">Fast, clean & direct server downloads — Paper, Purpur, Vanilla & more.</p>
-        </header>
-
         <div className="jar-card">
           <div className="jar-row">
             <div className="jar-group">
