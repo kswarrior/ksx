@@ -1,6 +1,7 @@
 import { Suspense, useCallback, useEffect, useState, useRef } from "react";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { api, SearchItem } from "../lib/api";
+import Icon from "./Icon";
 import { PIN_KEY, LAST_PAGE_KEY, RECENT_KEY, MAX_RECENT, RecentItem, PinItem, readPins } from "../hooks/useLocalStorage";
 import "./Layout.css";
 
@@ -344,7 +345,7 @@ export default function Layout() {
                           <span className="s-page-name">{p.name}</span>
                           <span className="s-page-sub">{p.title} • {p.category}</span>
                         </span>
-                        <span className="s-page-go" aria-hidden>↗</span>
+                        <span className="s-page-go" aria-hidden><Icon name="external-link" size={12} /></span>
                       </li>
                     );
                   })}

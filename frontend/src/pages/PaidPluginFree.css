@@ -16,7 +16,7 @@
 .paid-shell{max-width:1120px; margin:0 auto; padding:18px 16px 40px;}
 .paid-header{background:rgba(15, 15, 15,0.92); border:1px solid var(--pp-border); border-radius:5px; padding:12px; backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); box-shadow:0 10px 40px rgba(0, 0, 0,0.45); position:relative; overflow:hidden;}
 .paid-header::before{content:""; position:absolute; inset:0; border-radius:inherit; background:radial-gradient(700px 260px at 20% 0%, rgba(167, 167, 167,0.10), transparent 60%); pointer-events:none;}
-.paid-kicker{position:relative; display:inline-flex; align-items:center; gap:8px; font-size:11px; letter-spacing:1.4px; font-weight:800; color:rgba(255, 255, 255,0.7); background:rgba(255, 255, 255,0.06); border:1px solid rgba(255, 255, 255,0.08); padding:6px 10px; border-radius:999px;}
+.paid-kicker{position:relative; display:inline-flex; align-items:center; gap:8px; font-size:11px; letter-spacing:1.4px; font-weight:800; color:rgba(255, 255, 255,0.7); background:rgba(255, 255, 255,0.06); border:1px solid rgba(255, 255, 255,0.08); padding:6px 10px; border-radius:8px;}
 .paid-kicker-dot{width:7px;height:7px; border-radius:50%; background:#a7a7a7; box-shadow:0 0 10px #a7a7a7;}
 .paid-title{position:relative; margin:14px 0 8px; font-size:clamp(24px,5vw,34px); font-weight:900; letter-spacing:-1.2px; line-height:1;}
 .paid-title span{background:linear-gradient(90deg,#bfbfbf 0%,#a1a1a1 45%,#a0a0a0 100%); -webkit-background-clip:text; background-clip:text; color:transparent;}
@@ -34,7 +34,7 @@
 .paid-card:hover::before{opacity:1;}
 .paid-card:hover{border-color:var(--pp-border2); box-shadow:0 14px 36px rgba(0, 0, 0,0.38); transform:translateY(-2px); background:rgba(23, 23, 23,0.98);}
 .paid-card h3{font-size:14px; font-weight:900; letter-spacing:-0.3px; min-height:20px;}
-.paid-card .download-btn{display:inline-flex; align-items:center; justify-content:center; gap:8px; width:100%; padding:11px; font-size:13px; font-weight:800; border-radius:999px; background:#ffffff; color:#000000; text-decoration:none; transition:transform .15s, background .2s, box-shadow .2s; border:1px solid transparent;}
+.paid-card .download-btn{display:inline-flex; align-items:center; justify-content:center; gap:8px; width:100%; padding:11px; font-size:13px; font-weight:800; border-radius:6px; background:#ffffff; color:#000000; text-decoration:none; transition:transform .15s, background .2s, box-shadow .2s; border:1px solid transparent;}
 .paid-card .download-btn:hover{transform:translateY(-1px); background:#f0f0f0; box-shadow:0 8px 18px rgba(0, 0, 0,0.18);}
 .paid-card .download-btn:active{transform:scale(0.97);}
 .paid-icon{width:44px; height:44px; border-radius:5px; display:grid; place-items:center; background:linear-gradient(135deg,#a7a7a7,#777777); color:#ffffff; font-size:18px; margin:0 auto; box-shadow:0 6px 16px rgba(167, 167, 167,0.24);}

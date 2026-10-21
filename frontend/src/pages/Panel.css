@@ -18,7 +18,7 @@
 .p-shell{max-width:900px; margin:0 auto; padding:18px 16px 40px;}
 .p-header{background:rgba(15, 15, 15,0.92); border:1px solid var(--p-border); border-radius:5px; padding:22px 18px; backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); box-shadow:0 10px 40px rgba(0, 0, 0,0.45); position:relative; overflow:hidden; text-align:center;}
 .p-header::before{content:""; position:absolute; inset:0; border-radius:inherit; background:radial-gradient(700px 260px at 50% 0%, rgba(122, 122, 122,0.12), transparent 60%); pointer-events:none;}
-.p-kicker{position:relative; display:inline-flex; align-items:center; gap:8px; font-size:11px; letter-spacing:1.4px; font-weight:800; color:rgba(255, 255, 255,0.7); background:rgba(255, 255, 255,0.06); border:1px solid rgba(255, 255, 255,0.08); padding:6px 10px; border-radius:999px;}
+.p-kicker{position:relative; display:inline-flex; align-items:center; gap:8px; font-size:11px; letter-spacing:1.4px; font-weight:800; color:rgba(255, 255, 255,0.7); background:rgba(255, 255, 255,0.06); border:1px solid rgba(255, 255, 255,0.08); padding:6px 10px; border-radius:8px;}
 .p-kicker-dot{width:7px;height:7px; border-radius:50%; background:#898989; box-shadow:0 0 10px #898989;}
 .p-title{position:relative; margin:12px 0 8px; font-size:clamp(28px,5vw,38px); font-weight:900; letter-spacing:-1.2px; line-height:1; background:linear-gradient(90deg,#9a9a9a 0%,#a0a0a0 55%,#a1a1a1 100%); -webkit-background-clip:text; background-clip:text; color:transparent;}
 .p-sub{position:relative; color:var(--p-muted); font-size:13px; line-height:1.6; max-width:600px; margin:0 auto;}
@@ -27,7 +27,7 @@
 .p-card h2{font-size:15px; font-weight:900; letter-spacing:-0.3px; margin-bottom:10px; display:flex; align-items:center; gap:8px;}
 .p-card p{font-size:13px; color:var(--p-muted); line-height:1.6; margin-bottom:8px;}
 .codespre{background:#0b0b0b; color:#e4e4e4; border-radius:5px; padding:14px; font-family:"JetBrains Mono","Consolas",monospace; font-size:13px; overflow-x:auto; border:1px solid rgba(255, 255, 255,0.09); white-space:pre-wrap; word-break:break-all; line-height:1.5;}
-.panel-btn{appearance:none; background:rgba(255, 255, 255,0.06); color:#ffffff; border:1px solid rgba(255, 255, 255,0.12); padding:10px 16px; border-radius:999px; font-weight:800; font-size:12px; cursor:pointer; transition:background .2s, transform .15s, border-color .2s; display:inline-flex; align-items:center; gap:8px;}
+.panel-btn{appearance:none; background:rgba(255, 255, 255,0.06); color:#ffffff; border:1px solid rgba(255, 255, 255,0.12); padding:10px 16px; border-radius:6px; font-weight:800; font-size:12px; cursor:pointer; transition:background .2s, transform .15s, border-color .2s; display:inline-flex; align-items:center; gap:8px;}
 .panel-btn:hover{background:rgba(255, 255, 255,0.1); border-color:rgba(255, 255, 255,0.18); transform:translateY(-1px);}
 .panel-btn:active{transform:scale(0.97);}
 .panel-btn.primary{background:#ffffff; color:#000000; border-color:transparent;}

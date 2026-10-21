@@ -1,8 +1,18 @@
 import { useState } from "react";
 import Icon from "../components/Icon";
+import { Select, TextField, type SelectOption } from "../components/ui";
 import "./SetupServer.css";
 
 type Platform = "codesandbox" | "github" | "gitpod" | "colab" | "vps" | "vm";
+
+const platformOptions: SelectOption[] = [
+  { value: "codesandbox", label: "CodeSandbox" },
+  { value: "github", label: "GitHub Codespaces" },
+  { value: "gitpod", label: "Gitpod" },
+  { value: "colab", label: "Google Colab" },
+  { value: "vps", label: "VPS (IPV4)" },
+  { value: "vm", label: "VM (not IPV4)" },
+];
 
 export default function SetupServer() {
   const [platform, setPlatform] = useState<Platform>("codesandbox");
@@ -46,14 +56,13 @@ export default function SetupServer() {
       </div>
       <div className="setup-shell">
         <header className="setup-header">
-          <select className="setup-select" value={platform} onChange={(e) => setPlatform(e.target.value as Platform)}>
-            <option value="codesandbox">CodeSandbox</option>
-            <option value="github">GitHub Codespaces</option>
-            <option value="gitpod">Gitpod</option>
-            <option value="colab">Google Colab</option>
-            <option value="vps">VPS (IPV4)</option>
-            <option value="vm">VM (not IPV4)</option>
-          </select>
+          <Select
+            className="setup-select"
+            value={platform}
+            onChange={(next) => setPlatform(next as Platform)}
+            options={platformOptions}
+            ariaLabel="Platform"
+          />
         </header>
 
         <div className="setup-section">
@@ -98,7 +107,7 @@ export default function SetupServer() {
                 <p>Default Paper 1.21.1 — replace URL if needed.</p>
                 <button className="setup-btn" onClick={() => window.open("/minecraft/make-server/server.jar-downloader.html", "_blank")}><Icon name="external-link" size={13} /> Get Server URL</button>
                 <label>Minecraft Server JAR URL</label>
-                <input value={mcUrl} onChange={(e) => setMcUrl(e.target.value)} placeholder="https://..." />
+                <TextField value={mcUrl} onChange={(e) => setMcUrl(e.target.value)} placeholder="https://..." />
                 <button className="setup-btn primary" onClick={genMc}><Icon name="zap" size={13} /> Generate Command</button>
                 {mcCode && <pre className="setup-code">{mcCode}</pre>}
                 {mcCode && <button className="setup-btn" onClick={() => copy(mcCode,"mc")}><><Icon name={copied==="mc" ? "check" : "copy"} size={13} /> {copied==="mc" ? "Copied" : "Copy"}</></button>}
@@ -107,9 +116,9 @@ export default function SetupServer() {
                 <h3><Icon name="globe" size={15} /> Setup MC Server IP Address</h3>
                 <p>Sign up at <a href="https://app.minekube.com/" target="_blank" rel="noreferrer" style={{color:"#f5f5f5", fontWeight:800}}>app.minekube.com</a> (free), create Endpoint, get name + token.</p>
                 <label>Endpoint Name (e.g., kssmp)</label>
-                <input value={endpointName} onChange={(e) => setEndpointName(e.target.value)} />
+                <TextField value={endpointName} onChange={(e) => setEndpointName(e.target.value)} />
                 <label>Endpoint Token</label>
-                <input value={token} onChange={(e) => setToken(e.target.value)} placeholder="Paste token here" />
+                <TextField value={token} onChange={(e) => setToken(e.target.value)} placeholder="Paste token here" />
                 <button className="setup-btn primary" onClick={genConfig}><Icon name="zap" size={13} /> Generate Config</button>
                 {configCode && <pre className="setup-code">{configCode}</pre>}
                 {configCode && <button className="setup-btn" onClick={() => copy(configCode,"cfg")}><><Icon name={copied==="cfg" ? "check" : "copy"} size={13} /> {copied==="cfg" ? "Copied" : "Copy"}</></button>}
@@ -117,7 +126,7 @@ export default function SetupServer() {
               <div className="setup-card">
                 <h3><Icon name="rocket" size={15} /> Start Server</h3>
                 <label>RAM Allocation (MB)</label>
-                <input type="number" value={ram} onChange={(e) => setRam(e.target.value)} />
+                <TextField type="text" inputMode="numeric" value={ram} onChange={(e) => setRam(e.target.value)} />
                 <button className="setup-btn primary" onClick={genStart}><Icon name="zap" size={13} /> Generate Start</button>
                 {startCode && <pre className="setup-code">{startCode}</pre>}
                 {startCode && <button className="setup-btn" onClick={() => copy(startCode,"start")}><><Icon name={copied==="start" ? "check" : "copy"} size={13} /> {copied==="start" ? "Copied" : "Copy"}</></button>}

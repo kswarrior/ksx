@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { api, VpsHosting } from "../lib/api";
+import Icon from "../components/Icon";
 import { SearchField } from "../components/ui";
 import "./Vps.css";
 

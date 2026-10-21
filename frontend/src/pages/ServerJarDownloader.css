@@ -15,7 +15,7 @@
 .jar-shell{max-width:780px; margin:0 auto; padding:18px 16px 40px;}
 .jar-header{background:rgba(15, 15, 15,0.92); border:1px solid var(--j-border); border-radius:5px; padding:22px 18px; backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); box-shadow:0 10px 40px rgba(0, 0, 0,0.45); position:relative; overflow:hidden; text-align:center;}
 .jar-header::before{content:""; position:absolute; inset:0; border-radius:inherit; background:radial-gradient(700px 260px at 50% 0%, rgba(122, 122, 122,0.10), transparent 60%); pointer-events:none;}
-.jar-kicker{position:relative; display:inline-flex; align-items:center; gap:8px; font-size:11px; letter-spacing:1.4px; font-weight:800; color:rgba(255, 255, 255,0.7); background:rgba(255, 255, 255,0.06); border:1px solid rgba(255, 255, 255,0.08); padding:6px 10px; border-radius:999px;}
+.jar-kicker{position:relative; display:inline-flex; align-items:center; gap:8px; font-size:11px; letter-spacing:1.4px; font-weight:800; color:rgba(255, 255, 255,0.7); background:rgba(255, 255, 255,0.06); border:1px solid rgba(255, 255, 255,0.08); padding:6px 10px; border-radius:8px;}
 .jar-kicker-dot{width:7px;height:7px; border-radius:50%; background:#7a7a7a; box-shadow:0 0 10px #7a7a7a;}
 .jar-title{position:relative; margin:12px 0 8px; font-size:clamp(24px,5vw,32px); font-weight:900; letter-spacing:-1.2px; line-height:1;}
 .jar-title span{background:linear-gradient(90deg,#9a9a9a 0%,#a0a0a0 55%,#a1a1a1 100%); -webkit-background-clip:text; background-clip:text; color:transparent;}
@@ -26,13 +26,13 @@
 .jar-group label{font-size:11px; font-weight:800; color:var(--j-muted); letter-spacing:0.5px; text-transform:uppercase;}
 .jar-group select, .jar-group input{width:100%; padding:12px 14px; background:rgba(11, 11, 11,0.9); border:1px solid var(--j-border); border-radius:5px; color:var(--j-text); font-size:13px; outline:none; transition:border-color .2s, box-shadow .2s;}
 .jar-group select:focus, .jar-group input:focus{border-color:rgba(122, 122, 122,0.4); box-shadow:0 0 0 4px rgba(122, 122, 122,0.12);}
-.jar-btn{width:100%; margin-top:6px; background:#ffffff; color:#000000; border:none; border-radius:999px; padding:13px; font-weight:900; font-size:14px; cursor:pointer; transition:transform .15s, background .2s, box-shadow .2s;}
+.jar-btn{width:100%; margin-top:6px; background:#ffffff; color:#000000; border:none; border-radius:6px; padding:13px; font-weight:900; font-size:14px; cursor:pointer; transition:transform .15s, background .2s, box-shadow .2s;}
 .jar-btn:hover{background:#f0f0f0; transform:translateY(-1px); box-shadow:0 8px 18px rgba(0, 0, 0,0.18);}
 .jar-btn:active{transform:scale(0.97);}
 .jar-btn.secondary{background:rgba(255, 255, 255,0.06); color:#ffffff; border:1px solid var(--j-border);}
 .jar-btn.secondary:hover{background:rgba(255, 255, 255,0.1);}
 .jar-result{margin-top:16px; background:rgba(15, 15, 15,0.92); border:1px solid var(--j-border); border-radius:5px; padding:16px;}
-.jar-status{font-size:13px; margin-bottom:10px; padding:8px 12px; border-radius:999px; display:inline-flex; align-items:center; gap:8px; font-weight:700;}
+.jar-status{font-size:13px; margin-bottom:10px; padding:8px 12px; border-radius:8px; display:inline-flex; align-items:center; gap:8px; font-weight:700;}
 .jar-status.loading{color:#a0a0a0; background:rgba(255, 255, 255,0.06); border:1px solid var(--j-border);}
 .jar-status.loading::before{content:""; width:14px; height:14px; border:2px solid rgba(255, 255, 255,0.2); border-top-color:#9a9a9a; border-radius:50%; animation:spin .7s linear infinite;}
 .jar-status.success{color:#4ade80; background:rgba(34,197,94,0.12); border:1px solid rgba(34,197,94,0.22);}

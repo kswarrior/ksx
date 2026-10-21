@@ -73,7 +73,7 @@ Check:
 
 ```bash
 ./backend/node_modules/.bin/wrangler deploy --dry-run --cwd backend
-# ✨ Read 12 files from ../frontend/dist — Total Upload: ~105 KiB
+# Read 12 files from ../frontend/dist — Total Upload: ~105 KiB
 ```
 
 ### Option B — Pages (frontend) + Workers (backend) separate

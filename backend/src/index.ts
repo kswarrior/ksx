@@ -65,7 +65,7 @@ app.use((err: unknown, _req: express.Request, res: express.Response, _next: expr
 });
 
 app.listen(PORT, "0.0.0.0", () => {
-  console.log(`✅ KSX Backend listening on http://localhost:${PORT}`);
+  console.log(`[OK] KSX Backend listening on http://localhost:${PORT}`);
   console.log(`   Health: http://localhost:${PORT}/api/health`);
 });
 

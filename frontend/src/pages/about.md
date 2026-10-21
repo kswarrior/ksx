@@ -16,8 +16,8 @@ One hub for Minecraft • Website • Hosting • VPS • AI — many builds, ma
 
 ## What I build
 
-- ⛏️ **Minecraft** — hosting, Java/Bedrock tools, panels, server setups
-- 🌐 **Website & VPS** — free lists, guides & deploy scripts
-- 🤖 **AI & Tools** — KS Infinity, downloaders, statics & bots
+- :pickaxe: **Minecraft** — hosting, Java/Bedrock tools, panels, server setups
+- :globe: **Website & VPS** — free lists, guides & deploy scripts
+- :bot: **AI & Tools** — KS Infinity, downloaders, statics & bots
 
 > Built for the community. Fast, stylish, lag-less.

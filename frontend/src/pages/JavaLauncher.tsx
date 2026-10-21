@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import FilterMenu from "../components/FilterMenu";
+import Icon, { type IconName } from "../components/Icon";
 import { SearchField } from "../components/ui";
 import "./JavaLauncher.css";
 

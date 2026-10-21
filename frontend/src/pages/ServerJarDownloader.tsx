@@ -1,11 +1,26 @@
 import { useState } from "react";
 import Icon from "../components/Icon";
+import { Select, TextField, type SelectOption } from "../components/ui";
 import "./ServerJarDownloader.css";
 
 const API = {
   PAPER: "https://api.papermc.io/v2/projects",
   PURPUR: "https://api.purpurmc.org/v2/purpur",
 };
+
+const serverTypeOptions: SelectOption[] = [
+  { value: "paper", label: "Paper" },
+  { value: "folia", label: "Folia" },
+  { value: "purpur", label: "Purpur" },
+  { value: "velocity", label: "Velocity" },
+  { value: "waterfall", label: "Waterfall" },
+  { value: "vanilla", label: "Vanilla" },
+  { value: "fabric", label: "Fabric" },
+  { value: "quilt", label: "Quilt" },
+  { value: "forge", label: "Forge" },
+  { value: "neoforge", label: "NeoForge (Not complete)" },
+  { value: "spigot", label: "Spigot" },
+];
 
 export default function ServerJarDownloader() {
   const [type, setType] = useState("paper");
@@ -97,23 +112,20 @@ export default function ServerJarDownloader() {
           <div className="jar-row">
             <div className="jar-group">
               <label>Server Type</label>
-              <select value={type} onChange={(e) => setType(e.target.value)}>
-                <option value="paper">Paper</option>
-                <option value="folia">Folia</option>
-                <option value="purpur">Purpur</option>
-                <option value="velocity">Velocity</option>
-                <option value="waterfall">Waterfall</option>
-                <option value="vanilla">Vanilla</option>
-                <option value="fabric">Fabric</option>
-                <option value="quilt">Quilt</option>
-                <option value="forge">Forge</option>
-                <option value="neoforge">NeoForge (Not complete)</option>
-                <option value="spigot">Spigot</option>
-              </select>
+              <Select
+                value={type}
+                onChange={setType}
+                options={serverTypeOptions}
+                ariaLabel="Server type"
+              />
             </div>
             <div className="jar-group">
               <label>Version</label>
-              <input placeholder={updatePlaceholder()} value={version} onChange={(e) => setVersion(e.target.value)} />
+              <TextField
+                placeholder={updatePlaceholder()}
+                value={version}
+                onChange={(e) => setVersion(e.target.value)}
+              />
             </div>
           </div>
           <button className="jar-btn" onClick={startFetch}><Icon name="search" size={15} /> Find Server.jar</button>
@@ -121,7 +133,7 @@ export default function ServerJarDownloader() {
           {show && (
             <div className="jar-result">
               {status && <div className={`jar-status ${status.kind}`}>{status.text}</div>}
-              <input className="jar-url" readOnly value={url} placeholder="https://..." />
+              <TextField className="jar-url" readOnly value={url} placeholder="https://..." />
               {url && (
                 <div className="jar-actions">
                   <button className="jar-btn" onClick={downloadJar}><Icon name="download" size={15} /> Download</button>

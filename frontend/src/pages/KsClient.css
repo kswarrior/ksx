@@ -15,7 +15,7 @@
 .ks-title{font-size:28px; font-weight:900; letter-spacing:-0.8px; line-height:1;}
 .ks-title span{background:linear-gradient(90deg,#a0a0a0 0%,#9a9a9a 100%); -webkit-background-clip:text; background-clip:text; color:transparent;}
 .ks-subtitle{font-size:13px; color:var(--ks-muted); margin-top:4px;}
-.ks-dl{position:relative; display:inline-flex; align-items:center; gap:10px; font-weight:800; background:#ffffff; color:#000000; padding:12px 20px; border-radius:999px; text-decoration:none; font-size:13px; transition:transform .15s, background .2s, box-shadow .2s; border:1px solid transparent;}
+.ks-dl{position:relative; display:inline-flex; align-items:center; gap:10px; font-weight:800; background:#ffffff; color:#000000; padding:12px 20px; border-radius:6px; text-decoration:none; font-size:13px; transition:transform .15s, background .2s, box-shadow .2s; border:1px solid transparent;}
 .ks-dl:hover{background:#f0f0f0; transform:translateY(-1px); box-shadow:0 8px 18px rgba(0, 0, 0,0.22);} .ks-dl:active{transform:scale(0.97);}
 .ks-card{background:var(--ks-card); border:1px solid var(--ks-border); border-radius:5px; padding:20px; margin-top:14px; contain:layout paint style; content-visibility:auto; contain-intrinsic-size:320px; line-height:1.6; font-size:13px; color:var(--ks-text);}
 .ks-card-title{font-size:15px; font-weight:900; letter-spacing:-0.3px; margin-bottom:10px; display:flex; align-items:center; gap:8px;}

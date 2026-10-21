@@ -1,7 +1,27 @@
 import { createElement, Fragment, type ReactNode } from "react";
 import { Link } from "react-router-dom";
+import Icon, { isIconName } from "./Icon";
 
 const INLINE_RE = /(\*\*[^*]+\*\*|`[^`]+`|\[[^\]]+\]\([^)]+\))/g;
+const ICON_RE = /:([a-z][a-z0-9-]*):/g;
+
+function renderText(text: string, key: string): ReactNode[] {
+  const out: ReactNode[] = [];
+  let last = 0;
+  let match: RegExpExecArray | null;
+  ICON_RE.lastIndex = 0;
+
+  while ((match = ICON_RE.exec(text))) {
+    const name = match[1];
+    if (!isIconName(name)) continue;
+    if (match.index > last) out.push(text.slice(last, match.index));
+    out.push(<Icon key={`${key}-icon-${match.index}`} name={name} size={15} />);
+    last = match.index + match[0].length;
+  }
+
+  if (last < text.length) out.push(text.slice(last));
+  return out;
+}
 
 function renderInline(text: string, key: string): ReactNode[] {
   const out: ReactNode[] = [];
@@ -10,7 +30,7 @@ function renderInline(text: string, key: string): ReactNode[] {
   INLINE_RE.lastIndex = 0;
 
   while ((match = INLINE_RE.exec(text))) {
-    if (match.index > last) out.push(text.slice(last, match.index));
+    if (match.index > last) out.push(...renderText(text.slice(last, match.index), `${key}-${last}`));
     const token = match[0];
     const tokenKey = `${key}-${match.index}`;
 
@@ -30,13 +50,13 @@ function renderInline(text: string, key: string): ReactNode[] {
           )
         );
       } else {
-        out.push(token);
+        out.push(...renderText(token, tokenKey));
       }
     }
     last = match.index + token.length;
   }
 
-  if (last < text.length) out.push(text.slice(last));
+  if (last < text.length) out.push(...renderText(text.slice(last), `${key}-${last}`));
   return out;
 }
 
