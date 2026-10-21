@@ -201,9 +201,9 @@
 .s-page:hover::before, .s-page.active::before { opacity: 1; }
 .s-page:active { transform: scale(0.98); }
 .s-page-logo {
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
+  width: 30px;
+  height: 30px;
+  border-radius: 9px;
   display: grid;
   place-items: center;
   background: rgba(255,255,255,0.06);
@@ -261,7 +261,7 @@
   position: fixed;
   top: 56px;
   left: 0;
-  width: 268px;
+  width: 228px;
   height: calc(100% - 56px);
   height: calc(100dvh - 56px);
   background: rgba(13, 13, 13, 0.92);
@@ -372,7 +372,7 @@
 .sb-nav {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 5px;
   flex: 1;
 }
 
@@ -380,12 +380,12 @@
   position: relative;
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 11px 12px;
-  border-radius: 12px;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 11px;
   color: var(--text);
   text-decoration: none;
-  font-size: 13.5px;
+  font-size: 13px;
   font-weight: 650;
   letter-spacing: -0.15px;
   border: 1px solid transparent;
@@ -466,8 +466,8 @@
   transition: background 0.2s, border-color 0.2s, color 0.2s, transform 0.2s, box-shadow 0.2s;
 }
 .sb-icon svg {
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
 }
 .sb-link:hover .sb-icon {
   background: rgba(255, 255, 255, 0.1);
@@ -610,7 +610,7 @@
 @media (min-width: 900px) {
   #content,
   #content.sidebar-open {
-    padding-left: 268px;
+    padding-left: 228px;
   }
   #sidebar {
     transform: translateX(0);
@@ -641,8 +641,8 @@
 /* phone optimizations — lag less */
 @media (max-width: 899px) {
   #sidebar {
-    width: 78vw;
-    max-width: 300px;
+    width: 66vw;
+    max-width: 255px;
     border-right: none;
     border-top-right-radius: 18px;
     border-bottom-right-radius: 18px;
@@ -667,7 +667,7 @@
 }
 @media (max-width: 380px) {
   #sidebar {
-    width: 84vw;
+    width: 71vw;
   }
 }
 @media (hover: none) and (pointer: coarse) {
