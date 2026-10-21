@@ -96,7 +96,7 @@ function Stars({ n }: { n: number }) {
     <div className="launcher-stat">
       {Array.from({ length: 5 }).map((_, i) => (
         <svg key={i} viewBox="0 0 24 24">
-          <path fill={i < n ? "#ffd54a" : "rgba(255,255,255,0.18)"} d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.79 1.402 8.168L12 18.896 4.664 23.158l1.402-8.168L.132 9.2l8.2-1.192z" />
+          <path fill={i < n ? "#e5e5e5" : "rgba(255,255,255,0.18)"} d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.79 1.402 8.168L12 18.896 4.664 23.158l1.402-8.168L.132 9.2l8.2-1.192z" />
         </svg>
       ))}
     </div>
@@ -125,7 +125,7 @@ export default function JavaLauncher() {
             <div className="jl-search">
               <svg viewBox="0 0 24 24" aria-hidden><circle cx="11" cy="11" r="6.5"/><path d="M16 16 L20 20"/></svg>
               <input placeholder="Search launcher by name…" value={q} onChange={(e)=>setQ(e.target.value)} aria-label="Search launcher" spellCheck={false} />
-              {q && <button onClick={()=>setQ("")} style={{width:34,height:34,borderRadius:999,border:"1px solid rgba(255,255,255,0.1)",background:"rgba(255,255,255,0.06)",color:"#fff",display:"grid",placeItems:"center",cursor:"pointer",flexShrink:0}}>✕</button>}
+              {q && <button onClick={()=>setQ("")} style={{width:34,height:34,borderRadius:5,border:"1px solid rgba(255,255,255,0.1)",background:"rgba(255,255,255,0.06)",color:"#fff",display:"grid",placeItems:"center",cursor:"pointer",flexShrink:0}}>✕</button>}
             </div>
             <div className="jl-filters">
               {(["All","PC","Android"] as const).map(v=> (
@@ -160,7 +160,7 @@ export default function JavaLauncher() {
             </article>
           ))}
         </div>
-        {filtered.length===0 && <div style={{textAlign:"center", padding:32, color:"var(--jl-muted)", background:"rgba(14,14,24,0.9)", border:"1px solid var(--jl-border)", borderRadius:16, marginTop:14}}>No launchers match search.</div>}
+        {filtered.length===0 && <div style={{textAlign:"center", padding:32, color:"var(--jl-muted)", background:"rgba(14,14,24,0.9)", border:"1px solid var(--jl-border)", borderRadius:5, marginTop:14}}>No launchers match search.</div>}
       </div>
     </div>
   );

@@ -104,7 +104,7 @@ export default function SetupServer() {
               </div>
               <div className="setup-card">
                 <h3>🌐 Setup MC Server IP Address</h3>
-                <p>Sign up at <a href="https://app.minekube.com/" target="_blank" rel="noreferrer" style={{color:"#a78bfa", fontWeight:800}}>app.minekube.com</a> (free), create Endpoint, get name + token.</p>
+                <p>Sign up at <a href="https://app.minekube.com/" target="_blank" rel="noreferrer" style={{color:"#f5f5f5", fontWeight:800}}>app.minekube.com</a> (free), create Endpoint, get name + token.</p>
                 <label>Endpoint Name (e.g., kssmp)</label>
                 <input value={endpointName} onChange={(e) => setEndpointName(e.target.value)} />
                 <label>Endpoint Token</label>

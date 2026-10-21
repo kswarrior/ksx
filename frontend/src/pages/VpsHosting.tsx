@@ -28,7 +28,7 @@ export default function VpsHostingPage() {
             <div className="v-search">
               <svg viewBox="0 0 24 24" aria-hidden><circle cx="11" cy="11" r="6.5"/><path d="M16 16 L20 20"/></svg>
               <input placeholder="Search VPS by name…" value={q} onChange={(e)=>setQ(e.target.value)} aria-label="Search VPS" spellCheck={false} />
-              {q && <button onClick={()=>setQ("")} style={{width:34,height:34,borderRadius:999,border:"1px solid rgba(255,255,255,0.1)",background:"rgba(255,255,255,0.06)",color:"#fff",display:"grid",placeItems:"center",cursor:"pointer",flexShrink:0}}>✕</button>}
+              {q && <button onClick={()=>setQ("")} style={{width:34,height:34,borderRadius:5,border:"1px solid rgba(255,255,255,0.1)",background:"rgba(255,255,255,0.06)",color:"#fff",display:"grid",placeItems:"center",cursor:"pointer",flexShrink:0}}>✕</button>}
             </div>
             <div className="v-stats">{loading ? "Loading…" : <><strong>{filtered.length}</strong> of <strong>{list.length}</strong> providers</>}</div>
           </div>

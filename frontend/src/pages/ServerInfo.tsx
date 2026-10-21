@@ -41,7 +41,7 @@ export default function ServerInfo() {
         {data && (
           <div className="si-card">
             <div style={{display:"flex", gap:8, alignItems:"center", flexWrap:"wrap"}}>
-              <span style={{padding:"6px 10px", borderRadius:999, fontSize:12, fontWeight:900, background: online ? "rgba(74,222,128,0.15)" : "rgba(239,68,68,0.15)", color: online ? "#4ade80" : "#ef4444", border:"1px solid rgba(255,255,255,0.08)"}}>{online ? "● Online" : "● Offline"}</span>
+              <span style={{padding:"6px 10px", borderRadius:5, fontSize:12, fontWeight:900, background: online ? "rgba(74,222,128,0.15)" : "rgba(239,68,68,0.15)", color: online ? "#4ade80" : "#ef4444", border:"1px solid rgba(255,255,255,0.08)"}}>{online ? "● Online" : "● Offline"}</span>
               {players && <span style={{fontSize:12, color:"var(--si-muted)"}}>{players.online} / {players.max} players</span>}
               <button className="si-btn" style={{marginLeft:"auto", padding:"8px 12px", fontSize:12, background:"rgba(255,255,255,0.06)", color:"#fff", border:"1px solid rgba(255,255,255,0.12)"}} onClick={()=> navigator.clipboard.writeText(JSON.stringify(data,null,2))}>Copy JSON</button>
             </div>

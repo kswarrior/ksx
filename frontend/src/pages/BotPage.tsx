@@ -128,14 +128,14 @@ createBot()
             <button className="bot-btn" onClick={() => copy(generated,3)}>{copiedIdx===3?"Copied ✓":"⎘ Copy Generated"}</button>
           </div>
           <pre className="bot-code" style={{marginTop:12}}>{generated}</pre>
-          <p style={{marginTop:8, color:"#9aa0b4", fontSize:11}}>Paste the copied code into bot.js</p>
+          <p style={{marginTop:8, color:"#a3a3a3", fontSize:11}}>Paste the copied code into bot.js</p>
         </div>
 
         <div className="bot-card">
           <h3>4️⃣ Run the bot</h3>
           <pre className="bot-code">node bot.js</pre>
           <button className="bot-btn" onClick={() => copy("node bot.js",4)}>{copiedIdx===4?"Copied ✓":"⎘ Copy Code"}</button>
-          <p style={{marginTop:10, color:"#9aa0b4", fontSize:11, lineHeight:1.6}}>Tip: Use <code style={{background:"rgba(255,255,255,0.06)", padding:"2px 6px", borderRadius:6}}>screen -S bot</code> then run, detach with Ctrl+A+D, reattach with <code style={{background:"rgba(255,255,255,0.06)", padding:"2px 6px", borderRadius:6}}>screen -r bot</code> or <code style={{background:"rgba(255,255,255,0.06)", padding:"2px 6px", borderRadius:6}}>nohup node bot.js &amp;</code></p>
+          <p style={{marginTop:10, color:"#a3a3a3", fontSize:11, lineHeight:1.6}}>Tip: Use <code style={{background:"rgba(255,255,255,0.06)", padding:"2px 6px", borderRadius:5}}>screen -S bot</code> then run, detach with Ctrl+A+D, reattach with <code style={{background:"rgba(255,255,255,0.06)", padding:"2px 6px", borderRadius:5}}>screen -r bot</code> or <code style={{background:"rgba(255,255,255,0.06)", padding:"2px 6px", borderRadius:5}}>nohup node bot.js &amp;</code></p>
         </div>
 
         <div className="bot-card">

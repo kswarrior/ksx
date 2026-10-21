@@ -146,16 +146,16 @@ export default function JavaDownloader() {
           <div className="jd-modal-content" onClick={(e) => e.stopPropagation()}>
             <span className="jd-close" onClick={() => setShowDetail(false)}>&times;</span>
             <div style={{ display: "flex", gap: 16, alignItems: "center", marginBottom: 16 }}>
-              <img src={selected.icon_url || "https://via.placeholder.com/64"} alt="" style={{ width: 64, height: 64, borderRadius: 14, border:"1px solid rgba(255,255,255,0.12)" }} />
+              <img src={selected.icon_url || "https://via.placeholder.com/64"} alt="" style={{ width: 64, height: 64, borderRadius:5, border:"1px solid rgba(255,255,255,0.12)" }} />
               <div style={{minWidth:0}}>
                 <h2 style={{ fontSize: 18, fontWeight:900, letterSpacing:-0.4 }}>{detailData ? String((detailData as { title: string }).title) : selected.title}</h2>
-                <p style={{ color: "#9aa0b4", fontSize:13, marginTop:4, lineHeight:1.5 }}>{selected.description}</p>
+                <p style={{ color: "#a3a3a3", fontSize:13, marginTop:4, lineHeight:1.5 }}>{selected.description}</p>
               </div>
             </div>
             <button className="jd-btn" onClick={() => { if (detailData) window.open(`https://modrinth.com/${(detailData as { project_type: string }).project_type}/${(detailData as { slug: string }).slug}`, "_blank"); }}>
               View on Modrinth ↗
             </button>
-            <div style={{ marginTop: 16, color: "#9aa0b4", fontSize: 13, lineHeight: 1.6, whiteSpace:"pre-wrap", wordBreak:"break-word", background:"rgba(255,255,255,0.04)", border:"1px solid rgba(255,255,255,0.06)", padding:14, borderRadius:12 }}>
+            <div style={{ marginTop: 16, color: "#a3a3a3", fontSize: 13, lineHeight: 1.6, whiteSpace:"pre-wrap", wordBreak:"break-word", background:"rgba(255,255,255,0.04)", border:"1px solid rgba(255,255,255,0.06)", padding:14, borderRadius:5 }}>
               {detailData ? String((detailData as { body: string }).body || "").slice(0, 2500) || "No description" : "Loading..."}
             </div>
           </div>
