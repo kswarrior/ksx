@@ -8,7 +8,7 @@ type Launcher = {
   platform: "PC" | "Android";
   info: string[];
   link: string;
-  logo: string;
+  icon: IconName;
 };
 
 const launchers: Launcher[] = [
@@ -24,7 +24,7 @@ const launchers: Launcher[] = [
       "Performance optimizations and multiplayer server compatibility.",
     ],
     link: "https://tlauncher.org/en/",
-    logo: "🎮",
+    icon: "gamepad",
   },
   {
     name: "MultiMC",
@@ -32,7 +32,7 @@ const launchers: Launcher[] = [
     platform: "PC",
     info: ["Open-source launcher for PC.", "Supports multiple instances and versions.", "Easy mod management.", "Lightweight and stable.", "Premium account support."],
     link: "https://multimc.org/",
-    logo: "🧩",
+    icon: "puzzle",
   },
   {
     name: "GDLauncher",
@@ -40,7 +40,7 @@ const launchers: Launcher[] = [
     platform: "PC",
     info: ["Modern launcher with clean interface.", "Supports modpacks and multiple versions.", "Cloud saves and easy account management.", "Open-source and lightweight."],
     link: "https://gdevs.io/",
-    logo: "🚀",
+    icon: "rocket",
   },
   {
     name: "ATLauncher",
@@ -48,7 +48,7 @@ const launchers: Launcher[] = [
     platform: "PC",
     info: ["Launcher focused on modpacks for Minecraft.", "Easy installation and management of modded instances.", "Supports all Minecraft versions.", "Open-source and free."],
     link: "https://www.atlauncher.com/",
-    logo: "📦",
+    icon: "package",
   },
   {
     name: "Prism Launcher",
@@ -56,7 +56,7 @@ const launchers: Launcher[] = [
     platform: "PC",
     info: ["Supports all Minecraft versions and multiple instances.", "Open-source launcher for modded and vanilla Minecraft.", "Highly customizable and lightweight."],
     link: "https://prismlauncher.org/",
-    logo: "🔷",
+    icon: "gem",
   },
   {
     name: "Fold Craft Launcher",
@@ -64,7 +64,7 @@ const launchers: Launcher[] = [
     platform: "Android",
     info: ["Full support for mods, shaders, and resource packs.", "Customizable controls and launcher themes.", "Performance optimizations for smoother gameplay.", "Supports Forge, Fabric, LiteLoader, and OptiFine."],
     link: "https://fcl-team.github.io/pages/download.html",
-    logo: "📱",
+    icon: "smartphone",
   },
   {
     name: "Mojo Launcher",
@@ -72,7 +72,7 @@ const launchers: Launcher[] = [
     platform: "Android",
     info: ["Supports Forge and Fabric mod loaders.", "Access all Minecraft versions, including snapshots.", "Modpack support (CurseForge & Modrinth).", "Open-source and regularly updated."],
     link: "https://play.google.com/store/apps/details?id=git.artdeell.mojo&hl=en",
-    logo: "🤖",
+    icon: "bot",
   },
   {
     name: "PojavLauncher",
@@ -80,7 +80,7 @@ const launchers: Launcher[] = [
     platform: "Android",
     info: ["Run Minecraft: Java Edition on Android.", "Supports Forge, Fabric, and various mod loaders.", "Access all Minecraft versions including snapshots.", "Open-source and actively developed."],
     link: "https://pojavlauncher.en.softonic.com/android",
-    logo: "⛏️",
+    icon: "pickaxe",
   },
   {
     name: "Zalith Launcher",
@@ -88,7 +88,7 @@ const launchers: Launcher[] = [
     platform: "Android",
     info: ["Fork of PojavLauncher with a redesigned interface.", "Supports Forge, Fabric, and other mod loaders.", "Access all Minecraft versions including snapshots.", "Optimized for better performance."],
     link: "https://github.com/ZalithLauncher/ZalithLauncher/releases",
-    logo: "⚡",
+    icon: "zap",
   },
 ];
 
@@ -127,7 +127,7 @@ export default function JavaLauncher() {
               <div className="jl-search">
                 <svg viewBox="0 0 24 24" aria-hidden><circle cx="11" cy="11" r="6.5"/><path d="M16 16 L20 20"/></svg>
                 <input placeholder="Search launcher by name…" value={q} onChange={(e)=>setQ(e.target.value)} aria-label="Search launcher" spellCheck={false} />
-                {q && <button onClick={()=>setQ("")} style={{width:34,height:34,borderRadius:5,border:"1px solid rgba(255,255,255,0.1)",background:"rgba(255,255,255,0.06)",color:"#fff",display:"grid",placeItems:"center",cursor:"pointer",flexShrink:0}}>✕</button>}
+                {q && <button onClick={()=>setQ("")} aria-label="Clear search" style={{width:34,height:34,borderRadius:5,border:"1px solid rgba(255,255,255,0.1)",background:"rgba(255,255,255,0.06)",color:"#fff",display:"grid",placeItems:"center",cursor:"pointer",flexShrink:0}}><Icon name="close" size={14} /></button>}
               </div>
               <FilterMenu activeCount={filter === "All" ? 0 : 1}>
                 <div className="jl-filters">
@@ -145,7 +145,7 @@ export default function JavaLauncher() {
           {filtered.map((l) => (
             <article key={l.name} className="launcher-card">
               <div className="top-row">
-                <div className="launcher-logo" aria-hidden>{l.logo}</div>
+                <div className="launcher-logo" aria-hidden><Icon name={l.icon} size={28} /></div>
                 <div style={{minWidth:0, flex:1}}>
                   <div className="launcher-name">{l.name}</div>
                   <div style={{ display: "flex", gap: 6, alignItems: "center", marginTop:6, flexWrap:"wrap" }}>
@@ -160,7 +160,7 @@ export default function JavaLauncher() {
                 ))}
               </ul>
               <a href={l.link} target="_blank" rel="noreferrer" style={{marginTop:"auto"}}>
-                <button className="download-btn">Download ↗</button>
+                <button className="download-btn"><Icon name="download" size={15} /> Download</button>
               </a>
             </article>
           ))}

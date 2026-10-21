@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Icon from "../components/Icon";
 import "./ServerJarDownloader.css";
 
 const API = {
@@ -115,7 +116,7 @@ export default function ServerJarDownloader() {
               <input placeholder={updatePlaceholder()} value={version} onChange={(e) => setVersion(e.target.value)} />
             </div>
           </div>
-          <button className="jar-btn" onClick={startFetch}>🔍 Find Server.jar</button>
+          <button className="jar-btn" onClick={startFetch}><Icon name="search" size={15} /> Find Server.jar</button>
 
           {show && (
             <div className="jar-result">
@@ -123,8 +124,10 @@ export default function ServerJarDownloader() {
               <input className="jar-url" readOnly value={url} placeholder="https://..." />
               {url && (
                 <div className="jar-actions">
-                  <button className="jar-btn" onClick={downloadJar}>⬇ Download</button>
-                  <button className="jar-btn secondary" onClick={copyURL}>{copied ? "Copied ✓" : "⎘ Copy URL"}</button>
+                  <button className="jar-btn" onClick={downloadJar}><Icon name="download" size={15} /> Download</button>
+                  <button className="jar-btn secondary" onClick={copyURL}>
+                    <Icon name={copied ? "check" : "copy"} size={15} /> {copied ? "Copied" : "Copy URL"}
+                  </button>
                 </div>
               )}
             </div>

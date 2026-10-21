@@ -1,6 +1,7 @@
 import { useEffect, useState, useMemo, useRef, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { api, SitemapCategory } from "../lib/api";
+import Icon from "../components/Icon";
 import { RECENT_KEY, MAX_RECENT } from "../hooks/useLocalStorage";
 import "./MapPage.css";
 
@@ -176,7 +177,7 @@ export default function MapPage() {
       <div className="map-page">
         <div className="mp-shell">
           <div className="mp-error">
-            <div className="mp-error-icon">⚠️</div>
+            <div className="mp-error-icon"><Icon name="warning" size={24} /></div>
             <h2>Couldn’t load map</h2>
             <p>{error}</p>
             <button className="mp-btn mp-btn-primary" onClick={() => location.reload()}>
@@ -219,7 +220,7 @@ export default function MapPage() {
               />
               {query ? (
                 <button className="mp-search-clear" onClick={() => setQuery("")} aria-label="Clear search">
-                  ✕
+                  <Icon name="close" size={14} />
                 </button>
               ) : null}
             </div>
@@ -275,7 +276,7 @@ export default function MapPage() {
         {/* results */}
         {filtered.length === 0 ? (
           <div className="mp-empty">
-            <div className="mp-empty-icon">🔍</div>
+            <div className="mp-empty-icon"><Icon name="search" size={24} /></div>
             <h3>No matches</h3>
             <p>
               No pages match <strong>“{dq}”</strong>
@@ -323,7 +324,7 @@ export default function MapPage() {
                             <span className="mp-sec-title">{sec.title}</span>
                             <span className="mp-sec-count">{sec.pages.length}</span>
                             <span className="mp-sec-chev" aria-hidden>
-                              ▾
+                              <Icon name="chevron-down" size={14} />
                             </span>
                           </button>
 
@@ -340,7 +341,7 @@ export default function MapPage() {
                                   <span className="mp-page-icon" dangerouslySetInnerHTML={{ __html: p.logo }} />
                                   <span className="mp-page-name">{p.name}</span>
                                   <span className="mp-page-arrow" aria-hidden>
-                                    ↗
+                                    <Icon name="arrow-up-right" size={13} />
                                   </span>
                                 </Link>
                               ))}
