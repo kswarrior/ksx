@@ -373,6 +373,7 @@ export async function getSocialStats(env: SocialEnv = {}): Promise<SocialStats> 
     updatedAt: new Date().toISOString(),
     platforms: { youtube, discord, instagram },
   };
-  cache = { key, expiresAt: now + CACHE_TTL_MS, value };
+  const hasLiveData = Object.values(value.platforms).some((platform) => platform.available);
+  cache = { key, expiresAt: now + (hasLiveData ? CACHE_TTL_MS : 60_000), value };
   return value;
 }
