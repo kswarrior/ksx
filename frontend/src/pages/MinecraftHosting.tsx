@@ -39,10 +39,6 @@ export default function MinecraftHostingPage() {
       </div>
       <div className="h-shell">
         <header className="h-header">
-          <div className="h-kicker"><span className="h-kicker-dot" /> MINECRAFT • HOSTING <span className="h-kicker-count">{data.length} providers</span></div>
-          <h1 className="h-title">Free Minecraft <span>Hosting</span></h1>
-          <p className="h-sub">Curated free hosts — filter by RAM, location & uptime. Lag-less cards, instant search, tap Visit to launch.</p>
-
           <div className="h-search-wrap">
             <div className="h-search">
               <svg viewBox="0 0 24 24" aria-hidden><circle cx="11" cy="11" r="6.5"/><path d="M16 16 L20 20"/></svg>

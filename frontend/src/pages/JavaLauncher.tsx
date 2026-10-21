@@ -121,9 +121,6 @@ export default function JavaLauncher() {
       </div>
       <div className="jl-shell">
         <header className="jl-header">
-          <div className="jl-kicker"><span className="jl-kicker-dot" /> JAVA EDITION • LAUNCHERS</div>
-          <h1 className="jl-title">Minecraft Java <span>Launchers</span></h1>
-          <p className="jl-sub">PC & Android launchers for Java Edition — modpacks, shaders, snapshots. Search, filter & download.</p>
           <div className="jl-search-wrap">
             <div className="jl-search">
               <svg viewBox="0 0 24 24" aria-hidden><circle cx="11" cy="11" r="6.5"/><path d="M16 16 L20 20"/></svg>

@@ -32,9 +32,6 @@ export default function ServerInfo() {
       </div>
       <div className="si-shell">
         <header className="si-header">
-          <div className="si-kicker"><span className="si-kicker-dot" /> SERVER • STATICS</div>
-          <h1 className="si-title">Minecraft Server <span>Info</span></h1>
-          <p className="si-sub">Enter any Java/Bedrock IP — get status, players, MOTD & version instantly.</p>
           <div className="si-search">
             <input className="si-input" value={ip} onChange={(e) => setIp(e.target.value)} placeholder="Enter server IP (e.g. play.hypixel.net)" aria-label="Server IP" onKeyDown={(e)=> e.key==="Enter" && fetchInfo()} />
             <button className="si-btn" onClick={fetchInfo}>{loading ? "Checking…" : "Search ↗"}</button>

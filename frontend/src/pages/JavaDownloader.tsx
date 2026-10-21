@@ -89,9 +89,6 @@ export default function JavaDownloader() {
       </div>
       <div className="jd-shell">
         <header className="jd-header">
-          <div className="jd-kicker"><span className="jd-kicker-dot" /> UNIVERSAL • DOWNLOADER</div>
-          <h1 className="jd-title">Modrinth <span>Downloader</span></h1>
-          <p className="jd-sub">Mods, plugins, shaders & packs from Modrinth — fast search, lag-less cards, instant details.</p>
           <div className="jd-controls">
             <div className="jd-row1">
               <select value={type} onChange={(e) => { setType(e.target.value); setLoader(""); }} className="jd-select">

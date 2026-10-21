@@ -32,9 +32,6 @@ export default function PaidPluginFree() {
       </div>
       <div className="paid-shell">
         <header className="paid-header">
-          <div className="paid-kicker"><span className="paid-kicker-dot" /> MAKE SERVER • PLUGINS</div>
-          <h1 className="paid-title">Paid Plugins <span>For Free</span></h1>
-          <p className="paid-sub">Premium plugins unlocked — lifesteal, itemsadder, enchantments & more. Search & download.</p>
           <div className="paid-search-wrap">
             <div className="paid-search">
               <svg viewBox="0 0 24 24" aria-hidden><circle cx="11" cy="11" r="6.5"/><path d="M16 16 L20 20"/></svg>
