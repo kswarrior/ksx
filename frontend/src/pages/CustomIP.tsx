@@ -80,12 +80,6 @@ export default function CustomIP() {
         <div className="ci-bg-orb o2" />
       </div>
       <div className="ci-shell">
-        <header className="ci-header">
-          <div className="ci-kicker"><span className="ci-kicker-dot" /> MAKE SERVER • CUSTOM IP</div>
-          <h1 className="ci-title">Custom <span>IP Address</span></h1>
-          <p className="ci-sub">By KS Warrior • Resolve domain → get geodata → create free subdomain instantly.</p>
-        </header>
-
         <div className="ci-grid">
           <div className="ci-card">
             <h3><span>1</span> Resolve IP / Domain</h3>

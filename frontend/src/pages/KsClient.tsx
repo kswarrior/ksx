@@ -26,19 +26,6 @@ export default function KsClient() {
         <div className="ks-bg-orb o2" />
       </div>
       <div className="ks-shell">
-        <header className="ks-header">
-          <div className="ks-brand">
-            <div className="ks-logo"><img src="/image/ks-logo.webp" alt="KS Client Logo" loading="lazy" /></div>
-            <div>
-              <div className="ks-title">KS <span>Client</span></div>
-              <div className="ks-subtitle">Bedrock (PE) • Less lag • 3D • Modern UI</div>
-            </div>
-          </div>
-          <a href="https://www.mediafire.com/file/o78xzmld09b5nw9/KS_Client_V3.mcpack/file" target="_blank" rel="noreferrer" className="ks-dl">
-            ⬇ Download .mcpack
-          </a>
-        </header>
-
         <div className="ks-card">
           <div className="ks-card-title">✨ What you get</div>
           <div style={{color:"var(--ks-muted)", fontSize:13, lineHeight:1.6}}>Packed for performance + visuals. One tap install, works on Bedrock PE.</div>
