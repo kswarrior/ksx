@@ -15,14 +15,14 @@
 .jd-bg-orb.o2{width:460px;height:460px; right:-100px; top:12%; background:radial-gradient(circle at 30% 30%, #9a9a9a 0%, #7a7a7a 44%, transparent 72%); animation:jdOrb 12s ease-in-out infinite reverse;}
 @keyframes jdOrb{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-14px) scale(1.03)}}
 .jd-shell{max-width:1120px; margin:0 auto; padding:18px 16px 40px;}
-.jd-header{background:rgba(15, 15, 15,0.92); border:1px solid var(--jd-border); border-radius:5px; padding:22px 18px 18px; backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); box-shadow:0 10px 40px rgba(0, 0, 0,0.45); position:relative; overflow:hidden;}
+.jd-header{background:rgba(15, 15, 15,0.92); border:1px solid var(--jd-border); border-radius:5px; padding:12px; backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); box-shadow:0 10px 40px rgba(0, 0, 0,0.45); position:relative; overflow:hidden;}
 .jd-header::before{content:""; position:absolute; inset:0; border-radius:inherit; background:radial-gradient(700px 260px at 20% 0%, rgba(137, 137, 137,0.10), transparent 60%); pointer-events:none;}
 .jd-kicker{position:relative; display:inline-flex; align-items:center; gap:8px; font-size:11px; letter-spacing:1.4px; font-weight:800; color:rgba(255, 255, 255,0.7); background:rgba(255, 255, 255,0.06); border:1px solid rgba(255, 255, 255,0.08); padding:6px 10px; border-radius:999px;}
 .jd-kicker-dot{width:7px;height:7px; border-radius:50%; background:#898989; box-shadow:0 0 10px #898989;}
 .jd-title{position:relative; margin:14px 0 8px; font-size:clamp(24px,5vw,36px); font-weight:900; letter-spacing:-1.2px; line-height:1;}
 .jd-title span{background:linear-gradient(90deg,#a7a7a7 0%,#9a9a9a 55%,#a0a0a0 100%); -webkit-background-clip:text; background-clip:text; color:transparent;}
 .jd-sub{position:relative; color:var(--jd-muted); font-size:13px; line-height:1.6; max-width:620px;}
-.jd-controls{position:relative; margin-top:16px; display:grid; gap:10px;}
+.jd-controls{position:relative; margin-top:0; display:grid; gap:10px;}
 .jd-row1{display:flex; flex-wrap:wrap; gap:10px; align-items:center;}
 .jd-select, .jd-input{padding:11px 14px; background:rgba(255, 255, 255,0.06); border:1px solid var(--jd-border); border-radius:5px; color:var(--jd-text); font-size:13px; outline:none; transition:border-color .2s, background .2s, box-shadow .2s;}
 .jd-select:focus, .jd-input:focus{border-color:rgba(137, 137, 137,0.4); background:rgba(255, 255, 255,0.08); box-shadow:0 0 0 4px rgba(137, 137, 137,0.12);}
@@ -50,7 +50,7 @@
   .jd-bg-orb{display:none !important;}
   .jd-bg-grad{background:linear-gradient(180deg, #131313 0%, #080808 100%) !important;}
   .jd-shell{padding:12px 10px 28px;}
-  .jd-header{padding:16px 14px 14px; border-radius:5px; backdrop-filter:none !important; -webkit-backdrop-filter:none !important; background:rgba(15, 15, 15,0.98) !important;}
+  .jd-header{padding:10px; border-radius:5px; backdrop-filter:none !important; -webkit-backdrop-filter:none !important; background:rgba(15, 15, 15,0.98) !important;}
   .jd-title{font-size:22px;}
   .jd-row1{flex-direction:column; align-items:stretch;}
   .jd-select, .jd-input{width:100%;}
