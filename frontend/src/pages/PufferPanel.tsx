@@ -1,9 +1,9 @@
-import { useState, type ReactNode } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Icon, { type IconName } from "../components/Icon";
+import { GuideCodeBlock as CodeBlock, GuidePanel as Panel } from "../components/Guide";
 import { Select, TextField, type SelectOption } from "../components/ui";
 import "./SetupServer.css";
-import "./PufferPanel.css";
 
 type InstallMethod = "host" | "docker";
 
@@ -72,60 +72,6 @@ sudo ufw reload`;
 
 const DIRECT_IMPORT = `sudo cp -a /path/to/old-server/. /var/lib/pufferpanel/servers/<SERVER_ID>/
 sudo chown -R pufferpanel:pufferpanel /var/lib/pufferpanel`;
-
-function Panel({
-  id,
-  number,
-  icon,
-  title,
-  meta,
-  children,
-}: {
-  id: string;
-  number: number;
-  icon: IconName;
-  title: string;
-  meta?: string;
-  children: ReactNode;
-}) {
-  return (
-    <section className="setup-panel" id={`puffer-${id}`}>
-      <div className="setup-panel-head">
-        <div className="setup-panel-title">
-          <span className="setup-step-number">{number}</span>
-          <Icon name={icon} size={15} />
-          <h2>{title}</h2>
-        </div>
-        {meta && <span className="setup-panel-meta">{meta}</span>}
-      </div>
-      {children}
-    </section>
-  );
-}
-
-function CodeBlock({ code, label = "Command" }: { code: string; label?: string }) {
-  const [copied, setCopied] = useState(false);
-  return (
-    <div className="setup-code-box">
-      <div className="setup-code-head">
-        <span>{label}</span>
-        <button
-          type="button"
-          className="setup-mini-btn"
-          onClick={async () => {
-            await navigator.clipboard.writeText(code);
-            setCopied(true);
-            window.setTimeout(() => setCopied(false), 1200);
-          }}
-        >
-          <Icon name={copied ? "check" : "copy"} size={12} />
-          {copied ? "Copied" : "Copy"}
-        </button>
-      </div>
-      <pre className="setup-code">{code}</pre>
-    </div>
-  );
-}
 
 export default function PufferPanel() {
   const navigate = useNavigate();
@@ -224,7 +170,7 @@ export default function PufferPanel() {
                 Jammy/Noble (22.04/24.04) and Debian Buster/Bullseye (10/11) are supported. 32-bit
                 systems are not.
               </p>
-              <ul className="puffer-list">
+              <ul className="guide-list">
                 <li>A VPS, VM, dedicated server or Docker host with SSH access.</li>
                 <li><strong>Port 8080</strong> for the web panel and <strong>port 5657</strong> for SFTP.</li>
                 <li><strong>Port 25565</strong> (or your chosen port) for each Minecraft server.</li>
@@ -300,7 +246,7 @@ export default function PufferPanel() {
                   />
                 </div>
               </div>
-              <div className="puffer-access">
+              <div className="guide-access">
                 <span>Panel URL</span>
                 <code>{panelUrl}</code>
               </div>
@@ -371,7 +317,7 @@ export default function PufferPanel() {
                 that machine first.
               </p>
               <CodeBlock label="Install on the remote node" code={NODE_INSTALL} />
-              <ol className="puffer-list puffer-list-numbered">
+              <ol className="guide-list guide-list-numbered">
                 <li>Log in to the panel as an admin and open <strong>Nodes</strong>.</li>
                 <li>Click <strong>Add Node</strong>, fill in the details and click <strong>Create Node</strong>.</li>
                 <li>Copy the generated configuration into <code>/etc/pufferpanel/config.json</code> on the node.</li>
@@ -396,7 +342,7 @@ export default function PufferPanel() {
                 In the panel, open <strong>Servers</strong> and click <strong>Add Server</strong>.
                 Pick the node, choose a Minecraft template and give the server a name.
               </p>
-              <ol className="puffer-list puffer-list-numbered">
+              <ol className="guide-list guide-list-numbered">
                 <li>Select the node that will run the server.</li>
                 <li>Choose <code>minecraft-paper</code>, <code>minecraft-fabric</code> or <code>minecraft-forge</code>.</li>
                 <li>Select the <strong>Docker</strong> environment and set memory and port.</li>
@@ -440,7 +386,7 @@ export default function PufferPanel() {
                 type. Then upload the existing files over SFTP and rename the main JAR to{" "}
                 <code>server.jar</code>.
               </p>
-              <ol className="puffer-list puffer-list-numbered">
+              <ol className="guide-list guide-list-numbered">
                 <li>Open the server in the panel and find its <strong>SFTP</strong> credentials.</li>
                 <li>Connect with FileZilla, WinSCP or another SFTP client.</li>
                 <li>Upload the server files, including <code>world</code>, <code>plugins</code> and configs.</li>
@@ -466,12 +412,12 @@ export default function PufferPanel() {
                 Your server is only reachable when its port is open and your DNS or tunnel points
                 to the right address. Use the KS guides below to finish the setup.
               </p>
-              <ul className="puffer-list">
+              <ul className="guide-list">
                 <li>Allow <strong>25565/tcp</strong> (or your chosen port) in the host firewall.</li>
                 <li>Forward the port in your router if the server is at home.</li>
                 <li>Use the panel's SFTP port only for file access, not for Minecraft clients.</li>
               </ul>
-              <div className="puffer-links">
+              <div className="guide-links">
                 <button className="setup-btn secondary" type="button" onClick={() => navigate("/minecraft/make-server/custom-ip.html")}>
                   <Icon name="globe" size={14} /> Custom IP Guide
                 </button>
