@@ -1,5 +1,6 @@
 import { useMemo, useState, type ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
+import BrandLogo from "../components/BrandLogo";
 import Icon, { type IconName } from "../components/Icon";
 import { Select, TextField, type SelectOption } from "../components/ui";
 import "./SetupServer.css";
@@ -12,25 +13,30 @@ type PlatformInfo = {
   label: string;
   description: string;
   icon: IconName;
+  logo?: string;
 };
 
 const PLATFORMS: Record<Platform, PlatformInfo> = {
   codesandbox: {
+    logo: "https://www.google.com/s2/favicons?domain=codesandbox.io&sz=128",
     label: "CodeSandbox",
     description: "Browser container with a terminal — perfect for a quick Paper server.",
     icon: "cloud",
   },
   github: {
+    logo: "https://github.com/github.png?size=128",
     label: "GitHub Codespaces",
     description: "Cloud dev container with root access and a full Linux shell.",
     icon: "terminal",
   },
   gitpod: {
+    logo: "https://github.com/gitpod-io.png?size=128",
     label: "Gitpod",
     description: "Ephemeral cloud workspace with root access. Stop it when you are done.",
     icon: "terminal",
   },
   colab: {
+    logo: "https://www.google.com/s2/favicons?domain=colab.research.google.com&sz=128",
     label: "Google Colab",
     description: "Free notebook runtime — open the tutorial or the ready-made notebook.",
     icon: "play",
@@ -294,7 +300,7 @@ java -version`;
         </header>
 
         <div className="setup-summary">
-          <Icon name={info.icon} size={16} />
+          <BrandLogo className="setup-summary-logo" src={info.logo} fallback={info.icon} iconSize={16} />
           <div>
             <b>{info.label}</b>
             <p>{info.description}</p>
