@@ -78,7 +78,6 @@ const CANVAS = { w: 2000, h: 1400 };
 const STAR_DIST = 390;
 const PLANET_DIST = 225;
 const MOON_DIST = 62;
-const CORE_R = 66;
 const STAR_R = 52;
 const PLANET_R = 29;
 const MOON_R = 18;
@@ -142,18 +141,6 @@ function moonAngles(count: number, outward: number): number[] {
   return Array.from({ length: count }, (_, i) => start + step * i);
 }
 
-function trimLine(a: Vec, b: Vec, padA: number, padB: number) {
-  const dx = b.x - a.x;
-  const dy = b.y - a.y;
-  const len = Math.hypot(dx, dy) || 1;
-  return {
-    x1: a.x + (dx / len) * padA,
-    y1: a.y + (dy / len) * padA,
-    x2: b.x - (dx / len) * padB,
-    y2: b.y - (dy / len) * padB,
-  };
-}
-
 function buildLayout(data: SitemapCategory[]): Layout {
   const angles = categoryAngles(data.length);
   let minX = CORE.x - 150;
@@ -175,7 +162,7 @@ function buildLayout(data: SitemapCategory[]): Layout {
       x: CORE.x + Math.cos(angle) * STAR_DIST,
       y: CORE.y + Math.sin(angle) * STAR_DIST,
     };
-    extend(pos.x, pos.y, STAR_R + 100);
+    extend(pos.x, pos.y, STAR_R + 28);
 
     const pAngles = sectionAngles(category.sections.length, angle);
     let pageCount = 0;
@@ -186,7 +173,7 @@ function buildLayout(data: SitemapCategory[]): Layout {
         x: pos.x + Math.cos(pAngle) * PLANET_DIST,
         y: pos.y + Math.sin(pAngle) * PLANET_DIST,
       };
-      extend(pPos.x, pPos.y, PLANET_R + 82);
+      extend(pPos.x, pPos.y, PLANET_R + 20);
 
       const mAngles = moonAngles(section.pages.length, pAngle);
       const moons = section.pages.map<MoonNode>((page, mi) => {
@@ -195,7 +182,7 @@ function buildLayout(data: SitemapCategory[]): Layout {
           x: pPos.x + Math.cos(mAngle) * MOON_DIST,
           y: pPos.y + Math.sin(mAngle) * MOON_DIST,
         };
-        extend(mPos.x, mPos.y, MOON_R + 76);
+        extend(mPos.x, mPos.y, MOON_R + 14);
         return {
           page,
           pos: mPos,
@@ -277,20 +264,6 @@ export default function MapPage() {
   }, []);
 
   const layout = useMemo(() => buildLayout(data), [data]);
-  const categories = useMemo(() => data.map((c) => c.category), [data]);
-  const totalPages = useMemo(
-    () =>
-      data.reduce(
-        (acc, c) => acc + c.sections.reduce((a, s) => a + s.pages.length, 0),
-        0
-      ),
-    [data]
-  );
-  const totalSections = useMemo(
-    () => data.reduce((acc, c) => acc + c.sections.length, 0),
-    [data]
-  );
-
   const filtered = useMemo(() => {
     if (!dq) return data;
     return data
@@ -808,7 +781,6 @@ export default function MapPage() {
   if (loading) {
     return (
       <div className="map-page mp-lite">
-        <div className="mp-sky" aria-hidden />
         <div className="mp-loading">
           <KsLoader label="Mapping the universe" />
         </div>
@@ -819,7 +791,6 @@ export default function MapPage() {
   if (error) {
     return (
       <div className="map-page mp-lite">
-        <div className="mp-sky" aria-hidden />
         <div className="mp-error-card">
           <div className="mp-error-icon">
             <Icon name="warning" size={24} />
@@ -849,10 +820,6 @@ export default function MapPage() {
         .filter(Boolean)
         .join(" ")}
     >
-      <div className="mp-sky" aria-hidden>
-        <div className="mp-vignette" />
-      </div>
-
       <div
         ref={viewportRef}
         className="mp-viewport"
@@ -867,93 +834,6 @@ export default function MapPage() {
           className={`mp-world${ready ? " is-ready" : ""}`}
           style={{ ["--mp-inv" as string]: "1" } as React.CSSProperties}
         >
-          <div className="mp-grid" aria-hidden />
-
-          <svg
-            className="mp-links"
-            width={CANVAS.w}
-            height={CANVAS.h}
-            viewBox={`0 0 ${CANVAS.w} ${CANVAS.h}`}
-            aria-hidden
-          >
-            {layout.stars.length > 1 && (
-              <circle
-                className="mp-orbit-line mp-orbit-core"
-                cx={CORE.x}
-                cy={CORE.y}
-                r={STAR_DIST}
-              />
-            )}
-
-            {layout.stars.map((star) => {
-              const coreLine = trimLine(CORE, star.pos, CORE_R, STAR_R);
-              return (
-                <g key={star.category.category}>
-                  <circle
-                    className="mp-orbit-line"
-                    cx={star.pos.x}
-                    cy={star.pos.y}
-                    r={PLANET_DIST}
-                    style={{ stroke: `rgba(${star.rgb}, 0.3)` }}
-                  />
-                  <line
-                    className="mp-link mp-link--core"
-                    x1={coreLine.x1}
-                    y1={coreLine.y1}
-                    x2={coreLine.x2}
-                    y2={coreLine.y2}
-                  />
-
-                  {star.planets.map((planet) => {
-                    const starLine = trimLine(
-                      star.pos,
-                      planet.pos,
-                      STAR_R,
-                      PLANET_R
-                    );
-                    return (
-                      <g key={planet.key}>
-                        <circle
-                          className="mp-orbit-line mp-orbit-line--moon"
-                          cx={planet.pos.x}
-                          cy={planet.pos.y}
-                          r={MOON_DIST}
-                          style={{ stroke: `rgba(${star.rgb}, 0.32)` }}
-                        />
-                        <line
-                          className="mp-link mp-link--star"
-                          x1={starLine.x1}
-                          y1={starLine.y1}
-                          x2={starLine.x2}
-                          y2={starLine.y2}
-                          style={{ stroke: `rgba(${star.rgb}, 0.7)` }}
-                        />
-                        {planet.moons.map((moon) => {
-                          const moonLine = trimLine(
-                            planet.pos,
-                            moon.pos,
-                            PLANET_R,
-                            MOON_R
-                          );
-                          return (
-                            <line
-                              key={moon.key}
-                              className="mp-link mp-link--moon"
-                              x1={moonLine.x1}
-                              y1={moonLine.y1}
-                              x2={moonLine.x2}
-                              y2={moonLine.y2}
-                            />
-                          );
-                        })}
-                      </g>
-                    );
-                  })}
-                </g>
-              );
-            })}
-          </svg>
-
           <div
             className="mp-node mp-core-node"
             style={{ left: CORE.x, top: CORE.y }}
@@ -967,13 +847,8 @@ export default function MapPage() {
             >
               <span className="mp-core-inner">
                 <span className="mp-core-text">KS</span>
-                <span className="mp-core-caption">CORE</span>
               </span>
             </button>
-            <span className="mp-core-label">
-              <strong>KS Universe</strong>
-              <em>tap to reset view</em>
-            </span>
           </div>
 
           {layout.stars.map((star) => {
@@ -1020,15 +895,6 @@ export default function MapPage() {
                       }}
                     />
                   </button>
-                  <span className="mp-node-label mp-star-label">
-                    <strong className="mp-star-name">
-                      {star.category.category}
-                    </strong>
-                    <em className="mp-star-meta">
-                      {plural(star.planets.length, "planet")} ·{" "}
-                      {plural(star.pageCount, "moon")}
-                    </em>
-                  </span>
                 </div>
 
                 {star.planets.map((planet) => {
@@ -1080,14 +946,6 @@ export default function MapPage() {
                             }}
                           />
                         </button>
-                        <span className="mp-node-label mp-planet-label">
-                          <strong className="mp-planet-name">
-                            {planet.section.title}
-                          </strong>
-                          <em className="mp-planet-meta">
-                            {plural(planet.moons.length, "moon")}
-                          </em>
-                        </span>
                       </div>
 
                       {planet.moons.map((moon) => {
@@ -1100,9 +958,6 @@ export default function MapPage() {
                         const moonDimmed =
                           filterActive &&
                           !filterSets.pages.has(moon.page.url);
-                        const mx = Math.cos(moon.angle) * 40;
-                        const my = Math.sin(moon.angle) * 40;
-
                         return (
                           <div
                             key={moon.key}
@@ -1113,8 +968,6 @@ export default function MapPage() {
                                 top: moon.pos.y,
                                 "--accent": star.accent,
                                 "--rgb": star.rgb,
-                                "--mx": `${mx}px`,
-                                "--my": `${my}px`,
                               } as React.CSSProperties
                             }
                           >
@@ -1144,9 +997,6 @@ export default function MapPage() {
                                 }}
                               />
                             </Link>
-                            <span className="mp-moon-label">
-                              {moon.page.name}
-                            </span>
                           </div>
                         );
                       })}
@@ -1336,41 +1186,6 @@ export default function MapPage() {
             <path d="M12 2.5v4M12 17.5v4M2.5 12h4M17.5 12h4" />
           </svg>
         </button>
-      </div>
-
-      <div className="mp-legend" role="note" aria-label="Map legend">
-        <span className="mp-legend-title">Map legend</span>
-        <div className="mp-legend-row">
-          <span className="mp-legend-dot core" aria-hidden />
-          <span>
-            <strong>KS core</strong>
-            <em>Start here</em>
-          </span>
-        </div>
-        <div className="mp-legend-row">
-          <span className="mp-legend-dot star" aria-hidden />
-          <span>
-            <strong>Star</strong>
-            <em>Category · {categories.length}</em>
-          </span>
-        </div>
-        <div className="mp-legend-row">
-          <span className="mp-legend-dot planet" aria-hidden />
-          <span>
-            <strong>Planet</strong>
-            <em>Section · {totalSections}</em>
-          </span>
-        </div>
-        <div className="mp-legend-row">
-          <span className="mp-legend-dot moon" aria-hidden />
-          <span>
-            <strong>Moon</strong>
-            <em>Page · {totalPages}</em>
-          </span>
-        </div>
-        <span className="mp-legend-hint">
-          Drag to explore · scroll to zoom
-        </span>
       </div>
 
     </div>
