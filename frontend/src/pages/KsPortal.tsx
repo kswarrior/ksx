@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import Icon from "../components/Icon";
 import "./KsPortal.css";
 
@@ -150,14 +149,6 @@ export default function KsPortal() {
               Download APK
               <span className="portal-btn-version">v{APP_VERSION}</span>
             </a>
-            <Link className="portal-btn" to="/dashboard">
-              <Icon name="gamepad" size={14} />
-              Explore KSX
-            </Link>
-            <Link className="portal-btn" to="/map">
-              <Icon name="map-pin" size={14} />
-              View Sites Map
-            </Link>
           </div>
         </section>
 
