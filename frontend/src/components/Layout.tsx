@@ -369,7 +369,6 @@ export default function Layout() {
         )}
       </ul>
 
-      {!hideSidebar && (
       <nav id="sidebar" aria-label="Main navigation" className={sidebarOpen ? "open" : ""}>
         <div className="sb-nav">
           <Link
@@ -429,15 +428,14 @@ export default function Layout() {
           </Link>
         </div>
       </nav>
-      )}
 
-      <div id="content" className={sidebarOpen && !hideSidebar ? "sidebar-open" : ""}>
+      <div id="content" className={sidebarOpen ? "sidebar-open" : ""}>
         <Suspense fallback={<KsLoader label="Loading KS" />}>
           <Outlet />
         </Suspense>
       </div>
 
-      {!hideSidebar && sidebarOpen && !isDesktop() && <div className="sidebar-backdrop" onClick={() => setSidebarOpen(false)} />}
+      {sidebarOpen && !isDesktop() && <div className="sidebar-backdrop" onClick={() => setSidebarOpen(false)} />}
     </>
   );
 }
