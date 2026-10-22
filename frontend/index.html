@@ -18,130 +18,56 @@
         inset: 0;
         z-index: 9999;
         display: flex;
-        flex-direction: column;
         align-items: center;
         justify-content: center;
-        gap: 16px;
         background: radial-gradient(520px 280px at 50% 42%, rgba(255, 255, 255, 0.055), transparent 70%), #050505;
-        color: #f5f5f5;
-        font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
         user-select: none;
       }
-      #ks-boot .ks-boot-mark {
-        position: relative;
-        width: min(220px, 60vw);
-        aspect-ratio: 160 / 100;
-        overflow: hidden;
+      #ks-boot .ks-boot-lines {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 7px;
       }
-      #ks-boot svg { display: block; width: 100%; height: 100%; }
-      #ks-boot path {
-        stroke-dasharray: 100;
-        stroke-dashoffset: 100;
-        animation: ks-boot-draw 3.4s cubic-bezier(0.65, 0, 0.35, 1) infinite;
-        animation-delay: calc(var(--d, 0) * 0.16s);
-      }
-      #ks-boot path:nth-child(1) { --d: 0; }
-      #ks-boot path:nth-child(2) { --d: 1; }
-      #ks-boot path:nth-child(3) { --d: 2; }
-      #ks-boot path:nth-child(4) { --d: 3; }
-      @keyframes ks-boot-draw {
-        0% { stroke-dashoffset: 100; opacity: 1; }
-        48%, 76% { stroke-dashoffset: 0; opacity: 1; }
-        88% { stroke-dashoffset: 0; opacity: 0; }
-        100% { stroke-dashoffset: 100; opacity: 0; }
-      }
-      #ks-boot .ks-boot-scan {
-        position: absolute;
-        top: -25%;
-        bottom: -25%;
-        left: -8%;
-        width: 24px;
-        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.95) 48%, transparent);
-        mix-blend-mode: difference;
-        pointer-events: none;
-        animation: ks-boot-scan 2.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-      }
-      @keyframes ks-boot-scan {
-        0% { left: -14%; opacity: 0; }
-        10% { opacity: 1; }
-        90% { opacity: 1; }
-        100% { left: 110%; opacity: 0; }
-      }
-      #ks-boot .ks-boot-bar {
-        position: relative;
-        width: min(180px, 52vw);
+      #ks-boot .ks-boot-lines i {
+        display: block;
+        width: 38px;
         height: 2px;
         border-radius: 999px;
-        overflow: hidden;
-        background: rgba(255, 255, 255, 0.12);
+        background: #f5f5f5;
+        opacity: 0.22;
+        animation: ks-boot-line-up 1.4s cubic-bezier(0.65, 0, 0.35, 1) infinite;
       }
-      #ks-boot .ks-boot-bar i {
-        position: absolute;
-        inset: 0;
-        width: 42%;
-        border-radius: inherit;
-        background: linear-gradient(90deg, transparent, #f5f5f5 45%, #8a8a8a 75%, transparent);
-        animation: ks-boot-slide 1.6s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+      #ks-boot .ks-boot-lines i:nth-child(2) {
+        animation-name: ks-boot-line-update;
+        animation-delay: 0.16s;
       }
-      @keyframes ks-boot-slide {
-        0% { transform: translateX(-120%); }
-        100% { transform: translateX(320%); }
+      #ks-boot .ks-boot-lines i:nth-child(3) {
+        animation-name: ks-boot-line-down;
+        animation-delay: 0.32s;
       }
-      #ks-boot .ks-boot-label {
-        display: flex;
-        align-items: center;
-        padding-left: 0.48em;
-        font-size: 10px;
-        font-weight: 800;
-        letter-spacing: 0.48em;
-        text-transform: uppercase;
-        color: #8a8a8a;
+      @keyframes ks-boot-line-up {
+        0%, 100% { transform: translateY(0); opacity: 0.22; }
+        40%, 60% { transform: translateY(-7px); opacity: 1; }
       }
-      #ks-boot .ks-boot-dots { display: inline-flex; width: 1.6em; }
-      #ks-boot .ks-boot-dots i {
-        font-style: normal;
-        animation: ks-boot-dot 1.4s ease-in-out infinite;
+      @keyframes ks-boot-line-down {
+        0%, 100% { transform: translateY(0); opacity: 0.22; }
+        40%, 60% { transform: translateY(7px); opacity: 1; }
       }
-      #ks-boot .ks-boot-dots i:nth-child(2) { animation-delay: 0.18s; }
-      #ks-boot .ks-boot-dots i:nth-child(3) { animation-delay: 0.36s; }
-      @keyframes ks-boot-dot {
-        0%, 60%, 100% { opacity: 0.15; transform: translateY(0); }
-        30% { opacity: 1; transform: translateY(-1px); }
-      }
-      @media (max-width: 899px) {
-        #ks-boot .ks-boot-scan { mix-blend-mode: normal; opacity: 0.45; }
+      @keyframes ks-boot-line-update {
+        0%, 100% { transform: scaleX(0.45); opacity: 0.22; }
+        40%, 60% { transform: scaleX(1); opacity: 1; }
       }
       @media (prefers-reduced-motion: reduce) {
-        #ks-boot path { animation: none; stroke-dashoffset: 0; }
-        #ks-boot .ks-boot-scan { display: none; }
-        #ks-boot .ks-boot-bar i { animation: none; width: 100%; transform: none; opacity: 0.55; }
-        #ks-boot .ks-boot-dots { display: none; }
+        #ks-boot .ks-boot-lines i { animation: none; opacity: 0.55; }
+        #ks-boot .ks-boot-lines i:nth-child(2) { opacity: 1; }
       }
     </style>
   </head>
   <body>
     <div id="root">
       <div id="ks-boot" role="status" aria-live="polite" aria-label="Loading KS">
-        <div class="ks-boot-mark" aria-hidden="true">
-          <svg viewBox="0 0 160 100" fill="none">
-            <defs>
-              <linearGradient id="ks-boot-gradient" x1="80" y1="8" x2="80" y2="92" gradientUnits="userSpaceOnUse">
-                <stop offset="0" stop-color="#ffffff" />
-                <stop offset="0.55" stop-color="#d4d4d4" />
-                <stop offset="1" stop-color="#6b6b6b" />
-              </linearGradient>
-            </defs>
-            <g stroke="url(#ks-boot-gradient)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
-              <path pathLength="100" d="M18 14V86" />
-              <path pathLength="100" d="M18 52L58 14" />
-              <path pathLength="100" d="M30 42L62 86" />
-              <path pathLength="100" d="M132 25C132 12 116 8 102 10C86 12 80 24 84 33C88 42 102 44 112 46C128 49 136 56 134 68C132 84 114 92 98 90C86 89 76 84 74 76" />
-            </g>
-          </svg>
-          <span class="ks-boot-scan"></span>
-        </div>
-        <div class="ks-boot-bar" aria-hidden="true"><i></i></div>
-        <div class="ks-boot-label">Loading KS<span class="ks-boot-dots" aria-hidden="true"><i>.</i><i>.</i><i>.</i></span></div>
+        <div class="ks-boot-lines" aria-hidden="true"><i></i><i></i><i></i></div>
       </div>
     </div>
     <script type="module" src="/src/main.tsx"></script>

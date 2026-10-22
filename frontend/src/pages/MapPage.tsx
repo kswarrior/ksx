@@ -1019,6 +1019,8 @@ export default function MapPage() {
         onPointerUp={endPointer}
         onPointerCancel={endPointer}
         onLostPointerCapture={endPointer}
+        onDoubleClick={onDoubleClick}
+        onClickCapture={onClickCapture}
       >
         <div
           ref={worldRef}
@@ -1043,51 +1045,63 @@ export default function MapPage() {
           </div>
 
           {layout.stars.map((star) => {
-            const catSelected = selCatName === star.category.category;
+            const catKey = star.category.category;
+            const catSelected = selCatName === catKey;
             const catFocused =
               selection?.type === "category" && catSelected;
             const catMuted = Boolean(selection) && !catSelected;
             const catDimmed =
-              filterActive && !filterSets.cats.has(star.category.category);
+              filterActive && !filterSets.cats.has(catKey);
+            const starVisible = shown.stars.has(catKey);
+            const childVisible = star.planets.some(
+              (planet) =>
+                shown.planets.has(planet.key) ||
+                planet.moons.some((moon) => shown.moons.has(moon.key))
+            );
+
+            if (!starVisible && !childVisible) return null;
 
             return (
-              <Fragment key={star.category.category}>
-                <div
-                  className="mp-node mp-star-node"
-                  style={
-                    {
-                      left: star.pos.x,
-                      top: star.pos.y,
-                      "--accent": star.accent,
-                      "--rgb": star.rgb,
-                    } as React.CSSProperties
-                  }
-                >
-                  <button
-                    type="button"
-                    className={[
-                      "mp-star",
-                      catSelected ? "is-active" : "",
-                      catFocused ? "is-focused" : "",
-                      catMuted ? "is-muted" : "",
-                      catDimmed ? "is-dimmed" : "",
-                    ]
-                      .filter(Boolean)
-                      .join(" ")}
-                    onClick={() =>
-                      selectCategory(star.category.category)
+              <Fragment key={catKey}>
+                {starVisible && (
+                  <div
+                    className="mp-node mp-star-node"
+                    style={
+                      {
+                        left: star.pos.x,
+                        top: star.pos.y,
+                        "--accent": star.accent,
+                        "--rgb": star.rgb,
+                      } as React.CSSProperties
                     }
-                    title={star.category.category}
-                    aria-label={`${star.category.category} star — ${plural(star.planets.length, "planet")}, ${plural(star.pageCount, "moon")}`}
                   >
-                    <span
-                      className="mp-star-icon"
-                      dangerouslySetInnerHTML={{
-                        __html: star.category.icon,
-                      }}
-                    />
-                  </button>
-                </div>
+                    <button
+                      type="button"
+                      className={[
+                        "mp-star",
+                        catSelected ? "is-active" : "",
+                        catFocused ? "is-focused" : "",
+                        catMuted ? "is-muted" : "",
+                        catDimmed ? "is-dimmed" : "",
+                      ]
+                        .filter(Boolean)
+                        .join(" ")}
+                      onClick={() => selectCategory(catKey)}
+                      title={catKey}
+                      aria-label={`${catKey} star — ${plural(star.planets.length, "planet")}, ${plural(star.pageCount, "moon")}`}
+                    >
+                      <span
+                        className="mp-star-icon"
+                        dangerouslySetInnerHTML={{
+                          __html: star.category.icon,
+                        }}
+                      />
+                    </button>
+                    <span className="mp-label mp-star-label" aria-hidden="true">
+                      {catKey}
+                    </span>
+                  </div>
+                )}
 
                 {star.planets.map((planet) => {
                   const secFocused =
@@ -1099,49 +1113,61 @@ export default function MapPage() {
                         selection.section !== planet.section.title));
                   const secDimmed =
                     filterActive && !filterSets.secs.has(planet.key);
+                  const planetVisible = shown.planets.has(planet.key);
+                  const moonVisible = planet.moons.some((moon) =>
+                    shown.moons.has(moon.key)
+                  );
+
+                  if (!planetVisible && !moonVisible) return null;
 
                   return (
                     <Fragment key={planet.key}>
-                      <div
-                        className="mp-node mp-planet-node"
-                        style={
-                          {
-                            left: planet.pos.x,
-                            top: planet.pos.y,
-                            "--accent": star.accent,
-                            "--rgb": star.rgb,
-                          } as React.CSSProperties
-                        }
-                      >
-                        <button
-                          type="button"
-                          className={[
-                            "mp-planet",
-                            secFocused ? "is-focused" : "",
-                            secMuted ? "is-muted" : "",
-                            secDimmed ? "is-dimmed" : "",
-                          ]
-                            .filter(Boolean)
-                            .join(" ")}
-                          onClick={() =>
-                            showSection(
-                              star.category.category,
-                              planet.section.title
-                            )
+                      {planetVisible && (
+                        <div
+                          className="mp-node mp-planet-node"
+                          style={
+                            {
+                              left: planet.pos.x,
+                              top: planet.pos.y,
+                              "--accent": star.accent,
+                              "--rgb": star.rgb,
+                            } as React.CSSProperties
                           }
-                          title={planet.section.title}
-                          aria-label={`${planet.section.title} planet — ${plural(planet.moons.length, "moon")} in ${star.category.category}`}
                         >
+                          <button
+                            type="button"
+                            className={[
+                              "mp-planet",
+                              secFocused ? "is-focused" : "",
+                              secMuted ? "is-muted" : "",
+                              secDimmed ? "is-dimmed" : "",
+                            ]
+                              .filter(Boolean)
+                              .join(" ")}
+                            onClick={() =>
+                              showSection(catKey, planet.section.title)
+                            }
+                            title={planet.section.title}
+                            aria-label={`${planet.section.title} planet — ${plural(planet.moons.length, "moon")} in ${catKey}`}
+                          >
+                            <span
+                              className="mp-planet-icon"
+                              dangerouslySetInnerHTML={{
+                                __html: planet.section.icon,
+                              }}
+                            />
+                          </button>
                           <span
-                            className="mp-planet-icon"
-                            dangerouslySetInnerHTML={{
-                              __html: planet.section.icon,
-                            }}
-                          />
-                        </button>
-                      </div>
+                            className="mp-label mp-planet-label"
+                            aria-hidden="true"
+                          >
+                            {planet.section.title}
+                          </span>
+                        </div>
+                      )}
 
                       {planet.moons.map((moon) => {
+                        if (!shown.moons.has(moon.key)) return null;
                         const moonMuted =
                           Boolean(selection) &&
                           (!catSelected ||
@@ -1179,7 +1205,7 @@ export default function MapPage() {
                               onClick={() =>
                                 saveRecent(
                                   moon.page,
-                                  star.category.category,
+                                  catKey,
                                   planet.section.title
                                 )
                               }
@@ -1191,6 +1217,12 @@ export default function MapPage() {
                                 }}
                               />
                             </Link>
+                            <span
+                              className="mp-label mp-moon-label"
+                              aria-hidden="true"
+                            >
+                              {moon.page.name}
+                            </span>
                           </div>
                         );
                       })}
@@ -1347,6 +1379,17 @@ export default function MapPage() {
           ) : null}
         </aside>
       )}
+
+      <div className="mp-meta" aria-hidden="true">
+        <span className="mp-meta-dot" />
+        <span className="mp-meta-title">KS Map</span>
+        <span className="mp-meta-divider" />
+        <span className="mp-meta-hint">Drag · Pinch · Scroll</span>
+        <span className="mp-meta-sep" />
+        <span ref={zoomReadout} className="mp-meta-zoom">
+          100%
+        </span>
+      </div>
 
       <div className="mp-zoom" role="group" aria-label="Map zoom controls">
         <button

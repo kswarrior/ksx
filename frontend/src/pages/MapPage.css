@@ -1,24 +1,40 @@
 /* ===== KS SITEMAP ===== */
 .map-page {
-  --mp-bg: #2d3137;
-  --mp-panel: #383d44;
-  --mp-panel-solid: #383d44;
-  --mp-border: rgba(255, 255, 255, 0.12);
-  --mp-border-strong: rgba(255, 255, 255, 0.22);
-  --mp-text: #f1f3f5;
-  --mp-muted: #a6adb5;
-  --mp-accent: #aab7ff;
-  --mp-radius: 14px;
+  --mp-bg: #050505;
+  --mp-panel: rgba(15, 15, 15, 0.84);
+  --mp-panel-solid: #0d0d0d;
+  --mp-border: rgba(255, 255, 255, 0.09);
+  --mp-border-strong: rgba(255, 255, 255, 0.18);
+  --mp-text: #f2f2f2;
+  --mp-muted: #9a9a9a;
+  --mp-accent: #d4d4d4;
+  --mp-gray: #1a1a1a;
+  --mp-radius: 10px;
   position: relative;
   height: calc(100vh - 56px);
   height: calc(100dvh - 56px);
   min-height: 420px;
   overflow: hidden;
   isolation: isolate;
-  background: var(--mp-bg);
+  background:
+    radial-gradient(1200px 700px at 50% 45%, rgba(255, 255, 255, 0.045), transparent 62%),
+    #050505;
   color: var(--mp-text);
   color-scheme: dark;
   -webkit-font-smoothing: antialiased;
+}
+
+.map-page::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.055) 1px, transparent 1px);
+  background-size: 26px 26px;
+  opacity: 0.55;
+  -webkit-mask-image: radial-gradient(ellipse at 50% 45%, #000 10%, transparent 74%);
+  mask-image: radial-gradient(ellipse at 50% 45%, #000 10%, transparent 74%);
 }
 
 .map-page *,
