@@ -47,9 +47,9 @@ Env:
 - `VITE_API_BASE` — `""` for same-origin (Worker assets), or `https://ksx-backend.<subdomain>.workers.dev` if deploying separately
 - `YOUTUBE_HANDLE` (optional, default `ks_warrior_pro`)
 - `YOUTUBE_API_KEY` (optional; live subscriber count uses the YouTube Data API, otherwise the public channel page)
-- `DISCORD_INVITE_CODE` (optional, default `2kAYnH655h`; accepts a code or full invite URL)
+- `DISCORD_INVITE_CODE` (optional, default `jDG7tJrHrt`; accepts a code or full invite URL)
 - `INSTAGRAM_USERNAME` (optional, default `ks_warrior_pro`)
-- `INSTAGRAM_ACCESS_TOKEN` + `INSTAGRAM_USER_ID` (optional; official Graph API follower count, otherwise the public profile)
+- `INSTAGRAM_ACCESS_TOKEN` (optional; live follower count via the Instagram Graph API; `INSTAGRAM_USER_ID` is only needed for Facebook-login tokens. Instagram now login-gates public profiles, so a token is required for reliable live follower counts)
 
 ## Build
 

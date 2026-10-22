@@ -9,7 +9,7 @@ One hub for Minecraft • Website • Hosting • VPS • AI — many builds, ma
 ### Connect
 
 - [YouTube](https://youtube.com/@ks_warrior_pro) — tutorials & builds
-- [Discord](https://discord.gg/2kAYnH655h) — help & community
+- [Discord](https://discord.gg/jDG7tJrHrt) — help & community
 - [Instagram](https://instagram.com/ks_warrior_pro) — behind the scenes
 
 ---

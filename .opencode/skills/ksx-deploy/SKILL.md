@@ -68,9 +68,9 @@ Express (local) and Worker both read these from the environment:
 
 - `YOUTUBE_HANDLE` (default `ks_warrior_pro`)
 - `YOUTUBE_API_KEY` (optional; without it, subscriber count is scraped from the public page)
-- `DISCORD_INVITE_CODE` (default `2kAYnH655h`)
+- `DISCORD_INVITE_CODE` (default `jDG7tJrHrt`)
 - `INSTAGRAM_USERNAME` (default `ks_warrior_pro`)
-- `INSTAGRAM_ACCESS_TOKEN` + `INSTAGRAM_USER_ID` (optional Graph API path)
+- `INSTAGRAM_ACCESS_TOKEN` (optional; Graph API follower count. `INSTAGRAM_USER_ID` only for Facebook-login tokens. Public profiles are login-gated, so a token is needed for reliable live counts)
 
 Set Worker secrets with `wrangler secret put NAME` (from `backend/`), not by committing values. Public vars can go in `[vars]`.
 
