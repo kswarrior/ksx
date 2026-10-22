@@ -70,6 +70,22 @@ export default function JavaDownloaderProject() {
   }, [projectId, reload, cacheKey]);
 
   useEffect(() => {
+    if (!projectId) return;
+    let cancelled = false;
+    fetch(`${API}/project/${projectId}/version?featured=true`)
+      .then((r) => (r.ok ? r.json() : null))
+      .then((data) => {
+        if (!cancelled && Array.isArray(data)) {
+          writeSession(`ksx:modrinth:versions:${projectId}`, data);
+        }
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, [projectId]);
+
+  useEffect(() => {
     window.scrollTo(0, 0);
   }, [projectId]);
 
