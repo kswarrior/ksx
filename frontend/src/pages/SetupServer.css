@@ -166,6 +166,12 @@
   background:#fff;
   border-color:#fff;
 }
+.setup-progress-step.is-done{color:rgba(255,255,255,0.75);}
+.setup-progress-step.is-done .setup-progress-num{
+  color:#fff;
+  background:rgba(255,255,255,0.12);
+  border-color:rgba(255,255,255,0.16);
+}
 
 .setup-stage{min-width:0;}
 .setup-anim{animation:setupStepIn .26s ease both;}
@@ -371,22 +377,13 @@
   color:#d8d8d8;
 }
 
-.setup-check-panel{padding:16px 18px;}
-.setup-check-row{
-  display:flex; align-items:center; gap:14px;
+.setup-nav{
+  display:flex; align-items:center; justify-content:space-between;
+  gap:10px;
+  margin-top:14px;
+  min-height:42px;
 }
-.setup-check-icon{
-  width:44px; height:44px; flex-shrink:0;
-  display:grid; place-items:center;
-  border-radius:11px;
-  background:rgba(255,255,255,0.06);
-  border:1px solid rgba(255,255,255,0.10);
-  color:rgba(255,255,255,0.82);
-}
-.setup-check-copy{flex:1; min-width:0;}
-.setup-check-copy h2{font-size:14px; font-weight:900; letter-spacing:-0.2px; margin-bottom:4px;}
-.setup-check-copy p{font-size:11.5px; line-height:1.6; color:var(--s-muted);}
-.setup-check-row .setup-btn{flex-shrink:0;}
+.setup-nav-next{margin-left:auto;}
 
 @media(max-width:768px){
   .setup-bg-orb{display:none !important;}
@@ -403,11 +400,10 @@
   .setup-progress{grid-template-columns:repeat(2,minmax(0,1fr));}
   .setup-progress-step{font-size:10.5px; padding:8px;}
   .setup-code{max-height:260px; font-size:11px;}
-  .setup-check-row{flex-direction:column; align-items:flex-start;}
-  .setup-check-row .setup-btn{width:100%;}
 }
 @media(max-width:420px){
   .setup-actions .setup-btn{flex:1 1 auto;}
+  .setup-nav .setup-btn{flex:1 1 auto;}
 }
 @media(prefers-reduced-motion:reduce){
   .setup-bg-orb{animation:none !important;}

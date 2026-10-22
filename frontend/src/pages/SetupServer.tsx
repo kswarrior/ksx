@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, type ReactNode } from "react";
+import { useMemo, useState, type ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import Icon, { type IconName } from "../components/Icon";
 import { Select, TextField, type SelectOption } from "../components/ui";
@@ -107,6 +107,7 @@ function CodeBlock({ code, copyId, copied, onCopy, label = "Command" }: CodeBloc
 export default function SetupServer() {
   const navigate = useNavigate();
   const [platform, setPlatform] = useState<Platform>("codesandbox");
+  const [stepIndex, setStepIndex] = useState(0);
   const [mcUrl, setMcUrl] = useState("https://fill-data.papermc.io/v1/objects/f3a5953094696578193b38fa2831e86db254dfbf4817b1ac6cfca55a2d18ca94/paper-26.3-211.jar");
   const [mcCode, setMcCode] = useState("");
   const [endpointName, setEndpointName] = useState("kssmp");
@@ -115,12 +116,11 @@ export default function SetupServer() {
   const [ram, setRam] = useState("1024");
   const [startCode, setStartCode] = useState("");
   const [copied, setCopied] = useState<string | null>(null);
-  const [activeStep, setActiveStep] = useState("");
 
   const info = PLATFORMS[platform];
 
   const steps = useMemo<Step[]>(() => {
-    if (platform === "colab") return [];
+    if (platform === "colab") return [{ id: "colab", label: "Guide" }];
     const list: Step[] = [];
     if (platform !== "codesandbox") {
       list.push({ id: "shell", label: "Shell" });
@@ -130,36 +130,39 @@ export default function SetupServer() {
     }
     list.push(
       { id: "java", label: "Java" },
-      { id: "jar", label: "Server JAR" },
+      { id: "jar", label: "JAR" },
       { id: "ip", label: "Address" },
       { id: "start", label: "Start" }
     );
     return list;
   }, [platform]);
 
-  useEffect(() => {
-    if (steps.length === 0) return;
-    setActiveStep(steps[0].id);
-    const elements = steps
-      .map((step) => document.getElementById(`setup-${step.id}`))
-      .filter((element): element is HTMLElement => Boolean(element));
-    if (elements.length === 0) return;
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
-        if (visible[0]) {
-          setActiveStep(visible[0].target.id.replace("setup-", ""));
-        }
-      },
-      { rootMargin: "-15% 0px -60% 0px", threshold: 0 }
-    );
-    elements.forEach((element) => observer.observe(element));
-    return () => observer.disconnect();
-  }, [steps]);
+  const current = steps[stepIndex] ?? steps[0];
+  const isLast = stepIndex >= steps.length - 1;
+  const number = stepIndex + 1;
 
-  const stepNumber = (id: string) => steps.findIndex((step) => step.id === id) + 1;
+  const finalAction: { label: string; icon: IconName; onClick: () => void } =
+    platform === "colab"
+      ? {
+          label: "Open Colab",
+          icon: "external-link",
+          onClick: () => window.open("https://colab.research.google.com/", "_blank"),
+        }
+      : {
+          label: "Check Server",
+          icon: "external-link",
+          onClick: () => navigate("/minecraft/server/statics.html"),
+        };
+
+  function changePlatform(next: Platform) {
+    setPlatform(next);
+    setStepIndex(0);
+  }
+
+  function goToStep(next: number) {
+    setStepIndex(Math.max(0, Math.min(next, steps.length - 1)));
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
 
   async function copy(value: string, id: string) {
     try {
@@ -169,10 +172,6 @@ export default function SetupServer() {
     } catch {
       setCopied(null);
     }
-  }
-
-  function jumpTo(id: string) {
-    document.getElementById(`setup-${id}`)?.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
   function genMc() {
@@ -218,7 +217,7 @@ export default function SetupServer() {
             <Select
               className="setup-platform"
               value={platform}
-              onChange={(next) => setPlatform(next as Platform)}
+              onChange={(next) => changePlatform(next as Platform)}
               options={platformOptions}
               ariaLabel="Platform"
             />
@@ -233,24 +232,33 @@ export default function SetupServer() {
           </div>
         </div>
 
-        {steps.length > 0 && (
+        {steps.length > 1 && (
           <nav className="setup-progress" aria-label="Setup steps">
-            {steps.map((step, index) => (
-              <button
-                key={step.id}
-                type="button"
-                className={`setup-progress-step ${activeStep === step.id ? "is-active" : ""}`}
-                onClick={() => jumpTo(step.id)}
-              >
-                <span className="setup-progress-num">{index + 1}</span>
-                <b>{step.label}</b>
-              </button>
-            ))}
+            {steps.map((step, index) => {
+              const isActive = index === stepIndex;
+              const isDone = index < stepIndex;
+              return (
+                <button
+                  key={step.id}
+                  type="button"
+                  className={`setup-progress-step ${isActive ? "is-active" : ""} ${
+                    isDone ? "is-done" : ""
+                  }`}
+                  onClick={() => goToStep(index)}
+                  aria-current={isActive ? "step" : undefined}
+                >
+                  <span className="setup-progress-num">
+                    {isDone ? <Icon name="check" size={11} /> : index + 1}
+                  </span>
+                  <b>{step.label}</b>
+                </button>
+              );
+            })}
           </nav>
         )}
 
-        <div className="setup-stage setup-anim" key={platform}>
-          {platform === "colab" ? (
+        <div className="setup-stage setup-anim" key={`${platform}-${current.id}`}>
+          {current.id === "colab" && (
             <section className="setup-panel">
               <div className="setup-panel-head">
                 <div className="setup-panel-title">
@@ -290,200 +298,208 @@ export default function SetupServer() {
                 tab is closed or the runtime times out.
               </p>
             </section>
-          ) : (
-            <>
-              {platform !== "codesandbox" && (
-                <Panel
-                  id="shell"
-                  number={stepNumber("shell")}
-                  icon="terminal"
-                  title="Open Root Shell"
-                  meta="Root access"
-                >
-                  <p className="setup-hint">
-                    Most cloud IDEs and VPS accounts start as a normal user. Switch to root before
-                    installing packages.
-                  </p>
-                  <CodeBlock code="sudo su" copyId="su" copied={copied} onCopy={copy} />
-                </Panel>
-              )}
+          )}
 
-              {(platform === "vps" || platform === "vm") && (
-                <Panel
-                  id="system"
-                  number={stepNumber("system")}
-                  icon="sliders"
-                  title="Update System & Install wget"
-                  meta={info.label}
-                >
-                  <p className="setup-hint">
-                    Refresh package lists and install <code>wget</code> so the next steps can
-                    download Java and the server JAR.
-                  </p>
-                  <CodeBlock
-                    code="apt update -y && apt upgrade -y && apt install wget -y"
-                    copyId="apt"
-                    copied={copied}
-                    onCopy={copy}
+          {current.id === "shell" && (
+            <Panel
+              id="shell"
+              number={number}
+              icon="terminal"
+              title="Open Root Shell"
+              meta="Root access"
+            >
+              <p className="setup-hint">
+                Most cloud IDEs and VPS accounts start as a normal user. Switch to root before
+                installing packages.
+              </p>
+              <CodeBlock code="sudo su" copyId="su" copied={copied} onCopy={copy} />
+            </Panel>
+          )}
+
+          {current.id === "system" && (
+            <Panel
+              id="system"
+              number={number}
+              icon="sliders"
+              title="Update System & Install wget"
+              meta={info.label}
+            >
+              <p className="setup-hint">
+                Refresh package lists and install <code>wget</code> so the next steps can download
+                Java and the server JAR.
+              </p>
+              <CodeBlock
+                code="apt update -y && apt upgrade -y && apt install wget -y"
+                copyId="apt"
+                copied={copied}
+                onCopy={copy}
+              />
+            </Panel>
+          )}
+
+          {current.id === "java" && (
+            <Panel
+              id="java"
+              number={number}
+              icon="coffee"
+              title="Install Latest Java"
+              meta="Oracle JDK 25"
+            >
+              <p className="setup-hint">
+                Installs Oracle JDK 25 into the current folder and exports it for this shell.
+              </p>
+              <CodeBlock
+                code={javaInstall}
+                copyId="java"
+                copied={copied}
+                onCopy={copy}
+                label="Install script"
+              />
+              <p className="setup-note">
+                Run the export lines again in a new terminal, or add them to your shell profile.
+              </p>
+            </Panel>
+          )}
+
+          {current.id === "jar" && (
+            <Panel
+              id="jar"
+              number={number}
+              icon="package"
+              title="Download MC Server JAR"
+              meta="Paper"
+            >
+              <p className="setup-hint">
+                Default is Paper — replace the URL with any server JAR you want. The generated
+                command also accepts the EULA and creates the server folder.
+              </p>
+              <div className="setup-fields">
+                <div className="setup-field wide">
+                  <label htmlFor="setup-jar-url">Minecraft server JAR URL</label>
+                  <TextField
+                    id="setup-jar-url"
+                    value={mcUrl}
+                    onChange={(event) => setMcUrl(event.target.value)}
+                    placeholder="https://..."
+                    spellCheck={false}
                   />
-                </Panel>
+                </div>
+              </div>
+              <div className="setup-actions">
+                <button
+                  className="setup-btn secondary"
+                  onClick={() => window.open("/minecraft/make-server/server.jar-downloader.html", "_blank")}
+                >
+                  <Icon name="external-link" size={13} /> Get Server URL
+                </button>
+                <button className="setup-btn primary" onClick={genMc}>
+                  <Icon name="zap" size={13} /> Generate Command
+                </button>
+              </div>
+              {mcCode && (
+                <CodeBlock code={mcCode} copyId="mc" copied={copied} onCopy={copy} label="Download & prepare" />
               )}
+            </Panel>
+          )}
 
-              <Panel
-                id="java"
-                number={stepNumber("java")}
-                icon="coffee"
-                title="Install Latest Java"
-                meta="Oracle JDK 25"
-              >
-                <p className="setup-hint">
-                  Installs Oracle JDK 25 into the current folder and exports it for this shell.
-                </p>
-                <CodeBlock code={javaInstall} copyId="java" copied={copied} onCopy={copy} label="Install script" />
-                <p className="setup-note">
-                  Run the export lines again in a new terminal, or add them to your shell profile.
-                </p>
-              </Panel>
+          {current.id === "ip" && (
+            <Panel
+              id="ip"
+              number={number}
+              icon="globe"
+              title="Setup Server IP Address"
+              meta="Minekube Connect"
+            >
+              <p className="setup-hint">
+                Sign up at{" "}
+                <a href="https://app.minekube.com/" target="_blank" rel="noreferrer">
+                  app.minekube.com
+                </a>{" "}
+                (free), create an endpoint, then paste its name and token here.
+              </p>
+              <div className="setup-fields">
+                <div className="setup-field">
+                  <label htmlFor="setup-endpoint">Endpoint name</label>
+                  <TextField
+                    id="setup-endpoint"
+                    value={endpointName}
+                    onChange={(event) => setEndpointName(event.target.value)}
+                    placeholder="kssmp"
+                    spellCheck={false}
+                  />
+                </div>
+                <div className="setup-field">
+                  <label htmlFor="setup-token">Endpoint token</label>
+                  <TextField
+                    id="setup-token"
+                    value={token}
+                    onChange={(event) => setToken(event.target.value)}
+                    placeholder="Paste token here"
+                    spellCheck={false}
+                  />
+                </div>
+              </div>
+              <div className="setup-actions">
+                <button className="setup-btn primary" onClick={genConfig}>
+                  <Icon name="zap" size={13} /> Generate Config
+                </button>
+              </div>
+              {configCode && (
+                <CodeBlock code={configCode} copyId="cfg" copied={copied} onCopy={copy} label="Connect plugin config" />
+              )}
+            </Panel>
+          )}
 
-              <Panel
-                id="jar"
-                number={stepNumber("jar")}
-                icon="package"
-                title="Download MC Server JAR"
-                meta="Paper"
-              >
-                <p className="setup-hint">
-                  Default is Paper — replace the URL with any server JAR you want. The generated
-                  command also accepts the EULA and creates the server folder.
-                </p>
-                <div className="setup-fields">
-                  <div className="setup-field wide">
-                    <label htmlFor="setup-jar-url">Minecraft server JAR URL</label>
-                    <TextField
-                      id="setup-jar-url"
-                      value={mcUrl}
-                      onChange={(event) => setMcUrl(event.target.value)}
-                      placeholder="https://..."
-                      spellCheck={false}
-                    />
-                  </div>
+          {current.id === "start" && (
+            <Panel
+              id="start"
+              number={number}
+              icon="rocket"
+              title="Start Server"
+              meta="RAM allocation"
+            >
+              <div className="setup-fields">
+                <div className="setup-field">
+                  <label htmlFor="setup-ram">RAM allocation (MB)</label>
+                  <TextField
+                    id="setup-ram"
+                    inputMode="numeric"
+                    value={ram}
+                    onChange={(event) => setRam(event.target.value)}
+                    placeholder="1024"
+                  />
                 </div>
-                <div className="setup-actions">
-                  <button
-                    className="setup-btn secondary"
-                    onClick={() => window.open("/minecraft/make-server/server.jar-downloader.html", "_blank")}
-                  >
-                    <Icon name="external-link" size={13} /> Get Server URL
-                  </button>
-                  <button className="setup-btn primary" onClick={genMc}>
-                    <Icon name="zap" size={13} /> Generate Command
-                  </button>
-                </div>
-                {mcCode && (
-                  <CodeBlock code={mcCode} copyId="mc" copied={copied} onCopy={copy} label="Download & prepare" />
-                )}
-              </Panel>
+              </div>
+              <div className="setup-actions">
+                <button className="setup-btn primary" onClick={genStart}>
+                  <Icon name="zap" size={13} /> Generate Start
+                </button>
+              </div>
+              {startCode && (
+                <CodeBlock code={startCode} copyId="start" copied={copied} onCopy={copy} label="Start command" />
+              )}
+              <p className="setup-note">
+                1024 MB is enough for a small SMP. Increase it if your host has more memory
+                available.
+              </p>
+            </Panel>
+          )}
+        </div>
 
-              <Panel
-                id="ip"
-                number={stepNumber("ip")}
-                icon="globe"
-                title="Setup Server IP Address"
-                meta="Minekube Connect"
-              >
-                <p className="setup-hint">
-                  Sign up at{" "}
-                  <a href="https://app.minekube.com/" target="_blank" rel="noreferrer">
-                    app.minekube.com
-                  </a>{" "}
-                  (free), create an endpoint, then paste its name and token here.
-                </p>
-                <div className="setup-fields">
-                  <div className="setup-field">
-                    <label htmlFor="setup-endpoint">Endpoint name</label>
-                    <TextField
-                      id="setup-endpoint"
-                      value={endpointName}
-                      onChange={(event) => setEndpointName(event.target.value)}
-                      placeholder="kssmp"
-                      spellCheck={false}
-                    />
-                  </div>
-                  <div className="setup-field">
-                    <label htmlFor="setup-token">Endpoint token</label>
-                    <TextField
-                      id="setup-token"
-                      value={token}
-                      onChange={(event) => setToken(event.target.value)}
-                      placeholder="Paste token here"
-                      spellCheck={false}
-                    />
-                  </div>
-                </div>
-                <div className="setup-actions">
-                  <button className="setup-btn primary" onClick={genConfig}>
-                    <Icon name="zap" size={13} /> Generate Config
-                  </button>
-                </div>
-                {configCode && (
-                  <CodeBlock code={configCode} copyId="cfg" copied={copied} onCopy={copy} label="Connect plugin config" />
-                )}
-              </Panel>
-
-              <Panel
-                id="start"
-                number={stepNumber("start")}
-                icon="rocket"
-                title="Start Server"
-                meta="RAM allocation"
-              >
-                <div className="setup-fields">
-                  <div className="setup-field">
-                    <label htmlFor="setup-ram">RAM allocation (MB)</label>
-                    <TextField
-                      id="setup-ram"
-                      inputMode="numeric"
-                      value={ram}
-                      onChange={(event) => setRam(event.target.value)}
-                      placeholder="1024"
-                    />
-                  </div>
-                </div>
-                <div className="setup-actions">
-                  <button className="setup-btn primary" onClick={genStart}>
-                    <Icon name="zap" size={13} /> Generate Start
-                  </button>
-                </div>
-                {startCode && (
-                  <CodeBlock code={startCode} copyId="start" copied={copied} onCopy={copy} label="Start command" />
-                )}
-                <p className="setup-note">
-                  1024 MB is enough for a small SMP. Increase it if your host has more memory
-                  available.
-                </p>
-              </Panel>
-
-              <section className="setup-panel setup-check-panel">
-                <div className="setup-check-row">
-                  <span className="setup-check-icon" aria-hidden>
-                    <Icon name="globe" size={20} />
-                  </span>
-                  <div className="setup-check-copy">
-                    <h2>Check your server</h2>
-                    <p>
-                      After the start command runs, open MC Statics to confirm the server responds
-                      and your address resolves.
-                    </p>
-                  </div>
-                  <button
-                    className="setup-btn primary"
-                    onClick={() => navigate("/minecraft/server/statics.html")}
-                  >
-                    <Icon name="external-link" size={14} /> Open MC Statics
-                  </button>
-                </div>
-              </section>
-            </>
+        <div className="setup-nav">
+          {stepIndex > 0 && (
+            <button className="setup-btn secondary" onClick={() => goToStep(stepIndex - 1)}>
+              <Icon name="arrow-left" size={14} /> Back
+            </button>
+          )}
+          {!isLast ? (
+            <button className="setup-btn primary setup-nav-next" onClick={() => goToStep(stepIndex + 1)}>
+              Next <Icon name="arrow-right" size={14} />
+            </button>
+          ) : (
+            <button className="setup-btn primary setup-nav-next" onClick={finalAction.onClick}>
+              <Icon name={finalAction.icon} size={14} /> {finalAction.label}
+            </button>
           )}
         </div>
       </div>
