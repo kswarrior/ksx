@@ -50,17 +50,21 @@ function formatDate(value?: string): string {
 
 export default function BedrockDownloaderProject() {
   const { slug } = useParams<{ slug: string }>();
-  const [project, setProject] = useState<BedrockProject | null>(null);
+  const cacheKey = slug ? `ksx:mcpedl:project:${slug}` : "";
+  const [project, setProject] = useState<BedrockProject | null>(() =>
+    readSession<BedrockProject>(cacheKey)
+  );
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [reload, setReload] = useState(0);
 
   useEffect(() => {
     if (!slug) return;
+    const cached = readSession<BedrockProject>(cacheKey);
     let cancelled = false;
     setLoading(true);
     setError(false);
-    setProject(null);
+    setProject(cached);
     fetch(`${MCPEDL_API}/route/slug/${slug}`)
       .then((r) => {
         if (!r.ok) throw new Error(`HTTP ${r.status}`);
@@ -70,9 +74,10 @@ export default function BedrockDownloaderProject() {
         if (cancelled) return;
         if (!data.data) throw new Error("Missing project");
         setProject(data.data);
+        writeSession(cacheKey, data.data);
       })
       .catch(() => {
-        if (!cancelled) setError(true);
+        if (!cancelled && !cached) setError(true);
       })
       .finally(() => {
         if (!cancelled) setLoading(false);
@@ -80,7 +85,7 @@ export default function BedrockDownloaderProject() {
     return () => {
       cancelled = true;
     };
-  }, [slug, reload]);
+  }, [slug, reload, cacheKey]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -114,9 +119,9 @@ export default function BedrockDownloaderProject() {
           <Icon name="chevron-left" size={16} /> Back to Universal Downloader
         </Link>
 
-        {loading && <div className="jd-loading">Loading project…</div>}
+        {loading && !project && <div className="jd-loading">Loading project…</div>}
 
-        {!loading && error && (
+        {!loading && error && !project && (
           <div className="jd-empty">
             Couldn't load this project.{" "}
             <button type="button" className="jd-retry" onClick={() => setReload((value) => value + 1)}>
@@ -125,7 +130,7 @@ export default function BedrockDownloaderProject() {
           </div>
         )}
 
-        {!loading && !error && project && (
+        {project && (
           <>
             <header className="jd-detail-hero">
               <img
