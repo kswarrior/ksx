@@ -68,6 +68,23 @@ export type WebsiteHosting = {
   link: string;
 };
 
+export type DatabaseHosting = {
+  name: string;
+  type: string;
+  storage: string;
+  transfer: string;
+  databases: string;
+  region: string;
+  backups: string;
+  ssl: boolean;
+  cardRequired: boolean;
+  alwaysFree: boolean;
+  verification: string;
+  limits: string;
+  notes: string;
+  link: string;
+};
+
 export type SocialPlatformName = "youtube" | "discord" | "instagram";
 
 export type SocialStat = {
@@ -124,6 +141,12 @@ export const api = {
     const qs = params ? `?${new URLSearchParams(params).toString()}` : "";
     return fetchJson<{ count: number; data: WebsiteHosting[] }>(
       `/api/hosting/website${qs}`
+    );
+  },
+  getDatabaseHosting: (params?: Record<string, string>) => {
+    const qs = params ? `?${new URLSearchParams(params).toString()}` : "";
+    return fetchJson<{ count: number; data: DatabaseHosting[] }>(
+      `/api/hosting/database${qs}`
     );
   },
   getSocialStats: (refresh = false) =>
