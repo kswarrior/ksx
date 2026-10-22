@@ -419,7 +419,8 @@ export async function fetchLoaders(
       stable: entry.loader.stable,
     }));
     const stable = options.filter((option) => option.stable);
-    return includePre || stable.length === 0 ? options : stable;
+    if (stable.length === 0) return options;
+    return includePre ? [...stable, ...options.filter((option) => !option.stable)] : stable;
   }
 
   if (software === "forge") {
@@ -431,14 +432,16 @@ export async function fetchLoaders(
 
   if (software === "neoforge") {
     const catalog = await neoforgeCatalog();
-    return [...(catalog.get(version) ?? [])]
+    const options = [...(catalog.get(version) ?? [])]
       .sort((a, b) => versionCompare(b, a))
-      .filter((neoforge) => includePre || !isPreRelease(neoforge))
       .map((neoforge) => ({
         id: neoforge,
         label: isPreRelease(neoforge) ? `${neoforge} · Beta` : neoforge,
         stable: !isPreRelease(neoforge),
       }));
+    const stable = options.filter((option) => option.stable);
+    if (stable.length === 0) return options;
+    return includePre ? [...stable, ...options.filter((option) => !option.stable)] : stable;
   }
 
   return [];
@@ -476,7 +479,7 @@ export async function fetchArtifact(
       sha256: download.checksums?.sha256,
       channel: selected.channel,
       releasedAt: selected.time,
-      java: javaForVersion(version),
+      java: PROXIES.includes(software) ? undefined : javaForVersion(version),
     };
   }
 
