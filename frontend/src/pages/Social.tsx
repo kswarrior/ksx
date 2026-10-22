@@ -185,7 +185,7 @@ export default function Social() {
         <div className="so-bg-orb o2" />
       </div>
       <div className="so-shell">
-        <PageHero icon="heart" title="Social" />
+        <PageHero icon="heart" title="Social Media" />
 
         <div className="so-grid">
           <SocialCard
