@@ -289,12 +289,13 @@ function nearestEntity(position, names, maxDistance) {
   return best
 }
 
-function nearestItem(maxDistance) {
+function nearestItem(maxDistance, excluded) {
   let best = null
   let bestDistance = maxDistance
   for (const entity of Object.values(bot.entities)) {
     if (!entity || entity === bot.entity || !entity.position) continue
     if (entity.name !== 'item' && entity.objectType !== 'Item') continue
+    if (excluded && excluded.has(entity.id)) continue
     const distance = entity.position.distanceTo(bot.entity.position)
     if (distance < bestDistance) {
       best = entity
@@ -760,8 +761,8 @@ async function collectItems(token) {
   const seen = new Set()
   let collected = 0
   while (bot && bot.entity && token === actionToken) {
-    const item = nearestItem(10)
-    if (!item || seen.has(item.id)) break
+    const item = nearestItem(10, seen)
+    if (!item) break
     seen.add(item.id)
     const reached = await moveTo(item.position, 1.2, 6000)
     if (!reached) break
