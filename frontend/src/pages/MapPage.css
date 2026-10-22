@@ -654,10 +654,7 @@
 .mp-planet:focus-visible,
 .mp-moon:focus-visible,
 .mp-zoom button:focus-visible,
-.mp-hud-btn:focus-visible,
-.mp-details-close:focus-visible,
-.mp-dir-close:focus-visible,
-.mp-clear:focus-visible {
+.mp-details-close:focus-visible {
   outline: 2px solid #9fc1ff;
   outline-offset: 4px;
 }
@@ -1103,31 +1100,6 @@
   color: rgba(139, 154, 178, 0.8);
 }
 
-/* ---------- MOTION ---------- */
-@keyframes mpSpin {
-  to { transform: rotate(360deg); }
-}
-
-@keyframes mpPanelIn {
-  from { opacity: 0; transform: translateY(-8px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes mpSheetIn {
-  from { opacity: 0; transform: translateY(16px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes mpFadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-@keyframes mpDirIn {
-  from { opacity: 0; transform: translateY(10px) scale(0.985); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
-}
-
 /* ---------- LITE / PAUSED ---------- */
 .mp-lite .mp-stars.s2,
 .map-page.is-paused .mp-stars.s2,
@@ -1136,15 +1108,6 @@
 .mp-lite .mp-core::before,
 .map-page.is-paused .mp-core::before {
   animation: none !important;
-}
-
-.mp-lite .mp-search-hud,
-.mp-lite .mp-details,
-.mp-lite .mp-zoom,
-.mp-lite .mp-legend {
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-  background: rgba(8, 12, 20, 0.96);
 }
 
 .mp-lite .mp-world {
@@ -1181,25 +1144,9 @@
     background: rgba(8, 12, 20, 0.95);
   }
 
-  .mp-brand-name em {
-    display: none;
-  }
-
-  .mp-hud-btn {
-    padding: 8px;
-  }
-
-  .mp-hud-btn span {
-    display: none;
-  }
-
   .mp-search .ks-search-input {
     height: 38px;
     font-size: 13px;
-  }
-
-  .mp-chips {
-    margin-top: 8px;
   }
 
   .mp-star-label {
@@ -1242,7 +1189,6 @@
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
     background: rgba(8, 12, 20, 0.97);
-    animation-name: mpSheetIn;
   }
 
   .mp-details h2 {
@@ -1267,48 +1213,8 @@
     display: none;
   }
 
-  .mp-dir-overlay {
-    padding: 8px;
-  }
-
-  .mp-dir {
-    max-height: calc(100dvh - 80px);
-    border-radius: 16px;
-  }
-
-  .mp-dir-head {
-    padding: 14px 16px;
-  }
-
-  .mp-dir-head h2 {
-    font-size: 19px;
-  }
-
-  .mp-dir-body {
-    gap: 14px;
-    padding: 14px;
-  }
-
-  .mp-dir-pages {
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-  }
-
   .mp-results {
     max-height: 38dvh;
-  }
-}
-
-@media (max-width: 420px) {
-  .mp-brand-name strong {
-    font-size: 12px;
-  }
-
-  .mp-search-meta {
-    font-size: 9.5px;
-  }
-
-  .mp-dir-pages {
-    grid-template-columns: 1fr;
   }
 }
 
@@ -1333,23 +1239,14 @@
 
 /* reduced motion */
 @media (prefers-reduced-motion: reduce) {
-  .mp-stars.s2,
-  .mp-star::after,
-  .mp-core::before {
-    animation: none !important;
-  }
-
   .mp-world,
   .mp-world.is-animating,
   .mp-details,
-  .mp-dir,
-  .mp-dir-overlay,
   .mp-result,
   .mp-star,
   .mp-planet,
   .mp-moon,
   .mp-core,
-  .mp-chip,
   .mp-node-label,
   .mp-core-label,
   .mp-moon-label {

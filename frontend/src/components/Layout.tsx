@@ -151,6 +151,7 @@ export default function Layout() {
   };
 
   const isSidebarPage = location.pathname === "/" || /^\/(dashboard|map|social|about)(\/|$)/.test(location.pathname);
+  const hideSidebar = location.pathname === "/social";
 
   const togglePin = () => {
     loadSitemap();
@@ -227,13 +228,15 @@ export default function Layout() {
   return (
     <>
       <div id="topbar" className={searchActive ? "search-active" : ""}>
-        <button id="hamburger" aria-label="Menu" onClick={() => setSidebarOpen((o) => !o)}>
-          <svg className="menu-svg" viewBox="0 0 24 24" aria-hidden="true">
-            <line x1="4" y1="6" x2="20" y2="6" />
-            <line x1="4" y1="12" x2="20" y2="12" />
-            <line x1="4" y1="18" x2="20" y2="18" />
-          </svg>
-        </button>
+        {!hideSidebar && (
+          <button id="hamburger" aria-label="Menu" onClick={() => setSidebarOpen((o) => !o)}>
+            <svg className="menu-svg" viewBox="0 0 24 24" aria-hidden="true">
+              <line x1="4" y1="6" x2="20" y2="6" />
+              <line x1="4" y1="12" x2="20" y2="12" />
+              <line x1="4" y1="18" x2="20" y2="18" />
+            </svg>
+          </button>
+        )}
 
         <div id="control-right">
           {!isSidebarPage && (
@@ -369,6 +372,7 @@ export default function Layout() {
         )}
       </ul>
 
+      {!hideSidebar && (
       <nav id="sidebar" aria-label="Main navigation" className={sidebarOpen ? "open" : ""}>
         <div className="sb-nav">
           <Link
@@ -428,14 +432,15 @@ export default function Layout() {
           </Link>
         </div>
       </nav>
+      )}
 
-      <div id="content" className={sidebarOpen ? "sidebar-open" : ""}>
+      <div id="content" className={sidebarOpen && !hideSidebar ? "sidebar-open" : ""}>
         <Suspense fallback={<KsLoader label="Loading KS" />}>
           <Outlet />
         </Suspense>
       </div>
 
-      {sidebarOpen && !isDesktop() && <div className="sidebar-backdrop" onClick={() => setSidebarOpen(false)} />}
+      {!hideSidebar && sidebarOpen && !isDesktop() && <div className="sidebar-backdrop" onClick={() => setSidebarOpen(false)} />}
     </>
   );
 }
