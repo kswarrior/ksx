@@ -531,10 +531,6 @@ export default function MapPage() {
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key !== "Escape") return;
-      if (directoryOpen) {
-        setDirectoryOpen(false);
-        return;
-      }
       if (selection) {
         setSelection(null);
         return;
@@ -543,7 +539,7 @@ export default function MapPage() {
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [directoryOpen, query, selection]);
+  }, [query, selection]);
 
   const focusNode = useCallback(
     (pos: Vec, zoom: number) => {
