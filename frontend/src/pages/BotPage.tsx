@@ -122,6 +122,9 @@ export default function BotPage() {
   const [jumpInterval, setJumpInterval] = useState(String(DEFAULT_BOT_CONFIG.jumpInterval));
   const [antiAfkWalk, setAntiAfkWalk] = useState(DEFAULT_BOT_CONFIG.antiAfkWalk);
   const [walkInterval, setWalkInterval] = useState(String(DEFAULT_BOT_CONFIG.walkInterval));
+  const [autoTotem, setAutoTotem] = useState(DEFAULT_BOT_CONFIG.autoTotem);
+  const [autoArmor, setAutoArmor] = useState(DEFAULT_BOT_CONFIG.autoArmor);
+  const [autoDefend, setAutoDefend] = useState(DEFAULT_BOT_CONFIG.autoDefend);
   const [viewDistance, setViewDistance] = useState(String(DEFAULT_BOT_CONFIG.viewDistance));
   const [copied, setCopied] = useState<string | null>(null);
 
@@ -147,6 +150,9 @@ export default function BotPage() {
     jumpInterval: toInt(jumpInterval, DEFAULT_BOT_CONFIG.jumpInterval),
     antiAfkWalk,
     walkInterval: toInt(walkInterval, DEFAULT_BOT_CONFIG.walkInterval),
+    autoTotem,
+    autoArmor,
+    autoDefend,
     viewDistance: toInt(viewDistance, DEFAULT_BOT_CONFIG.viewDistance),
   };
 
@@ -562,6 +568,30 @@ export default function BotPage() {
                     onChange={(event) => setAntiAfkWalk(event.target.checked)}
                   />
                   <span>Anti-AFK walk</span>
+                </label>
+                <label className="bot-toggle">
+                  <input
+                    type="checkbox"
+                    checked={autoTotem}
+                    onChange={(event) => setAutoTotem(event.target.checked)}
+                  />
+                  <span>Auto-totem</span>
+                </label>
+                <label className="bot-toggle">
+                  <input
+                    type="checkbox"
+                    checked={autoArmor}
+                    onChange={(event) => setAutoArmor(event.target.checked)}
+                  />
+                  <span>Auto-armor</span>
+                </label>
+                <label className="bot-toggle">
+                  <input
+                    type="checkbox"
+                    checked={autoDefend}
+                    onChange={(event) => setAutoDefend(event.target.checked)}
+                  />
+                  <span>Auto-defend</span>
                 </label>
               </div>
             </section>

@@ -3,7 +3,7 @@ export type BotProcessManagerId = "pm2" | "screen" | "foreground";
 
 export const DEFAULT_BOT_FOLDER = "~/ks-bot";
 
-const BOT_DEPENDENCIES = "mineflayer mineflayer-pathfinder vec3";
+const BOT_DEPENDENCIES = "mineflayer";
 const NPM_INSTALL_FLAGS = "--no-audit --no-fund";
 
 export type BotEnvironment = {
