@@ -23,8 +23,13 @@ export type MinecraftHosting = {
   ram: number | string;
   cpu: string;
   disk: string;
+  players: string;
   location: string;
   uptime: string;
+  alwaysOn: boolean;
+  verification: string;
+  limits: string;
+  notes: string;
   link: string;
 };
 

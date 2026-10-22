@@ -157,7 +157,7 @@ GET /api/health
 GET /api/stats
 GET /api/sitemap
 GET /api/sitemap/search?q=hosting
-GET /api/hosting/minecraft?q=&uptime=good&location=india&ram=4
+GET /api/hosting/minecraft?q=&alwaysOn=true&location=india&ram=4
 GET /api/hosting/vps?q=&type=VPS&renew=true&sudo=true&alwaysOn=true
 GET /api/social
 ```

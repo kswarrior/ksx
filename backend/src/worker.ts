@@ -110,7 +110,7 @@ app.get("/api/stats", (c) => {
       "GET /api/health",
       "GET /api/sitemap",
       "GET /api/sitemap/search?q=",
-      "GET /api/hosting/minecraft?q=&uptime=&location=&ram=",
+      "GET /api/hosting/minecraft?q=&uptime=&alwaysOn=&location=&ram=",
       "GET /api/hosting/vps?q=&type=&renew=&sudo=&alwaysOn=",
       "GET /api/social",
     ],
@@ -344,6 +344,7 @@ app.post("/api/apps/:slug/download", async (c) => {
 app.get("/api/hosting/minecraft", (c) => {
   const q = (c.req.query("q") ?? "").toLowerCase();
   const uptime = c.req.query("uptime") ?? "";
+  const alwaysOn = c.req.query("alwaysOn");
   const location = (c.req.query("location") ?? "").toLowerCase();
   const ramStr = c.req.query("ram");
   const ram = ramStr ? Number(ramStr) : 0;
@@ -351,6 +352,7 @@ app.get("/api/hosting/minecraft", (c) => {
   const filtered = mcHosting.filter((h) => {
     if (q && !String(h.name).toLowerCase().includes(q)) return false;
     if (uptime && h.uptime !== uptime) return false;
+    if (alwaysOn !== undefined && alwaysOn !== "" && h.alwaysOn !== (alwaysOn === "true")) return false;
     if (location && !String(h.location).toLowerCase().includes(location)) return false;
     if (ram) {
       const hRam = Number(h.ram);
