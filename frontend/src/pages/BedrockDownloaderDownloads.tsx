@@ -4,6 +4,7 @@ import DownloadActions from "../components/DownloadActions";
 import Icon from "../components/Icon";
 import { SearchField, Select, type SelectOption } from "../components/ui";
 import { API_BASE } from "../lib/api";
+import { readSession, writeSession } from "../lib/sessionCache";
 import "./JavaDownloader.css";
 
 type BedrockDownload = {
@@ -62,8 +63,13 @@ function detectDevice(filename: string): string {
 
 export default function BedrockDownloaderDownloads() {
   const { slug } = useParams<{ slug: string }>();
-  const [project, setProject] = useState<BedrockProject | null>(null);
-  const [downloads, setDownloads] = useState<BedrockDownload[]>([]);
+  const cacheKey = slug ? `ksx:mcpedl:project:${slug}` : "";
+  const [project, setProject] = useState<BedrockProject | null>(() =>
+    readSession<BedrockProject>(cacheKey)
+  );
+  const [downloads, setDownloads] = useState<BedrockDownload[]>(
+    () => readSession<BedrockProject>(cacheKey)?.downloads ?? []
+  );
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [reload, setReload] = useState(0);
@@ -73,11 +79,12 @@ export default function BedrockDownloaderDownloads() {
 
   useEffect(() => {
     if (!slug) return;
+    const cached = readSession<BedrockProject>(cacheKey);
     let cancelled = false;
     setLoading(true);
     setError(false);
-    setProject(null);
-    setDownloads([]);
+    setProject(cached);
+    setDownloads(cached?.downloads ?? []);
     fetch(`${MCPEDL_API}/route/slug/${slug}`)
       .then((r) => {
         if (!r.ok) throw new Error(`HTTP ${r.status}`);
@@ -88,9 +95,10 @@ export default function BedrockDownloaderDownloads() {
         if (!data.data) throw new Error("Missing project");
         setProject(data.data);
         setDownloads(Array.isArray(data.data.downloads) ? data.data.downloads : []);
+        writeSession(cacheKey, data.data);
       })
       .catch(() => {
-        if (!cancelled) setError(true);
+        if (!cancelled && !cached) setError(true);
       })
       .finally(() => {
         if (!cancelled) setLoading(false);
@@ -98,7 +106,7 @@ export default function BedrockDownloaderDownloads() {
     return () => {
       cancelled = true;
     };
-  }, [slug, reload]);
+  }, [slug, reload, cacheKey]);
 
   useEffect(() => {
     setQuery("");
@@ -165,9 +173,11 @@ export default function BedrockDownloaderDownloads() {
           <Icon name="chevron-left" size={16} /> Back to {project?.title ?? "project"}
         </Link>
 
-        {loading && <div className="jd-loading">Loading downloads…</div>}
+        {loading && !project && downloads.length === 0 && (
+          <div className="jd-loading">Loading downloads…</div>
+        )}
 
-        {!loading && error && (
+        {!loading && error && !project && downloads.length === 0 && (
           <div className="jd-empty">
             Couldn't load downloads.{" "}
             <button type="button" className="jd-retry" onClick={() => setReload((value) => value + 1)}>
@@ -176,7 +186,7 @@ export default function BedrockDownloaderDownloads() {
           </div>
         )}
 
-        {!loading && !error && (
+        {(project || downloads.length > 0) && (
           <>
             <header className="jd-download-head">
               <img
