@@ -4,8 +4,8 @@
     "name": "KS Portal",
     "owner": "KS Warrior",
     "platform": "android",
-    "version": "1.4.0",
-    "downloadUrl": "https://github.com/kswarrior/opencode/raw/refs/heads/main/ks-apps/browser/android/release/ks-portal_1.4.0.apk"
+    "version": "1.5.0",
+    "downloadUrl": "https://github.com/kswarrior/opencode/raw/refs/heads/main/ks-apps/browser/android/release/ks-portal_1.5.0.apk"
   },
   {
     "slug": "ks-client",

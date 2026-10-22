@@ -6,9 +6,9 @@ import portalMarkdown from "./ks-portal.md?raw";
 import "./AppDashboard.css";
 
 const APP_SLUG = "ks-portal";
-const APP_VERSION = "1.4.0";
+const APP_VERSION = "1.5.0";
 const DOWNLOAD_URL =
-  "https://github.com/kswarrior/opencode/raw/refs/heads/main/ks-apps/browser/android/release/ks-portal_1.4.0.apk";
+  "https://github.com/kswarrior/opencode/raw/refs/heads/main/ks-apps/browser/android/release/ks-portal_1.5.0.apk";
 
 function trackDownload() {
   const payload = JSON.stringify({ version: APP_VERSION, platform: "android" });

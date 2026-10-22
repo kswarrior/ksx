@@ -35,7 +35,7 @@ Reader mode, save page offline, print or save as PDF, page translation, voice se
 | Info | Value |
 | --- | --- |
 | Name | KS Portal |
-| Version | 1.4.0 (versionCode 25) |
+| Version | 1.5.0 (versionCode 26) |
 | Platform | Android |
 | Developer | KS Warrior |
 | Package | `com.ks.android.portal` |

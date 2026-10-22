@@ -46,7 +46,7 @@ curl "localhost:8080/api/hosting/vps?q=&type=VPS&renew=true&sudo=true&alwaysOn=t
 curl "localhost:8080/api/hosting/website?q=&type=Static&customDomain=true&ssl=true&ads=false&alwaysFree=true"
 curl "localhost:8080/api/hosting/database?q=&type=PostgreSQL&cardRequired=false&backups=true&alwaysFree=true&ssl=true"
 curl localhost:8080/api/apps/ks-portal/stats
-curl -X POST localhost:8080/api/apps/ks-portal/download -H "Content-Type: application/json" -d '{"version":"1.4.0","platform":"android"}'
+curl -X POST localhost:8080/api/apps/ks-portal/download -H "Content-Type: application/json" -d '{"version":"1.5.0","platform":"android"}'
 curl localhost:8080/api/social
 ```
 
