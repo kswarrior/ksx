@@ -273,6 +273,53 @@
   opacity: 0.14;
 }
 
+/* ---------- ZOOM-AWARE LABELS ---------- */
+.mp-label {
+  position: absolute;
+  left: 50%;
+  top: calc(100% + 9px);
+  z-index: 3;
+  padding: 3px 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 7px;
+  background: rgba(8, 8, 8, 0.84);
+  color: #e8e8e8;
+  font-size: 10.5px;
+  font-weight: 750;
+  letter-spacing: 0.1px;
+  line-height: 1.2;
+  white-space: nowrap;
+  pointer-events: none;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.85);
+  transform: translateX(-50%) scale(var(--mp-inv, 1));
+  transform-origin: top center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.16s ease, visibility 0.16s ease;
+}
+
+.mp-star-node .mp-label {
+  opacity: 1;
+  visibility: visible;
+  font-size: 11.5px;
+  font-weight: 850;
+  letter-spacing: 0.2px;
+}
+
+.map-page[data-zoom="mid"] .mp-planet-node .mp-label,
+.map-page[data-zoom="near"] .mp-planet-node .mp-label,
+.map-page[data-zoom="near"] .mp-moon-node .mp-label,
+.mp-node:hover .mp-label,
+.mp-node:focus-within .mp-label {
+  opacity: 1;
+  visibility: visible;
+}
+
+.mp-moon-node .mp-label {
+  font-size: 9.5px;
+  color: var(--mp-muted);
+}
+
 .mp-core:focus-visible,
 .mp-star:focus-visible,
 .mp-planet:focus-visible,
@@ -297,15 +344,16 @@
 
 .mp-search.ks-search {
   border: 1px solid var(--mp-border);
-  border-radius: 12px;
+  border-radius: 10px;
   background: var(--mp-panel);
   color: var(--mp-text);
   padding: 0 12px;
+  backdrop-filter: blur(16px);
 }
 
 .mp-search.ks-search:focus-within {
   border-color: var(--mp-border-strong);
-  background: #3e444c;
+  background: rgba(22, 22, 22, 0.94);
 }
 
 .mp-search .ks-search-input {
@@ -348,8 +396,9 @@
   margin-top: 8px;
   padding: 8px;
   border: 1px solid var(--mp-border);
-  border-radius: 12px;
-  background: var(--mp-panel-solid);
+  border-radius: 10px;
+  background: rgba(10, 10, 10, 0.96);
+  backdrop-filter: blur(18px);
   overflow-y: auto;
   overscroll-behavior: contain;
 }
@@ -383,8 +432,8 @@
   display: grid;
   place-items: center;
   border-radius: 7px;
-  background: #4b5159;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: #171717;
+  border: 1px solid rgba(255, 255, 255, 0.09);
 }
 
 .mp-result-logo svg,
@@ -445,6 +494,7 @@
   border: 1px solid var(--mp-border);
   border-radius: var(--mp-radius);
   background: var(--mp-panel);
+  backdrop-filter: blur(18px);
 }
 
 .mp-details-close {
@@ -532,9 +582,9 @@
   flex-shrink: 0;
   display: grid;
   place-items: center;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.09);
   border-radius: 9px;
-  background: #4b5159;
+  background: #171717;
   color: #fff;
 }
 
@@ -599,8 +649,9 @@
   flex-direction: column;
   overflow: hidden;
   border: 1px solid var(--mp-border);
-  border-radius: 12px;
+  border-radius: 10px;
   background: var(--mp-panel);
+  backdrop-filter: blur(16px);
 }
 
 .mp-zoom button {
@@ -642,9 +693,65 @@
   stroke-linecap: round;
 }
 
+/* ---------- MINIMAL META ---------- */
+.mp-meta {
+  position: absolute;
+  left: 16px;
+  bottom: 16px;
+  z-index: 28;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border: 1px solid var(--mp-border);
+  border-radius: 999px;
+  background: var(--mp-panel);
+  color: var(--mp-muted);
+  font-size: 10px;
+  font-weight: 650;
+  letter-spacing: 0.2px;
+  backdrop-filter: blur(16px);
+}
+
+.mp-meta-dot {
+  width: 6px;
+  height: 6px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: #e5e5e5;
+}
+
+.mp-meta-title {
+  color: var(--mp-text);
+  font-weight: 850;
+  letter-spacing: 0.3px;
+}
+
+.mp-meta-divider,
+.mp-meta-sep {
+  width: 1px;
+  height: 10px;
+  background: var(--mp-border);
+}
+
+.mp-meta-hint {
+  color: var(--mp-muted);
+}
+
+.mp-meta-zoom {
+  min-width: 34px;
+  text-align: right;
+  color: var(--mp-text);
+  font-variant-numeric: tabular-nums;
+}
+
 /* ---------- LITE ---------- */
 .mp-lite .mp-world {
   will-change: auto;
+}
+
+.mp-lite .mp-label {
+  transition: none;
 }
 
 /* ---------- RESPONSIVE ---------- */
