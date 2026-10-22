@@ -242,9 +242,7 @@ export default function MapPage() {
   const [error, setError] = useState<string | null>(null);
   const [query, setQuery] = useState("");
   const dq = useDebounced(query.trim().toLowerCase(), 140);
-  const [activeCat, setActiveCat] = useState<string>("All");
   const [selection, setSelection] = useState<Selection>(null);
-  const [directoryOpen, setDirectoryOpen] = useState(false);
   const [ready, setReady] = useState(false);
   const [lite, setLite] = useState(false);
   const [paused, setPaused] = useState(false);
