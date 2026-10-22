@@ -315,6 +315,8 @@ export default function JavaDownloader() {
                       { value: "", label: "All Loaders" },
                       ...(javaLoaderOptions[type] || []).map((l) => ({ value: l, label: l })),
                     ]}
+                    searchable={platform === "bedrock"}
+                    searchPlaceholder="Search categories…"
                     ariaLabel={platform === "bedrock" ? "Category" : "Loader"}
                   />
                   {platform === "java" && (
