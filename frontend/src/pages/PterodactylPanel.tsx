@@ -337,23 +337,22 @@ export default function PterodactylPanel() {
               number={number}
               icon="download"
               title="Install Dependencies"
-              meta={isUbuntu24 ? "Ubuntu 24.04" : "Extra PHP repository"}
+              meta={isUbuntu24 ? "Ubuntu 24.04" : osLabel}
             >
               <p className="setup-hint">
                 Install PHP-FPM, MariaDB, Redis, NGINX, Composer and the required PHP extensions.
                 {isUbuntu24
                   ? " Ubuntu 24.04 includes PHP 8.3 in its default repositories."
-                  : " Add the PHP repository for your OS before running the main install command."}
+                  : ` Add the repositories for ${osLabel} before running the main install command.`}
               </p>
-              {!isUbuntu24 && <CodeBlock label="Add PHP repository" code={PHP_REPO} />}
+              {!isUbuntu24 && <CodeBlock label={`Prepare ${osLabel}`} code={OS_PREP[os]} />}
               <CodeBlock label="Install Panel dependencies" code={DEPENDENCIES} />
               <p className="setup-note">
-                On Debian 12, also add the Redis and MariaDB repositories. On Debian 13, install
-                the <code>cron</code> package. See the{" "}
+                {OS_NOTES[os]} See the{" "}
                 <a href="https://docs.pterodactyl.io/v2/panel/getting-started" target="_blank" rel="noreferrer">
                   official getting started guide
                 </a>{" "}
-                for the exact repository commands.
+                if your OS needs different repositories.
               </p>
             </Panel>
           )}
