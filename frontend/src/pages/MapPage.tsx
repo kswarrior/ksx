@@ -1525,7 +1525,7 @@ export default function MapPage() {
                 <h2>Sitemap directory</h2>
                 <p>
                   {plural(filteredCount, "page")} in{" "}
-                  {plural(filtered.length, "category").replace("categorys", "categories")}
+                  {plural(filtered.length, "category", "categories")}
                 </p>
               </div>
               <button
