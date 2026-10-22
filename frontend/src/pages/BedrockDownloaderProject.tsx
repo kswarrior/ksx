@@ -120,16 +120,6 @@ export default function BedrockDownloaderProject() {
     [project?.description]
   );
 
-  const downloads = useMemo(() => {
-    const seen = new Set<string>();
-    return (project?.downloads ?? []).filter((download) => {
-      if (!download.file || download.type === 5) return false;
-      if (seen.has(download.file)) return false;
-      seen.add(download.file);
-      return true;
-    });
-  }, [project?.downloads]);
-
   const typeLabel = project ? bedrockTypeLabels[String(project.type_id)] ?? "Bedrock" : "";
 
   return (

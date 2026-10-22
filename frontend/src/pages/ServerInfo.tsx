@@ -232,7 +232,7 @@ export default function ServerInfo() {
   const online = data ? Boolean(data.online) : false;
   const name = data?.hostname || data?.ip || ip.trim() || "Minecraft Server";
   const icon = data?.icon?.startsWith("data:image/") ? data.icon : null;
-  const motdLines = (data?.motd?.clean ?? []).map(decodeMotd);
+  const motdLines = (data?.motd?.raw ?? data?.motd?.clean ?? []).map((line) => parseMotd(decodeMotd(line)));
   const stats = data ? buildStats(data) : [];
 
   return (
@@ -270,7 +270,15 @@ export default function ServerInfo() {
                     <div className="si-motd">
                       {motdLines.length > 0
                         ? motdLines.map((line, index) => (
-                            <span className="si-motd-line" key={index}>{line || "\u00A0"}</span>
+                            <span className="si-motd-line" key={index}>
+                              {line.length > 0
+                                ? line.map((segment, segmentIndex) => (
+                                    <span key={segmentIndex} style={motdSegmentStyle(segment)}>
+                                      {segment.obfuscated ? <Obfuscated text={segment.text} /> : segment.text}
+                                    </span>
+                                  ))
+                                : "\u00A0"}
+                            </span>
                           ))
                         : <span className="si-motd-line si-motd-empty">No MOTD available</span>}
                     </div>
