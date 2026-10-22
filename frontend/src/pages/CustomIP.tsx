@@ -157,7 +157,7 @@ export default function CustomIP() {
         <PageHero icon="globe" title="Custom IP" className="ci-page-hero" />
 
         {step === 1 && (
-          <div className="ci-stage ci-anim" key="step-1">
+          <div className="ci-stage wide ci-anim" key="step-1">
             <div className="ci-card">
               <h3><span>1</span> Resolve IP / Domain</h3>
               <p>Enter your server IP or domain to fetch location & ISP info.</p>
