@@ -162,12 +162,6 @@ export default function CustomIP() {
             </button>
           )}
         </div>
-
-        <div className="ci-footer">
-          <div style={{fontWeight:900, fontSize:18, letterSpacing:-0.4}}><Icon name="sparkles" size={16} /> Enjoy Custom IP</div>
-          <a href="https://zhhdy.com" target="_blank" rel="noreferrer"><Icon name="external-link" size={13} /> Join Discord</a>
-          <span>For more things like this — also support me <Icon name="heart" size={13} style={{ color: "#60a5fa" }} /></span>
-        </div>
       </div>
     </div>
   );
