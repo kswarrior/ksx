@@ -73,6 +73,7 @@ export const BOT_COMMANDS: BotCommand[] = [
   { command: "say <message>", description: "Send a chat message from the bot." },
   { command: "stop", description: "Cancel the current action and clear movement." },
   { command: "respawn", description: "Respawn the bot after death." },
+  { command: "login", description: "Send the configured server login command again." },
 ];
 
 const HOSTILE_MOBS = [
@@ -879,6 +880,15 @@ async function handleChat(username, message) {
   if (command === 'stop') {
     resetModes()
     say('Stopped.')
+    return
+  }
+  if (command === 'login') {
+    if (!CONFIG.serverPassword && !CONFIG.loginCommand) {
+      say('No server login password or command configured.')
+      return
+    }
+    serverLoginDone = false
+    sendServerLogin()
     return
   }
   if (command === 'come') {
