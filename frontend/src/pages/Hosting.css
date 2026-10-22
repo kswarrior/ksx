@@ -55,11 +55,18 @@
 .h-specs{display:flex; gap:10px; flex-wrap:wrap; font-size:12px; color:var(--h-muted);}
 .h-specs b{color:var(--h-text); font-weight:800;}
 .h-specs span{background:rgba(255, 255, 255,0.05); border:1px solid rgba(255, 255, 255,0.06); padding:5px 9px; border-radius:8px; display:inline-flex; gap:6px; align-items:center;}
+.h-facts{display:flex; flex-direction:column; gap:8px; border-top:1px solid rgba(255, 255, 255,0.06); padding-top:10px;}
+.h-fact{display:flex; gap:8px; align-items:flex-start; font-size:12px; line-height:1.5; color:var(--h-muted);}
+.h-fact svg{flex-shrink:0; margin-top:2px; color:#c8c8c8;}
+.h-fact b{color:var(--h-text); font-weight:800;}
+.h-note{display:flex; gap:8px; align-items:flex-start; font-size:12px; line-height:1.5; color:var(--h-muted); background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.06); border-radius:8px; padding:10px;}
+.h-note svg{flex-shrink:0; margin-top:2px; color:#d4d4d4;}
 .h-card-bottom{display:flex; justify-content:space-between; align-items:center; gap:10px; font-size:12px; color:var(--h-muted); border-top:1px solid rgba(255, 255, 255,0.06); padding-top:10px;}
 .h-tag{padding:5px 10px; border-radius:8px; font-size:11px; font-weight:900; letter-spacing:0.3px;}
 .h-tag.good{background:rgba(34,197,94,.15); color:#4ade80; border:1px solid rgba(34,197,94,.25);}
 .h-tag.warn{background:rgba(245,158,11,.14); color:#fbbf24; border:1px solid rgba(245,158,11,.25);}
 .h-tag.bad{background:rgba(239,68,68,.14); color:#f87171; border:1px solid rgba(239,68,68,.25);}
+.h-tag.neutral{background:rgba(255,255,255,.06); color:var(--h-muted); border:1px solid rgba(255,255,255,.08);}
 .h-empty{text-align:center; padding:34px 18px; background:rgba(15, 15, 15,0.9); border:1px solid var(--h-border); border-radius:5px;}
 .h-skeleton{height:180px; border-radius:5px; background:linear-gradient(90deg, rgba(255, 255, 255,0.06) 25%, rgba(255, 255, 255,0.1) 37%, rgba(255, 255, 255,0.06) 63%); background-size:400% 100%; animation:skShimmer 1.4s ease infinite;}
 @keyframes skShimmer{0%{background-position:100% 0}100%{background-position:-100% 0}}
@@ -72,7 +79,7 @@
   .h-title{font-size:24px;}
   .h-search input{height:42px; font-size:13px;}
   .h-grid{grid-template-columns:1fr; gap:12px;}
-  .h-card{border-radius:5px; contain-intrinsic-size:200px; box-shadow:0 6px 16px rgba(0, 0, 0,0.28);}
+  .h-card{border-radius:5px; contain-intrinsic-size:360px; box-shadow:0 6px 16px rgba(0, 0, 0,0.28);}
 }
 @media(hover:none) and (pointer:coarse){
   .h-card:hover{transform:none !important; box-shadow:0 8px 28px rgba(0, 0, 0,0.3);}
