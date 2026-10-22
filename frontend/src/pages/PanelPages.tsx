@@ -1,11 +1,13 @@
 import { useState } from "react";
 import Icon, { type IconName } from "../components/Icon";
+import PageHero from "../components/PageHero";
 import "./Panel.css";
 
 type PanelProps = {
   title: string;
   subtitle?: string;
   kicker?: string;
+  icon?: IconName;
   links?: { label: string; href: string }[];
   commands: { label: string; code: string; icon?: IconName }[];
 };
@@ -33,7 +35,7 @@ function CopySection({ label, code, icon }: { label: string; code: string; icon?
   );
 }
 
-export default function PanelPages({ title, subtitle, kicker, links, commands }: PanelProps) {
+export default function PanelPages({ title, subtitle, kicker, icon = "package", links, commands }: PanelProps) {
   return (
     <div className="panel-page">
       <div className="panel-bg" aria-hidden>
@@ -42,6 +44,8 @@ export default function PanelPages({ title, subtitle, kicker, links, commands }:
         <div className="panel-bg-orb o2" />
       </div>
       <div className="p-shell">
+        <PageHero icon={icon} title={title} subtitle={subtitle} kicker={kicker} />
+
         {links && links.length > 0 && (
           <div className="p-card">
             <h2><Icon name="link" size={16} /> Useful Links</h2>
@@ -68,6 +72,7 @@ export function PterodactylPage() {
     <PanelPages
       title="Pterodactyl Panel"
       kicker="MAKE HOSTING • PTERODACTYL"
+      icon="rocket"
       subtitle="Industry-standard game panel. Install panel + wings with optimized bash scripts."
       links={[
         { label: "Official Website", href: "https://pterodactyl.io" },
@@ -86,6 +91,7 @@ export function PufferPage() {
     <PanelPages
       title="PufferPanel"
       kicker="MAKE HOSTING • PUFFER"
+      icon="package"
       subtitle="Lightweight, fast & modern panel — perfect for small VPS & free hosts."
       commands={[
         { label: "Install PufferPanel", icon: "package", code: "bash <(curl -sSL https://ksweb.vercel.app/code/moh/puffer/install)" },
@@ -99,6 +105,7 @@ export function SkyportPage() {
     <PanelPages
       title="Skyport Panel"
       kicker="MAKE HOSTING • SKYPORT"
+      icon="cloud"
       subtitle="Next-gen Skyport — sleek UI, blazing fast, easy deploy."
       commands={[
         { label: "Install Skyport", icon: "cloud", code: "bash <(curl -sSL https://ksweb.vercel.app/code/moh/skyport/install)" },

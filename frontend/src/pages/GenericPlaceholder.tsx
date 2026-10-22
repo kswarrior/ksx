@@ -1,4 +1,5 @@
 import { useParams, useNavigate } from "react-router-dom";
+import PageHero from "../components/PageHero";
 import "./About.css";
 
 export default function GenericPlaceholder() {
@@ -15,7 +16,7 @@ export default function GenericPlaceholder() {
       <div className="ab-shell">
         <div className="ab-card">
           <div className="ab-status-code">Soon</div>
-          <div className="ab-status-title">Coming soon</div>
+          <PageHero variant="inline" icon="rocket" title="Coming Soon" className="ab-page-hero" />
           <p className="ab-status-text">
             This page <code className="ab-code">{path}</code> is being migrated to React.
           </p>
