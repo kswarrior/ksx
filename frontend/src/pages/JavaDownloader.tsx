@@ -514,6 +514,17 @@ export default function JavaDownloader() {
             </Link>
           ))}
         </div>
+        {hasMore && (
+          <div ref={sentinelRef} className="jd-sentinel">
+            {loadingMore && <div className="jd-loading">Loading more…</div>}
+            {loadMoreError && (
+              <div className="jd-empty">
+                Couldn't load more results.{" "}
+                <button type="button" className="jd-retry" onClick={loadMore}>Retry</button>
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
