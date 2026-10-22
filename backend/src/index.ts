@@ -13,6 +13,7 @@ import appsRouter from "./routes/apps.js";
 import sitemapData from "./data/sitemap.json" with { type: "json" };
 import mcData from "./data/minecraft-hosting.json" with { type: "json" };
 import vpsData from "./data/vps-hosting.json" with { type: "json" };
+import websiteData from "./data/website-hosting.json" with { type: "json" };
 
 const app = express();
 const PORT = Number(process.env.PORT ?? 8080);
@@ -169,6 +170,7 @@ app.get("/api/mcpedl/*", async (req, res) => {
 // Legacy JSON for old static fetch("free.json") compatibility
 app.get("/minecraft/hosting/free.json", (_req, res) => res.json(mcData));
 app.get("/vps/hosting/list/free.json", (_req, res) => res.json(vpsData));
+app.get("/website/hosting/list/free.json", (_req, res) => res.json(websiteData));
 app.get("/sitemap.json", (_req, res) => res.json(sitemapData));
 
 // Serve frontend in production (if built)

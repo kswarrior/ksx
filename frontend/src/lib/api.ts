@@ -49,6 +49,23 @@ export type VpsHosting = {
   link: string;
 };
 
+export type WebsiteHosting = {
+  name: string;
+  type: string;
+  storage: string;
+  bandwidth: string;
+  sites: string;
+  database: string;
+  customDomain: boolean;
+  ssl: boolean;
+  ads: boolean;
+  alwaysFree: boolean;
+  verification: string;
+  limits: string;
+  notes: string;
+  link: string;
+};
+
 export type SocialPlatformName = "youtube" | "discord" | "instagram";
 
 export type SocialStat = {
@@ -99,6 +116,12 @@ export const api = {
     const qs = params ? `?${new URLSearchParams(params).toString()}` : "";
     return fetchJson<{ count: number; data: VpsHosting[] }>(
       `/api/hosting/vps${qs}`
+    );
+  },
+  getWebsiteHosting: (params?: Record<string, string>) => {
+    const qs = params ? `?${new URLSearchParams(params).toString()}` : "";
+    return fetchJson<{ count: number; data: WebsiteHosting[] }>(
+      `/api/hosting/website${qs}`
     );
   },
   getSocialStats: (refresh = false) =>
