@@ -334,7 +334,7 @@ export default function MapPage() {
       });
     });
     return { active, cats, secs, pages };
-  }, [filtered, dq, activeCat]);
+  }, [filtered, dq]);
 
   const searchResults = useMemo(
     () =>
