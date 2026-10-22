@@ -122,23 +122,54 @@ app.get("/api/modrinth/*", async (c) => {
 });
 // MCPEDL API proxy (PE / Bedrock content)
 const MCPEDL_API = "https://api.mcpedl.com/api";
+const MCPEDL_UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36";
+const MCPEDL_HEADERS = {
+    "User-Agent": MCPEDL_UA,
+    Accept: "application/json, text/plain, */*",
+    "Accept-Language": "en-US,en;q=0.9",
+    Referer: "https://mcpedl.com/",
+    Origin: "https://mcpedl.com",
+    "Sec-Fetch-Dest": "empty",
+    "Sec-Fetch-Mode": "cors",
+    "Sec-Fetch-Site": "same-site",
+};
+function translateProxyUrl(url) {
+    const target = new URL(url);
+    const proxy = new URL(`https://${target.hostname.replace(/\./g, "-")}.translate.goog${target.pathname}`);
+    target.searchParams.forEach((value, key) => proxy.searchParams.set(key, value));
+    proxy.searchParams.set("_x_tr_sl", "auto");
+    proxy.searchParams.set("_x_tr_tl", "en");
+    proxy.searchParams.set("_x_tr_hl", "en");
+    return proxy.toString();
+}
+async function fetchMcpedl(url) {
+    const direct = await fetch(url, {
+        headers: MCPEDL_HEADERS,
+        cf: { scrapeShield: false },
+    });
+    if (direct.status !== 403 && direct.status !== 429)
+        return direct;
+    try {
+        const fallback = await fetch(translateProxyUrl(url), {
+            headers: { "User-Agent": MCPEDL_UA, Accept: "application/json" },
+        });
+        if (fallback.ok)
+            return fallback;
+    }
+    catch {
+        // keep the upstream response
+    }
+    return direct;
+}
 app.get("/api/mcpedl/*", async (c) => {
     const upstreamPath = c.req.path.slice("/api/mcpedl".length);
     const search = new URL(c.req.url).search;
     try {
-        const res = await fetch(`${MCPEDL_API}${upstreamPath}${search}`, {
-            headers: {
-                "User-Agent": "Mozilla/5.0 (compatible; ksx-backend/1.0; +https://github.com/anomalyco/ksx)",
-                Accept: "application/json",
-            },
-        });
-        return new Response(res.body, {
-            status: res.status,
-            headers: {
-                "Content-Type": res.headers.get("content-type") ?? "application/json",
-                "Cache-Control": "public, max-age=60, s-maxage=120",
-            },
-        });
+        const res = await fetchMcpedl(`${MCPEDL_API}${upstreamPath}${search}`);
+        const headers = new Headers();
+        headers.set("Content-Type", res.headers.get("content-type") ?? "application/json");
+        headers.set("Cache-Control", res.ok ? "public, max-age=60, s-maxage=120" : "no-store");
+        return new Response(res.body, { status: res.status, headers });
     }
     catch {
         return c.json({ error: "MCPEDL request failed" }, 502);

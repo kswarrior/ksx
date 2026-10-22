@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import Icon from "../components/Icon";
 import { API_BASE } from "../lib/api";
 import sanitizeHtml from "../lib/sanitizeHtml";
+import { readSession, writeSession } from "../lib/sessionCache";
 import "./JavaDownloader.css";
 
 type BedrockDownload = {

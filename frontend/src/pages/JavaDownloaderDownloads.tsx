@@ -70,8 +70,14 @@ function capitalize(value: string): string {
 
 export default function JavaDownloaderDownloads() {
   const { projectId } = useParams<{ projectId: string }>();
-  const [project, setProject] = useState<ProjectDetail | null>(null);
-  const [versions, setVersions] = useState<ModrinthVersion[]>([]);
+  const projectKey = projectId ? `ksx:modrinth:project:${projectId}` : "";
+  const versionsKey = projectId ? `ksx:modrinth:versions:${projectId}` : "";
+  const [project, setProject] = useState<ProjectDetail | null>(() =>
+    readSession<ProjectDetail>(projectKey)
+  );
+  const [versions, setVersions] = useState<ModrinthVersion[]>(
+    () => readSession<ModrinthVersion[]>(versionsKey) ?? []
+  );
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [reload, setReload] = useState(0);
@@ -82,27 +88,38 @@ export default function JavaDownloaderDownloads() {
 
   useEffect(() => {
     if (!projectId) return;
+    const cachedProject = readSession<ProjectDetail>(projectKey);
+    const cachedVersions = readSession<ModrinthVersion[]>(versionsKey);
     let cancelled = false;
     setLoading(true);
     setError(false);
-    setProject(null);
-    setVersions([]);
-    Promise.all([
-      fetch(`${API}/project/${projectId}`).then((r) => {
-        if (!r.ok) throw new Error(`HTTP ${r.status}`);
-        return r.json() as Promise<ProjectDetail>;
-      }),
-      fetch(`${API}/project/${projectId}/version?featured=true`).then((r) =>
-        r.ok ? (r.json() as Promise<ModrinthVersion[]>) : ([] as ModrinthVersion[])
-      ),
-    ])
-      .then(([projectData, versionData]) => {
+    setProject(cachedProject);
+    setVersions(cachedVersions ?? []);
+
+    const projectRequest = fetch(`${API}/project/${projectId}`).then((r) => {
+      if (!r.ok) throw new Error(`HTTP ${r.status}`);
+      return r.json() as Promise<ProjectDetail>;
+    });
+    const versionsRequest = fetch(`${API}/project/${projectId}/version?featured=true`)
+      .then((r) => (r.ok ? (r.json() as Promise<ModrinthVersion[]>) : ([] as ModrinthVersion[])))
+      .catch(() => null);
+
+    Promise.allSettled([projectRequest, versionsRequest])
+      .then(([projectResult, versionsResult]) => {
         if (cancelled) return;
-        setProject(projectData);
-        setVersions(Array.isArray(versionData) ? versionData : []);
-      })
-      .catch(() => {
-        if (!cancelled) setError(true);
+        let hasData = Boolean(cachedProject || cachedVersions);
+        if (projectResult.status === "fulfilled") {
+          setProject(projectResult.value);
+          writeSession(projectKey, projectResult.value);
+          hasData = true;
+        }
+        if (versionsResult.status === "fulfilled" && versionsResult.value) {
+          const data = Array.isArray(versionsResult.value) ? versionsResult.value : [];
+          setVersions(data);
+          writeSession(versionsKey, data);
+          hasData = true;
+        }
+        if (!hasData) setError(true);
       })
       .finally(() => {
         if (!cancelled) setLoading(false);
@@ -110,7 +127,7 @@ export default function JavaDownloaderDownloads() {
     return () => {
       cancelled = true;
     };
-  }, [projectId, reload]);
+  }, [projectId, reload, projectKey, versionsKey]);
 
   useEffect(() => {
     setQuery("");
@@ -197,9 +214,11 @@ export default function JavaDownloaderDownloads() {
           <Icon name="chevron-left" size={16} /> Back to {project?.title ?? "project"}
         </Link>
 
-        {loading && <div className="jd-loading">Loading downloads…</div>}
+        {loading && !project && versions.length === 0 && (
+          <div className="jd-loading">Loading downloads…</div>
+        )}
 
-        {!loading && error && (
+        {!loading && error && !project && versions.length === 0 && (
           <div className="jd-empty">
             Couldn't load downloads.{" "}
             <button type="button" className="jd-retry" onClick={() => setReload((value) => value + 1)}>
@@ -208,7 +227,7 @@ export default function JavaDownloaderDownloads() {
           </div>
         )}
 
-        {!loading && !error && (
+        {(project || versions.length > 0) && (
           <>
             <header className="jd-download-head">
               <img
