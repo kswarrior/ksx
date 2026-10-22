@@ -216,9 +216,9 @@
   gap: 2px;
   padding: 6px 10px;
   border-radius: 10px;
-  background: rgba(5, 9, 16, 0.74);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.34);
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(36, 43, 52, 0.16);
+  color: var(--mp-text);
   text-align: center;
   white-space: nowrap;
   pointer-events: none;
@@ -536,7 +536,7 @@
 .mp-moon:focus-visible,
 .mp-zoom button:focus-visible,
 .mp-details-close:focus-visible {
-  outline: 2px solid #9fc1ff;
+  outline: 2px solid #4053d6;
   outline-offset: 4px;
 }
 
@@ -554,18 +554,34 @@
 
 /* search */
 .mp-search.ks-search {
-  border: 1px solid rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(36, 43, 52, 0.16);
   border-radius: 14px;
   background: var(--mp-panel-solid);
+  color: var(--mp-text);
   padding: 0 12px;
-  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.42);
 }
 
 .mp-search.ks-search:focus-within {
-  border-color: rgba(143, 182, 255, 0.55);
-  box-shadow:
-    0 0 0 3px rgba(90, 140, 255, 0.12),
-    0 10px 28px rgba(0, 0, 0, 0.42);
+  border-color: rgba(64, 83, 214, 0.55);
+  background: #fff;
+}
+
+.mp-search .ks-search-input::placeholder {
+  color: rgba(34, 40, 49, 0.45);
+}
+
+.mp-search .ks-search-icon {
+  color: rgba(34, 40, 49, 0.55);
+}
+
+.mp-search .ks-search-clear {
+  color: var(--mp-text);
+  border-color: rgba(36, 43, 52, 0.14);
+  background: rgba(36, 43, 52, 0.05);
+}
+
+.mp-search .ks-search-clear:hover {
+  background: rgba(36, 43, 52, 0.1);
 }
 
 .mp-search .ks-search-input {
@@ -595,7 +611,6 @@
   border: 1px solid var(--mp-border);
   border-radius: 14px;
   background: var(--mp-panel-solid);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
   overflow-y: auto;
   overscroll-behavior: contain;
 }
@@ -619,7 +634,7 @@
 }
 
 .mp-result:hover {
-  background: rgba(255, 255, 255, 0.07);
+  background: rgba(36, 43, 52, 0.06);
 }
 
 .mp-result-logo {
@@ -629,8 +644,8 @@
   display: grid;
   place-items: center;
   border-radius: 7px;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: rgba(36, 43, 52, 0.05);
+  border: 1px solid rgba(36, 43, 52, 0.1);
 }
 
 .mp-result-logo svg,
