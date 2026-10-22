@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Icon from "../components/Icon";
 import { Select, TextField } from "../components/ui";
 import "./CustomIP.css";
@@ -23,6 +23,7 @@ const PROVIDERS = [
 export default function CustomIP() {
   const [step, setStep] = useState(1);
   const [provider, setProvider] = useState<string>(PROVIDERS[0].value);
+  const [customIp, setCustomIp] = useState("");
   const [input, setInput] = useState("");
   const [result, setResult] = useState<IpInfo | null>(null);
   const [loading, setLoading] = useState(false);
@@ -113,6 +114,12 @@ export default function CustomIP() {
   }
 
   const activeProvider = PROVIDERS.find((p) => p.value === provider) ?? PROVIDERS[0];
+  const navigate = useNavigate();
+
+  function openStatics() {
+    const value = customIp.trim();
+    navigate(`/minecraft/server/statics.html${value ? `?ip=${encodeURIComponent(value)}` : ""}`);
+  }
 
   return (
     <div className={`customip-page${step === 2 ? " ci-fullscreen" : ""}`}>
@@ -189,12 +196,20 @@ export default function CustomIP() {
           <div className="ci-stage ci-anim" key="step-3">
             <div className="ci-card ci-done">
               <div className="ci-done-icon"><Icon name="sparkles" size={26} /></div>
-              <h3>3 Test Your Server</h3>
-              <p>Open the Minecraft Statics page to check live server stats.</p>
-              <div className="ci-done-actions">
-                <Link className="ci-btn" to="/minecraft/server/statics.html">
+              <h3>3 Test Your Custom IP</h3>
+              <p>If your server isn't running, start it first. Then open MC Statics and check the custom IP you created to make sure it works.</p>
+              <div className="ci-done-form">
+                <TextField
+                  className="ci-done-input"
+                  value={customIp}
+                  onChange={(e) => setCustomIp(e.target.value)}
+                  onKeyDown={(e) => e.key === "Enter" && openStatics()}
+                  placeholder="Your custom IP (e.g. myserver.shockbyte.me)"
+                  aria-label="Custom IP"
+                />
+                <button className="ci-btn" onClick={openStatics}>
                   <Icon name="globe" size={14} /> Open MC Statics
-                </Link>
+                </button>
               </div>
             </div>
           </div>
