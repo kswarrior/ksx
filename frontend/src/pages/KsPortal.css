@@ -777,6 +777,7 @@
 
   .portal-list-item,
   .portal-step,
+  .portal-shot,
   .portal-btn {
     transition: none !important;
   }
@@ -784,7 +785,8 @@
 
 @media (hover: none) and (pointer: coarse) {
   .portal-list-item:hover,
-  .portal-step:hover {
+  .portal-step:hover,
+  .portal-shot:hover {
     transform: none;
   }
 }

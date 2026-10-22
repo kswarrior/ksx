@@ -323,7 +323,7 @@ export default function AirlinkPanel() {
               <p className="setup-hint">
                 {isManual
                   ? "Start the panel and open it on port 3000. When the database has no users, register the first account — Airlink automatically makes it the administrator."
-                  : "The quick installer already created your admin account and disabled public registration. Sign in with the email, username and password you entered during installation."}
+                  : "If the installer completed, it already created your admin account and disabled public registration. Sign in with the email, username and password you entered during installation."}
               </p>
               <CodeBlock
                 label={isManual ? "Check the PM2 process" : "Check the panel service"}

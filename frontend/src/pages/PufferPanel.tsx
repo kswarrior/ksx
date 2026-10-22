@@ -262,7 +262,10 @@ export default function PufferPanel() {
                 <a href="https://docs.pufferpanel.com/en/3.x/guides/ssl-setup-nginx.html" target="_blank" rel="noreferrer">
                   official SSL guide
                 </a>
-                .
+                . On a host install, add top-level{" "}
+                <code>"web": {"{"} "host": "127.0.0.1:8080" {"}"}</code> to{" "}
+                <code>/etc/pufferpanel/config.json</code> and restart the panel so only the proxy
+                can reach it.
               </p>
             </Panel>
           )}
