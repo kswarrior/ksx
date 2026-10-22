@@ -10,6 +10,17 @@ directory = "frontend/dist"
 binding = "ASSETS"
 not_found_handling = "single-page-application"
 
+# D1 database for app downloads.
+# 1) npx wrangler d1 create ksx-db
+# 2) paste the printed database_id below
+# 3) npx wrangler d1 migrations apply ksx-db --local
+# 4) npx wrangler d1 migrations apply ksx-db --remote
+[[d1_databases]]
+binding = "DB"
+database_name = "ksx-db"
+database_id = "REPLACE_WITH_YOUR_D1_DATABASE_ID"
+migrations_dir = "backend/migrations"
+
 [vars]
 # FRONTEND_URL = "https://ksx.pages.dev"
 # Fix SPA fallback and remove _redirects
