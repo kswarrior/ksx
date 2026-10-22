@@ -35,10 +35,10 @@
   overflow: hidden;
   pointer-events: none;
   background:
-    radial-gradient(1200px 800px at 18% 8%, rgba(42, 76, 138, 0.24), transparent 62%),
-    radial-gradient(1000px 760px at 86% 88%, rgba(82, 55, 140, 0.2), transparent 64%),
-    radial-gradient(760px 520px at 56% 44%, rgba(30, 68, 102, 0.16), transparent 72%),
-    #05070d;
+    repeating-linear-gradient(115deg, rgba(255, 255, 255, 0.14) 0 1px, transparent 1px 9px),
+    radial-gradient(1200px 800px at 16% 6%, rgba(255, 255, 255, 0.72), transparent 62%),
+    radial-gradient(1000px 760px at 88% 94%, rgba(112, 122, 136, 0.22), transparent 64%),
+    linear-gradient(135deg, #e0e3e7 0%, #cbd0d6 46%, #bcc2ca 100%);
 }
 
 .mp-stars {
@@ -136,8 +136,8 @@
   position: absolute;
   inset: 0;
   background-image:
-    linear-gradient(rgba(126, 166, 228, 0.055) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(126, 166, 228, 0.055) 1px, transparent 1px);
+    linear-gradient(rgba(50, 60, 74, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(50, 60, 74, 0.055) 1px, transparent 1px);
   background-size: 80px 80px;
   -webkit-mask-image: radial-gradient(ellipse 58% 54% at 50% 50%, #000 24%, transparent 78%);
   mask-image: radial-gradient(ellipse 58% 54% at 50% 50%, #000 24%, transparent 78%);
@@ -706,7 +706,6 @@
   border: 1px solid var(--mp-border);
   border-radius: var(--mp-radius);
   background: var(--mp-panel);
-  box-shadow: var(--mp-shadow);
 }
 
 .mp-details-close {
