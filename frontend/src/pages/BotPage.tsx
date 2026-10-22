@@ -332,9 +332,13 @@ export default function BotPage() {
                   <TextField
                     value={folder}
                     onChange={(event) => setFolder(event.target.value)}
-                    placeholder="mc-bot"
+                    placeholder={DEFAULT_BOT_FOLDER}
                     spellCheck={false}
                   />
+                  <p className="bot-step-note">
+                    Folder names are created inside your home directory. The default is{" "}
+                    <code>{DEFAULT_BOT_FOLDER}</code>, so every command works from any directory.
+                  </p>
                 </div>
               </div>
 
@@ -363,8 +367,10 @@ export default function BotPage() {
               </div>
 
               <p className="bot-hint">
-                Run these commands in order on your host. The next step generates{" "}
-                <code>bot.js</code> and its save command.
+                Run these commands in order on your host. They always use your home folder, so you
+                can run them from any directory. If setup was interrupted, re-run the failed step —
+                the commands are safe to repeat. The next step generates <code>bot.js</code> and its
+                save command.
               </p>
 
               <div className="bot-steps">
