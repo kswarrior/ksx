@@ -288,6 +288,23 @@ export default function MapPage() {
   }, []);
 
   const layout = useMemo(() => buildLayout(data), [data]);
+
+  const allVisible = useMemo<VisibleKeys>(() => {
+    const stars = new Set<string>();
+    const planets = new Set<string>();
+    const moons = new Set<string>();
+    layout.stars.forEach((star) => {
+      stars.add(star.category.category);
+      star.planets.forEach((planet) => {
+        planets.add(planet.key);
+        planet.moons.forEach((moon) => moons.add(moon.key));
+      });
+    });
+    return { stars, planets, moons };
+  }, [layout]);
+
+  const shown = visible ?? allVisible;
+
   const filtered = useMemo(() => {
     if (!dq) return data;
     return data
@@ -391,26 +408,103 @@ export default function MapPage() {
     []
   );
 
-  const applyTf = useCallback((next: View, animate = false) => {
-    const world = worldRef.current;
-    if (!world) return;
-    tfRef.current = next;
-    world.style.transform = `translate3d(${next.x}px, ${next.y}px, 0) scale(${next.z})`;
-    world.style.setProperty("--mp-inv", String(1 / next.z));
-    const page = pageRef.current;
-    if (page) {
-      page.dataset.zoom =
-        next.z < 0.62 ? "far" : next.z >= 1.02 ? "near" : "mid";
-    }
-    if (animate) {
-      world.classList.add("is-animating");
-      window.clearTimeout(animTimer.current);
-      animTimer.current = window.setTimeout(
-        () => world.classList.remove("is-animating"),
-        480
-      );
-    }
-  }, []);
+  const syncVisible = useCallback(
+    (tf: View) => {
+      visibleTf.current = tf;
+      if (visRaf.current) return;
+      visRaf.current = window.requestAnimationFrame(() => {
+        visRaf.current = 0;
+        const vp = viewportRef.current;
+        if (!vp) return;
+        const t = visibleTf.current;
+        const rect = vp.getBoundingClientRect();
+        const z = Math.max(t.z, 0.001);
+        const pad = 140 / z;
+        const left = -t.x / z - pad;
+        const right = (rect.width - t.x) / z + pad;
+        const top = -t.y / z - pad;
+        const bottom = (rect.height - t.y) / z + pad;
+        const inView = (pos: Vec, radius: number) =>
+          pos.x + radius >= left &&
+          pos.x - radius <= right &&
+          pos.y + radius >= top &&
+          pos.y - radius <= bottom;
+
+        const stars = new Set<string>();
+        const planets = new Set<string>();
+        const moons = new Set<string>();
+
+        layout.stars.forEach((star) => {
+          if (inView(star.pos, STAR_R + 90 / z)) {
+            stars.add(star.category.category);
+          }
+          star.planets.forEach((planet) => {
+            if (inView(planet.pos, PLANET_R + 80 / z)) {
+              planets.add(planet.key);
+            }
+            planet.moons.forEach((moon) => {
+              if (inView(moon.pos, MOON_R + 64 / z)) {
+                moons.add(moon.key);
+              }
+            });
+          });
+        });
+
+        const prev = visibleRef.current;
+        if (
+          prev &&
+          sameKeys(prev.stars, stars) &&
+          sameKeys(prev.planets, planets) &&
+          sameKeys(prev.moons, moons)
+        ) {
+          return;
+        }
+        const next = { stars, planets, moons };
+        visibleRef.current = next;
+        startTransition(() => setVisible(next));
+      });
+    },
+    [layout]
+  );
+
+  const applyTf = useCallback(
+    (next: View, animate = false) => {
+      const world = worldRef.current;
+      if (!world) return;
+      tfRef.current = next;
+      world.style.transform = `translate3d(${next.x}px, ${next.y}px, 0) scale(${next.z})`;
+      world.style.setProperty("--mp-inv", String(1 / next.z));
+      const page = pageRef.current;
+      if (page) {
+        const bucket =
+          next.z < ZOOM_FAR ? "far" : next.z >= ZOOM_NEAR ? "near" : "mid";
+        if (zoomBucket.current !== bucket) {
+          zoomBucket.current = bucket;
+          page.dataset.zoom = bucket;
+        }
+      }
+      if (zoomReadout.current) {
+        zoomReadout.current.textContent = `${Math.round(next.z * 100)}%`;
+      }
+      syncVisible(next);
+      if (animate) {
+        world.classList.add("is-animating");
+        window.clearTimeout(animTimer.current);
+        animTimer.current = window.setTimeout(
+          () => world.classList.remove("is-animating"),
+          480
+        );
+      }
+    },
+    [syncVisible]
+  );
+
+  useEffect(
+    () => () => {
+      if (visRaf.current) cancelAnimationFrame(visRaf.current);
+    },
+    []
+  );
 
   const clampView = useCallback((view: View, rect: DOMRect): View => {
     const z = clamp(view.z, MIN_ZOOM, MAX_ZOOM);
@@ -599,16 +693,21 @@ export default function MapPage() {
     fitView(true);
   }, [fitView]);
 
-  const zoomBy = useCallback(
-    (factor: number) => {
+  const zoomAt = useCallback(
+    (
+      clientX: number,
+      clientY: number,
+      factor: number,
+      animate = true
+    ) => {
       const vp = viewportRef.current;
       if (!vp) return;
       const rect = vp.getBoundingClientRect();
       const cur = tfRef.current;
       const z = clamp(cur.z * factor, MIN_ZOOM, MAX_ZOOM);
       if (z === cur.z) return;
-      const cx = rect.width / 2;
-      const cy = rect.height / 2;
+      const cx = clientX - rect.left;
+      const cy = clientY - rect.top;
       interacted.current = true;
       applyTf(
         clampView(
@@ -619,26 +718,60 @@ export default function MapPage() {
           },
           rect
         ),
-        true
+        animate
       );
     },
     [applyTf, clampView]
   );
 
-  const onPointerDown = useCallback(
-    (e: React.PointerEvent<HTMLDivElement>) => {
-      if (e.pointerType === "mouse" && e.button !== 0) return;
-      const target = e.target as Element;
-      if (target.closest(".mp-node")) return;
+  const zoomBy = useCallback(
+    (factor: number) => {
       const vp = viewportRef.current;
       if (!vp) return;
       const rect = vp.getBoundingClientRect();
-      vp.setPointerCapture(e.pointerId);
+      zoomAt(rect.left + rect.width / 2, rect.top + rect.height / 2, factor);
+    },
+    [zoomAt]
+  );
+
+  const onDoubleClick = useCallback(
+    (e: React.MouseEvent<HTMLDivElement>) => {
+      if ((e.target as Element).closest(".mp-node")) return;
+      if (performance.now() < suppressClickUntil.current) return;
+      e.preventDefault();
+      zoomAt(e.clientX, e.clientY, 1.65);
+    },
+    [zoomAt]
+  );
+
+  const onClickCapture = useCallback(
+    (e: React.MouseEvent<HTMLDivElement>) => {
+      if (performance.now() < suppressClickUntil.current) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+    },
+    []
+  );
+
+  const onPointerDown = useCallback(
+    (e: React.PointerEvent<HTMLDivElement>) => {
+      if (e.pointerType === "mouse" && e.button !== 0) return;
+      const vp = viewportRef.current;
+      if (!vp) return;
+      const target = e.target as Element;
+      const onNode = Boolean(target.closest(".mp-node"));
+      const rect = vp.getBoundingClientRect();
       pointers.current.set(e.pointerId, { x: e.clientX, y: e.clientY });
       interacted.current = true;
-      viewportRef.current?.classList.add("is-dragging");
 
       if (pointers.current.size === 1) {
+        if (onNode) {
+          gesture.current = null;
+          return;
+        }
+        vp.setPointerCapture(e.pointerId);
+        vp.classList.add("is-dragging");
         gesture.current = {
           mode: "pan",
           startX: e.clientX,
@@ -648,6 +781,15 @@ export default function MapPage() {
           moved: false,
         };
       } else if (pointers.current.size === 2) {
+        suppressClickUntil.current = Number.POSITIVE_INFINITY;
+        pointers.current.forEach((_, id) => {
+          try {
+            vp.setPointerCapture(id);
+          } catch {
+            /* pointer may already be released */
+          }
+        });
+        vp.classList.add("is-dragging");
         const [a, b] = [...pointers.current.values()];
         gesture.current = {
           mode: "pinch",
@@ -720,10 +862,35 @@ export default function MapPage() {
 
   const endPointer = useCallback(
     (e: React.PointerEvent<HTMLDivElement>) => {
+      const g = gesture.current;
+      const wasTap = g?.mode === "pan" && !g.moved;
       pointers.current.delete(e.pointerId);
+
       if (pointers.current.size === 0) {
         gesture.current = null;
         viewportRef.current?.classList.remove("is-dragging");
+        if (suppressClickUntil.current === Number.POSITIVE_INFINITY) {
+          suppressClickUntil.current = performance.now() + 400;
+        }
+
+        if (
+          wasTap &&
+          e.pointerType !== "mouse" &&
+          !(e.target as Element).closest(".mp-node")
+        ) {
+          const now = performance.now();
+          const last = lastTap.current;
+          if (
+            last &&
+            now - last.time < 320 &&
+            Math.hypot(e.clientX - last.x, e.clientY - last.y) < 32
+          ) {
+            lastTap.current = null;
+            zoomAt(e.clientX, e.clientY, 1.75);
+          } else {
+            lastTap.current = { time: now, x: e.clientX, y: e.clientY };
+          }
+        }
       } else if (pointers.current.size === 1) {
         const [p] = [...pointers.current.values()];
         const vp = viewportRef.current;
@@ -739,7 +906,7 @@ export default function MapPage() {
           : null;
       }
     },
-    []
+    [zoomAt]
   );
 
   useEffect(() => {
