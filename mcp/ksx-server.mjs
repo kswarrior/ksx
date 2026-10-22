@@ -21,6 +21,7 @@ function loadData() {
     minecraft: loadJson("minecraft-hosting.json"),
     vps: loadJson("vps-hosting.json"),
     website: loadJson("website-hosting.json"),
+    database: loadJson("database-hosting.json"),
   };
 }
 
@@ -96,13 +97,13 @@ server.registerTool(
     annotations: { readOnlyHint: true },
   },
   async () => {
-    const { sitemap, minecraft, vps, website } = loadData();
+    const { sitemap, minecraft, vps, website, database } = loadData();
     const pages = flattenSitemap(sitemap);
     return text({
       name: "KSX",
       url: SITE_URL,
       description:
-        "KS Warrior hub for Minecraft tools, free Minecraft hosting, free VPS lists, free website hosting, panels, clients, and community links.",
+        "KS Warrior hub for Minecraft tools, free Minecraft hosting, free VPS lists, free website hosting, free database hosting, panels, clients, and community links.",
       stack: {
         backend: "Express (local) + Hono (Cloudflare Workers) + TypeScript",
         frontend: "Vite + React 18 + React Router + TypeScript",
@@ -115,6 +116,7 @@ server.registerTool(
         minecraftHosts: minecraft.length,
         vpsHosts: vps.length,
         websiteHosts: website.length,
+        databaseHosts: database.length,
       },
       categories: sitemap.map((c) => c.category),
       pages,
@@ -126,6 +128,7 @@ server.registerTool(
         "GET /api/hosting/minecraft?q=&uptime=&alwaysOn=&location=&ram=",
         "GET /api/hosting/vps?q=&type=&renew=&sudo=&alwaysOn=",
         "GET /api/hosting/website?q=&type=&customDomain=&ssl=&ads=&alwaysFree=",
+        "GET /api/hosting/database?q=&type=&cardRequired=&backups=&alwaysFree=&ssl=",
         "GET /api/social",
       ],
       dataFiles: [
@@ -133,6 +136,7 @@ server.registerTool(
         "backend/src/data/minecraft-hosting.json",
         "backend/src/data/vps-hosting.json",
         "backend/src/data/website-hosting.json",
+        "backend/src/data/database-hosting.json",
       ],
     });
   }
@@ -296,6 +300,41 @@ server.registerTool(
 );
 
 server.registerTool(
+  "ksx_find_database_hosting",
+  {
+    title: "Find free database hosting",
+    description:
+      "Find always-free managed databases, caches, vector stores, and serverless data platforms from the KSX list. Filter by name, type, card requirement, backups, SSL, and always-free status. Includes storage, traffic, database limits, region, verification requirements, and notes.",
+    inputSchema: {
+      query: z.string().optional().describe("Case-insensitive provider name filter"),
+      type: z.string().optional().describe("Case-insensitive type filter, e.g. PostgreSQL, SQLite, Vector"),
+      cardRequired: z.boolean().optional().describe("Whether a credit card is required"),
+      backups: z.boolean().optional().describe("Whether backups are included"),
+      ssl: z.boolean().optional().describe("Whether TLS is included"),
+      alwaysFree: z.boolean().optional().describe("Whether the free tier has no time limit"),
+    },
+    annotations: { readOnlyHint: true },
+  },
+  async ({ query, type, cardRequired, backups, ssl, alwaysFree }) => {
+    const { database } = loadData();
+    const data = database.filter((host) => {
+      if (query && !includes(host.name, query)) return false;
+      if (type && !includes(host.type, type)) return false;
+      if (cardRequired !== undefined && host.cardRequired !== cardRequired) return false;
+      if (backups !== undefined && (host.backups !== "None") !== backups) return false;
+      if (ssl !== undefined && host.ssl !== ssl) return false;
+      if (alwaysFree !== undefined && host.alwaysFree !== alwaysFree) return false;
+      return true;
+    });
+    return text({
+      count: data.length,
+      filters: { query, type, cardRequired, backups, ssl, alwaysFree },
+      data,
+    });
+  }
+);
+
+server.registerTool(
   "ksx_get_social_stats",
   {
     title: "Get KSX social stats",
@@ -431,6 +470,28 @@ server.registerResource(
           uri: uri.href,
           mimeType: "application/json",
           text: JSON.stringify(website, null, 2),
+        },
+      ],
+    };
+  }
+);
+
+server.registerResource(
+  "ksx-database-hosting",
+  "ksx://hosting/database",
+  {
+    title: "Free database hosting list",
+    description: "KSX free database hosting list with type, storage, traffic, database limits, region, backups, SSL, card requirement, verification, limits, and notes",
+    mimeType: "application/json",
+  },
+  async (uri) => {
+    const { database } = loadData();
+    return {
+      contents: [
+        {
+          uri: uri.href,
+          mimeType: "application/json",
+          text: JSON.stringify(database, null, 2),
         },
       ],
     };
