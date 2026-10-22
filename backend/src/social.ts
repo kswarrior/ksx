@@ -256,18 +256,49 @@ async function getDiscordStats(config: ResolvedConfig): Promise<SocialStat> {
   }
 }
 
-async function getInstagramStats(config: ResolvedConfig): Promise<SocialStat> {
-  const url = `https://instagram.com/${config.instagramUsername}`;
-  const label = "followers" as const;
-  const errors: string[] = [];
+function instagramStat(
+  config: ResolvedConfig,
+  count: number,
+  source: SocialStat["source"]
+): SocialStat {
+  return {
+    platform: "instagram",
+    url: `https://instagram.com/${config.instagramUsername}`,
+    handle: config.instagramUsername,
+    label: "followers",
+    count,
+    display: formatCount(count),
+    available: true,
+    source,
+    fetchedAt: new Date().toISOString(),
+  };
+}
 
-  if (config.instagramAccessToken && config.instagramUserId) {
+async function fetchInstagramGraphCount(config: ResolvedConfig): Promise<number> {
+  if (!config.instagramAccessToken) {
+    throw new Error("Instagram access token not configured");
+  }
+
+  const token = encodeURIComponent(config.instagramAccessToken);
+  const urls: string[] = [];
+
+  if (config.instagramUserId) {
+    urls.push(
+      `https://graph.facebook.com/v23.0/${encodeURIComponent(config.instagramUserId)}` +
+        `?fields=followers_count,username&access_token=${token}`
+    );
+  }
+  urls.push(
+    `https://graph.instagram.com/v23.0/me` +
+      `?fields=user_id,username,followers_count&access_token=${token}`
+  );
+
+  let lastError: unknown = null;
+  for (const graphUrl of urls) {
     try {
-      const graphUrl =
-        `https://graph.facebook.com/v23.0/${encodeURIComponent(config.instagramUserId)}` +
-        "?fields=followers_count,username" +
-        `&access_token=${encodeURIComponent(config.instagramAccessToken)}`;
-      const res = await fetchWithTimeout(graphUrl, { headers: { Accept: "application/json" } });
+      const res = await fetchWithTimeout(graphUrl, {
+        headers: { Accept: "application/json" },
+      });
       const json = (await res.json()) as {
         followers_count?: number;
         error?: { message?: string };
@@ -278,20 +309,67 @@ async function getInstagramStats(config: ResolvedConfig): Promise<SocialStat> {
       if (typeof json.followers_count !== "number") {
         throw new Error("Instagram follower count missing");
       }
-      return {
-        platform: "instagram",
-        url,
-        handle: config.instagramUsername,
-        label,
-        count: json.followers_count,
-        display: formatCount(json.followers_count),
-        available: true,
-        source: "instagram-graph",
-        fetchedAt: new Date().toISOString(),
-      };
+      return json.followers_count;
+    } catch (error) {
+      lastError = error;
+    }
+  }
+
+  throw lastError instanceof Error
+    ? lastError
+    : new Error("Instagram follower count unavailable");
+}
+
+async function getInstagramStats(config: ResolvedConfig): Promise<SocialStat> {
+  const url = `https://instagram.com/${config.instagramUsername}`;
+  const label = "followers" as const;
+  const errors: string[] = [];
+
+  if (config.instagramAccessToken) {
+    try {
+      const count = await fetchInstagramGraphCount(config);
+      return instagramStat(config, count, "instagram-graph");
     } catch (error) {
       errors.push(errorMessage(error));
     }
+  }
+
+  try {
+    const res = await fetchWithTimeout(
+      `https://www.instagram.com/${encodeURIComponent(config.instagramUsername)}/`,
+      {
+        headers: {
+          ...BROWSER_HEADERS,
+          Accept: "text/html,application/xhtml+xml,application/xml;q=0.9",
+        },
+      },
+      15_000
+    );
+    if (!res.ok) throw new Error(`Instagram page HTTP ${res.status}`);
+    const html = await res.text();
+    const patterns = [
+      /"edge_followed_by"\s*:\s*\{\s*"count"\s*:\s*(\d+)/,
+      /"follower_count"\s*:\s*(\d+)/,
+    ];
+    for (const pattern of patterns) {
+      const match = html.match(pattern);
+      if (match) {
+        const count = Number(match[1]);
+        if (Number.isFinite(count)) {
+          return instagramStat(config, count, "instagram-public");
+        }
+      }
+    }
+    const textMatch = html.match(/([\d.,]+)\s*([KMB])?\s+followers?/i);
+    const textCount = textMatch
+      ? parseCompactCount(`${textMatch[1]}${textMatch[2]?.toUpperCase() ?? ""}`)
+      : null;
+    if (textCount !== null) {
+      return instagramStat(config, textCount, "instagram-public");
+    }
+    throw new Error("Instagram profile requires login");
+  } catch (error) {
+    errors.push(errorMessage(error));
   }
 
   try {
@@ -302,6 +380,11 @@ async function getInstagramStats(config: ResolvedConfig): Promise<SocialStat> {
           ...BROWSER_HEADERS,
           Accept: "application/json",
           "x-ig-app-id": "936619743392459",
+          "x-ig-www-claim": "0",
+          "x-asbd-id": "129477",
+          "X-Requested-With": "XMLHttpRequest",
+          Origin: "https://www.instagram.com",
+          Referer: `https://www.instagram.com/${config.instagramUsername}/`,
         },
       }
     );
@@ -311,17 +394,7 @@ async function getInstagramStats(config: ResolvedConfig): Promise<SocialStat> {
     };
     const count = json.data?.user?.edge_followed_by?.count;
     if (typeof count === "number") {
-      return {
-        platform: "instagram",
-        url,
-        handle: config.instagramUsername,
-        label,
-        count,
-        display: formatCount(count),
-        available: true,
-        source: "instagram-public",
-        fetchedAt: new Date().toISOString(),
-      };
+      return instagramStat(config, count, "instagram-public");
     }
     errors.push(json.message ?? "Instagram public profile unavailable");
   } catch (error) {
@@ -331,26 +404,14 @@ async function getInstagramStats(config: ResolvedConfig): Promise<SocialStat> {
   try {
     const res = await fetchWithTimeout(
       `https://r.jina.ai/http://www.instagram.com/${encodeURIComponent(config.instagramUsername)}/`,
-      { headers: { Accept: "text/plain" } }
+      { headers: { Accept: "text/plain" } },
+      15_000
     );
     if (!res.ok) throw new Error(`Instagram reader HTTP ${res.status}`);
     const text = await res.text();
-    const match = text.match(/([\d.,]+)\s*([KMB])?\s+followers?/i);
-    const parsed = match
-      ? parseCompactCount(`${match[1]}${match[2]?.toUpperCase() ?? ""}`)
-      : null;
-    if (parsed === null) throw new Error("Instagram follower count not found");
-    return {
-      platform: "instagram",
-      url,
-      handle: config.instagramUsername,
-      label,
-      count: parsed,
-      display: formatCount(parsed),
-      available: true,
-      source: "instagram-public",
-      fetchedAt: new Date().toISOString(),
-    };
+    const parsed = parseFollowerText(text);
+    if (!parsed) throw new Error("Instagram follower count not found");
+    return instagramStat(config, parsed.count, "instagram-public");
   } catch (error) {
     errors.push(errorMessage(error));
   }
@@ -360,7 +421,9 @@ async function getInstagramStats(config: ResolvedConfig): Promise<SocialStat> {
     url,
     config.instagramUsername,
     label,
-    errors.join("; ") || "Instagram follower count unavailable"
+    config.instagramAccessToken
+      ? errors.join("; ") || "Instagram follower count unavailable"
+      : "Set INSTAGRAM_ACCESS_TOKEN to read live Instagram followers"
   );
 }
 
