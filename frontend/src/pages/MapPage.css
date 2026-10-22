@@ -99,11 +99,6 @@
   background: radial-gradient(ellipse at center, transparent 42%, rgba(0, 0, 0, 0.5) 100%);
 }
 
-@keyframes mpTwinkle {
-  from { opacity: 0.28; }
-  to { opacity: 0.48; }
-}
-
 /* ---------- VIEWPORT / WORLD ---------- */
 .mp-viewport {
   position: absolute;
@@ -1072,23 +1067,8 @@
 }
 
 /* ---------- LITE / PAUSED ---------- */
-.mp-lite .mp-stars.s2,
-.map-page.is-paused .mp-stars.s2,
-.mp-lite .mp-star::after,
-.map-page.is-paused .mp-star::after,
-.mp-lite .mp-core::before,
-.map-page.is-paused .mp-core::before {
-  animation: none !important;
-}
-
 .mp-lite .mp-world {
   will-change: auto;
-}
-
-.map-page.is-paused *,
-.map-page.is-paused *::before,
-.map-page.is-paused *::after {
-  animation-play-state: paused !important;
 }
 
 /* ---------- RESPONSIVE ---------- */
