@@ -16,23 +16,24 @@ export type ServerSoftwareId =
 export type ServerSoftware = {
   id: ServerSoftwareId;
   name: string;
+  logo: string;
   summary: string;
   supportsPre: boolean;
   installer: boolean;
 };
 
 export const SERVER_SOFTWARE: ServerSoftware[] = [
-  { id: "paper", name: "Paper", summary: "Plugin server with performance patches.", supportsPre: true, installer: false },
-  { id: "purpur", name: "Purpur", summary: "Paper fork with extra configuration options.", supportsPre: false, installer: false },
-  { id: "folia", name: "Folia", summary: "Multithreaded Paper fork for regionized servers.", supportsPre: true, installer: false },
-  { id: "spigot", name: "Spigot", summary: "Classic plugin server.", supportsPre: false, installer: false },
-  { id: "vanilla", name: "Vanilla", summary: "Official Mojang server.", supportsPre: true, installer: false },
-  { id: "fabric", name: "Fabric", summary: "Lightweight mod loader.", supportsPre: true, installer: false },
-  { id: "quilt", name: "Quilt", summary: "Fabric-compatible mod loader.", supportsPre: true, installer: true },
-  { id: "forge", name: "Forge", summary: "Modded server loader.", supportsPre: true, installer: true },
-  { id: "neoforge", name: "NeoForge", summary: "Modern Forge-compatible loader.", supportsPre: true, installer: true },
-  { id: "velocity", name: "Velocity", summary: "Modern proxy for multiple servers.", supportsPre: true, installer: false },
-  { id: "waterfall", name: "Waterfall", summary: "Legacy BungeeCord-compatible proxy.", supportsPre: false, installer: false },
+  { id: "paper", logo: "https://github.com/PaperMC.png?size=128", name: "Paper", summary: "Plugin server with performance patches.", supportsPre: true, installer: false },
+  { id: "purpur", logo: "https://github.com/PurpurMC.png?size=128", name: "Purpur", summary: "Paper fork with extra configuration options.", supportsPre: false, installer: false },
+  { id: "folia", logo: "https://github.com/PaperMC.png?size=128", name: "Folia", summary: "Multithreaded Paper fork for regionized servers.", supportsPre: true, installer: false },
+  { id: "spigot", logo: "https://www.google.com/s2/favicons?domain=spigotmc.org&sz=128", name: "Spigot", summary: "Classic plugin server.", supportsPre: false, installer: false },
+  { id: "vanilla", logo: "https://www.google.com/s2/favicons?domain=minecraft.net&sz=128", name: "Vanilla", summary: "Official Mojang server.", supportsPre: true, installer: false },
+  { id: "fabric", logo: "https://github.com/FabricMC.png?size=128", name: "Fabric", summary: "Lightweight mod loader.", supportsPre: true, installer: false },
+  { id: "quilt", logo: "https://github.com/QuiltMC.png?size=128", name: "Quilt", summary: "Fabric-compatible mod loader.", supportsPre: true, installer: true },
+  { id: "forge", logo: "https://github.com/MinecraftForge.png?size=128", name: "Forge", summary: "Modded server loader.", supportsPre: true, installer: true },
+  { id: "neoforge", logo: "https://github.com/neoforged.png?size=128", name: "NeoForge", summary: "Modern Forge-compatible loader.", supportsPre: true, installer: true },
+  { id: "velocity", logo: "https://github.com/PaperMC.png?size=128", name: "Velocity", summary: "Modern proxy for multiple servers.", supportsPre: true, installer: false },
+  { id: "waterfall", logo: "https://github.com/PaperMC.png?size=128", name: "Waterfall", summary: "Legacy BungeeCord-compatible proxy.", supportsPre: false, installer: false },
 ];
 
 export type VersionInfo = {

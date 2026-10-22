@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import BrandLogo from "../components/BrandLogo";
 import Icon from "../components/Icon";
 import { Select, type SelectOption } from "../components/ui";
 import {
@@ -235,9 +236,7 @@ export default function ServerJarDownloader() {
 
       <div className="jar-shell">
         <header className="jar-hero">
-          <span className="jar-hero-icon" aria-hidden>
-            <Icon name="package" size={22} />
-          </span>
+          <BrandLogo className="jar-hero-icon" src={software.logo} fallback="package" iconSize={22} />
           <div className="jar-hero-text">
             <h1>Server Jar Downloader</h1>
           </div>
@@ -305,7 +304,10 @@ export default function ServerJarDownloader() {
           </div>
 
           <div className="jar-panel-foot">
-            <span className="jar-software-summary">{software.summary}</span>
+            <span className="jar-software-summary">
+              <BrandLogo className="jar-software-logo" src={software.logo} fallback="package" iconSize={13} />
+              {software.summary}
+            </span>
             {software.supportsPre && (
               <label className="jar-toggle">
                 <input
@@ -339,9 +341,7 @@ export default function ServerJarDownloader() {
         {!loadingArtifact && !error && artifact && (
           <section className="jar-result">
             <div className="jar-result-head">
-              <span className="jar-file-icon" aria-hidden>
-                <Icon name={artifact.kind === "installer" ? "package" : "server"} size={20} />
-              </span>
+              <BrandLogo className="jar-file-icon" src={software.logo} fallback={artifact.kind === "installer" ? "package" : "server"} iconSize={20} />
               <div className="jar-file-text">
                 <h2>{artifact.fileName}</h2>
                 <p>
