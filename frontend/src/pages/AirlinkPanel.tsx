@@ -30,7 +30,7 @@ const PANEL_ONLY = `sudo bash <(curl -s https://raw.githubusercontent.com/airlin
 # Choose "Install Panel" from the menu`;
 
 const MANUAL_INSTALL = `sudo apt update
-sudo apt install -y curl git openssl unzip
+sudo apt install -y curl git openssl unzip build-essential python3
 curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash -
 sudo apt install -y nodejs
 curl -fsSL https://get.docker.com | sudo sh
@@ -74,7 +74,7 @@ const NODE_QUICK = `sudo bash <(curl -s https://raw.githubusercontent.com/airlin
 # Node key: YOUR_NODE_KEY`;
 
 const NODE_MANUAL = `sudo apt update
-sudo apt install -y curl git unzip
+sudo apt install -y curl git unzip build-essential python3
 curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash -
 sudo apt install -y nodejs
 curl -fsSL https://get.docker.com | sudo sh
