@@ -78,40 +78,6 @@ export default function KsPortal() {
   return (
     <div className="portal-page">
       <div className="portal-shell">
-        <header className="portal-appbar">
-          <div className="pa-left">
-            <img
-              className="pa-logo"
-              src="/portal.png"
-              alt="KS Portal logo"
-              width={48}
-              height={48}
-            />
-            <div className="pa-id">
-              <span className="pa-name">KS Portal</span>
-              <span className="pa-owner">
-                <b>KS Warrior</b> · Owner
-              </span>
-            </div>
-          </div>
-          <div className="pa-right">
-            <span className="pa-version" title="Latest version">
-              <i aria-hidden="true" />
-              <b>v{APP_VERSION}</b>
-            </span>
-            <a
-              className="pa-download"
-              href={DOWNLOAD_URL}
-              download
-              onClick={trackDownload}
-              title={`Download APK · v${APP_VERSION}`}
-              aria-label={`Download KS Portal ${APP_VERSION} APK`}
-            >
-              <Icon name="download" size={18} />
-            </a>
-          </div>
-        </header>
-
         <section className="portal-release" aria-labelledby="portal-release-title">
           <div className="portal-release-head">
             <span className="portal-release-icon">
@@ -122,10 +88,6 @@ export default function KsPortal() {
                 <span className="portal-kicker">
                   <i aria-hidden="true" />
                   Latest release
-                </span>
-                <span className="portal-state">
-                  <Icon name="rocket" size={11} />
-                  Coming soon
                 </span>
               </div>
               <h1 id="portal-release-title">
