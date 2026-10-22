@@ -6,11 +6,12 @@ import type {
 } from "./types.js";
 
 const CACHE_TTL_MS = 5 * 60 * 1000;
+const FAILURE_CACHE_TTL_MS = 60_000;
 const REQUEST_TIMEOUT_MS = 10_000;
 
 const DEFAULTS = {
   youtubeHandle: "ks_warrior_pro",
-  discordInvite: "2kAYnH655h",
+  discordInvite: "jDG7tJrHrt",
   instagramUsername: "ks_warrior_pro",
 };
 
