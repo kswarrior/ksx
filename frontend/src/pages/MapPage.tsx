@@ -498,14 +498,22 @@ export default function MapPage() {
   }, [applyTf, clampView, fitView, ready]);
 
   useEffect(() => {
-    const nav = navigator as Navigator & { deviceMemory?: number };
+    const nav = navigator as Navigator & {
+      deviceMemory?: number;
+      connection?: { saveData?: boolean };
+    };
     const detect = () => {
       const reduced = window.matchMedia(
         "(prefers-reduced-motion: reduce)"
       ).matches;
       const cores = nav.hardwareConcurrency ?? 8;
       const mem = nav.deviceMemory ?? 8;
-      setLite(reduced || cores <= 4 || mem <= 4);
+      setLite(
+        reduced ||
+          cores <= 4 ||
+          mem <= 4 ||
+          nav.connection?.saveData === true
+      );
     };
     detect();
     const mql = window.matchMedia("(prefers-reduced-motion: reduce)");

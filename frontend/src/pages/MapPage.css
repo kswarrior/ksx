@@ -116,7 +116,7 @@
   -webkit-user-select: none;
 }
 
-.map-page.is-dragging .mp-viewport {
+.mp-viewport.is-dragging {
   cursor: grabbing;
 }
 
@@ -639,12 +639,12 @@
   pointer-events: none;
 }
 
-.map-page.mp-zoom-far .mp-planet-label {
+.map-page[data-zoom="far"] .mp-planet-label {
   opacity: 0;
   visibility: hidden;
 }
 
-.map-page.mp-zoom-far .mp-star-label {
+.map-page[data-zoom="far"] .mp-star-label {
   padding: 5px 9px;
 }
 
