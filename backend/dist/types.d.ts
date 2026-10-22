@@ -2,6 +2,7 @@ export interface SitemapPage {
     name: string;
     url: string;
     logo: string;
+    soon?: boolean;
 }
 export interface SitemapSection {
     title: string;
