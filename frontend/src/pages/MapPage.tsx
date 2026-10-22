@@ -429,9 +429,9 @@ export default function MapPage() {
   const syncVisible = useCallback(
     (tf: View) => {
       visibleTf.current = tf;
-      if (visRaf.current) return;
-      visRaf.current = window.requestAnimationFrame(() => {
-        visRaf.current = 0;
+      window.clearTimeout(visTimer.current);
+      visTimer.current = window.setTimeout(() => {
+        visTimer.current = undefined;
         const vp = viewportRef.current;
         if (!vp) return;
         const t = visibleTf.current;
@@ -497,7 +497,7 @@ export default function MapPage() {
         const next = { stars, planets, moons };
         visibleRef.current = next;
         startTransition(() => setVisible(next));
-      });
+      }, 120);
     },
     [layout]
   );
