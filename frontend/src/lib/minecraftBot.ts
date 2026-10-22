@@ -486,7 +486,7 @@ function combatTick() {
 }
 
 async function autoEat() {
-  if (!CONFIG.autoEat || eating || !bot || !bot.entity) return
+  if (!CONFIG.autoEat || eating || busy || !bot || !bot.entity) return
   if (bot.food > CONFIG.eatThreshold) return
   const food = bot.inventory.items().find((item) => FOODS.has(item.name))
   if (!food) {
