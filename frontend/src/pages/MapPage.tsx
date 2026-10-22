@@ -273,6 +273,7 @@ export default function MapPage() {
   const visibleTf = useRef<View>({ x: 0, y: 0, z: 0.8 });
   const visibleRef = useRef<VisibleKeys | null>(null);
   const lastVisTf = useRef<View | null>(null);
+  const viewportSize = useRef({ w: 0, h: 0 });
   const invRef = useRef(1);
   const visRaf = useRef(0);
   const zoomBucket = useRef("");
@@ -443,13 +444,20 @@ export default function MapPage() {
           return;
         }
         lastVisTf.current = t;
-        const rect = vp.getBoundingClientRect();
+        let width = viewportSize.current.w;
+        let height = viewportSize.current.h;
+        if (!width || !height) {
+          const rect = vp.getBoundingClientRect();
+          width = rect.width;
+          height = rect.height;
+          viewportSize.current = { w: width, h: height };
+        }
         const z = Math.max(t.z, 0.001);
         const pad = 140 / z;
         const left = -t.x / z - pad;
-        const right = (rect.width - t.x) / z + pad;
+        const right = (width - t.x) / z + pad;
         const top = -t.y / z - pad;
-        const bottom = (rect.height - t.y) / z + pad;
+        const bottom = (height - t.y) / z + pad;
         const inView = (pos: Vec, radius: number) =>
           pos.x + radius >= left &&
           pos.x - radius <= right &&
