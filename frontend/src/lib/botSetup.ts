@@ -1,6 +1,11 @@
 export type BotEnvironmentId = "linux" | "powershell" | "cmd" | "termux" | "macos";
 export type BotProcessManagerId = "pm2" | "screen" | "foreground";
 
+export const DEFAULT_BOT_FOLDER = "~/ks-bot";
+
+const BOT_DEPENDENCIES = "mineflayer mineflayer-pathfinder vec3";
+const NPM_INSTALL_FLAGS = "--no-audit --no-fund";
+
 export type BotEnvironment = {
   id: BotEnvironmentId;
   label: string;
