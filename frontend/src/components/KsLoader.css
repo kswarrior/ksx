@@ -26,33 +26,34 @@
 }
 .ks-loader-lines i{
   display:block;
-  width:5px;
+  width:8px;
   height:44px;
-  border-radius:999px;
+  border-radius:2px;
   background:var(--ksl-ink);
   opacity:0.22;
-  animation:ksl-line-up 1.4s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+  will-change:transform, opacity;
+  animation:ksl-line-up 1.6s cubic-bezier(0.45, 0, 0.55, 1) infinite;
 }
 .ks-loader-lines i:nth-child(2){
   animation-name:ksl-line-update;
-  animation-delay:0.16s;
+  animation-delay:0.18s;
 }
 .ks-loader-lines i:nth-child(3){
   animation-name:ksl-line-down;
-  animation-delay:0.32s;
+  animation-delay:0.36s;
 }
 
 @keyframes ksl-line-up{
   0%, 100%{ transform:translateY(0); opacity:0.22; }
-  40%, 60%{ transform:translateY(-7px); opacity:1; }
+  50%{ transform:translateY(-8px); opacity:1; }
 }
 @keyframes ksl-line-down{
   0%, 100%{ transform:translateY(0); opacity:0.22; }
-  40%, 60%{ transform:translateY(7px); opacity:1; }
+  50%{ transform:translateY(8px); opacity:1; }
 }
 @keyframes ksl-line-update{
-  0%, 100%{ transform:scaleY(0.45); opacity:0.22; }
-  40%, 60%{ transform:scaleY(1); opacity:1; }
+  0%, 100%{ transform:scaleY(0.5); opacity:0.22; }
+  50%{ transform:scaleY(1); opacity:1; }
 }
 
 @media (prefers-reduced-motion: reduce){
