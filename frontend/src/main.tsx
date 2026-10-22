@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
 
-const MIN_BOOT_MS = 1500;
+const MIN_BOOT_MS = 5000;
 const root = ReactDOM.createRoot(document.getElementById("root")!);
 const renderApp = () =>
   root.render(
