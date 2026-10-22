@@ -1,5 +1,6 @@
 import {
   Fragment,
+  startTransition,
   useCallback,
   useEffect,
   useMemo,
@@ -49,6 +50,12 @@ type Layout = {
   bounds: { minX: number; maxX: number; minY: number; maxY: number };
 };
 
+type VisibleKeys = {
+  stars: Set<string>;
+  planets: Set<string>;
+  moons: Set<string>;
+};
+
 type Selection =
   | { type: "category"; category: string }
   | { type: "section"; category: string; section: string }
@@ -85,13 +92,22 @@ const MIN_ZOOM = 0.3;
 const MAX_ZOOM = 2.2;
 
 const PALETTE = [
-  { accent: "#0f8f72", rgb: "15, 143, 114" },
-  { accent: "#4f5fd6", rgb: "79, 95, 214" },
-  { accent: "#2f7fb5", rgb: "47, 127, 181" },
-  { accent: "#a34f9e", rgb: "163, 79, 158" },
-  { accent: "#b9841f", rgb: "185, 132, 31" },
-  { accent: "#b45353", rgb: "180, 83, 83" },
+  { accent: "#a7b5ab", rgb: "167, 181, 171" },
+  { accent: "#a3adbf", rgb: "163, 173, 191" },
+  { accent: "#9fb6c2", rgb: "159, 182, 194" },
+  { accent: "#b3a8c4", rgb: "179, 168, 196" },
+  { accent: "#c0b39b", rgb: "192, 179, 155" },
+  { accent: "#c2a8a8", rgb: "194, 168, 168" },
 ];
+
+const ZOOM_FAR = 0.62;
+const ZOOM_NEAR = 1.02;
+
+function sameKeys(a: Set<string>, b: Set<string>) {
+  if (a.size !== b.size) return false;
+  for (const key of a) if (!b.has(key)) return false;
+  return true;
+}
 
 function useDebounced<T>(value: T, ms = 140) {
   const [v, setV] = useState(value);
@@ -232,12 +248,20 @@ export default function MapPage() {
   const [selection, setSelection] = useState<Selection>(null);
   const [ready, setReady] = useState(false);
   const [lite, setLite] = useState(false);
+  const [visible, setVisible] = useState<VisibleKeys | null>(null);
 
   const pageRef = useRef<HTMLDivElement>(null);
   const viewportRef = useRef<HTMLDivElement>(null);
   const worldRef = useRef<HTMLDivElement>(null);
   const searchRef = useRef<HTMLInputElement>(null);
+  const zoomReadout = useRef<HTMLSpanElement>(null);
   const tfRef = useRef<View>({ x: 0, y: 0, z: 0.8 });
+  const visibleTf = useRef<View>({ x: 0, y: 0, z: 0.8 });
+  const visibleRef = useRef<VisibleKeys | null>(null);
+  const visRaf = useRef(0);
+  const zoomBucket = useRef("");
+  const suppressClickUntil = useRef(0);
+  const lastTap = useRef<{ time: number; x: number; y: number } | null>(null);
   const animTimer = useRef<number | undefined>(undefined);
   const interacted = useRef(false);
   const pointers = useRef(new Map<number, Vec>());
