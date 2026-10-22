@@ -225,6 +225,7 @@ type SpigotJar = {
 };
 
 const PAPER_FAMILY: ServerSoftwareId[] = ["paper", "folia", "velocity", "waterfall"];
+const PROXIES: ServerSoftwareId[] = ["velocity", "waterfall"];
 
 async function fillProject(software: ServerSoftwareId): Promise<FillVersionProject> {
   return getJson<FillVersionProject>(`${FILL_API}/projects/${software}`);

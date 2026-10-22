@@ -198,6 +198,7 @@ export default function ServerJarDownloader() {
 
   function changeSoftware(next: string) {
     setSoftwareId(next as ServerSoftwareId);
+    setVersion("");
     setBuild("");
     setLoader("");
     setBuilds([]);
