@@ -18,8 +18,8 @@
             "logo": "<svg viewBox=\"0 0 24 24\" width=\"24\" height=\"24\"><circle cx=\"12\" cy=\"12\" r=\"10\" fill=\"#ffffff\"/></svg>"
           },
           {
-            "name": "Skyport Panel",
-            "url": "/minecraft/make-hosting/skyport.html",
+            "name": "Airlink Panel",
+            "url": "/minecraft/make-hosting/airlink.html",
             "logo": "<svg viewBox=\"0 0 24 24\" width=\"24\" height=\"24\"><path d=\"M12 2l10 20H2z\" fill=\"#ffffff\"/></svg>"
           }
         ]

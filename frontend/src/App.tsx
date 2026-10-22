@@ -32,7 +32,7 @@ const NotFound = lazy(() => import("./pages/NotFound"));
 // re-export panel pages for lazy wrapper
 const PterodactylPage = lazy(() => import("./pages/PanelPages").then(m => ({ default: m.PterodactylPage })));
 const PufferPage = lazy(() => import("./pages/PanelPages").then(m => ({ default: m.PufferPage })));
-const SkyportPage = lazy(() => import("./pages/PanelPages").then(m => ({ default: m.SkyportPage })));
+const AirlinkPage = lazy(() => import("./pages/PanelPages").then(m => ({ default: m.AirlinkPage })));
 
 export default function App() {
   return (
@@ -59,8 +59,8 @@ export default function App() {
           <Route path="minecraft/make-hosting/pterodactyl.html" element={<PterodactylPage />} />
           <Route path="minecraft/make-hosting/puffer" element={<PufferPage />} />
           <Route path="minecraft/make-hosting/puffer.html" element={<PufferPage />} />
-          <Route path="minecraft/make-hosting/skyport" element={<SkyportPage />} />
-          <Route path="minecraft/make-hosting/skyport.html" element={<SkyportPage />} />
+          <Route path="minecraft/make-hosting/airlink" element={<AirlinkPage />} />
+          <Route path="minecraft/make-hosting/airlink.html" element={<AirlinkPage />} />
 
           <Route path="minecraft/java/launcher" element={<JavaLauncher />} />
           <Route path="minecraft/java/launcher.html" element={<JavaLauncher />} />

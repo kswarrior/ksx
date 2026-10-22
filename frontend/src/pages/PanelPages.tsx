@@ -100,15 +100,19 @@ export function PufferPage() {
   );
 }
 
-export function SkyportPage() {
+export function AirlinkPage() {
   return (
     <PanelPages
-      title="Skyport Panel"
-      kicker="MAKE HOSTING • SKYPORT"
+      title="Airlink Panel"
+      kicker="MAKE HOSTING • AIRLINK"
       icon="cloud"
-      subtitle="Next-gen Skyport — sleek UI, blazing fast, easy deploy."
+      subtitle="Modern game panel — sleek UI, blazing fast, easy deploy."
+      links={[
+        { label: "Official Website", href: "https://airlinklabs.xyz" },
+        { label: "Documentation", href: "https://airlinklabs.xyz/docs/quick-start/" },
+      ]}
       commands={[
-        { label: "Install Skyport", icon: "cloud", code: "bash <(curl -sSL https://ksweb.vercel.app/code/moh/skyport/install)" },
+        { label: "Install Airlink", icon: "cloud", code: "curl -fsSL https://airlinklabs.xyz/install | bash" },
       ]}
     />
   );

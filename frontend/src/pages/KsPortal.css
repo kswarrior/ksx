@@ -385,6 +385,8 @@
 .portal-panel {
   position: relative;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
   padding: 18px;
   border: 1px solid var(--p-border);
   border-radius: var(--p-radius);

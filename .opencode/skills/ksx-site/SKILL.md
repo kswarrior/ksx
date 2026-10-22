@@ -48,7 +48,7 @@ Run `npm run typecheck` before finishing changes. There is no test suite or lint
 | `/about` | About page (content in `frontend/src/pages/about.md`) |
 | `/minecraft/hosting/free[.html]` | Free Minecraft host list |
 | `/vps/hosting/list/free[.html]` | Free VPS list |
-| `/minecraft/make-hosting/{pterodactyl,puffer,skyport}[.html]` | Panel setup guides |
+| `/minecraft/make-hosting/{pterodactyl,puffer,airlink}[.html]` | Panel setup guides |
 | `/minecraft/java/{launcher,downloader}[.html]` | Java tools |
 | `/minecraft/bedrock/ks-client[.html]` | Bedrock client page |
 | `/minecraft/server/{statics,bot}[.html]` | Server stat lookup / bot setup |
