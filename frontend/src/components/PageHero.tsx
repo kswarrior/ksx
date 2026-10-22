@@ -1,8 +1,10 @@
+import BrandLogo from "./BrandLogo";
 import Icon, { type IconName } from "./Icon";
 import "./PageHero.css";
 
 type PageHeroProps = {
   icon: IconName;
+  logoSrc?: string;
   title: string;
   subtitle?: string;
   kicker?: string;
@@ -12,6 +14,7 @@ type PageHeroProps = {
 
 export default function PageHero({
   icon,
+  logoSrc,
   title,
   subtitle,
   kicker,

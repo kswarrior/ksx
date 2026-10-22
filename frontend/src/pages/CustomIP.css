@@ -45,6 +45,7 @@
 .ci-card-head{display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:10px;}
 .ci-card-head h3{margin-bottom:0;}
 .ci-head-actions{display:flex; align-items:center; gap:8px; margin-left:auto;}
+.ci-provider-logo{width:28px; height:28px; padding:4px; flex-shrink:0; border-radius:5px; background:linear-gradient(135deg,#ffffff,#f1f1f1); border:1px solid rgba(255,255,255,0.12); color:#111111;}
 .ci-provider.ks-select-trigger{min-width:170px; min-height:34px; padding:7px 11px; font-size:12px; background:rgba(11, 11, 11,0.9); border-color:var(--ci-border);}
 .ci-provider.ks-select-trigger:hover{background:rgba(23, 23, 23,0.98); border-color:rgba(255, 255, 255,0.2);}
 .ci-btn.ci-view{padding:7px 11px; font-size:12px; text-decoration:none; white-space:nowrap;}

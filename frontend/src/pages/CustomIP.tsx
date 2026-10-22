@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import BrandLogo from "../components/BrandLogo";
 import Icon from "../components/Icon";
 import PageHero from "../components/PageHero";
 import { Select, TextField } from "../components/ui";
@@ -15,10 +16,10 @@ type IpInfo = {
 };
 
 const PROVIDERS = [
-  { value: "shockbyte", label: "Shockbyte", url: "https://shockbyte.com/en-gb/subdomain-creator" },
-  { value: "hosthorde", label: "HostHorde", url: "https://hosthorde.net/create" },
-  { value: "endercloud", label: "Endercloud", url: "https://endercloud.in/subdomain" },
-  { value: "voltra", label: "Voltra", url: "https://voltra.gg/minecraft-subdomain" },
+  { value: "shockbyte", logo: "https://www.google.com/s2/favicons?domain=shockbyte.com&sz=128", label: "Shockbyte", url: "https://shockbyte.com/en-gb/subdomain-creator" },
+  { value: "hosthorde", logo: "https://www.google.com/s2/favicons?domain=hosthorde.net&sz=128", label: "HostHorde", url: "https://hosthorde.net/create" },
+  { value: "endercloud", logo: "https://www.google.com/s2/favicons?domain=endercloud.in&sz=128", label: "Endercloud", url: "https://endercloud.in/subdomain" },
+  { value: "voltra", logo: "https://www.google.com/s2/favicons?domain=voltra.gg&sz=128", label: "Voltra", url: "https://voltra.gg/minecraft-subdomain" },
 ] as const;
 
 export default function CustomIP() {
@@ -195,6 +196,7 @@ export default function CustomIP() {
               <div className="ci-card-head">
                 <h3><span>2</span> Create Free Subdomain</h3>
                 <div className="ci-head-actions">
+                  <BrandLogo className="ci-provider-logo" src={activeProvider.logo} fallback="globe" iconSize={14} />
                   {frameBlocked && (
                     <a className="ci-btn secondary ci-view" href={activeProvider.url} target="_blank" rel="noreferrer">
                       <Icon name="external-link" size={13} /> View
