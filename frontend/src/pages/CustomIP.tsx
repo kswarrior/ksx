@@ -190,11 +190,8 @@ export default function CustomIP() {
             <div className="ci-card ci-done">
               <div className="ci-done-icon"><Icon name="sparkles" size={26} /></div>
               <h3>3 Test Your Server</h3>
-              <p>Start your server for testing, or open the Minecraft Statics page to check live server stats.</p>
+              <p>Open the Minecraft Statics page to check live server stats.</p>
               <div className="ci-done-actions">
-                <Link className="ci-btn secondary" to="/minecraft/make-server/setup-server-in-vps.html">
-                  <Icon name="rocket" size={14} /> Start Server
-                </Link>
                 <Link className="ci-btn" to="/minecraft/server/statics.html">
                   <Icon name="globe" size={14} /> Open MC Statics
                 </Link>
