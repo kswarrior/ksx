@@ -120,6 +120,8 @@ app.get("/api/stats", (c) => {
       "GET /api/hosting/vps?q=&type=&renew=&sudo=&alwaysOn=",
       "GET /api/hosting/website?q=&type=&customDomain=&ssl=&ads=&alwaysFree=",
       "GET /api/hosting/database?q=&type=&cardRequired=&backups=&alwaysFree=&ssl=",
+      "GET /api/apps/:slug/stats",
+      "POST /api/apps/:slug/download",
       "GET /api/social",
     ],
   });
