@@ -499,7 +499,11 @@ export default function MapPage() {
       if (!world) return;
       tfRef.current = next;
       world.style.transform = `translate3d(${next.x}px, ${next.y}px, 0) scale(${next.z})`;
-      world.style.setProperty("--mp-inv", String(1 / next.z));
+      const inv = 1 / next.z;
+      if (Math.abs(inv - invRef.current) > 0.0001) {
+        invRef.current = inv;
+        world.style.setProperty("--mp-inv", String(inv));
+      }
       const page = pageRef.current;
       if (page) {
         const bucket =
@@ -510,7 +514,10 @@ export default function MapPage() {
         }
       }
       if (zoomReadout.current) {
-        zoomReadout.current.textContent = `${Math.round(next.z * 100)}%`;
+        const label = `${Math.round(next.z * 100)}%`;
+        if (zoomReadout.current.textContent !== label) {
+          zoomReadout.current.textContent = label;
+        }
       }
       syncVisible(next);
       if (animate) {
@@ -1053,6 +1060,64 @@ export default function MapPage() {
           className={`mp-world${ready ? " is-ready" : ""}`}
           style={{ ["--mp-inv" as string]: "1" } as React.CSSProperties}
         >
+          <svg
+            className="mp-edges"
+            viewBox={`0 0 ${CANVAS.w} ${CANVAS.h}`}
+            aria-hidden="true"
+          >
+            {layout.stars.map((star) => {
+              const catKey = star.category.category;
+              if (!shown.stars.has(catKey)) return null;
+              const coreEdge = edgeLine(CORE, star.pos, 66, STAR_R);
+              return (
+                <Fragment key={catKey}>
+                  <line
+                    className="mp-edge mp-edge-core"
+                    vectorEffect="non-scaling-stroke"
+                    {...coreEdge}
+                  />
+                  {star.planets.map((planet) => {
+                    if (!shown.planets.has(planet.key)) return null;
+                    const starEdge = edgeLine(
+                      star.pos,
+                      planet.pos,
+                      STAR_R,
+                      PLANET_R
+                    );
+                    return (
+                      <Fragment key={planet.key}>
+                        <line
+                          className="mp-edge"
+                          vectorEffect="non-scaling-stroke"
+                          stroke={`rgba(${star.rgb}, 0.28)`}
+                          {...starEdge}
+                        />
+                        {planet.moons.map((moon) => {
+                          if (!shown.moons.has(moon.key)) return null;
+                          const moonEdge = edgeLine(
+                            planet.pos,
+                            moon.pos,
+                            PLANET_R,
+                            MOON_R
+                          );
+                          return (
+                            <line
+                              key={moon.key}
+                              className="mp-edge mp-edge-moon"
+                              vectorEffect="non-scaling-stroke"
+                              stroke={`rgba(${star.rgb}, 0.2)`}
+                              {...moonEdge}
+                            />
+                          );
+                        })}
+                      </Fragment>
+                    );
+                  })}
+                </Fragment>
+              );
+            })}
+          </svg>
+
           <div
             className="mp-node mp-core-node"
             style={{ left: CORE.x, top: CORE.y }}
