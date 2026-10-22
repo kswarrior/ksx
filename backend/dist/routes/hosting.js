@@ -4,16 +4,19 @@ import vpsData from "../data/vps-hosting.json" with { type: "json" };
 const router = Router();
 const mcHosting = mcData;
 const vpsHosting = vpsData;
-// Minecraft free hosting with filters: ?q=&uptime=&location=&ram=
+// Minecraft free hosting with filters: ?q=&uptime=&alwaysOn=&location=&ram=
 router.get("/minecraft", (req, res) => {
     const q = String(req.query.q ?? "").toLowerCase();
     const uptime = String(req.query.uptime ?? "");
+    const alwaysOn = req.query.alwaysOn;
     const location = String(req.query.location ?? "").toLowerCase();
     const ram = req.query.ram ? Number(req.query.ram) : 0;
     const filtered = mcHosting.filter((h) => {
         if (q && !String(h.name).toLowerCase().includes(q))
             return false;
         if (uptime && h.uptime !== uptime)
+            return false;
+        if (alwaysOn !== undefined && alwaysOn !== "" && h.alwaysOn !== (alwaysOn === "true"))
             return false;
         if (location) {
             if (!String(h.location).toLowerCase().includes(location))

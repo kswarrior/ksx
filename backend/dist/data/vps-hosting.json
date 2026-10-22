@@ -124,7 +124,7 @@
         "type": "Notebook",
         "ram": 12,
         "cpu": "~2 vCPU",
-        "disk": "~100GB",
+        "disk": "100GB",
         "renew": true,
         "sudo": false,
         "alwaysOn": false,

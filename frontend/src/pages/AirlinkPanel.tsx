@@ -69,7 +69,7 @@ sudo systemctl enable --now airlink-panel`;
 
 const NODE_QUICK = `sudo bash <(curl -s https://raw.githubusercontent.com/airlinklabs/panel/refs/heads/main/installer.sh)
 # Choose "Install Daemon" from the menu
-# Panel address: http://PANEL_IP:3000
+# Panel host/IP: PANEL_IP (no http:// or port)
 # Daemon port: 3002
 # Node key: YOUR_NODE_KEY`;
 
@@ -84,7 +84,7 @@ sudo git clone https://github.com/airlinklabs/daemon.git /etc/daemon
 cd /etc/daemon
 
 sudo tee .env > /dev/null << 'EOF'
-remote=http://PANEL_IP:3000
+remote=PANEL_IP
 key=YOUR_NODE_KEY
 port=3002
 DEBUG=false
@@ -377,6 +377,12 @@ export default function AirlinkPanel() {
               ) : (
                 <CodeBlock label="Daemon-only install" code={NODE_QUICK} />
               )}
+              <p className="setup-note">
+                In the daemon <code>.env</code>, <code>remote</code> is a hostname or IP — do not
+                include <code>http://</code> or <code>:3000</code>. The daemon reports it as the
+                SFTP host; on a split setup, use the node's public IP with the port shown in the
+                SFTP dialog.
+              </p>
               <ol className="guide-list guide-list-numbered">
                 <li>Create the node in <strong>Admin → Nodes</strong> with its address, port and resource limits.</li>
                 <li>Install the daemon on the node using the same key.</li>
