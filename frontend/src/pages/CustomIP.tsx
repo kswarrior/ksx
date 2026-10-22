@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Icon from "../components/Icon";
-import { TextField } from "../components/ui";
+import { Select, TextField } from "../components/ui";
 import "./CustomIP.css";
 
 type IpInfo = {
@@ -11,6 +11,13 @@ type IpInfo = {
   org?: string;
   timezone?: string;
 };
+
+const PROVIDERS = [
+  { value: "shockbyte", label: "Shockbyte", url: "https://shockbyte.com/en-gb/subdomain-creator" },
+  { value: "hosthorde", label: "HostHorde", url: "https://hosthorde.net/create" },
+  { value: "endercloud", label: "Endercloud", url: "https://endercloud.in/subdomain" },
+  { value: "voltra", label: "Voltra", url: "https://voltra.gg/minecraft-subdomain" },
+] as const;
 
 export default function CustomIP() {
   const [step, setStep] = useState(1);
