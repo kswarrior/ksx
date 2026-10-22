@@ -107,8 +107,8 @@ function clamp(value: number, min: number, max: number) {
   return Math.min(max, Math.max(min, value));
 }
 
-function plural(count: number, word: string) {
-  return `${count} ${word}${count === 1 ? "" : "s"}`;
+function plural(count: number, singular: string, pluralForm?: string) {
+  return `${count} ${count === 1 ? singular : pluralForm ?? `${singular}s`}`;
 }
 
 function categoryAngles(count: number): number[] {
