@@ -167,8 +167,12 @@ sudo ufw allow 2022/tcp
 sudo ufw allow 25565/tcp
 sudo ufw reload`;
 
+function normalizeHost(value: string): string {
+  return value.trim().replace(/^https?:\/\//i, "").replace(/\/.*$/, "");
+}
+
 function buildNginxConfig(domain: string): string {
-  const host = domain.trim() || "panel.example.com";
+  const host = normalizeHost(domain) || "panel.example.com";
   return `server {
     listen 80;
     listen [::]:80;
@@ -229,7 +233,7 @@ export default function PterodactylPanel() {
 
   const current = STEPS[stepIndex] ?? STEPS[0];
   const number = stepIndex + 1;
-  const host = domain.trim() || "panel.example.com";
+  const host = normalizeHost(domain) || "panel.example.com";
   const panelUrl = `https://${host}`;
   const osLabel = OS_LABELS[os];
   const isUbuntu24 = os === "ubuntu24";
