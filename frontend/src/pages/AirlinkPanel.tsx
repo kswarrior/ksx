@@ -23,10 +23,12 @@ const STEPS: { id: string; label: string; icon: IconName }[] = [
   { id: "connect", label: "Connect", icon: "globe" },
 ];
 
-const QUICK_INSTALL = `sudo bash <(curl -s https://raw.githubusercontent.com/airlinklabs/panel/refs/heads/main/installer.sh)
+const QUICK_INSTALL = `curl -fsSL -o /tmp/airlink-installer.sh https://raw.githubusercontent.com/airlinklabs/panel/refs/heads/main/installer.sh
+sudo bash /tmp/airlink-installer.sh
 # Choose "Install Both" from the menu`;
 
-const PANEL_ONLY = `sudo bash <(curl -s https://raw.githubusercontent.com/airlinklabs/panel/refs/heads/main/installer.sh)
+const PANEL_ONLY = `curl -fsSL -o /tmp/airlink-installer.sh https://raw.githubusercontent.com/airlinklabs/panel/refs/heads/main/installer.sh
+sudo bash /tmp/airlink-installer.sh
 # Choose "Install Panel" from the menu`;
 
 const MANUAL_INSTALL = `sudo apt update
@@ -67,7 +69,8 @@ pm2 startup`;
 const QUICK_SERVICE = `sudo systemctl status airlink-panel --no-pager
 sudo systemctl enable --now airlink-panel`;
 
-const NODE_QUICK = `sudo bash <(curl -s https://raw.githubusercontent.com/airlinklabs/panel/refs/heads/main/installer.sh)
+const NODE_QUICK = `curl -fsSL -o /tmp/airlink-installer.sh https://raw.githubusercontent.com/airlinklabs/panel/refs/heads/main/installer.sh
+sudo bash /tmp/airlink-installer.sh
 # Choose "Install Daemon" from the menu
 # Panel host/IP: PANEL_IP (no http:// or port)
 # Daemon port: 3002
@@ -348,8 +351,8 @@ export default function AirlinkPanel() {
               <CodeBlock label="Open firewall ports" code={FIREWALL} />
               <p className="setup-note">
                 If you use a domain or reverse proxy, set <code>URL</code> in <code>.env</code> to
-                the public address and enable <strong>Behind Reverse Proxy</strong> in Admin →
-                Settings.
+                the public HTTPS address, switch <code>NODE_ENV</code> to <code>production</code>{" "}
+                and enable <strong>Behind Reverse Proxy</strong> in Admin → Settings.
               </p>
             </Panel>
           )}
