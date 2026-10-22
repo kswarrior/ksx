@@ -106,6 +106,14 @@ function parseSubscriberText(raw: string): { count: number; display: string } | 
   return count === null ? null : { count, display };
 }
 
+function parseFollowerText(raw: string): { count: number; display: string } | null {
+  const match = raw.match(/([\d.,]+)\s*([KMB])?\s+followers?/i);
+  if (!match) return null;
+  const display = `${match[1]}${match[2]?.toUpperCase() ?? ""}`;
+  const count = parseCompactCount(display);
+  return count === null ? null : { count, display };
+}
+
 function formatCount(count: number): string {
   return new Intl.NumberFormat("en-US").format(count);
 }
