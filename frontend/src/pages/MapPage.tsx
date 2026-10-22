@@ -1182,113 +1182,15 @@ export default function MapPage() {
       </div>
 
       <div className="mp-hud mp-search-hud" role="search">
-        <div className="mp-hud-head">
-          <div className="mp-brand">
-            <span className="mp-brand-mark" aria-hidden>
-              KS
-            </span>
-            <span className="mp-brand-name">
-              <strong>KS Universe</strong>
-              <em>Sites map</em>
-            </span>
-          </div>
-          <button
-            type="button"
-            className="mp-hud-btn"
-            onClick={() => setDirectoryOpen(true)}
-            aria-label="Open sitemap directory"
-            title="Sitemap directory"
-          >
-            <svg viewBox="0 0 24 24" aria-hidden>
-              <path d="M8 6h13M8 12h13M8 18h13" />
-              <circle cx="4" cy="6" r="1.2" />
-              <circle cx="4" cy="12" r="1.2" />
-              <circle cx="4" cy="18" r="1.2" />
-            </svg>
-            <span>Directory</span>
-          </button>
-        </div>
-
         <SearchField
           ref={searchRef}
           className="mp-search"
           value={query}
           onValueChange={setQuery}
           onKeyDown={onSearchKeyDown}
-          placeholder="Search stars, planets, moons…"
+          placeholder="Search pages…"
           ariaLabel="Search the KS map"
         />
-
-        <div className="mp-search-meta">
-          <span>
-            {filterActive ? (
-              <>
-                <strong>{filteredCount}</strong> of{" "}
-                <strong>{totalPages}</strong> pages
-              </>
-            ) : (
-              <>
-                <strong>{totalPages}</strong> pages ·{" "}
-                <strong>{totalSections}</strong>{" "}
-                {totalSections === 1 ? "planet" : "planets"}
-              </>
-            )}
-          </span>
-          {filterActive && (
-            <button type="button" className="mp-clear" onClick={clearFilters}>
-              Clear filters
-            </button>
-          )}
-        </div>
-
-        <div className="mp-chips" role="tablist" aria-label="Map categories">
-          <button
-            type="button"
-            className={`mp-chip${activeCat === "All" ? " active" : ""}`}
-            role="tab"
-            aria-selected={activeCat === "All"}
-            onClick={() => {
-              setActiveCat("All");
-              setSelection(null);
-            }}
-          >
-            All <em>{totalPages}</em>
-          </button>
-          {data.map((cat, index) => {
-            const count = cat.sections.reduce(
-              (a, s) => a + s.pages.length,
-              0
-            );
-            const palette = PALETTE[index % PALETTE.length];
-            return (
-              <button
-                key={cat.category}
-                type="button"
-                className={`mp-chip${
-                  activeCat === cat.category ? " active" : ""
-                }`}
-                role="tab"
-                aria-selected={activeCat === cat.category}
-                onClick={() => {
-                  setActiveCat(cat.category);
-                  setSelection(null);
-                }}
-                style={
-                  {
-                    "--accent": palette.accent,
-                    "--rgb": palette.rgb,
-                  } as React.CSSProperties
-                }
-              >
-                <span
-                  className="mp-chip-icon"
-                  dangerouslySetInnerHTML={{ __html: cat.icon }}
-                />
-                {cat.category} <em>{count}</em>
-              </button>
-            );
-          })}
-        </div>
 
         {query.trim() && (
           <div className="mp-results">
