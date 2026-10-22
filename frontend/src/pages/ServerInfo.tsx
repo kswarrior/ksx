@@ -206,6 +206,8 @@ export default function ServerInfo() {
   async function fetchInfo(target?: string) {
     const value = (target ?? ip).trim();
     if (!value) {
+      requestId.current += 1;
+      setLoading(false);
       setError("Please enter a server IP.");
       setData(null);
       return;
