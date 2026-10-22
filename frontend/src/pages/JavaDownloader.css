@@ -32,7 +32,7 @@
 .jd-btn{padding:11px 18px; background:#ffffff; color:#000000; border:none; border-radius:6px; font-weight:800; font-size:13px; cursor:pointer; transition:transform .15s, background .2s; display:inline-flex; align-items:center; gap:8px;}
 .jd-btn:hover{background:#f0f0f0; transform:translateY(-1px);} .jd-btn:active{transform:scale(0.97);}
 .jd-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:14px; margin-top:16px;}
-.jd-card{background:var(--jd-card); border:1px solid var(--jd-border); border-radius:5px; padding:16px; display:flex; gap:14px; cursor:pointer; contain:layout paint style; content-visibility:auto; contain-intrinsic-size:140px; transition:border-color .2s, box-shadow .2s, transform .18s, background .2s;}
+.jd-card{background:var(--jd-card); border:1px solid var(--jd-border); border-radius:5px; padding:16px; display:flex; gap:14px; cursor:pointer; color:inherit; text-decoration:none; contain:layout paint style; content-visibility:auto; contain-intrinsic-size:140px; transition:border-color .2s, box-shadow .2s, transform .18s, background .2s;}
 .jd-card:hover{border-color:var(--jd-border2); box-shadow:0 14px 36px rgba(0, 0, 0,0.38); transform:translateY(-2px); background:var(--jd-card2);}
 .jd-icon{width:48px; height:48px; border-radius:5px; object-fit:cover; border:1px solid var(--jd-border); flex-shrink:0; background:rgba(255, 255, 255,0.04);}
 .jd-info{flex:1; min-width:0; display:flex; flex-direction:column; gap:6px;}

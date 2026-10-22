@@ -14,6 +14,7 @@ const MinecraftHosting = lazy(() => import("./pages/MinecraftHosting"));
 const VpsHosting = lazy(() => import("./pages/VpsHosting"));
 const JavaLauncher = lazy(() => import("./pages/JavaLauncher"));
 const JavaDownloader = lazy(() => import("./pages/JavaDownloader"));
+const JavaDownloaderProject = lazy(() => import("./pages/JavaDownloaderProject"));
 const KsClient = lazy(() => import("./pages/KsClient"));
 const ServerInfo = lazy(() => import("./pages/ServerInfo"));
 const BotPage = lazy(() => import("./pages/BotPage"));
@@ -58,6 +59,7 @@ export default function App() {
           <Route path="minecraft/java/launcher.html" element={<JavaLauncher />} />
           <Route path="minecraft/java/downloader" element={<JavaDownloader />} />
           <Route path="minecraft/java/downloader.html" element={<JavaDownloader />} />
+          <Route path="minecraft/java/downloader/:projectId" element={<JavaDownloaderProject />} />
           <Route path="minecraft/bedrock/ks-client" element={<KsClient />} />
           <Route path="minecraft/bedrock/ks-client.html" element={<KsClient />} />
           <Route path="minecraft/server/statics" element={<ServerInfo />} />
