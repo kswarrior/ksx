@@ -384,6 +384,12 @@ export default function PterodactylPanel() {
                 Reinstall or update an existing Panel? Do not create a new database or overwrite{" "}
                 <code>.env</code> — follow the upgrade guide instead.
               </p>
+              <p className="setup-note">
+                This guide follows the Pterodactyl 2.0 beta docs and pins{" "}
+                <code>{PANEL_VERSION}</code>. The latest stable release is still the 1.x line
+                (<code>v1.15.2</code>); use the stable docs if you need a production release rather
+                than a beta.
+              </p>
             </Panel>
           )}
 
@@ -401,6 +407,11 @@ export default function PterodactylPanel() {
                 admin account.
               </p>
               <CodeBlock label="Configure and install" code={CONFIGURE_PANEL} />
+              <p className="setup-note">
+                During <code>p:environment:setup</code>, choose <strong>Redis</strong> for cache,
+                session and queue storage. Set <code>APP_URL</code> to the final public URL — use{" "}
+                <code>https://{host}</code> after HTTPS is enabled.
+              </p>
               <p className="setup-note">
                 <strong>Back up <code>APP_KEY</code>.</strong> It encrypts API keys, node tokens and
                 2FA secrets. If you lose it, that data cannot be recovered, even from a database

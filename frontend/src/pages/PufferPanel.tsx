@@ -81,7 +81,12 @@ export default function PufferPanel() {
 
   const current = STEPS[stepIndex] ?? STEPS[0];
   const number = stepIndex + 1;
-  const panelUrl = `http://${serverIp.trim() || "YOUR_SERVER_IP"}:8080`;
+  const panelInput = serverIp.trim();
+  const panelUrl = panelInput
+    ? /^https?:\/\//i.test(panelInput)
+      ? panelInput.replace(/\/+$/, "")
+      : `http://${panelInput}:8080`
+    : "http://YOUR_SERVER_IP:8080";
   const isDocker = method === "docker";
 
   function goToStep(next: number) {
@@ -236,12 +241,12 @@ export default function PufferPanel() {
               />
               <div className="setup-fields">
                 <div className="setup-field wide">
-                  <label htmlFor="puffer-server-ip">Server IP or hostname</label>
+                  <label htmlFor="puffer-server-ip">Panel IP or full URL</label>
                   <TextField
                     id="puffer-server-ip"
                     value={serverIp}
                     onChange={(event) => setServerIp(event.target.value)}
-                    placeholder="203.0.113.10 or panel.example.com"
+                    placeholder="203.0.113.10 or https://panel.example.com"
                     spellCheck={false}
                   />
                 </div>
