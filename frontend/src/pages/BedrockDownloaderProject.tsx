@@ -130,7 +130,6 @@ export default function BedrockDownloaderProject() {
     });
   }, [project?.downloads]);
 
-  const mcpedlUrl = project ? `https://mcpedl.com/${project.slug}/` : "";
   const typeLabel = project ? bedrockTypeLabels[String(project.type_id)] ?? "Bedrock" : "";
 
   return (
@@ -183,9 +182,6 @@ export default function BedrockDownloaderProject() {
                   {project.username && <span>By {project.username}</span>}
                 </div>
                 <div className="jd-detail-actions">
-                  <a className="jd-btn" href={mcpedlUrl} target="_blank" rel="noreferrer">
-                    <Icon name="external-link" size={15} /> View on MCPEDL
-                  </a>
                   {project.cf_link && (
                     <a className="jd-btn jd-btn-ghost" href={project.cf_link} target="_blank" rel="noreferrer">CurseForge</a>
                   )}

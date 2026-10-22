@@ -56,13 +56,20 @@ export default function JavaDownloaderProject() {
     setLoading(true);
     setError(false);
     setProject(null);
-    fetch(`${API}/project/${projectId}`)
-      .then((r) => {
+    setVersions([]);
+    Promise.all([
+      fetch(`${API}/project/${projectId}`).then((r) => {
         if (!r.ok) throw new Error(`HTTP ${r.status}`);
-        return r.json();
-      })
-      .then((data: ProjectDetail) => {
-        if (!cancelled) setProject(data);
+        return r.json() as Promise<ProjectDetail>;
+      }),
+      fetch(`${API}/project/${projectId}/version`)
+        .then((r) => (r.ok ? (r.json() as Promise<ModrinthVersion[]>) : []))
+        .catch(() => [] as ModrinthVersion[]),
+    ])
+      .then(([projectData, versionData]) => {
+        if (cancelled) return;
+        setProject(projectData);
+        setVersions(Array.isArray(versionData) ? versionData : []);
       })
       .catch(() => {
         if (!cancelled) setError(true);
@@ -88,7 +95,17 @@ export default function JavaDownloaderProject() {
     };
   }, [project]);
 
-  const modrinthUrl = project ? `https://modrinth.com/${project.project_type}/${project.slug}` : "";
+  const downloads = useMemo(() => {
+    const seen = new Set<string>();
+    const list: { url: string; filename: string }[] = [];
+    for (const version of versions.slice(0, 12)) {
+      const file = version.files.find((f) => f.primary) ?? version.files[0];
+      if (!file || seen.has(file.url)) continue;
+      seen.add(file.url);
+      list.push({ url: file.url, filename: file.filename });
+    }
+    return list;
+  }, [versions]);
 
   return (
     <div className="jd-page">
@@ -137,9 +154,6 @@ export default function JavaDownloaderProject() {
                   <span>Updated {formatDate(project.updated)}</span>
                 </div>
                 <div className="jd-detail-actions">
-                  <a className="jd-btn" href={modrinthUrl} target="_blank" rel="noreferrer">
-                    <Icon name="external-link" size={15} /> View on Modrinth
-                  </a>
                   {project.source_url && (
                     <a className="jd-btn jd-btn-ghost" href={project.source_url} target="_blank" rel="noreferrer">Source</a>
                   )}
@@ -151,6 +165,22 @@ export default function JavaDownloaderProject() {
             </header>
 
             <section className="jd-detail-body">
+              {downloads.length > 0 && (
+                <>
+                  <h2 className="jd-detail-section-title">Downloads</h2>
+                  <ul className="jd-downloads">
+                    {downloads.map((download) => (
+                      <li key={download.url}>
+                        <a href={download.url} target="_blank" rel="noreferrer">
+                          <Icon name="download" size={15} />
+                          <span>{download.filename}</span>
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              )}
+
               {project.body ? <Markdown source={project.body} /> : <p className="jd-detail-empty">No description provided.</p>}
             </section>
           </>
