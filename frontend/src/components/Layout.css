@@ -680,9 +680,28 @@
   min-height: 100vh;
   transition: padding-left 0.42s cubic-bezier(0.22, 1, 0.36, 1);
 }
+.route-loader {
+  position: fixed;
+  top: 56px;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 850;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #050505;
+}
+.route-loader .ks-loader {
+  width: 100%;
+  min-height: 100%;
+}
 @media (min-width: 900px) {
   #content.sidebar-open {
     padding-left: 228px;
+  }
+  #content.sidebar-open .route-loader {
+    left: 228px;
   }
   #sidebar.open {
     box-shadow: none;

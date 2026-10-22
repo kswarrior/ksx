@@ -1,4 +1,4 @@
-import { Suspense, useCallback, useEffect, useState, useRef } from "react";
+import { Suspense, useCallback, useEffect, useLayoutEffect, useState, useRef } from "react";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { api, SearchItem } from "../lib/api";
 import Icon from "./Icon";
@@ -16,11 +16,13 @@ export default function Layout() {
   const [activeIndex, setActiveIndex] = useState(-1);
   const [isPinned, setIsPinned] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [routeLoading, setRouteLoading] = useState(false);
 
   const navigate = useNavigate();
   const location = useLocation();
   const searchRef = useRef<HTMLInputElement>(null);
   const suggestRef = useRef<HTMLUListElement>(null);
+  const lastPathRef = useRef(location.pathname);
 
   // Defer sitemap loading so it never competes with first paint
   const sitemapRequested = useRef(false);
@@ -64,6 +66,15 @@ export default function Layout() {
     const cur = location.pathname;
     setIsPinned(readPins().some((p) => p.url === cur || p.url === window.location.href));
     setMenuOpen(false);
+  }, [location.pathname]);
+
+  // Minimum 1s loader for in-app navigation (initial load is handled by the boot screen)
+  useLayoutEffect(() => {
+    if (lastPathRef.current === location.pathname) return;
+    lastPathRef.current = location.pathname;
+    setRouteLoading(true);
+    const id = window.setTimeout(() => setRouteLoading(false), 1000);
+    return () => window.clearTimeout(id);
   }, [location.pathname]);
 
   // Close the 3-dot menu on outside click / Escape
@@ -433,6 +444,11 @@ export default function Layout() {
         <Suspense fallback={<KsLoader label="Loading KS" />}>
           <Outlet />
         </Suspense>
+        {routeLoading && (
+          <div className="route-loader">
+            <KsLoader label="Loading KS" />
+          </div>
+        )}
       </div>
 
       {sidebarOpen && !isDesktop() && <div className="sidebar-backdrop" onClick={() => setSidebarOpen(false)} />}
