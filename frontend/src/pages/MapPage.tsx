@@ -293,10 +293,8 @@ export default function MapPage() {
   );
 
   const filtered = useMemo(() => {
-    let out = data;
-    if (activeCat !== "All") out = out.filter((c) => c.category === activeCat);
-    if (!dq) return out;
-    return out
+    if (!dq) return data;
+    return data
       .map((cat) => ({
         ...cat,
         sections: cat.sections
