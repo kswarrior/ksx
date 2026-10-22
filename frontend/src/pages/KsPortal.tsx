@@ -1,4 +1,6 @@
 import Icon from "../components/Icon";
+import Markdown from "../components/Markdown";
+import portalMarkdown from "./ks-portal.md?raw";
 import "./KsPortal.css";
 
 const APP_SLUG = "ks-portal";
@@ -48,6 +50,25 @@ const DETAILS = [
   { icon: "satellite", label: "Channel", value: "Latest" },
   { icon: "download", label: "Format", value: "APK" },
   { icon: "rocket", label: "Status", value: "In development" },
+] as const;
+
+const GALLERY = [
+  {
+    src: "/image/ks-portal/home.png",
+    alt: "KS Portal home screen with top sites, bookmarks and recent sites",
+  },
+  {
+    src: "/image/ks-portal/bookmarks.png",
+    alt: "Adding a bookmark in KS Portal",
+  },
+  {
+    src: "/image/ks-portal/ai-mode.png",
+    alt: "KS Portal AI Mode with an ocean background",
+  },
+  {
+    src: "/image/ks-portal/private.png",
+    alt: "KS Portal Incognito mode with a nebula background",
+  },
 ] as const;
 
 const ROADMAP = [
