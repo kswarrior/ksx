@@ -34,34 +34,115 @@ export type BotManageCommand = {
   note?: string;
 };
 
-export function safeFolderName(value: string): string {
-  const safe = value
+type FolderPath = {
+  kind: "home" | "absolute" | "drive";
+  parts: string[];
+  drive?: string;
+};
+
+function cleanPart(value: string): string {
+  return value
     .trim()
     .replace(/[^A-Za-z0-9._-]+/g, "-")
     .replace(/^-+|-+$/g, "");
+}
+
+function parseFolder(value: string): FolderPath {
+  const trimmed = value.trim().replace(/\\/g, "/");
+  const driveMatch = trimmed.match(/^([A-Za-z]):(?:\/|$)/);
+  const isHome = trimmed === "~" || trimmed.startsWith("~/");
+  const isAbsolute = !isHome && !driveMatch && trimmed.startsWith("/");
+
+  let rest = trimmed;
+  if (isHome) rest = trimmed.slice(1);
+  else if (driveMatch) rest = trimmed.slice(driveMatch[0].length);
+  else if (isAbsolute) rest = trimmed.slice(1);
+
+  const parts = rest
+    .split("/")
+    .map(cleanPart)
+    .filter((part) => part && part !== "." && part !== "..");
+
+  if (!parts.length) parts.push("ks-bot");
+
+  if (isHome) return { kind: "home", parts };
+  if (isAbsolute) return { kind: "absolute", parts };
+  if (driveMatch) return { kind: "drive", parts, drive: driveMatch[1].toUpperCase() };
+  return { kind: "home", parts };
+}
+
+export function safeFolderName(value: string): string {
+  const safe = cleanPart(value);
   return safe || "mc-bot";
 }
 
+export function safeFolderPath(value: string): string {
+  if (!value.trim()) return DEFAULT_BOT_FOLDER;
+
+  const parsed = parseFolder(value);
+  if (parsed.kind === "home") return `~/${parsed.parts.join("/")}`;
+  if (parsed.kind === "drive") return `${parsed.drive}:\\${parsed.parts.join("\\")}`;
+  return `/${parsed.parts.join("/")}`;
+}
+
 export function safeProcessName(value: string): string {
-  const safe = value
-    .trim()
-    .replace(/[^A-Za-z0-9._-]+/g, "-")
-    .replace(/^-+|-+$/g, "");
+  const safe = cleanPart(value);
   return safe || "minecraft-bot";
 }
 
+function shellFolder(folder: string, environmentId: BotEnvironmentId): string {
+  const parsed = parseFolder(folder);
+  const parts = parsed.parts.join("/");
+  const windowsParts = parsed.parts.join("\\");
+
+  if (environmentId === "powershell") {
+    if (parsed.kind === "home") return `$HOME/${parts}`;
+    if (parsed.kind === "drive") return `'${parsed.drive}:\\${windowsParts}'`;
+    return `'/${parts}'`;
+  }
+
+  if (environmentId === "cmd") {
+    if (parsed.kind === "home") return `"%USERPROFILE%\\${windowsParts}"`;
+    if (parsed.kind === "drive") return `"${parsed.drive}:\\${windowsParts}"`;
+    return `"\\${windowsParts}"`;
+  }
+
+  if (parsed.kind === "home") return `"$HOME/${parts}"`;
+  if (parsed.kind === "drive") return `"${parsed.drive}:/${parts}"`;
+  return `"/${parts}"`;
+}
+
 function bashWrite(folder: string, code: string): string {
+  const dir = shellFolder(folder, "linux");
   const body = code.endsWith("\n") ? code : `${code}\n`;
-  return `cat > ${folder}/bot.js <<'EOF'\n${body}EOF`;
+  return `mkdir -p ${dir} && cat > ${dir}/bot.js <<'EOF'\n${body}EOF`;
 }
 
 function powershellWrite(folder: string, code: string): string {
+  const dir = shellFolder(folder, "powershell");
   const body = code.endsWith("\n") ? code : `${code}\n`;
-  return `@'\n${body}'@ | Set-Content -Path '${folder}\\bot.js' -Encoding UTF8`;
+  return `New-Item -ItemType Directory -Force -Path ${dir} | Out-Null; @'\n${body}'@ | Set-Content -Path (Join-Path ${dir} 'bot.js') -Encoding UTF8`;
+}
+
+function cmdWrite(folder: string, _code: string): string {
+  const dir = shellFolder(folder, "cmd");
+  const file = `${dir.slice(1, -1)}\\bot.js`;
+  return `if not exist ${dir} mkdir ${dir} & powershell -NoProfile -Command "Get-Clipboard | Set-Content -Path '${file}' -Encoding UTF8"`;
 }
 
 function unixProject(folder: string): string {
-  return `mkdir -p ${folder} && cd ${folder} && npm init -y && npm install mineflayer mineflayer-pathfinder vec3`;
+  const dir = shellFolder(folder, "linux");
+  return `mkdir -p ${dir} && cd ${dir} && { [ -f package.json ] || npm init -y; } && npm install ${NPM_INSTALL_FLAGS} ${BOT_DEPENDENCIES}`;
+}
+
+function powershellProject(folder: string): string {
+  const dir = shellFolder(folder, "powershell");
+  return `New-Item -ItemType Directory -Force -Path ${dir} | Out-Null; Set-Location ${dir}; if (-not (Test-Path package.json)) { npm init -y }; npm install ${NPM_INSTALL_FLAGS} ${BOT_DEPENDENCIES}`;
+}
+
+function cmdProject(folder: string): string {
+  const dir = shellFolder(folder, "cmd");
+  return `if not exist ${dir} mkdir ${dir} & cd /d ${dir} && npm init -y && npm install ${NPM_INSTALL_FLAGS} ${BOT_DEPENDENCIES}`;
 }
 
 export const BOT_ENVIRONMENTS: BotEnvironment[] = [
