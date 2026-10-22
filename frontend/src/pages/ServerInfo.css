@@ -57,5 +57,10 @@
   .si-title{font-size:22px;}
   .si-input{font-size:13px;}
   .si-grid{grid-template-columns:1fr 1fr;}
+  .si-server-card{padding:13px;}
+  .si-server-top{gap:12px;}
+  .si-avatar{width:52px; height:52px; flex-basis:52px;}
+  .si-server-scroll{padding-left:12px;}
+  .si-motd{font-size:12px;}
 }
 @media(prefers-reduced-motion:reduce){ .si-bg-orb{animation:none !important;} }
