@@ -41,56 +41,6 @@
     linear-gradient(135deg, #e0e3e7 0%, #cbd0d6 46%, #bcc2ca 100%);
 }
 
-.mp-stars {
-  display: none;
-  position: absolute;
-  inset: -6%;
-  background-image:
-    radial-gradient(circle at 14% 22%, rgba(255, 255, 255, 0.9) 0 1px, transparent 1.5px),
-    radial-gradient(circle at 68% 64%, rgba(178, 207, 255, 0.72) 0 1px, transparent 1.5px),
-    radial-gradient(circle at 42% 84%, rgba(255, 255, 255, 0.55) 0 1.1px, transparent 1.7px),
-    radial-gradient(circle at 86% 34%, rgba(255, 255, 255, 0.4) 0 1px, transparent 1.5px);
-  background-size: 220px 220px, 320px 320px, 140px 140px, 460px 460px;
-  background-position: 20px 30px, 90px 120px, 40px 70px, 180px 220px;
-  opacity: 0.55;
-}
-
-.mp-stars.s2 {
-  background-image:
-    radial-gradient(circle at 22% 68%, rgba(255, 255, 255, 0.6) 0 1px, transparent 1.4px),
-    radial-gradient(circle at 74% 18%, rgba(159, 193, 255, 0.55) 0 1px, transparent 1.5px),
-    radial-gradient(circle at 48% 40%, rgba(255, 255, 255, 0.32) 0 0.9px, transparent 1.4px);
-  background-size: 260px 260px, 380px 380px, 170px 170px;
-  background-position: 70px 10px, 30px 190px, 110px 80px;
-  opacity: 0.36;
-}
-
-.mp-stars.s3 {
-  inset: 0;
-  background-image:
-    radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.2) 0 0.8px, transparent 1.3px),
-    radial-gradient(circle at 80% 70%, rgba(190, 215, 255, 0.18) 0 0.8px, transparent 1.3px);
-  background-size: 90px 90px, 120px 120px;
-  background-position: 10px 14px, 60px 40px;
-  opacity: 0.35;
-}
-
-.mp-nebula {
-  display: none;
-}
-
-.mp-nebula.n1 {
-  left: -16%;
-  top: -22%;
-  background: radial-gradient(circle, rgba(76, 126, 225, 0.18), transparent 66%);
-}
-
-.mp-nebula.n2 {
-  right: -18%;
-  bottom: -28%;
-  background: radial-gradient(circle, rgba(152, 106, 235, 0.14), transparent 66%);
-}
-
 .mp-vignette {
   position: absolute;
   inset: 0;

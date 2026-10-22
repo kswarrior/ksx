@@ -808,12 +808,7 @@ export default function MapPage() {
   if (loading) {
     return (
       <div className="map-page mp-lite">
-        <div className="mp-sky" aria-hidden>
-          <div className="mp-stars s1" />
-          <div className="mp-stars s2" />
-          <div className="mp-nebula n1" />
-          <div className="mp-nebula n2" />
-        </div>
+        <div className="mp-sky" aria-hidden />
         <div className="mp-loading">
           <KsLoader label="Mapping the universe" />
         </div>
@@ -824,10 +819,7 @@ export default function MapPage() {
   if (error) {
     return (
       <div className="map-page mp-lite">
-        <div className="mp-sky" aria-hidden>
-          <div className="mp-stars s1" />
-          <div className="mp-stars s2" />
-        </div>
+        <div className="mp-sky" aria-hidden />
         <div className="mp-error-card">
           <div className="mp-error-icon">
             <Icon name="warning" size={24} />
@@ -858,11 +850,6 @@ export default function MapPage() {
         .join(" ")}
     >
       <div className="mp-sky" aria-hidden>
-        <div className="mp-stars s1" />
-        <div className="mp-stars s2" />
-        <div className="mp-stars s3" />
-        <div className="mp-nebula n1" />
-        <div className="mp-nebula n2" />
         <div className="mp-vignette" />
       </div>
 
