@@ -88,20 +88,6 @@ export function PterodactylPage() {
   );
 }
 
-export function PufferPage() {
-  return (
-    <PanelPages
-      title="PufferPanel"
-      kicker="MAKE HOSTING • PUFFER"
-      icon="package"
-      subtitle="Lightweight, fast & modern panel — perfect for small VPS & free hosts."
-      commands={[
-        { label: "Install PufferPanel", icon: "package", code: "bash <(curl -sSL https://ksweb.vercel.app/code/moh/puffer/install)" },
-      ]}
-    />
-  );
-}
-
 export function AirlinkPage() {
   return (
     <PanelPages
