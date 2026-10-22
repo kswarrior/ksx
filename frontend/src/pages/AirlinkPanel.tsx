@@ -275,19 +275,21 @@ export default function AirlinkPanel() {
               ) : (
                 <>
                   <p className="setup-hint">
-                    Run the installer as root. It detects your OS, installs Node.js, pnpm,
-                    PostgreSQL, Redis, Docker, nginx and SSL, then sets up the panel and daemon.
+                    Run the installer as root. It is interactive: choose <strong>Install Both</strong>{" "}
+                    for a single-machine setup. It installs Node.js, Docker, the panel, the daemon,
+                    PM2 and systemd services, and creates the first admin account.
                   </p>
                   <CodeBlock label="Quick install" code={QUICK_INSTALL} />
                   <p className="setup-hint">
-                    Installing the panel on one machine and the daemon on another? Use the
-                    panel-only installer here and add the daemon on the node in step 4.
+                    Installing the panel on one machine and the daemon on another? Choose{" "}
+                    <strong>Install Panel</strong> here, then add the daemon on the node in step 4.
                   </p>
                   <CodeBlock label="Panel only" code={PANEL_ONLY} />
                   <p className="setup-note">
-                    The installer clones the panel to <code>/var/www/panel</code> and creates the
-                    systemd services. Keep your <code>.env</code> and database backups when
-                    updating.
+                    The current installer uses SQLite (<code>prisma/dev.db</code>) and does not
+                    configure nginx or SSL — add those separately. It also does not currently
+                    accept the <code>--panel-only</code>/<code>--daemon-only</code> flags shown in
+                    some docs; use the menu. Keep <code>.env</code> and the database when updating.
                   </p>
                 </>
               )}
