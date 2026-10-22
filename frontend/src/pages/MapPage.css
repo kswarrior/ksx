@@ -92,7 +92,7 @@
 }
 
 .mp-edge {
-  stroke-width: 1;
+  stroke-width: calc(var(--mp-inv, 1) * 1px);
   stroke-linecap: round;
 }
 

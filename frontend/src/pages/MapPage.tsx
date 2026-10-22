@@ -1085,7 +1085,6 @@ export default function MapPage() {
                 <Fragment key={catKey}>
                   <line
                     className="mp-edge mp-edge-core"
-                    vectorEffect="non-scaling-stroke"
                     {...coreEdge}
                   />
                   {star.planets.map((planet) => {
@@ -1100,8 +1099,7 @@ export default function MapPage() {
                       <Fragment key={planet.key}>
                         <line
                           className="mp-edge"
-                          vectorEffect="non-scaling-stroke"
-                          stroke={`rgba(${star.rgb}, 0.28)`}
+                                stroke={`rgba(${star.rgb}, 0.28)`}
                           {...starEdge}
                         />
                         {planet.moons.map((moon) => {
@@ -1116,8 +1114,7 @@ export default function MapPage() {
                             <line
                               key={moon.key}
                               className="mp-edge mp-edge-moon"
-                              vectorEffect="non-scaling-stroke"
-                              stroke={`rgba(${star.rgb}, 0.2)`}
+                                        stroke={`rgba(${star.rgb}, 0.2)`}
                               {...moonEdge}
                             />
                           );
