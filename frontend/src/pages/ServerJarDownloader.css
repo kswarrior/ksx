@@ -1,54 +1,378 @@
-/* JAR DOWNLOADER - stylish + lag-less */
+/* ===== SERVER JAR DOWNLOADER ===== */
 .jar-page{
-  --j-bg:#080808; --j-card:rgba(19, 19, 19,0.96); --j-border:rgba(255, 255, 255,0.09); --j-text:#f1f1f1; --j-muted:#a0a0a0;
-  position:relative; min-height:calc(100vh - 56px); background:var(--j-bg); color:var(--j-text); overflow-x:clip; isolation:isolate;
+  --jar-bg:#080808;
+  --jar-card:rgba(18,18,18,0.82);
+  --jar-card-strong:rgba(23,23,23,0.96);
+  --jar-border:rgba(255,255,255,0.10);
+  --jar-border-strong:rgba(255,255,255,0.16);
+  --jar-text:#f5f5f5;
+  --jar-muted:#a3a3a3;
+  --jar-radius:5px;
+  --jar-gap:14px;
+  position:relative;
+  min-height:calc(100vh - 56px);
+  background:var(--jar-bg);
+  color:var(--jar-text);
+  overflow-x:clip;
+  isolation:isolate;
 }
-.jar-bg{position:fixed; inset:0; z-index:-1; pointer-events:none; background:var(--j-bg);}
+
+.jar-bg{position:fixed; inset:0; z-index:-1; pointer-events:none; background:var(--jar-bg);}
 .jar-bg-grad{position:absolute; inset:0; background:
-  radial-gradient(900px 500px at 15% 0%, rgba(122, 122, 122,0.14), transparent 60%),
-  radial-gradient(800px 600px at 95% 10%, rgba(124, 124, 124,0.12), transparent 65%),
-  linear-gradient(180deg, #0b0b0b 0%, #080808 55%, #090909 100%);}
-.jar-bg-orb{position:absolute; border-radius:50%; filter:blur(34px); opacity:0.5; mix-blend-mode:screen;}
-.jar-bg-orb.o1{width:520px;height:520px; left:-120px; top:-140px; background:radial-gradient(circle at 30% 30%, #9a9a9a 0%, #7a7a7a 42%, transparent 72%); animation:jarOrb 10s ease-in-out infinite;}
-.jar-bg-orb.o2{width:460px;height:460px; right:-100px; top:12%; background:radial-gradient(circle at 30% 30%, #a0a0a0 0%, #7c7c7c 44%, transparent 72%); animation:jarOrb 12s ease-in-out infinite reverse;}
+  radial-gradient(900px 500px at 15% 0%, rgba(137,137,137,0.14), transparent 60%),
+  radial-gradient(800px 600px at 95% 10%, rgba(122,122,122,0.12), transparent 65%),
+  linear-gradient(180deg, #131313 0%, #080808 55%, #090909 100%);}
+.jar-bg-orb{position:absolute; border-radius:50%; filter:blur(34px); opacity:0.45; mix-blend-mode:screen;}
+.jar-bg-orb.o1{width:520px;height:520px; left:-120px; top:-140px; background:radial-gradient(circle at 30% 30%, #a7a7a7 0%, #898989 42%, transparent 72%); animation:jarOrb 10s ease-in-out infinite;}
+.jar-bg-orb.o2{width:460px;height:460px; right:-100px; top:12%; background:radial-gradient(circle at 30% 30%, #9a9a9a 0%, #7a7a7a 44%, transparent 72%); animation:jarOrb 12s ease-in-out infinite reverse;}
 @keyframes jarOrb{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-14px) scale(1.03)}}
-.jar-shell{max-width:780px; margin:0 auto; padding:18px 16px 40px;}
-.jar-header{background:rgba(15, 15, 15,0.92); border:1px solid var(--j-border); border-radius:5px; padding:22px 18px; backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); box-shadow:0 10px 40px rgba(0, 0, 0,0.45); position:relative; overflow:hidden; text-align:center;}
-.jar-header::before{content:""; position:absolute; inset:0; border-radius:inherit; background:radial-gradient(700px 260px at 50% 0%, rgba(122, 122, 122,0.10), transparent 60%); pointer-events:none;}
-.jar-kicker{position:relative; display:inline-flex; align-items:center; gap:8px; font-size:11px; letter-spacing:1.4px; font-weight:800; color:rgba(255, 255, 255,0.7); background:rgba(255, 255, 255,0.06); border:1px solid rgba(255, 255, 255,0.08); padding:6px 10px; border-radius:8px;}
-.jar-kicker-dot{width:7px;height:7px; border-radius:50%; background:#7a7a7a; box-shadow:0 0 10px #7a7a7a;}
-.jar-title{position:relative; margin:12px 0 8px; font-size:clamp(24px,5vw,32px); font-weight:900; letter-spacing:-1.2px; line-height:1;}
-.jar-title span{background:linear-gradient(90deg,#9a9a9a 0%,#a0a0a0 55%,#a1a1a1 100%); -webkit-background-clip:text; background-clip:text; color:transparent;}
-.jar-sub{position:relative; color:var(--j-muted); font-size:13px; line-height:1.6;}
-.jar-card{background:var(--j-card); border:1px solid var(--j-border); border-radius:5px; padding:20px; margin-top:14px; contain:layout paint style; content-visibility:auto; contain-intrinsic-size:220px;}
-.jar-row{display:flex; gap:12px; margin-bottom:14px; flex-wrap:wrap;}
-.jar-group{flex:1; min-width:160px; display:flex; flex-direction:column; gap:6px;}
-.jar-group label{font-size:11px; font-weight:800; color:var(--j-muted); letter-spacing:0.5px; text-transform:uppercase;}
-.jar-group .ks-select{width:100%;}
-.jar-group .ks-select-trigger, .jar-group .ks-input{width:100%; padding:12px 14px; background:rgba(11, 11, 11,0.9); border:1px solid var(--j-border); border-radius:6px; color:var(--j-text); font-size:13px; outline:none; transition:border-color .2s, box-shadow .2s;}
-.jar-group .ks-select-trigger:focus, .jar-group .ks-input:focus{border-color:rgba(122, 122, 122,0.4); box-shadow:0 0 0 4px rgba(122, 122, 122,0.12);}
-.jar-btn{width:100%; margin-top:6px; background:#ffffff; color:#000000; border:none; border-radius:6px; padding:13px; font-weight:900; font-size:14px; cursor:pointer; transition:transform .15s, background .2s, box-shadow .2s; display:inline-flex; align-items:center; justify-content:center; gap:8px;}
-.jar-btn:hover{background:#f0f0f0; transform:translateY(-1px); box-shadow:0 8px 18px rgba(0, 0, 0,0.18);}
+
+.jar-shell{max-width:960px; margin:0 auto; padding:18px 16px 64px;}
+
+.jar-hero{
+  display:flex; align-items:center; gap:14px;
+  padding:18px 20px;
+  background:var(--jar-card);
+  border:1px solid var(--jar-border);
+  border-radius:var(--jar-radius);
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+  box-shadow:0 10px 40px rgba(0,0,0,0.35);
+  position:relative; overflow:hidden;
+}
+.jar-hero::before{
+  content:""; position:absolute; inset:0;
+  background:radial-gradient(600px 220px at 20% 0%, rgba(255,255,255,0.06), transparent 65%);
+  pointer-events:none;
+}
+.jar-hero-icon{
+  position:relative; z-index:1;
+  width:46px; height:46px; flex-shrink:0;
+  display:grid; place-items:center;
+  border-radius:12px;
+  background:rgba(255,255,255,0.06);
+  border:1px solid rgba(255,255,255,0.10);
+  color:rgba(255,255,255,0.82);
+  box-shadow:0 10px 24px rgba(0,0,0,0.28);
+}
+.jar-hero-text{position:relative; z-index:1; min-width:0;}
+.jar-hero-text h1{
+  font-size:clamp(20px,3vw,26px);
+  font-weight:900;
+  letter-spacing:-0.8px;
+  line-height:1.15;
+}
+
+.jar-panel,.jar-result{
+  margin-top:var(--jar-gap);
+  background:var(--jar-card);
+  border:1px solid var(--jar-border);
+  border-radius:var(--jar-radius);
+  padding:18px;
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+  box-shadow:0 10px 40px rgba(0,0,0,0.32);
+}
+
+.jar-fields{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(185px,1fr));
+  gap:12px;
+}
+.jar-field{min-width:0; display:flex; flex-direction:column; gap:7px;}
+.jar-field > label{
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:0.6px;
+  text-transform:uppercase;
+  color:var(--jar-muted);
+}
+.jar-field .ks-select{width:100%;}
+.jar-field .ks-select-trigger{
+  min-height:42px;
+  padding:11px 13px;
+  background:rgba(255,255,255,0.045);
+  border-color:var(--jar-border);
+  border-radius:6px;
+  font-size:13px;
+}
+.jar-field .ks-select-trigger:hover{background:rgba(255,255,255,0.075); border-color:var(--jar-border-strong);}
+.jar-field .ks-select-trigger:focus-visible,
+.jar-field .ks-select-trigger.is-open{
+  border-color:rgba(180,180,180,0.45);
+  background:rgba(255,255,255,0.07);
+  box-shadow:0 0 0 4px rgba(160,160,160,0.12);
+}
+
+.jar-panel-foot{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:10px 16px;
+  margin-top:14px;
+  padding-top:14px;
+  border-top:1px solid rgba(255,255,255,0.07);
+}
+.jar-software-summary{font-size:12px; color:var(--jar-muted); line-height:1.5;}
+.jar-toggle{
+  display:inline-flex; align-items:center; gap:9px;
+  font-size:12px; color:var(--jar-muted);
+  cursor:pointer; user-select:none;
+}
+.jar-toggle input{
+  appearance:none; -webkit-appearance:none;
+  width:32px; height:18px; flex-shrink:0;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,0.14);
+  background:rgba(255,255,255,0.10);
+  position:relative; cursor:pointer;
+  transition:background .2s, border-color .2s;
+}
+.jar-toggle input::after{
+  content:""; position:absolute; top:2px; left:2px;
+  width:12px; height:12px; border-radius:50%;
+  background:#fff; opacity:0.8;
+  transition:transform .2s, opacity .2s;
+}
+.jar-toggle input:checked{background:rgba(255,255,255,0.72); border-color:rgba(255,255,255,0.72);}
+.jar-toggle input:checked::after{transform:translateX(14px); opacity:1; background:#0a0a0a;}
+.jar-toggle input:focus-visible{outline:2px solid rgba(255,255,255,0.45); outline-offset:2px;}
+
+.jar-state{
+  margin-top:var(--jar-gap);
+  display:flex; align-items:center; gap:10px;
+  padding:16px 18px;
+  background:var(--jar-card-strong);
+  border:1px solid var(--jar-border);
+  border-radius:var(--jar-radius);
+  color:var(--jar-muted);
+  font-size:13px;
+  line-height:1.5;
+}
+.jar-state-error{
+  color:#fca5a5;
+  background:rgba(40,16,16,0.7);
+  border-color:rgba(239,68,68,0.28);
+}
+.jar-state-error span{flex:1; min-width:0; color:#fecaca;}
+.jar-retry{
+  flex-shrink:0;
+  padding:6px 11px;
+  border-radius:6px;
+  border:1px solid rgba(255,255,255,0.16);
+  background:rgba(255,255,255,0.08);
+  color:#fff;
+  font:inherit;
+  font-size:12px;
+  font-weight:800;
+  cursor:pointer;
+  transition:background .2s, border-color .2s;
+}
+.jar-retry:hover{background:rgba(255,255,255,0.14); border-color:rgba(255,255,255,0.24);}
+.jar-spinner{
+  width:18px; height:18px; flex-shrink:0;
+  border:2px solid rgba(255,255,255,0.16);
+  border-top-color:rgba(255,255,255,0.75);
+  border-radius:50%;
+  animation:jarSpin .75s linear infinite;
+}
+@keyframes jarSpin{to{transform:rotate(360deg)}}
+
+.jar-result{animation:jarIn .22s ease;}
+@keyframes jarIn{from{opacity:0; transform:translateY(4px);}to{opacity:1; transform:translateY(0);}}
+
+.jar-result-head{
+  display:flex; align-items:center; gap:12px;
+  padding-bottom:14px;
+  margin-bottom:14px;
+  border-bottom:1px solid rgba(255,255,255,0.07);
+}
+.jar-file-icon{
+  width:44px; height:44px; flex-shrink:0;
+  display:grid; place-items:center;
+  border-radius:11px;
+  background:rgba(255,255,255,0.06);
+  border:1px solid rgba(255,255,255,0.10);
+  color:rgba(255,255,255,0.82);
+}
+.jar-file-text{flex:1; min-width:0;}
+.jar-file-text h2{
+  font-size:14px;
+  font-weight:900;
+  letter-spacing:-0.2px;
+  line-height:1.3;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.jar-file-text p{
+  margin-top:3px;
+  font-size:12px;
+  color:var(--jar-muted);
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.jar-badge{
+  flex-shrink:0;
+  padding:5px 9px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,0.14);
+  background:rgba(255,255,255,0.06);
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:0.5px;
+  text-transform:uppercase;
+  color:rgba(255,255,255,0.72);
+}
+.jar-badge.installer{
+  background:rgba(255,255,255,0.10);
+  border-color:rgba(255,255,255,0.2);
+  color:#fff;
+}
+
+.jar-stats{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(130px,1fr));
+  gap:8px;
+}
+.jar-stat{
+  min-width:0;
+  padding:9px 11px;
+  border-radius:6px;
+  background:rgba(255,255,255,0.035);
+  border:1px solid rgba(255,255,255,0.065);
+}
+.jar-stat span{
+  display:block;
+  margin-bottom:4px;
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:0.5px;
+  text-transform:uppercase;
+  color:var(--jar-muted);
+}
+.jar-stat b{
+  display:block;
+  font-size:12.5px;
+  font-weight:800;
+  line-height:1.3;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.jar-checksum,.jar-command{
+  margin-top:12px;
+  padding:11px 12px;
+  border-radius:6px;
+  background:rgba(255,255,255,0.035);
+  border:1px solid rgba(255,255,255,0.065);
+}
+.jar-checksum-head,.jar-command-head{
+  display:flex; align-items:center; justify-content:space-between; gap:10px;
+  margin-bottom:7px;
+}
+.jar-checksum-head span,.jar-command-head span{
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:0.5px;
+  text-transform:uppercase;
+  color:var(--jar-muted);
+}
+.jar-checksum-head button,.jar-command-head button{
+  display:inline-flex; align-items:center; gap:5px;
+  padding:4px 8px;
+  border-radius:5px;
+  border:1px solid rgba(255,255,255,0.1);
+  background:rgba(255,255,255,0.05);
+  color:var(--jar-muted);
+  font:inherit;
+  font-size:11px;
+  font-weight:700;
+  cursor:pointer;
+  transition:background .2s, color .2s, border-color .2s;
+}
+.jar-checksum-head button:hover,.jar-command-head button:hover{
+  background:rgba(255,255,255,0.1);
+  border-color:rgba(255,255,255,0.16);
+  color:#fff;
+}
+.jar-checksum code{
+  display:block;
+  font-family:ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size:11.5px;
+  line-height:1.6;
+  color:#d8d8d8;
+  overflow-wrap:anywhere;
+}
+.jar-command pre{
+  margin:0;
+  overflow-x:auto;
+  font-family:ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size:11.5px;
+  line-height:1.6;
+  color:#d8d8d8;
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
+}
+
+.jar-actions{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-top:14px;
+}
+.jar-btn{
+  min-height:42px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  padding:0 17px;
+  border-radius:6px;
+  font-family:inherit;
+  font-size:13px;
+  font-weight:800;
+  line-height:1;
+  text-decoration:none;
+  cursor:pointer;
+  transition:transform .15s, background .2s, border-color .2s, box-shadow .2s;
+}
 .jar-btn:active{transform:scale(0.97);}
-.jar-btn.secondary{background:rgba(255, 255, 255,0.06); color:#ffffff; border:1px solid var(--j-border);}
-.jar-btn.secondary:hover{background:rgba(255, 255, 255,0.1);}
-.jar-result{margin-top:16px; background:rgba(15, 15, 15,0.92); border:1px solid var(--j-border); border-radius:5px; padding:16px;}
-.jar-status{font-size:13px; margin-bottom:10px; padding:8px 12px; border-radius:8px; display:inline-flex; align-items:center; gap:8px; font-weight:700;}
-.jar-status.loading{color:#a0a0a0; background:rgba(255, 255, 255,0.06); border:1px solid var(--j-border);}
-.jar-status.loading::before{content:""; width:14px; height:14px; border:2px solid rgba(255, 255, 255,0.2); border-top-color:#9a9a9a; border-radius:50%; animation:spin .7s linear infinite;}
-.jar-status.success{color:#4ade80; background:rgba(34,197,94,0.12); border:1px solid rgba(34,197,94,0.22);}
-.jar-status.error{color:#f87171; background:rgba(239,68,68,0.12); border:1px solid rgba(239,68,68,0.22);}
-@keyframes spin{to{transform:rotate(360deg)}}
-.jar-url{font-size:12px; background:rgba(11, 11, 11,0.96); border:1px solid var(--j-border); border-radius:5px; padding:12px; width:100%; color:var(--j-text); word-break:break-all;}
-.jar-actions{display:flex; gap:10px; margin-top:12px;}
-.jar-actions button{flex:1; margin-top:0;}
+.jar-btn.primary{
+  background:#fff;
+  color:#000;
+  border:1px solid #fff;
+}
+.jar-btn.primary:hover{background:#ececec; border-color:#ececec; box-shadow:0 8px 20px rgba(0,0,0,0.22);}
+.jar-btn.secondary{
+  background:rgba(255,255,255,0.06);
+  color:var(--jar-text);
+  border:1px solid var(--jar-border);
+}
+.jar-btn.secondary:hover{background:rgba(255,255,255,0.11); border-color:var(--jar-border-strong);}
+
 @media(max-width:768px){
   .jar-bg-orb{display:none !important;}
-  .jar-bg-grad{background:linear-gradient(180deg, #0b0b0b 0%, #080808 100%) !important;}
-  .jar-shell{padding:12px 10px 28px;}
-  .jar-header{padding:16px 14px; border-radius:5px; backdrop-filter:none !important; -webkit-backdrop-filter:none !important; background:rgba(15, 15, 15,0.98) !important;}
-  .jar-title{font-size:22px;}
-  .jar-card{padding:16px; border-radius:5px;}
-  .jar-row{flex-direction:column;}
+  .jar-bg-grad{background:linear-gradient(180deg, #131313 0%, #080808 100%) !important;}
+  .jar-shell{padding:12px 10px 40px;}
+  .jar-hero{padding:15px 16px; backdrop-filter:none !important; -webkit-backdrop-filter:none !important; background:rgba(18,18,18,0.98);}
+  .jar-hero-icon{width:42px; height:42px;}
+  .jar-panel,.jar-result{padding:14px; backdrop-filter:none !important; -webkit-backdrop-filter:none !important; background:rgba(18,18,18,0.98);}
+  .jar-fields{grid-template-columns:1fr;}
+  .jar-panel-foot{align-items:flex-start; flex-direction:column;}
+  .jar-stats{grid-template-columns:repeat(2,minmax(0,1fr));}
+  .jar-actions .jar-btn{flex:1 1 auto;}
+  .jar-badge{display:none;}
+  .jar-state{background:rgba(18,18,18,0.98);}
 }
-@media(prefers-reduced-motion:reduce){ .jar-bg-orb, .jar-status.loading::before{animation:none !important;} }
+@media(max-width:420px){
+  .jar-stats{grid-template-columns:1fr;}
+  .jar-file-text h2{font-size:13px;}
+}
+@media(prefers-reduced-motion:reduce){
+  .jar-bg-orb,.jar-spinner,.jar-result{animation:none !important;}
+  .jar-btn,.jar-toggle input,.jar-toggle input::after{transition:none !important;}
+}

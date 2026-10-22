@@ -16,7 +16,7 @@ const platformOptions: SelectOption[] = [
 
 export default function SetupServer() {
   const [platform, setPlatform] = useState<Platform>("codesandbox");
-  const [mcUrl, setMcUrl] = useState("https://api.papermc.io/v2/projects/paper/versions/1.21.1/builds/113/downloads/paper-1.21.1-113.jar");
+  const [mcUrl, setMcUrl] = useState("https://fill-data.papermc.io/v1/objects/f3a5953094696578193b38fa2831e86db254dfbf4817b1ac6cfca55a2d18ca94/paper-26.3-211.jar");
   const [mcCode, setMcCode] = useState("");
   const [endpointName, setEndpointName] = useState("kssmp");
   const [token, setToken] = useState("");
@@ -32,7 +32,7 @@ export default function SetupServer() {
   }
 
   function genMc() {
-    const url = mcUrl.trim() || "https://api.papermc.io/v2/projects/paper/versions/1.21.1/builds/113/downloads/paper-1.21.1-113.jar";
+    const url = mcUrl.trim() || "https://fill-data.papermc.io/v1/objects/f3a5953094696578193b38fa2831e86db254dfbf4817b1ac6cfca55a2d18ca94/paper-26.3-211.jar";
     setMcCode(`mkdir mc-server && cd mc-server && echo "eula=true" > eula.txt && wget ${url} -O server.jar`);
   }
   function genConfig() {
@@ -104,7 +104,7 @@ export default function SetupServer() {
               </div>
               <div className="setup-card">
                 <h3><Icon name="package" size={15} /> Download MC Server JAR</h3>
-                <p>Default Paper 1.21.1 — replace URL if needed.</p>
+                <p>Default Paper — replace the URL if needed.</p>
                 <button className="setup-btn" onClick={() => window.open("/minecraft/make-server/server.jar-downloader.html", "_blank")}><Icon name="external-link" size={13} /> Get Server URL</button>
                 <label>Minecraft Server JAR URL</label>
                 <TextField value={mcUrl} onChange={(e) => setMcUrl(e.target.value)} placeholder="https://..." />
