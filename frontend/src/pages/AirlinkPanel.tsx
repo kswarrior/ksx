@@ -8,8 +8,8 @@ import "./SetupServer.css";
 type InstallMethod = "quick" | "manual";
 
 const METHOD_OPTIONS: SelectOption[] = [
-  { value: "quick", label: "Quick installer · recommended" },
-  { value: "manual", label: "Manual · PM2 + PostgreSQL" },
+  { value: "quick", label: "Quick installer · interactive" },
+  { value: "manual", label: "Manual · npm + SQLite" },
 ];
 
 const STEPS: { id: string; label: string; icon: IconName }[] = [
@@ -23,21 +23,18 @@ const STEPS: { id: string; label: string; icon: IconName }[] = [
   { id: "connect", label: "Connect", icon: "globe" },
 ];
 
-const QUICK_INSTALL = `bash <(curl -s https://raw.githubusercontent.com/airlinklabs/panel/refs/heads/main/installer.sh)`;
+const QUICK_INSTALL = `sudo bash <(curl -s https://raw.githubusercontent.com/airlinklabs/panel/refs/heads/main/installer.sh)
+# Choose "Install Both" from the menu`;
 
-const PANEL_ONLY = `bash <(curl -s https://raw.githubusercontent.com/airlinklabs/panel/refs/heads/main/installer.sh) \\
-  --panel-only`;
+const PANEL_ONLY = `sudo bash <(curl -s https://raw.githubusercontent.com/airlinklabs/panel/refs/heads/main/installer.sh)
+# Choose "Install Panel" from the menu`;
 
 const MANUAL_INSTALL = `sudo apt update
-sudo apt install -y curl git openssl unzip postgresql redis-server
+sudo apt install -y curl git openssl unzip
 curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash -
 sudo apt install -y nodejs
-sudo npm install -g pnpm
 curl -fsSL https://get.docker.com | sudo sh
-sudo systemctl enable --now docker postgresql redis-server
-
-sudo -u postgres psql -c "CREATE USER airlink WITH PASSWORD 'change-me';"
-sudo -u postgres psql -c "CREATE DATABASE airlink OWNER airlink;"
+sudo systemctl enable --now docker
 
 sudo git clone https://github.com/airlinklabs/panel.git /var/www/panel
 sudo chown -R "$USER":"$USER" /var/www/panel
@@ -45,37 +42,41 @@ cd /var/www/panel
 cp example.env .env
 
 # Edit .env before continuing:
-# URL="https://panel.example.com"
-# DATABASE_URL="postgresql://airlink:change-me@127.0.0.1:5432/airlink"
-# REDIS_URL="redis://127.0.0.1:6379"
+# URL="http://YOUR_SERVER_IP:3000"
+# DATABASE_URL="file:./dev.db"
 # NODE_ENV="production"
-# SESSION_SECRET="$(openssl rand -hex 32)"
+# SESSION_SECRET="<paste output of: openssl rand -hex 32>"
 
-pnpm install
-pnpm approve-builds --all
-pnpm run setup`;
+npm install
+npx prisma generate
+npm run build
+npm prune --omit=dev`;
 
 const PM2_START = `sudo npm install -g pm2
-pm2 start dist/app.js -i max --name airlink
+cd /var/www/panel
+npx prisma db push
+pm2 start dist/app.js --name airlink
 pm2 save
 pm2 startup`;
 
 const QUICK_SERVICE = `sudo systemctl status airlink-panel --no-pager
 sudo systemctl enable --now airlink-panel`;
 
-const NODE_QUICK = `bash <(curl -s https://raw.githubusercontent.com/airlinklabs/panel/refs/heads/main/installer.sh) \\
-  --daemon-only \\
-  --panel-addr http://PANEL_IP:3000 \\
-  --daemon-port 3002 \\
-  --daemon-key YOUR_NODE_KEY`;
+const NODE_QUICK = `sudo bash <(curl -s https://raw.githubusercontent.com/airlinklabs/panel/refs/heads/main/installer.sh)
+# Choose "Install Daemon" from the menu
+# Panel address: http://PANEL_IP:3000
+# Daemon port: 3002
+# Node key: YOUR_NODE_KEY`;
 
-const NODE_MANUAL = `sudo mkdir -p /etc/daemon
+const NODE_MANUAL = `sudo apt update
+sudo apt install -y curl git unzip
+curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash -
+sudo apt install -y nodejs
+curl -fsSL https://get.docker.com | sudo sh
+sudo systemctl enable --now docker
+
+sudo git clone https://github.com/airlinklabs/daemon.git /etc/daemon
 cd /etc/daemon
-
-# Download the latest linux release from:
-# https://github.com/airlinklabs/daemon/releases/latest
-sudo unzip airlinkd.zip
-sudo chmod +x airlinkd
 
 sudo tee .env > /dev/null << 'EOF'
 remote=http://PANEL_IP:3000
@@ -85,21 +86,27 @@ DEBUG=false
 version=1.0.0
 environment=production
 STATS_INTERVAL=10000
-EOF`;
+EOF
+
+sudo npm install
+sudo npm run build
+cd libs
+sudo npm install
+sudo npm rebuild`;
 
 const NODE_SYSTEMD = `sudo tee /etc/systemd/system/airlink-daemon.service > /dev/null << 'EOF'
 [Unit]
 Description=Airlink Daemon
 After=network.target docker.service
+Requires=docker.service
 
 [Service]
 Type=simple
 User=root
 WorkingDirectory=/etc/daemon
 EnvironmentFile=/etc/daemon/.env
-ExecStart=/etc/daemon/airlinkd
-Restart=on-failure
-RestartSec=5
+ExecStart=/usr/bin/npm run start
+Restart=always
 Environment=NODE_ENV=production
 
 [Install]

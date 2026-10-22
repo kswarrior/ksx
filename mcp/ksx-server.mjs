@@ -122,7 +122,7 @@ server.registerTool(
         "GET /api/sitemap",
         "GET /api/sitemap/search?q=",
         "GET /api/hosting/minecraft?q=&uptime=&location=&ram=",
-        "GET /api/hosting/vps?q=&renew=&sudo=&alwaysOn=",
+        "GET /api/hosting/vps?q=&type=&renew=&sudo=&alwaysOn=",
         "GET /api/social",
       ],
       dataFiles: [
@@ -224,20 +224,22 @@ server.registerTool(
   {
     title: "Find free VPS hosting",
     description:
-      "Find free VPS or cloud sandbox providers from the KSX list. Filter by name, location, renewal, sudo, and always-on support.",
+      "Find free VPS, cloud shell, IDE, notebook, or sandbox providers from the KSX list. Filter by name, type, location, renewal, sudo, and always-on support. Includes verification requirements and usage limits.",
     inputSchema: {
       query: z.string().optional().describe("Case-insensitive provider name filter"),
+      type: z.string().optional().describe("Case-insensitive type filter, e.g. VPS, Cloud shell, Cloud IDE, Notebook"),
       location: z.string().optional().describe("Case-insensitive location filter, e.g. Global, USA, Europe"),
-      renew: z.boolean().optional().describe("Whether the free tier renews"),
+      renew: z.boolean().optional().describe("Whether the free quota renews"),
       sudo: z.boolean().optional().describe("Whether sudo/root is available"),
       alwaysOn: z.boolean().optional().describe("Whether the instance can stay always-on"),
     },
     annotations: { readOnlyHint: true },
   },
-  async ({ query, location, renew, sudo, alwaysOn }) => {
+  async ({ query, type, location, renew, sudo, alwaysOn }) => {
     const { vps } = loadData();
     const data = vps.filter((host) => {
       if (query && !includes(host.name, query)) return false;
+      if (type && !includes(host.type, type)) return false;
       if (location && !includes(host.location, location)) return false;
       if (renew !== undefined && host.renew !== renew) return false;
       if (sudo !== undefined && host.sudo !== sudo) return false;
@@ -246,7 +248,7 @@ server.registerTool(
     });
     return text({
       count: data.length,
-      filters: { query, location, renew, sudo, alwaysOn },
+      filters: { query, type, location, renew, sudo, alwaysOn },
       data,
     });
   }
@@ -355,7 +357,7 @@ server.registerResource(
   "ksx://hosting/vps",
   {
     title: "Free VPS hosting list",
-    description: "KSX free VPS provider list with RAM, CPU, disk, location, renewal, sudo, and always-on flags",
+    description: "KSX free compute provider list with type, RAM, CPU, disk, location, verification, limits, notes, renewal, sudo, and always-on flags",
     mimeType: "application/json",
   },
   async (uri) => {

@@ -43,12 +43,14 @@ router.get("/minecraft/:id", (req, res) => {
 // VPS free hosting
 router.get("/vps", (req, res) => {
   const q = String(req.query.q ?? "").toLowerCase();
+  const type = String(req.query.type ?? "").toLowerCase();
   const renew = req.query.renew as string | undefined;
   const sudo = req.query.sudo as string | undefined;
   const alwaysOn = req.query.alwaysOn as string | undefined;
 
   let result = vpsHosting;
   if (q) result = result.filter((v) => v.name.toLowerCase().includes(q));
+  if (type) result = result.filter((v) => v.type.toLowerCase().includes(type));
   if (renew !== undefined && renew !== "") {
     const b = renew === "true";
     result = result.filter((v) => v.renew === b);
