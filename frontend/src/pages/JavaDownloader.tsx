@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import FilterMenu from "../components/FilterMenu";
-import Icon from "../components/Icon";
 import { SearchField, Select, type SelectOption } from "../components/ui";
 import { API_BASE } from "../lib/api";
 import "./JavaDownloader.css";
@@ -44,9 +44,6 @@ export default function JavaDownloader() {
   const [loading, setLoading] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
   const [error, setError] = useState(false);
-  const [selected, setSelected] = useState<Project | null>(null);
-  const [showDetail, setShowDetail] = useState(false);
-  const [detailData, setDetailData] = useState<Record<string, unknown> | null>(null);
 
   const loaderOptions: Record<string, string[]> = {
     mod: ["forge", "fabric", "quilt", "neoforge"],
