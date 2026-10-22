@@ -16,6 +16,7 @@ export interface SitemapCategory {
 }
 export interface MinecraftHosting {
     name: string;
+    logo: string;
     ram: number | string;
     cpu: string;
     disk: string;
@@ -30,6 +31,7 @@ export interface MinecraftHosting {
 }
 export interface VpsHosting {
     name: string;
+    logo: string;
     type: string;
     ram: number | string;
     cpu: string;
@@ -53,6 +55,22 @@ export interface WebsiteHosting {
     customDomain: boolean;
     ssl: boolean;
     ads: boolean;
+    alwaysFree: boolean;
+    verification: string;
+    limits: string;
+    notes: string;
+    link: string;
+}
+export interface DatabaseHosting {
+    name: string;
+    type: string;
+    storage: string;
+    transfer: string;
+    databases: string;
+    region: string;
+    backups: string;
+    ssl: boolean;
+    cardRequired: boolean;
     alwaysFree: boolean;
     verification: string;
     limits: string;

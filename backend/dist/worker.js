@@ -8,11 +8,13 @@ import sitemapData from "./data/sitemap.json" with { type: "json" };
 import mcData from "./data/minecraft-hosting.json" with { type: "json" };
 import vpsData from "./data/vps-hosting.json" with { type: "json" };
 import websiteData from "./data/website-hosting.json" with { type: "json" };
+import databaseData from "./data/database-hosting.json" with { type: "json" };
 import appsData from "./data/apps.json" with { type: "json" };
 const sitemap = sitemapData;
 const mcHosting = mcData;
 const vpsHosting = vpsData;
 const websiteHosting = websiteData;
+const databaseHosting = databaseData;
 const apps = appsData;
 const CREATE_APPS_TABLE = `
   CREATE TABLE IF NOT EXISTS apps (
@@ -93,6 +95,7 @@ app.get("/api/stats", (c) => {
             "GET /api/hosting/minecraft?q=&uptime=&alwaysOn=&location=&ram=",
             "GET /api/hosting/vps?q=&type=&renew=&sudo=&alwaysOn=",
             "GET /api/hosting/website?q=&type=&customDomain=&ssl=&ads=&alwaysFree=",
+            "GET /api/hosting/database?q=&type=&cardRequired=&backups=&alwaysFree=&ssl=",
             "GET /api/social",
         ],
     });
@@ -368,10 +371,35 @@ app.get("/api/hosting/website", (c) => {
         result = result.filter((h) => h.alwaysFree === (alwaysFree === "true"));
     return c.json({ count: result.length, data: result });
 });
+app.get("/api/hosting/database", (c) => {
+    const q = (c.req.query("q") ?? "").toLowerCase();
+    const type = (c.req.query("type") ?? "").toLowerCase();
+    const cardRequired = c.req.query("cardRequired");
+    const backups = c.req.query("backups");
+    const alwaysFree = c.req.query("alwaysFree");
+    const ssl = c.req.query("ssl");
+    let result = databaseHosting;
+    if (q)
+        result = result.filter((h) => h.name.toLowerCase().includes(q));
+    if (type)
+        result = result.filter((h) => h.type.toLowerCase().includes(type));
+    if (cardRequired !== undefined && cardRequired !== "")
+        result = result.filter((h) => h.cardRequired === (cardRequired === "true"));
+    if (backups !== undefined && backups !== "") {
+        const hasBackups = backups === "true";
+        result = result.filter((h) => (h.backups !== "None") === hasBackups);
+    }
+    if (alwaysFree !== undefined && alwaysFree !== "")
+        result = result.filter((h) => h.alwaysFree === (alwaysFree === "true"));
+    if (ssl !== undefined && ssl !== "")
+        result = result.filter((h) => h.ssl === (ssl === "true"));
+    return c.json({ count: result.length, data: result });
+});
 // Legacy JSON paths for backward compat (old static fetch("free.json"))
 app.get("/minecraft/hosting/free.json", (c) => c.json(mcHosting));
 app.get("/vps/hosting/list/free.json", (c) => c.json(vpsHosting));
 app.get("/website/hosting/list/free.json", (c) => c.json(websiteHosting));
+app.get("/database/hosting/list/free.json", (c) => c.json(databaseHosting));
 app.get("/sitemap.json", (c) => c.json(sitemap));
 // Fallback for static assets: if `assets` binding is configured, Worker will serve `frontend/dist` automatically.
 // For API 404s, return JSON. For SPA routes, serve index.html (supports client-side routing)

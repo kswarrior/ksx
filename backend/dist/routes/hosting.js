@@ -2,10 +2,12 @@ import { Router } from "express";
 import mcData from "../data/minecraft-hosting.json" with { type: "json" };
 import vpsData from "../data/vps-hosting.json" with { type: "json" };
 import websiteData from "../data/website-hosting.json" with { type: "json" };
+import databaseData from "../data/database-hosting.json" with { type: "json" };
 const router = Router();
 const mcHosting = mcData;
 const vpsHosting = vpsData;
 const websiteHosting = websiteData;
+const databaseHosting = databaseData;
 // Minecraft free hosting with filters: ?q=&uptime=&alwaysOn=&location=&ram=
 router.get("/minecraft", (req, res) => {
     const q = String(req.query.q ?? "").toLowerCase();
@@ -91,6 +93,34 @@ router.get("/website", (req, res) => {
     }
     if (alwaysFree !== undefined && alwaysFree !== "") {
         result = result.filter((h) => h.alwaysFree === (alwaysFree === "true"));
+    }
+    res.json({ count: result.length, data: result });
+});
+// Database free hosting
+router.get("/database", (req, res) => {
+    const q = String(req.query.q ?? "").toLowerCase();
+    const type = String(req.query.type ?? "").toLowerCase();
+    const cardRequired = req.query.cardRequired;
+    const backups = req.query.backups;
+    const alwaysFree = req.query.alwaysFree;
+    const ssl = req.query.ssl;
+    let result = databaseHosting;
+    if (q)
+        result = result.filter((h) => h.name.toLowerCase().includes(q));
+    if (type)
+        result = result.filter((h) => h.type.toLowerCase().includes(type));
+    if (cardRequired !== undefined && cardRequired !== "") {
+        result = result.filter((h) => h.cardRequired === (cardRequired === "true"));
+    }
+    if (backups !== undefined && backups !== "") {
+        const hasBackups = backups === "true";
+        result = result.filter((h) => (h.backups !== "None") === hasBackups);
+    }
+    if (alwaysFree !== undefined && alwaysFree !== "") {
+        result = result.filter((h) => h.alwaysFree === (alwaysFree === "true"));
+    }
+    if (ssl !== undefined && ssl !== "") {
+        result = result.filter((h) => h.ssl === (ssl === "true"));
     }
     res.json({ count: result.length, data: result });
 });

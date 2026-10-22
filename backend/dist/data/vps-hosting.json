@@ -1,6 +1,7 @@
 [
     {
         "name": "Oracle Cloud Always Free",
+        "logo": "https://www.google.com/s2/favicons?domain=oracle.com&sz=128",
         "type": "VPS",
         "ram": 12,
         "cpu": "2 ARM cores",
@@ -16,6 +17,7 @@
     },
     {
         "name": "Google Compute Engine",
+        "logo": "https://www.google.com/s2/favicons?domain=cloud.google.com&sz=128",
         "type": "VPS",
         "ram": 1,
         "cpu": "2 shared vCPU",
@@ -31,6 +33,7 @@
     },
     {
         "name": "Google Cloud Shell",
+        "logo": "https://www.google.com/s2/favicons?domain=shell.cloud.google.com&sz=128",
         "type": "Cloud shell",
         "ram": 2,
         "cpu": "2 vCPU",
@@ -46,6 +49,7 @@
     },
     {
         "name": "GitHub Codespaces",
+        "logo": "https://github.com/github.png?size=128",
         "type": "Cloud IDE",
         "ram": 8,
         "cpu": "2 cores",
@@ -61,6 +65,7 @@
     },
     {
         "name": "CodeSandbox",
+        "logo": "https://www.google.com/s2/favicons?domain=codesandbox.io&sz=128",
         "type": "Cloud IDE",
         "ram": 4,
         "cpu": "2 cores",
@@ -76,6 +81,7 @@
     },
     {
         "name": "Lightning AI",
+        "logo": "https://www.google.com/s2/favicons?domain=lightning.ai&sz=128",
         "type": "Cloud IDE",
         "ram": 16,
         "cpu": "4 cores",
@@ -91,6 +97,7 @@
     },
     {
         "name": "Deepnote",
+        "logo": "https://www.google.com/s2/favicons?domain=deepnote.com&sz=128",
         "type": "Notebook",
         "ram": 5,
         "cpu": "2 vCPU",
@@ -106,6 +113,7 @@
     },
     {
         "name": "Xshellz",
+        "logo": "https://www.google.com/s2/favicons?domain=xshellz.com&sz=128",
         "type": "Cloud shell",
         "ram": 0.5,
         "cpu": "0.5 vCPU",
@@ -121,6 +129,7 @@
     },
     {
         "name": "Google Colab",
+        "logo": "https://www.google.com/s2/favicons?domain=colab.research.google.com&sz=128",
         "type": "Notebook",
         "ram": 12,
         "cpu": "~2 vCPU",
@@ -136,6 +145,7 @@
     },
     {
         "name": "Kaggle Notebooks",
+        "logo": "https://www.google.com/s2/favicons?domain=kaggle.com&sz=128",
         "type": "Notebook",
         "ram": 29,
         "cpu": "4 vCPU",

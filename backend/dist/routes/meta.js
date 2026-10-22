@@ -16,6 +16,7 @@ router.get("/stats", (_req, res) => {
             "GET /api/hosting/minecraft?q=&uptime=&alwaysOn=&location=&ram=",
             "GET /api/hosting/vps?q=&type=&renew=&sudo=&alwaysOn=",
             "GET /api/hosting/website?q=&type=&customDomain=&ssl=&ads=&alwaysFree=",
+            "GET /api/hosting/database?q=&type=&cardRequired=&backups=&alwaysFree=&ssl=",
             "GET /api/social",
         ],
     });
