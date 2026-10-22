@@ -131,7 +131,7 @@ export default function JavaDownloaderProject() {
                 <div className="jd-detail-actions">
                   <Link
                     className="jd-btn jd-btn-icon"
-                    to={`/minecraft/java/downloader/${project.project_id}/downloads`}
+                    to={`/minecraft/java/downloader/${projectId ?? project.project_id}/downloads`}
                     aria-label="Downloads"
                     title="Downloads"
                   >
