@@ -41,41 +41,34 @@ const InstagramIcon = () => (
 type LoadState = {
   stats: SocialStats | null;
   loading: boolean;
-  refreshing: boolean;
-  failed: boolean;
 };
 
 function useLiveSocialStats() {
   const [state, setState] = useState<LoadState>({
     stats: null,
     loading: true,
-    refreshing: false,
-    failed: false,
   });
   const cancelledRef = useRef(false);
   const inFlightRef = useRef(false);
 
-  const load = useCallback(async (force: boolean, manual: boolean) => {
+  const load = useCallback(async () => {
     if (inFlightRef.current) return;
     inFlightRef.current = true;
     setState((current) => ({
       ...current,
       loading: current.stats === null,
-      refreshing: manual && current.stats !== null,
     }));
 
     try {
-      const stats = await api.getSocialStats(force);
+      const stats = await api.getSocialStats();
       if (!cancelledRef.current) {
-        setState({ stats, loading: false, refreshing: false, failed: false });
+        setState({ stats, loading: false });
       }
     } catch {
       if (!cancelledRef.current) {
         setState((current) => ({
           ...current,
           loading: false,
-          refreshing: false,
-          failed: true,
         }));
       }
     } finally {
@@ -85,9 +78,9 @@ function useLiveSocialStats() {
 
   useEffect(() => {
     cancelledRef.current = false;
-    void load(false, false);
+    void load();
     const timer = window.setInterval(() => {
-      void load(false, false);
+      void load();
     }, 60_000);
 
     return () => {
@@ -96,11 +89,7 @@ function useLiveSocialStats() {
     };
   }, [load]);
 
-  const refresh = useCallback(() => {
-    void load(true, true);
-  }, [load]);
-
-  return { ...state, refresh };
+  return state;
 }
 
 function formatOnline(count: number): string {
@@ -182,7 +171,7 @@ function SocialCard({
 }
 
 export default function Social() {
-  const { stats, loading, refreshing, failed, refresh } = useLiveSocialStats();
+  const { stats, loading } = useLiveSocialStats();
   const youtube = stats?.platforms.youtube;
   const discord = stats?.platforms.discord;
   const instagram = stats?.platforms.instagram;
@@ -195,19 +184,6 @@ export default function Social() {
         <div className="so-bg-orb o2" />
       </div>
       <div className="so-shell">
-        <div className="so-tools">
-          <button
-            type="button"
-            className={`so-refresh ${refreshing ? "is-busy" : ""}`}
-            onClick={refresh}
-            disabled={refreshing || loading}
-            aria-label={refreshing ? "Refreshing live stats" : "Refresh live stats"}
-            title={failed ? "Couldn't refresh live stats" : "Refresh live stats"}
-          >
-            <RefreshIcon />
-          </button>
-        </div>
-
         <div className="so-grid">
           <SocialCard
             className="yt"

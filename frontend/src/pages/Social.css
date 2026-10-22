@@ -13,8 +13,6 @@
 
 .so-shell{max-width:1120px; margin:0 auto; padding:16px 16px 40px;}
 
-.so-tools{display:flex; justify-content:flex-end; margin-bottom:12px;}
-
 .so-grid{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px;}
 
 .so-card{
@@ -113,27 +111,12 @@
 .so-arrow svg{width:16px; height:16px;}
 .so-card:hover .so-arrow{transform:translate(3px,-3px); background:var(--brand); color:#fff; border-color:transparent;}
 
-.so-refresh{
-  width:34px; height:34px; display:inline-grid; place-items:center; flex-shrink:0;
-  padding:0; border-radius:999px; border:1px solid rgba(255,255,255,0.14);
-  background:rgba(255,255,255,0.05); color:#f5f5f5;
-  cursor:pointer; transition:background .2s ease, border-color .2s ease, transform .2s ease;
-}
-.so-refresh:hover{background:rgba(255,255,255,0.1); border-color:rgba(255,255,255,0.24);}
-.so-refresh:active{transform:scale(0.97);}
-.so-refresh:focus-visible{outline:2px solid #f5f5f5; outline-offset:3px;}
-.so-refresh:disabled{cursor:default; opacity:0.72;}
-.so-refresh svg{width:15px; height:15px;}
-.so-refresh.is-busy svg{animation:soSpin .9s linear infinite;}
-
 @keyframes soOrb{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-14px) scale(1.03)}}
 @keyframes soPulse{0%,100%{opacity:1; transform:scale(1)}50%{opacity:.45; transform:scale(.82)}}
 @keyframes soShimmer{0%{background-position:180% 0}100%{background-position:-60% 0}}
-@keyframes soSpin{to{transform:rotate(360deg)}}
 
 @media(max-width:900px){
   .so-grid{grid-template-columns:1fr; gap:12px; max-width:620px; margin:0 auto;}
-  .so-tools{max-width:620px; margin-left:auto; margin-right:auto;}
 }
 @media(max-width:768px){
   .so-bg-orb{display:none !important;}
