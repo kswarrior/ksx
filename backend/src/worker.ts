@@ -7,6 +7,8 @@ import type {
   MinecraftHosting,
   VpsHosting,
   SocialEnv,
+  AppRecord,
+  D1Database,
 } from "./types.js";
 
 // Vite/Workers JSON import — with nodejs_compat we can use import assertions
@@ -15,10 +17,79 @@ import type {
 import sitemapData from "./data/sitemap.json" with { type: "json" };
 import mcData from "./data/minecraft-hosting.json" with { type: "json" };
 import vpsData from "./data/vps-hosting.json" with { type: "json" };
+import appsData from "./data/apps.json" with { type: "json" };
 
 const sitemap = sitemapData as SitemapCategory[];
 const mcHosting = mcData as MinecraftHosting[];
 const vpsHosting = vpsData as VpsHosting[];
+const apps = appsData as AppRecord[];
+
+const CREATE_APPS_TABLE = `
+  CREATE TABLE IF NOT EXISTS apps (
+    slug TEXT PRIMARY KEY,
+    name TEXT NOT NULL,
+    owner TEXT NOT NULL,
+    platform TEXT NOT NULL,
+    version TEXT NOT NULL,
+    download_url TEXT NOT NULL,
+    created_at TEXT NOT NULL DEFAULT (datetime('now')),
+    updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+  )
+`;
+
+const CREATE_DOWNLOADS_TABLE = `
+  CREATE TABLE IF NOT EXISTS app_downloads (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    app_slug TEXT NOT NULL,
+    version TEXT NOT NULL,
+    platform TEXT NOT NULL,
+    download_url TEXT NOT NULL,
+    referrer TEXT,
+    user_agent TEXT,
+    country TEXT,
+    created_at TEXT NOT NULL DEFAULT (datetime('now')),
+    FOREIGN KEY (app_slug) REFERENCES apps(slug)
+  )
+`;
+
+const CREATE_DOWNLOADS_INDEX = `
+  CREATE INDEX IF NOT EXISTS idx_app_downloads_app_created
+  ON app_downloads (app_slug, created_at DESC)
+`;
+
+let appDbReady: Promise<void> | null = null;
+
+async function ensureAppDb(db: D1Database) {
+  if (!appDbReady) {
+    appDbReady = (async () => {
+      await db.batch([
+        db.prepare(CREATE_APPS_TABLE),
+        db.prepare(CREATE_DOWNLOADS_TABLE),
+        db.prepare(CREATE_DOWNLOADS_INDEX),
+      ]);
+      for (const app of apps) {
+        await db
+          .prepare(
+            `INSERT INTO apps (slug, name, owner, platform, version, download_url, updated_at)
+             VALUES (?, ?, ?, ?, ?, ?, datetime('now'))
+             ON CONFLICT(slug) DO UPDATE SET
+               name = excluded.name,
+               owner = excluded.owner,
+               platform = excluded.platform,
+               version = excluded.version,
+               download_url = excluded.download_url,
+               updated_at = datetime('now')`
+          )
+          .bind(app.slug, app.name, app.owner, app.platform, app.version, app.downloadUrl)
+          .run();
+      }
+    })().catch((error) => {
+      appDbReady = null;
+      throw error;
+    });
+  }
+  return appDbReady;
+}
 
 const app = new Hono<{ Bindings: SocialEnv }>();
 

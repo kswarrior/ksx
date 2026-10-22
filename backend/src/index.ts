@@ -9,6 +9,7 @@ import { fileURLToPath } from "node:url";
 import sitemapRouter from "./routes/sitemap.js";
 import hostingRouter from "./routes/hosting.js";
 import metaRouter from "./routes/meta.js";
+import appsRouter from "./routes/apps.js";
 import sitemapData from "./data/sitemap.json" with { type: "json" };
 import mcData from "./data/minecraft-hosting.json" with { type: "json" };
 import vpsData from "./data/vps-hosting.json" with { type: "json" };
@@ -24,6 +25,7 @@ app.use(express.json());
 // API routes
 app.use("/api/sitemap", sitemapRouter);
 app.use("/api/hosting", hostingRouter);
+app.use("/api/apps", appsRouter);
 app.use("/api", metaRouter);
 
 // Server jar metadata proxy (keeps browser requests same-origin)

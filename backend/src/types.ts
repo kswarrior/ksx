@@ -76,6 +76,33 @@ export interface SocialStats {
   platforms: Record<SocialPlatformName, SocialStat>;
 }
 
+export interface AppRecord {
+  slug: string;
+  name: string;
+  owner: string;
+  platform: string;
+  version: string;
+  downloadUrl: string;
+}
+
+export interface D1Result<T = unknown> {
+  success: boolean;
+  results?: T[];
+  meta?: unknown;
+}
+
+export interface D1PreparedStatement {
+  bind(...values: unknown[]): D1PreparedStatement;
+  first<T = unknown>(): Promise<T | null>;
+  run(): Promise<D1Result>;
+  all<T = unknown>(): Promise<D1Result<T>>;
+}
+
+export interface D1Database {
+  prepare(query: string): D1PreparedStatement;
+  batch<T = unknown>(statements: D1PreparedStatement[]): Promise<D1Result<T>[]>;
+}
+
 export interface SocialEnv {
   YOUTUBE_API_KEY?: string;
   YOUTUBE_HANDLE?: string;
@@ -83,4 +110,5 @@ export interface SocialEnv {
   INSTAGRAM_ACCESS_TOKEN?: string;
   INSTAGRAM_USER_ID?: string;
   INSTAGRAM_USERNAME?: string;
+  DB?: D1Database;
 }
