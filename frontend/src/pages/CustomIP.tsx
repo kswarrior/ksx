@@ -154,22 +154,31 @@ export default function CustomIP() {
             <div className="ci-card">
               <div className="ci-card-head">
                 <h3><span>2</span> Create Free Subdomain</h3>
-                <Select
-                  className="ci-provider"
-                  value={provider}
-                  onChange={setProvider}
-                  options={PROVIDERS.map((p) => ({ value: p.value, label: p.label }))}
-                  ariaLabel="Select subdomain provider"
-                />
+                <div className="ci-head-actions">
+                  {frameBlocked && (
+                    <a className="ci-btn secondary ci-view" href={activeProvider.url} target="_blank" rel="noreferrer">
+                      <Icon name="external-link" size={13} /> View
+                    </a>
+                  )}
+                  <Select
+                    className="ci-provider"
+                    value={provider}
+                    onChange={setProvider}
+                    options={PROVIDERS.map((p) => ({ value: p.value, label: p.label }))}
+                    ariaLabel="Select subdomain provider"
+                  />
+                </div>
               </div>
               <p>Fill all information and click create — free subdomain for your server.</p>
-              <div className="ci-embed">
-                <div className="ci-embed-icon"><Icon name="globe" size={26} /></div>
-                <h4>{activeProvider.label} Subdomain Creator</h4>
-                <p>{activeProvider.label} blocks embedding its website on other sites for security, so it can't be shown here. Open it in a new tab to create your free subdomain.</p>
-                <a className="ci-btn ci-embed-link" href={activeProvider.url} target="_blank" rel="noreferrer">
-                  Open {activeProvider.label} <Icon name="external-link" size={14} />
-                </a>
+              <div className="ci-frame-wrap">
+                <iframe
+                  ref={frameRef}
+                  key={activeProvider.value}
+                  title={`${activeProvider.label} subdomain`}
+                  className="ci-frame"
+                  src={activeProvider.url}
+                  onLoad={handleFrameLoad}
+                />
               </div>
             </div>
           </div>
