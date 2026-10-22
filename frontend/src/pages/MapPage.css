@@ -48,6 +48,7 @@
 .mp-viewport {
   position: absolute;
   inset: 0;
+  z-index: 1;
   overflow: hidden;
   touch-action: none;
   cursor: grab;
@@ -100,18 +101,27 @@
   height: 132px;
   padding: 0;
   appearance: none;
-  border: 1px solid rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 50%;
   display: grid;
   place-items: center;
   color: #fff;
   cursor: pointer;
-  background: #474d55;
+  background: radial-gradient(circle at 32% 24%, #2b2b2b 0%, #0b0b0b 72%);
   transition: border-color 0.15s ease;
 }
 
+.mp-core::before {
+  content: "";
+  position: absolute;
+  inset: -11px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  pointer-events: none;
+}
+
 .mp-core:hover {
-  border-color: rgba(255, 255, 255, 0.4);
+  border-color: rgba(255, 255, 255, 0.5);
 }
 
 .mp-core-inner {
@@ -134,18 +144,27 @@
   height: 104px;
   padding: 0;
   appearance: none;
-  border: 1px solid rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(var(--rgb), 0.5);
   border-radius: 50%;
   display: grid;
   place-items: center;
   color: #fff;
   cursor: pointer;
-  background: rgb(var(--rgb));
+  background: radial-gradient(circle at 32% 24%, #272727 0%, #0d0d0d 72%);
   transition: border-color 0.15s ease, opacity 0.15s ease;
 }
 
+.mp-star::before {
+  content: "";
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  border: 1px solid rgba(var(--rgb), 0.16);
+  pointer-events: none;
+}
+
 .mp-star:hover {
-  border-color: rgba(255, 255, 255, 0.48);
+  border-color: rgba(255, 255, 255, 0.5);
 }
 
 .mp-star.is-active,
@@ -173,18 +192,18 @@
   height: 58px;
   padding: 0;
   appearance: none;
-  border: 1px solid rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(var(--rgb), 0.38);
   border-radius: 50%;
   display: grid;
   place-items: center;
   color: #fff;
   cursor: pointer;
-  background: rgb(var(--rgb));
+  background: radial-gradient(circle at 34% 26%, #232323 0%, #0c0c0c 72%);
   transition: border-color 0.15s ease, opacity 0.15s ease;
 }
 
 .mp-planet:hover {
-  border-color: rgba(255, 255, 255, 0.48);
+  border-color: rgba(255, 255, 255, 0.5);
 }
 
 .mp-planet.is-focused {
@@ -212,14 +231,14 @@
   display: grid;
   place-items: center;
   border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  background: rgb(var(--rgb));
+  border: 1px solid rgba(var(--rgb), 0.34);
+  background: radial-gradient(circle at 34% 26%, #222222 0%, #0b0b0b 72%);
   color: #fff;
   transition: border-color 0.15s ease, opacity 0.15s ease;
 }
 
 .mp-moon:hover {
-  border-color: rgba(255, 255, 255, 0.48);
+  border-color: rgba(255, 255, 255, 0.5);
 }
 
 .mp-moon.is-focused {
