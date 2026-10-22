@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Icon from "../components/Icon";
 import { Select, TextField } from "../components/ui";
 import "./CustomIP.css";
@@ -27,6 +27,34 @@ export default function CustomIP() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
+  const [frameBlocked, setFrameBlocked] = useState(false);
+  const frameRef = useRef<HTMLIFrameElement>(null);
+  const frameStartRef = useRef(0);
+  const frameTimerRef = useRef<number | undefined>(undefined);
+
+  const startFrameTimer = useCallback(() => {
+    frameStartRef.current = performance.now();
+    setFrameBlocked(false);
+    window.clearTimeout(frameTimerRef.current);
+    frameTimerRef.current = window.setTimeout(() => setFrameBlocked(true), 5000);
+  }, []);
+
+  useEffect(() => {
+    if (step !== 2) return;
+    startFrameTimer();
+    return () => window.clearTimeout(frameTimerRef.current);
+  }, [step, provider, startFrameTimer]);
+
+  function handleFrameLoad() {
+    window.clearTimeout(frameTimerRef.current);
+    let blocked = performance.now() - frameStartRef.current < 500;
+    try {
+      if (frameRef.current?.contentWindow?.location.href === "about:blank") blocked = true;
+    } catch {
+      // Cross-origin page loaded normally.
+    }
+    setFrameBlocked(blocked);
+  }
 
   const ipv4Regex = /^(?:(?:25[0-5]|2[0-4]\d|1?\d{1,2})\.){3}(?:25[0-5]|2[0-4]\d|1?\d{1,2})$/;
 
@@ -86,7 +114,7 @@ export default function CustomIP() {
   const activeProvider = PROVIDERS.find((p) => p.value === provider) ?? PROVIDERS[0];
 
   return (
-    <div className="customip-page">
+    <div className={`customip-page${step === 2 ? " ci-fullscreen" : ""}`}>
       <div className="ci-bg" aria-hidden>
         <div className="ci-bg-grad" />
         <div className="ci-bg-orb o1" />
