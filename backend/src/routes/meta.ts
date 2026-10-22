@@ -23,19 +23,25 @@ router.get("/stats", (_req, res) => {
   });
 });
 
-router.get("/social", async (_req, res) => {
+router.get("/social", async (req, res) => {
   try {
-    const stats = await getSocialStats({
-      YOUTUBE_API_KEY: process.env.YOUTUBE_API_KEY,
-      YOUTUBE_HANDLE: process.env.YOUTUBE_HANDLE,
-      DISCORD_INVITE_CODE: process.env.DISCORD_INVITE_CODE,
-      INSTAGRAM_ACCESS_TOKEN: process.env.INSTAGRAM_ACCESS_TOKEN,
-      INSTAGRAM_USER_ID: process.env.INSTAGRAM_USER_ID,
-      INSTAGRAM_USERNAME: process.env.INSTAGRAM_USERNAME,
-    });
+    const force = req.query.refresh === "1";
+    const stats = await getSocialStats(
+      {
+        YOUTUBE_API_KEY: process.env.YOUTUBE_API_KEY,
+        YOUTUBE_HANDLE: process.env.YOUTUBE_HANDLE,
+        DISCORD_INVITE_CODE: process.env.DISCORD_INVITE_CODE,
+        INSTAGRAM_ACCESS_TOKEN: process.env.INSTAGRAM_ACCESS_TOKEN,
+        INSTAGRAM_USER_ID: process.env.INSTAGRAM_USER_ID,
+        INSTAGRAM_USERNAME: process.env.INSTAGRAM_USERNAME,
+      },
+      { force }
+    );
     res.setHeader(
       "Cache-Control",
-      "public, max-age=300, s-maxage=300, stale-while-revalidate=600"
+      force
+        ? "no-store"
+        : "public, max-age=300, s-maxage=300, stale-while-revalidate=600"
     );
     res.json(stats);
   } catch (error) {

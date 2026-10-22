@@ -427,11 +427,18 @@ async function getInstagramStats(config: ResolvedConfig): Promise<SocialStat> {
   );
 }
 
-export async function getSocialStats(env: SocialEnv = {}): Promise<SocialStats> {
+type GetSocialStatsOptions = {
+  force?: boolean;
+};
+
+export async function getSocialStats(
+  env: SocialEnv = {},
+  options: GetSocialStatsOptions = {}
+): Promise<SocialStats> {
   const config = resolveConfig(env);
   const key = cacheKey(config);
   const now = Date.now();
-  if (cache && cache.key === key && cache.expiresAt > now) {
+  if (!options.force && cache && cache.key === key && cache.expiresAt > now) {
     return cache.value;
   }
 
@@ -446,6 +453,10 @@ export async function getSocialStats(env: SocialEnv = {}): Promise<SocialStats> 
     platforms: { youtube, discord, instagram },
   };
   const hasLiveData = Object.values(value.platforms).some((platform) => platform.available);
-  cache = { key, expiresAt: now + (hasLiveData ? CACHE_TTL_MS : 60_000), value };
+  cache = {
+    key,
+    expiresAt: now + (hasLiveData ? CACHE_TTL_MS : FAILURE_CACHE_TTL_MS),
+    value,
+  };
   return value;
 }

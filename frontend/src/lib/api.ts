@@ -92,5 +92,6 @@ export const api = {
       `/api/hosting/vps${qs}`
     );
   },
-  getSocialStats: () => fetchJson<SocialStats>("/api/social"),
+  getSocialStats: (refresh = false) =>
+    fetchJson<SocialStats>(`/api/social${refresh ? "?refresh=1" : ""}`),
 };
