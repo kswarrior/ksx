@@ -118,9 +118,12 @@ sudo systemctl enable --now airlink-daemon
 sudo systemctl status airlink-daemon --no-pager`;
 
 const FIREWALL = `sudo ufw allow 3000/tcp
-sudo ufw allow 3002/tcp
 sudo ufw allow 3003/tcp
 sudo ufw allow 25565/tcp
+
+# Separate node only: allow the panel server to reach the daemon
+# sudo ufw allow from PANEL_IP to any port 3002 proto tcp
+
 sudo ufw reload`;
 
 export default function AirlinkPanel() {
@@ -252,7 +255,7 @@ export default function AirlinkPanel() {
               number={number}
               icon="download"
               title={isManual ? "Manual Panel Installation" : "Run the Quick Installer"}
-              meta={isManual ? "PostgreSQL · PM2" : "All-in-one"}
+              meta={isManual ? "npm · SQLite · PM2" : "All-in-one"}
             >
               {isManual ? (
                 <>
