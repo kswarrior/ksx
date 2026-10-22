@@ -12,6 +12,7 @@ const Social = lazy(() => import("./pages/Social"));
 const About = lazy(() => import("./pages/About"));
 const MinecraftHosting = lazy(() => import("./pages/MinecraftHosting"));
 const VpsHosting = lazy(() => import("./pages/VpsHosting"));
+const WebsiteHosting = lazy(() => import("./pages/WebsiteHosting"));
 const KsPortal = lazy(() => import("./pages/KsPortal"));
 const JavaLauncher = lazy(() => import("./pages/JavaLauncher"));
 const JavaDownloader = lazy(() => import("./pages/JavaDownloader"));
@@ -52,6 +53,10 @@ export default function App() {
           <Route path="vps/hosting/free" element={<VpsHosting />} />
           <Route path="vps/hosting/list/free" element={<VpsHosting />} />
           <Route path="vps/hosting/list/free.html" element={<VpsHosting />} />
+          <Route path="website/hosting/free" element={<WebsiteHosting />} />
+          <Route path="website/hosting/free.html" element={<WebsiteHosting />} />
+          <Route path="website/hosting/list/free" element={<WebsiteHosting />} />
+          <Route path="website/hosting/list/free.html" element={<WebsiteHosting />} />
 
           <Route path="apps/android/ks-portal" element={<KsPortal />} />
           <Route path="apps/android/ks-portal.html" element={<KsPortal />} />
@@ -91,6 +96,7 @@ export default function App() {
           {/* Fallback for legacy .html with generic handler */}
           <Route path="minecraft/*" element={<GenericPlaceholder />} />
           <Route path="vps/*" element={<GenericPlaceholder />} />
+          <Route path="website/*" element={<GenericPlaceholder />} />
           <Route path="apps/*" element={<GenericPlaceholder />} />
 
           <Route path="*" element={<NotFound />} />
