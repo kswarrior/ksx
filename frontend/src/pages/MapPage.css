@@ -50,6 +50,7 @@
   inset: 0;
   z-index: 1;
   overflow: hidden;
+  contain: layout paint;
   touch-action: none;
   cursor: grab;
   user-select: none;
