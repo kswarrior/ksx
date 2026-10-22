@@ -159,7 +159,8 @@ export const BOT_ENVIRONMENTS: BotEnvironment[] = [
     installPm2: "npm install -g pm2",
     installScreen: "sudo apt install -y screen",
     writeFile: bashWrite,
-    writeHint: "Run this from the folder that contains your project folder. It writes the generated code directly to bot.js.",
+    writeHint:
+      "Creates the project folder if needed and writes the generated code directly to bot.js. Safe to run again.",
   },
   {
     id: "powershell",
@@ -170,11 +171,11 @@ export const BOT_ENVIRONMENTS: BotEnvironment[] = [
       "winget install --id OpenJS.NodeJS.LTS -e --accept-source-agreements --accept-package-agreements",
     installNodeNote: "Uses winget. If winget is unavailable, install Node.js 22 LTS from nodejs.org.",
     verifyNode: "node -v; npm -v",
-    createProject: (folder) =>
-      `New-Item -ItemType Directory -Force ${folder} | Out-Null; Set-Location ${folder}; npm init -y; npm install mineflayer mineflayer-pathfinder vec3`,
+    createProject: powershellProject,
     installPm2: "npm install -g pm2",
     writeFile: powershellWrite,
-    writeHint: "Run this from the folder that contains your project folder. The single-quoted here-string writes bot.js without changing its contents.",
+    writeHint:
+      "Creates the project folder if needed. The single-quoted here-string writes bot.js without changing its contents. Safe to run again.",
   },
   {
     id: "cmd",
@@ -185,12 +186,11 @@ export const BOT_ENVIRONMENTS: BotEnvironment[] = [
       "winget install --id OpenJS.NodeJS.LTS -e --accept-source-agreements --accept-package-agreements",
     installNodeNote: "Uses winget. If winget is unavailable, install Node.js 22 LTS from nodejs.org.",
     verifyNode: "node -v && npm -v",
-    createProject: (folder) =>
-      `mkdir ${folder} 2>nul & cd ${folder} && npm init -y && npm install mineflayer mineflayer-pathfinder vec3`,
+    createProject: cmdProject,
     installPm2: "npm install -g pm2",
-    writeFile: (folder, _code) =>
-      `powershell -NoProfile -Command "Get-Clipboard | Set-Content -Path '${folder}\\bot.js' -Encoding UTF8"`,
-    writeHint: "Click Copy Code first. Then run this command to save the clipboard contents as bot.js.",
+    writeFile: cmdWrite,
+    writeHint:
+      "Click Copy Code first. Then run this command to create the folder if needed and save the clipboard contents as bot.js. Safe to run again.",
   },
   {
     id: "termux",
@@ -204,7 +204,8 @@ export const BOT_ENVIRONMENTS: BotEnvironment[] = [
     installPm2: "npm install -g pm2",
     installScreen: "pkg install -y screen",
     writeFile: bashWrite,
-    writeHint: "Run this from the folder that contains your project folder. It writes the generated code directly to bot.js.",
+    writeHint:
+      "Creates the project folder if needed and writes the generated code directly to bot.js. Safe to run again.",
   },
   {
     id: "macos",
@@ -217,7 +218,8 @@ export const BOT_ENVIRONMENTS: BotEnvironment[] = [
     createProject: unixProject,
     installPm2: "npm install -g pm2",
     writeFile: bashWrite,
-    writeHint: "Run this from the folder that contains your project folder. It writes the generated code directly to bot.js.",
+    writeHint:
+      "Creates the project folder if needed and writes the generated code directly to bot.js. Safe to run again.",
   },
 ];
 
@@ -248,7 +250,10 @@ export function getBotProcessManager(id: BotProcessManagerId): BotProcessManager
 }
 
 function cdPrefix(folder: string, environmentId: BotEnvironmentId): string {
-  return environmentId === "powershell" ? `Set-Location ${folder}; ` : `cd ${folder} && `;
+  const dir = shellFolder(folder, environmentId);
+  if (environmentId === "powershell") return `Set-Location ${dir}; `;
+  if (environmentId === "cmd") return `cd /d ${dir} && `;
+  return `cd ${dir} && `;
 }
 
 function termuxLock(environmentId: BotEnvironmentId): string {

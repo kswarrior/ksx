@@ -12,10 +12,11 @@ import {
 } from "../lib/minecraftBot";
 import {
   BOT_ENVIRONMENTS,
+  DEFAULT_BOT_FOLDER,
   buildManageCommands,
   getBotEnvironment,
   getBotProcessManager,
-  safeFolderName,
+  safeFolderPath,
   safeProcessName,
   type BotEnvironmentId,
   type BotProcessManagerId,
@@ -105,7 +106,7 @@ export default function BotPage() {
   const [environmentId, setEnvironmentId] = useState<BotEnvironmentId>("linux");
   const [nodeReady, setNodeReady] = useState(false);
   const [processManager, setProcessManager] = useState<BotProcessManagerId>("pm2");
-  const [folder, setFolder] = useState("mc-bot");
+  const [folder, setFolder] = useState(DEFAULT_BOT_FOLDER);
 
   const [host, setHost] = useState(DEFAULT_BOT_CONFIG.host);
   const [port, setPort] = useState(String(DEFAULT_BOT_CONFIG.port));
@@ -126,7 +127,7 @@ export default function BotPage() {
 
   const environment = getBotEnvironment(environmentId);
   const manager = getBotProcessManager(processManager);
-  const folderName = safeFolderName(folder);
+  const folderName = safeFolderPath(folder);
 
   const config: BotConfig = {
     host,
