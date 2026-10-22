@@ -20,6 +20,7 @@ export type SearchItem = {
 
 export type MinecraftHosting = {
   name: string;
+  logo: string;
   ram: number | string;
   cpu: string;
   disk: string;
@@ -35,6 +36,7 @@ export type MinecraftHosting = {
 
 export type VpsHosting = {
   name: string;
+  logo: string;
   type: string;
   ram: number | string;
   cpu: string;

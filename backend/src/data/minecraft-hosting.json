@@ -1,6 +1,7 @@
 [
   {
     "name": "Aternos",
+    "logo": "https://www.google.com/s2/favicons?domain=aternos.org&sz=128",
     "ram": 2.4,
     "cpu": "Shared",
     "disk": "4GB",
@@ -15,6 +16,7 @@
   },
   {
     "name": "Minehut",
+    "logo": "https://www.google.com/s2/favicons?domain=minehut.com&sz=128",
     "ram": 1,
     "cpu": "Shared",
     "disk": "10GB",
@@ -29,6 +31,7 @@
   },
   {
     "name": "FalixNodes",
+    "logo": "https://www.google.com/s2/favicons?domain=falixnodes.net&sz=128",
     "ram": 3,
     "cpu": "1 core",
     "disk": "10GB",
@@ -43,6 +46,7 @@
   },
   {
     "name": "FreeMcServer.net",
+    "logo": "https://www.google.com/s2/favicons?domain=freemcserver.net&sz=128",
     "ram": 1.7,
     "cpu": "Shared",
     "disk": "10GB",
@@ -57,6 +61,7 @@
   },
   {
     "name": "Minefort",
+    "logo": "https://www.google.com/s2/favicons?domain=minefort.com&sz=128",
     "ram": 1,
     "cpu": "Shared",
     "disk": "Varies",
@@ -71,6 +76,7 @@
   },
   {
     "name": "PowerupStack",
+    "logo": "https://www.google.com/s2/favicons?domain=powerupstack.com&sz=128",
     "ram": 3,
     "cpu": "2 threads",
     "disk": "4GB",
@@ -85,6 +91,7 @@
   },
   {
     "name": "SwiftServers",
+    "logo": "https://www.google.com/s2/favicons?domain=swiftservers.org&sz=128",
     "ram": 2,
     "cpu": "1.25 cores",
     "disk": "10GB",
@@ -99,6 +106,7 @@
   },
   {
     "name": "FreeGameHost",
+    "logo": "https://www.google.com/s2/favicons?domain=freegamehost.xyz&sz=128",
     "ram": 4,
     "cpu": "200%",
     "disk": "6GB",
@@ -113,6 +121,7 @@
   },
   {
     "name": "Tick Hosting",
+    "logo": "https://www.google.com/s2/favicons?domain=tickhosting.com&sz=128",
     "ram": 4,
     "cpu": "Shared",
     "disk": "10GB",
@@ -127,6 +136,7 @@
   },
   {
     "name": "AxentHost",
+    "logo": "https://www.google.com/s2/favicons?domain=axenthost.com&sz=128",
     "ram": 2,
     "cpu": "Shared",
     "disk": "20GB",
@@ -141,6 +151,7 @@
   },
   {
     "name": "Severoo",
+    "logo": "https://www.google.com/s2/favicons?domain=severoo.com&sz=128",
     "ram": 6,
     "cpu": "Shared",
     "disk": "15GB",
@@ -155,6 +166,7 @@
   },
   {
     "name": "CoalByte",
+    "logo": "https://www.google.com/s2/favicons?domain=coalbyte.com&sz=128",
     "ram": 3,
     "cpu": "1 vCPU",
     "disk": "8GB",
@@ -169,6 +181,7 @@
   },
   {
     "name": "HidenCloud",
+    "logo": "https://www.google.com/s2/favicons?domain=hidencloud.com&sz=128",
     "ram": 3,
     "cpu": "2 vCores",
     "disk": "15GB",
@@ -183,6 +196,7 @@
   },
   {
     "name": "OuiHeberg",
+    "logo": "https://www.google.com/s2/favicons?domain=ouiheberg.com&sz=128",
     "ram": 8,
     "cpu": "2 vCores",
     "disk": "2GB",
@@ -197,6 +211,7 @@
   },
   {
     "name": "Oracle Cloud Always Free (Self-Setup)",
+    "logo": "https://www.google.com/s2/favicons?domain=oracle.com&sz=128",
     "ram": 12,
     "cpu": "2 ARM cores",
     "disk": "200GB",
@@ -211,6 +226,7 @@
   },
   {
     "name": "Play Hosting",
+    "logo": "https://www.google.com/s2/favicons?domain=play.hosting&sz=128",
     "ram": 3,
     "cpu": "Shared Ryzen 9",
     "disk": "10GB",
@@ -225,6 +241,7 @@
   },
   {
     "name": "MineStrator MyBoxFree",
+    "logo": "https://www.google.com/s2/favicons?domain=minestrator.com&sz=128",
     "ram": 4,
     "cpu": "1 core + 1 FlexCore",
     "disk": "8GB",
@@ -239,6 +256,7 @@
   },
   {
     "name": "Eternal Zero",
+    "logo": "https://www.google.com/s2/favicons?domain=eternalzero.cloud&sz=128",
     "ram": 6,
     "cpu": "3 cores (300%)",
     "disk": "20GB",
@@ -253,6 +271,7 @@
   },
   {
     "name": "FreezeHost",
+    "logo": "https://www.google.com/s2/favicons?domain=freezehost.pro&sz=128",
     "ram": 2,
     "cpu": "2 vCPU",
     "disk": "10GB",
@@ -267,6 +286,7 @@
   },
   {
     "name": "MCServerHost",
+    "logo": "https://www.google.com/s2/favicons?domain=mcserverhost.com&sz=128",
     "ram": 4,
     "cpu": "Shared",
     "disk": "10GB",
@@ -281,6 +301,7 @@
   },
   {
     "name": "DracoByte",
+    "logo": "https://www.google.com/s2/favicons?domain=dracobyte.pro&sz=128",
     "ram": 4,
     "cpu": "1 core",
     "disk": "10GB",
@@ -295,6 +316,7 @@
   },
   {
     "name": "Seedloaf",
+    "logo": "https://www.google.com/s2/favicons?domain=seedloaf.com&sz=128",
     "ram": 4,
     "cpu": "200%",
     "disk": "6GB",
@@ -309,6 +331,7 @@
   },
   {
     "name": "Host2Play",
+    "logo": "https://www.google.com/s2/favicons?domain=host2play.gratis&sz=128",
     "ram": 3,
     "cpu": "3 cores",
     "disk": "2GB",
@@ -323,6 +346,7 @@
   },
   {
     "name": "IceHost",
+    "logo": "https://www.google.com/s2/favicons?domain=icehost.pl&sz=128",
     "ram": 4,
     "cpu": "1.5 cores",
     "disk": "5GB",
@@ -337,6 +361,7 @@
   },
   {
     "name": "Gaming4Free",
+    "logo": "https://www.google.com/s2/favicons?domain=gaming4free.net&sz=128",
     "ram": 2,
     "cpu": "Shared",
     "disk": "5GB",
@@ -351,6 +376,7 @@
   },
   {
     "name": "AcoreZero",
+    "logo": "https://www.google.com/s2/favicons?domain=acorehosting.com&sz=128",
     "ram": 6,
     "cpu": "3 vCores",
     "disk": "10GB",
@@ -365,6 +391,7 @@
   },
   {
     "name": "FreeMcHosting",
+    "logo": "https://www.google.com/s2/favicons?domain=freemchosting.com&sz=128",
     "ram": 4,
     "cpu": "Shared",
     "disk": "10GB",

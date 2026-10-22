@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { api, MinecraftHosting } from "../lib/api";
+import BrandLogo from "../components/BrandLogo";
 import FilterMenu from "../components/FilterMenu";
 import Icon from "../components/Icon";
 import PageHero from "../components/PageHero";
@@ -129,7 +130,10 @@ export default function MinecraftHostingPage() {
             {filtered.map((h)=> (
               <article key={h.name} className="h-card">
                 <div className="h-card-top">
-                  <div className="h-card-name" title={h.name}>{h.name}</div>
+                  <div className="h-card-heading">
+                    <BrandLogo className="h-logo" src={h.logo} fallback="pickaxe" iconSize={20} />
+                    <div className="h-card-name" title={h.name}>{h.name}</div>
+                  </div>
                   <a className="h-card-btn" href={h.link} target="_blank" rel="noreferrer"><Icon name="external-link" size={12} /> Visit</a>
                 </div>
                 <div className="h-specs">

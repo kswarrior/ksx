@@ -49,6 +49,8 @@
 .h-card{background:var(--h-card); border:1px solid var(--h-border); border-radius:var(--h-radius); padding:16px; display:flex; flex-direction:column; gap:12px; contain:layout paint style; content-visibility:auto; contain-intrinsic-size:380px; transition:border-color .2s, box-shadow .2s, transform .18s, background .2s; will-change:transform;}
 .h-card:hover{border-color:var(--h-border-2); box-shadow:0 14px 36px rgba(0, 0, 0,0.38); transform:translateY(-2px); background:rgba(23, 23, 23,0.98);}
 .h-card-top{display:flex; justify-content:space-between; align-items:center; gap:10px;}
+.h-card-heading{display:flex; align-items:center; gap:10px; min-width:0; flex:1;}
+.h-logo{width:40px; height:40px; padding:5px; border-radius:5px; background:linear-gradient(135deg,#ffffff,#f1f1f1); border:1px solid rgba(255,255,255,0.12); box-shadow:0 4px 12px rgba(0,0,0,0.18); color:#111111;}
 .h-card-name{font-weight:900; font-size:15px; letter-spacing:-0.3px; flex:1; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
 .h-card-btn{padding:8px 14px; border-radius:6px; border:1px solid rgba(255, 255, 255,0.12); background:#ffffff; color:#000000; font-size:12px; font-weight:800; cursor:pointer; text-decoration:none; transition:transform .15s, background .2s; flex-shrink:0; display:inline-flex; align-items:center; gap:6px;}
 .h-card-btn:hover{background:#f0f0f0; transform:translateY(-1px);} .h-card-btn:active{transform:scale(0.97);}

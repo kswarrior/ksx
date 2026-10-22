@@ -19,6 +19,7 @@ export interface SitemapCategory {
 
 export interface MinecraftHosting {
   name: string;
+  logo: string;
   ram: number | string;
   cpu: string;
   disk: string;
@@ -34,6 +35,7 @@ export interface MinecraftHosting {
 
 export interface VpsHosting {
   name: string;
+  logo: string;
   type: string;
   ram: number | string;
   cpu: string;
