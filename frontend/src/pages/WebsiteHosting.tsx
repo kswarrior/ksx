@@ -9,7 +9,7 @@ import "./WebsiteHosting.css";
 const typeOptions: SelectOption[] = [
   { value: "", label: "Type • All" },
   { value: "Static & app platforms", label: "Static & app platforms" },
-  { value: "PHP & shared", label: "PHP & shared" },
+  { value: "PHP & shared", label: "PHP / Python & shared" },
   { value: "Website builders", label: "Website builders" },
 ];
 

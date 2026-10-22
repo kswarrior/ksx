@@ -476,7 +476,7 @@
     "alwaysFree": true,
     "verification": "Email",
     "limits": "Starter Site plan: 2 static pages, 1 GB bandwidth/month, 50 lifetime form submissions, 50 CMS items, a webflow.io subdomain only, Webflow badge and no custom code. Some features require a paid Site plan.",
-    "notes": "Professional visual designer with clean exported code, but the free tier is a demo: two pages, 1 GB traffic and a permanent Webflow badge.",
+    "notes": "Professional visual designer with clean markup, but the free tier is a demo: two pages, 1 GB traffic, no custom code and a permanent Webflow badge.",
     "link": "https://webflow.com/pricing"
   }
 ]
