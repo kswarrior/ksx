@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
-import Icon from "../components/Icon";
+import Icon, { type IconName } from "../components/Icon";
 import { Select, TextField, type SelectOption } from "../components/ui";
 import "./SetupServer.css";
 
@@ -9,7 +9,7 @@ type Platform = "codesandbox" | "github" | "gitpod" | "colab" | "vps" | "vm";
 type PlatformInfo = {
   label: string;
   description: string;
-  icon: string;
+  icon: IconName;
 };
 
 const PLATFORMS: Record<Platform, PlatformInfo> = {
@@ -49,12 +49,12 @@ const platformOptions: SelectOption[] = (Object.keys(PLATFORMS) as Platform[]).m
   (value) => ({ value, label: PLATFORMS[value].label })
 );
 
-type Step = { id: string; label: string; icon: string };
+type Step = { id: string; label: string };
 
 type PanelProps = {
   id: string;
   number: number;
-  icon: string;
+  icon: IconName;
   title: string;
   meta?: string;
   children: ReactNode;
@@ -123,16 +123,16 @@ export default function SetupServer() {
     if (platform === "colab") return [];
     const list: Step[] = [];
     if (platform !== "codesandbox") {
-      list.push({ id: "shell", label: "Shell", icon: "terminal" });
+      list.push({ id: "shell", label: "Shell" });
     }
     if (platform === "vps" || platform === "vm") {
-      list.push({ id: "system", label: "System", icon: "sliders" });
+      list.push({ id: "system", label: "System" });
     }
     list.push(
-      { id: "java", label: "Java", icon: "coffee" },
-      { id: "jar", label: "Server JAR", icon: "package" },
-      { id: "ip", label: "Address", icon: "globe" },
-      { id: "start", label: "Start", icon: "rocket" }
+      { id: "java", label: "Java" },
+      { id: "jar", label: "Server JAR" },
+      { id: "ip", label: "Address" },
+      { id: "start", label: "Start" }
     );
     return list;
   }, [platform]);

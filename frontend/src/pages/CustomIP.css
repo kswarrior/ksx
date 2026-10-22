@@ -12,7 +12,12 @@
 .ci-bg-orb.o1{width:520px;height:520px; left:-120px; top:-140px; background:radial-gradient(circle at 30% 30%, #a1a1a1 0%, #858585 42%, transparent 72%); animation:ciOrb 10s ease-in-out infinite;}
 .ci-bg-orb.o2{width:460px;height:460px; right:-100px; top:12%; background:radial-gradient(circle at 30% 30%, #a0a0a0 0%, #7c7c7c 44%, transparent 72%); animation:ciOrb 12s ease-in-out infinite reverse;}
 @keyframes ciOrb{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-14px) scale(1.03)}}
-.ci-shell{max-width:1000px; margin:0 auto; padding:18px 16px 40px;}
+.ci-shell{
+  max-width:1000px; margin:0 auto; padding:18px 16px 40px;
+  min-height:calc(100vh - 56px);
+  min-height:calc(100dvh - 56px);
+  display:flex; flex-direction:column;
+}
 .ci-header{background:rgba(15, 15, 15,0.92); border:1px solid var(--ci-border); border-radius:5px; padding:22px 18px; backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); box-shadow:0 10px 40px rgba(0, 0, 0,0.45); position:relative; overflow:hidden; text-align:center;}
 .ci-header::before{content:""; position:absolute; inset:0; border-radius:inherit; background:radial-gradient(700px 260px at 50% 0%, rgba(133, 133, 133,0.10), transparent 60%); pointer-events:none;}
 .ci-kicker{position:relative; display:inline-flex; align-items:center; gap:8px; font-size:11px; letter-spacing:1.4px; font-weight:800; color:rgba(255, 255, 255,0.7); background:rgba(255, 255, 255,0.06); border:1px solid rgba(255, 255, 255,0.08); padding:6px 10px; border-radius:8px;}
@@ -24,7 +29,7 @@
 .ci-stage.wide{max-width:1000px;}
 .ci-anim{animation:ciStepIn .28s ease both;}
 @keyframes ciStepIn{from{opacity:0; transform:translateY(10px);}to{opacity:1; transform:translateY(0);}}
-.ci-nav{display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top:14px; min-height:42px;}
+.ci-nav{display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top:auto; padding-top:14px; min-height:42px;}
 .ci-nav-next{margin-left:auto;}
 .ci-done{text-align:center; padding:52px 24px;}
 .ci-done-icon{width:58px; height:58px; margin:0 auto 16px; border-radius:50%; display:grid; place-items:center; background:rgba(255, 255, 255,0.06); border:1px solid var(--ci-border); color:#ffffff;}
@@ -56,13 +61,13 @@
 .ci-frame-wrap{height:455px; border-radius:5px; overflow:hidden; background:#ffffff;}
 .ci-frame{display:block; width:100%; height:100%; border:none; background:#ffffff;}
 .customip-page.ci-fullscreen{height:calc(100vh - 56px); height:calc(100dvh - 56px); min-height:0; overflow:hidden;}
-.ci-fullscreen .ci-shell{height:100%; display:flex; flex-direction:column; padding-bottom:12px;}
+.ci-fullscreen .ci-shell{height:100%; min-height:0; display:flex; flex-direction:column; padding-bottom:12px;}
 .ci-fullscreen .ci-stage.wide{flex:1; width:100%; min-height:0; display:flex; margin:12px 0 0;}
 .ci-fullscreen .ci-stage.wide .ci-card{flex:1; min-height:0; display:flex; flex-direction:column; padding:14px; contain:none; content-visibility:visible;}
 .ci-fullscreen .ci-card-head{flex:0 0 auto;}
 .ci-fullscreen .ci-card > p{flex:0 0 auto; margin-bottom:10px;}
 .ci-fullscreen .ci-frame-wrap{flex:1; min-height:0; height:auto;}
-.ci-fullscreen .ci-nav{flex:0 0 auto; margin-top:10px;}
+.ci-fullscreen .ci-nav{flex:0 0 auto; margin-top:10px; padding-top:0;}
 @media(max-width:860px){ .ci-stage{max-width:100%;} }
 @media(max-width:768px){
   .ci-bg-orb{display:none !important;}
