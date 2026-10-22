@@ -1049,7 +1049,7 @@
     max-height: 46dvh;
     padding-bottom: calc(16px + env(safe-area-inset-bottom));
     border-radius: 16px;
-    background: rgba(8, 12, 20, 0.97);
+    background: rgba(250, 251, 252, 0.97);
   }
 
   .mp-details h2 {
@@ -1059,7 +1059,7 @@
   .mp-zoom {
     right: 12px;
     bottom: 12px;
-    background: rgba(8, 12, 20, 0.96);
+    background: var(--mp-panel-solid);
   }
 
   .mp-zoom button {
