@@ -296,10 +296,25 @@ export default function Layout() {
             {menuOpen && (
               <div id="moreMenu" role="menu">
                 <div className="more-title">Menu</div>
-                <div className="more-item" role="menuitem" aria-disabled="true">
-                  <span>Coming soon</span>
-                  <span className="more-pill">soon</span>
-                </div>
+                <button className="more-item" type="button" role="menuitem">
+                  <span className="more-item-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                      <circle cx="12" cy="8" r="3.5" />
+                      <path d="M4.5 20a7.5 7.5 0 0 1 15 0" />
+                    </svg>
+                  </span>
+                  <span className="more-item-label">Account</span>
+                </button>
+                <button className="more-item danger" type="button" role="menuitem">
+                  <span className="more-item-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                      <path d="M16 17l5-5-5-5" />
+                      <path d="M21 12H9" />
+                    </svg>
+                  </span>
+                  <span className="more-item-label">Logout</span>
+                </button>
               </div>
             )}
           </div>

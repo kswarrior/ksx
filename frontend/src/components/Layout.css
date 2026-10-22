@@ -164,15 +164,34 @@
 .more-item {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 12px;
+  justify-content: flex-start;
+  gap: 11px;
+  width: 100%;
   padding: 9px;
+  background: transparent;
+  border: 0;
   border-radius: 8px;
+  font-family: inherit;
   font-size: 13px;
   font-weight: 650;
   color: var(--text);
   white-space: nowrap;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.18s ease, color 0.18s ease;
 }
+.more-item:hover { background: var(--hover); }
+.more-item-icon {
+  display: grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  color: var(--accent);
+}
+.more-item-icon svg { width: 18px; height: 18px; display: block; }
+.more-item.danger .more-item-icon { color: #f87171; }
+.more-item.danger:hover { color: #f87171; }
 .more-pill {
   font-size: 9px;
   font-weight: 800;
