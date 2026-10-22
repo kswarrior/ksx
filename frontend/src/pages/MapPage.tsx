@@ -567,6 +567,7 @@ export default function MapPage() {
       if (!vp) return;
       const rect = vp.getBoundingClientRect();
       if (!rect.width || !rect.height) return;
+      viewportSize.current = { w: rect.width, h: rect.height };
       const b = layout.bounds;
       const padX = Math.min(76, rect.width * 0.075);
       const padY = Math.min(76, rect.height * 0.075);
@@ -617,6 +618,8 @@ export default function MapPage() {
       raf = requestAnimationFrame(() => {
         raf = 0;
         const rect = vp.getBoundingClientRect();
+        viewportSize.current = { w: rect.width, h: rect.height };
+        lastVisTf.current = null;
         if (!interacted.current) fitView(false);
         else applyTf(clampView(tfRef.current, rect), false);
       });

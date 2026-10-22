@@ -16,7 +16,7 @@ const FEATURES = [
   {
     icon: "smartphone",
     title: "Every device",
-    text: "KS Portal is planned for Android, Windows and Linux — one experience, wherever you browse.",
+    text: "Android first, with Windows and Linux to follow — one experience, wherever you browse.",
   },
 ] as const;
 

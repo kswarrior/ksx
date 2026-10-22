@@ -52,8 +52,8 @@ export default function App() {
           <Route path="vps/hosting/list/free" element={<VpsHosting />} />
           <Route path="vps/hosting/list/free.html" element={<VpsHosting />} />
 
-          <Route path="apps/browser/ks-portal" element={<KsPortal />} />
-          <Route path="apps/browser/ks-portal.html" element={<KsPortal />} />
+          <Route path="apps/android/ks-portal" element={<KsPortal />} />
+          <Route path="apps/android/ks-portal.html" element={<KsPortal />} />
 
           <Route path="minecraft/make-hosting/pterodactyl" element={<PterodactylPage />} />
           <Route path="minecraft/make-hosting/pterodactyl.html" element={<PterodactylPage />} />
