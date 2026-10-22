@@ -322,7 +322,7 @@ export default function MapPage() {
   );
 
   const filterSets = useMemo(() => {
-    const active = Boolean(dq) || activeCat !== "All";
+    const active = Boolean(dq);
     const cats = new Set<string>();
     const secs = new Set<string>();
     const pages = new Set<string>();
