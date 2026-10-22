@@ -1,21 +1,9 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import Icon from "../components/Icon";
 import Markdown from "../components/Markdown";
 import { API_BASE } from "../lib/api";
 import "./JavaDownloader.css";
-
-type ModrinthFile = {
-  url: string;
-  filename: string;
-  primary: boolean;
-};
-
-type ModrinthVersion = {
-  id: string;
-  version_number: string;
-  files: ModrinthFile[];
-};
 
 type ProjectDetail = {
   project_id: string;
