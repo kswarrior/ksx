@@ -89,7 +89,7 @@ app.get("/api/stats", (c) => {
             "GET /api/sitemap",
             "GET /api/sitemap/search?q=",
             "GET /api/hosting/minecraft?q=&uptime=&location=&ram=",
-            "GET /api/hosting/vps?q=&renew=&sudo=&alwaysOn=",
+            "GET /api/hosting/vps?q=&type=&renew=&sudo=&alwaysOn=",
             "GET /api/social",
         ],
     });
@@ -323,12 +323,15 @@ app.get("/api/hosting/minecraft", (c) => {
 });
 app.get("/api/hosting/vps", (c) => {
     const q = (c.req.query("q") ?? "").toLowerCase();
+    const type = (c.req.query("type") ?? "").toLowerCase();
     const renew = c.req.query("renew");
     const sudo = c.req.query("sudo");
     const alwaysOn = c.req.query("alwaysOn");
     let result = vpsHosting;
     if (q)
         result = result.filter((v) => v.name.toLowerCase().includes(q));
+    if (type)
+        result = result.filter((v) => v.type.toLowerCase().includes(type));
     if (renew !== undefined && renew !== "")
         result = result.filter((v) => v.renew === (renew === "true"));
     if (sudo !== undefined && sudo !== "")

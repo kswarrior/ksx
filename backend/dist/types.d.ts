@@ -24,6 +24,7 @@ export interface MinecraftHosting {
 }
 export interface VpsHosting {
     name: string;
+    type: string;
     ram: number | string;
     cpu: string;
     disk: string;
@@ -31,6 +32,9 @@ export interface VpsHosting {
     sudo: boolean;
     alwaysOn: boolean;
     location: string;
+    verification: string;
+    limits: string;
+    notes: string;
     link: string;
 }
 export interface SearchItem {

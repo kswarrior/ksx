@@ -131,7 +131,12 @@ export default function AirlinkPanel() {
 
   const current = STEPS[stepIndex] ?? STEPS[0];
   const number = stepIndex + 1;
-  const panelUrl = `http://${serverIp.trim() || "YOUR_SERVER_IP"}:3000`;
+  const panelInput = serverIp.trim();
+  const panelUrl = panelInput
+    ? /^https?:\/\//i.test(panelInput)
+      ? panelInput.replace(/\/+$/, "")
+      : `http://${panelInput}:3000`
+    : "http://YOUR_SERVER_IP:3000";
   const isManual = method === "manual";
 
   function goToStep(next: number) {
@@ -174,11 +179,11 @@ export default function AirlinkPanel() {
         <div className="setup-summary">
           <Icon name={isManual ? "terminal" : "sparkles"} size={16} />
           <div>
-            <b>{isManual ? "Manual install · PM2 + PostgreSQL" : "Quick installer · recommended"}</b>
+            <b>{isManual ? "Manual install · npm + SQLite" : "Quick installer · interactive"}</b>
             <p>
               {isManual
-                ? "Clone the panel, configure PostgreSQL, Redis and .env, build it and keep it alive with PM2."
-                : "The installer handles Node.js, pnpm, PostgreSQL, Redis, Docker, nginx, SSL, PM2 and systemd services."}
+                ? "Clone the panel, configure SQLite and .env, build it with npm and keep it alive with PM2."
+                : "The installer sets up Node.js, Docker, the panel and daemon, PM2 and systemd using SQLite. nginx and SSL are configured separately."}
             </p>
           </div>
         </div>
@@ -216,12 +221,13 @@ export default function AirlinkPanel() {
               meta="64-bit Linux"
             >
               <p className="setup-hint">
-                Airlink runs on a 64-bit Linux server with root or sudo access. The quick installer
-                supports Ubuntu, Debian, Fedora, RHEL, Arch and Alpine. Every node also needs
-                Docker.
+                Airlink runs on a 64-bit Linux server with root or sudo access. The current installer
+                supports Ubuntu, Debian, Fedora, RHEL and Arch; Alpine is detected but is not fully
+                supported because it lacks systemd. Every node also needs Docker.
               </p>
               <ul className="guide-list">
-                <li><strong>Node.js 18+</strong>, <strong>PostgreSQL 14+</strong> (or SQLite for small setups) and <strong>Redis 6+</strong>.</li>
+                <li><strong>Node.js 18+</strong> and <strong>npm 9+</strong>.</li>
+                <li><strong>SQLite</strong> by default — no external database is required. Redis is optional.</li>
                 <li><strong>Docker</strong> on each machine that will host servers.</li>
                 <li><strong>Port 3000</strong> for the panel, <strong>3002</strong> for the daemon and <strong>3003</strong> for SFTP.</li>
                 <li><strong>Port 25565</strong> (or your chosen port) for each Minecraft server.</li>
@@ -232,9 +238,10 @@ export default function AirlinkPanel() {
                 code={`uname -m\nnode -v\ndocker -v\nsudo ss -tulpn | grep -E ':3000|:3002|:3003'`}
               />
               <p className="setup-note">
-                The panel and daemon can run on the same VPS for a small setup, or on separate
-                machines when you need more capacity. Confirm the daemon port in the node settings
-                before opening the firewall.
+                The current Airlink 2.0 Prisma schema is SQLite-only; older docs that mention
+                PostgreSQL are out of date. The panel and daemon can share a VPS, or run on
+                separate machines. Some panel versions default a new node to port 3001 — set it to
+                3002 to match the daemon installed by the current installer.
               </p>
             </Panel>
           )}
@@ -250,8 +257,8 @@ export default function AirlinkPanel() {
               {isManual ? (
                 <>
                   <p className="setup-hint">
-                    Install the runtimes and database packages, create the PostgreSQL database,
-                    then clone Airlink, configure <code>.env</code> and build the panel.
+                    Install Node.js and Docker, clone Airlink, configure the SQLite database and{" "}
+                    <code>.env</code>, then build the panel with npm.
                   </p>
                   <CodeBlock label="Manual install" code={MANUAL_INSTALL} />
                   <p className="setup-hint">
@@ -260,8 +267,9 @@ export default function AirlinkPanel() {
                   <CodeBlock label="Start with PM2" code={PM2_START} />
                   <p className="setup-note">
                     <code>pm2 startup</code> prints a command — run it to enable boot startup.
-                    Set a unique <code>SESSION_SECRET</code> and a real PostgreSQL password before
-                    exposing the panel.
+                    Set a unique <code>SESSION_SECRET</code> before exposing the panel. The SQLite
+                    database is created under <code>prisma/</code>; back up both it and{" "}
+                    <code>.env</code>.
                   </p>
                 </>
               ) : (
