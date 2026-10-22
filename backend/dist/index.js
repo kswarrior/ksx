@@ -21,6 +21,66 @@ app.use(express.json());
 app.use("/api/sitemap", sitemapRouter);
 app.use("/api/hosting", hostingRouter);
 app.use("/api", metaRouter);
+// Server jar metadata proxy (keeps browser requests same-origin)
+const SERVER_JAR_PROXY_HOSTS = {
+    "fill.papermc.io": ["/v3/"],
+    "api.purpurmc.org": ["/v2/purpur"],
+    "launchermeta.mojang.com": ["/mc/"],
+    "piston-meta.mojang.com": ["/v1/packages/"],
+    "meta.fabricmc.net": ["/v2/"],
+    "meta.quiltmc.org": ["/v3/"],
+    "maven.minecraftforge.net": ["/net/minecraftforge/forge/"],
+    "maven.neoforged.net": ["/api/maven/versions/", "/releases/net/neoforged/neoforge/"],
+    "maven.quiltmc.org": ["/repository/release/"],
+    "getbukkit.org": ["/api/jars/"],
+    "download.getbukkit.org": ["/spigot/"],
+    "fill-data.papermc.io": ["/v1/objects/"],
+    "piston-data.mojang.com": ["/v1/objects/"],
+};
+function isAllowedServerJarProxy(target, method) {
+    const prefixes = SERVER_JAR_PROXY_HOSTS[target.hostname];
+    if (!prefixes || !prefixes.some((prefix) => target.pathname.startsWith(prefix)))
+        return false;
+    return method === "HEAD" || !/\.(jar|zip|gz|tar)$/i.test(target.pathname);
+}
+app.get("/api/server-jars/proxy", async (req, res) => {
+    let target;
+    try {
+        target = new URL(String(req.query.url ?? ""));
+    }
+    catch {
+        res.status(400).json({ error: "Invalid URL" });
+        return;
+    }
+    if (target.protocol !== "https:" || !isAllowedServerJarProxy(target, req.method)) {
+        res.status(400).json({ error: "URL not allowed" });
+        return;
+    }
+    try {
+        const upstream = await fetch(target, {
+            method: req.method,
+            headers: {
+                "User-Agent": "ksx-backend/1.0 (+https://github.com/anomalyco/ksx)",
+                Accept: req.headers.accept ?? "*/*",
+            },
+        });
+        res.status(upstream.status);
+        for (const name of ["content-type", "content-length", "last-modified", "etag"]) {
+            const value = upstream.headers.get(name);
+            if (value)
+                res.setHeader(name, value);
+        }
+        res.setHeader("Cache-Control", "public, max-age=300, s-maxage=900");
+        if (req.method === "HEAD") {
+            res.end();
+            return;
+        }
+        res.send(Buffer.from(await upstream.arrayBuffer()));
+    }
+    catch {
+        res.status(502).json({ error: "Server jar request failed" });
+    }
+});
 // Modrinth API proxy (avoids browser CORS/network restrictions)
 const MODRINTH_API = "https://api.modrinth.com/v2";
 app.get("/api/modrinth/*", async (req, res) => {
