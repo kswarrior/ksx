@@ -19,12 +19,12 @@ Converted from static HTML (`index2.html` + `minecraft/**` + `vps/**`) to a Type
 │   │   ├── index.ts      # Express for local dev + serves frontend/dist
 │   │   ├── worker.ts     # Hono app for Cloudflare Workers (same routes)
 │   │   ├── types.ts
-│   │   ├── data/         # sitemap.json, minecraft-hosting.json, vps-hosting.json, website-hosting.json
+│   │   ├── data/         # sitemap.json, minecraft-hosting.json, vps-hosting.json, website-hosting.json, database-hosting.json
 │   │   └── routes/       # Express routes (mirrored in worker.ts)
 │   ├── wrangler.toml     # Workers config: name=ksx-backend, assets=../frontend/dist, nodejs_compat
 │   └── package.json      # scripts: dev, dev:worker, deploy
 ├── frontend/
-│   ├── src/ (Layout, Dashboard, MapPage, Social, MinecraftHosting, VpsHosting, WebsiteHosting, JavaLauncher, KsClient, ServerInfo, PanelPages)
+│   ├── src/ (Layout, Dashboard, MapPage, Social, MinecraftHosting, VpsHosting, WebsiteHosting, DatabaseHosting, JavaLauncher, KsClient, ServerInfo, PanelPages)
 │   ├── public/ (_redirects, _headers, robots.txt, sitemap.*) # copied for Pages
 │   ├── vite.config.ts    # proxy /api → :8080
 │   └── wrangler deploy via Pages
@@ -160,6 +160,7 @@ GET /api/sitemap/search?q=hosting
 GET /api/hosting/minecraft?q=&alwaysOn=true&location=india&ram=4
 GET /api/hosting/vps?q=&type=VPS&renew=true&sudo=true&alwaysOn=true
 GET /api/hosting/website?q=&type=Static&customDomain=true&ssl=true&ads=false&alwaysFree=true
+GET /api/hosting/database?q=&type=PostgreSQL&cardRequired=false&backups=true&alwaysFree=true&ssl=true
 GET /api/social
 ```
 
@@ -184,7 +185,7 @@ npm install          # installs @modelcontextprotocol/sdk + zod
 npm run mcp          # run the MCP server manually
 ```
 
-MCP tools: `ksx_site_summary`, `ksx_get_sitemap`, `ksx_search_pages`, `ksx_find_minecraft_hosting`, `ksx_find_vps_hosting`, `ksx_find_website_hosting`, `ksx_get_social_stats`, `ksx_api_get`. Resources: `ksx://sitemap`, `ksx://hosting/minecraft`, `ksx://hosting/vps`, `ksx://hosting/website`.
+MCP tools: `ksx_site_summary`, `ksx_get_sitemap`, `ksx_search_pages`, `ksx_find_minecraft_hosting`, `ksx_find_vps_hosting`, `ksx_find_website_hosting`, `ksx_find_database_hosting`, `ksx_get_social_stats`, `ksx_api_get`. Resources: `ksx://sitemap`, `ksx://hosting/minecraft`, `ksx://hosting/vps`, `ksx://hosting/website`, `ksx://hosting/database`.
 
 Sitemap and hosting tools read the JSON data directly. Live tools default to `http://localhost:8080` (start `npm run dev:backend`) and can be pointed elsewhere:
 
