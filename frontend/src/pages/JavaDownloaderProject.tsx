@@ -62,7 +62,7 @@ export default function JavaDownloaderProject() {
         if (!r.ok) throw new Error(`HTTP ${r.status}`);
         return r.json() as Promise<ProjectDetail>;
       }),
-      fetch(`${API}/project/${projectId}/version`)
+      fetch(`${API}/project/${projectId}/version?featured=true`)
         .then((r) => (r.ok ? (r.json() as Promise<ModrinthVersion[]>) : []))
         .catch(() => [] as ModrinthVersion[]),
     ])
