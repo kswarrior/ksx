@@ -1,79 +1,138 @@
 import { useState } from "react";
 import Icon from "../components/Icon";
-import { TextField } from "../components/ui";
+import { Select, TextField, type SelectOption } from "../components/ui";
+import {
+  BOT_COMMANDS,
+  DEFAULT_BOT_CONFIG,
+  generateBotScript,
+  normalizeBotConfig,
+  type BotAuth,
+  type BotConfig,
+} from "../lib/minecraftBot";
 import "./BotPage.css";
 
+const authOptions: SelectOption[] = [
+  { value: "offline", label: "Offline / cracked" },
+  { value: "microsoft", label: "Microsoft / premium" },
+];
+
+const viewDistanceOptions: SelectOption[] = [
+  { value: "8", label: "Short · 8 chunks" },
+  { value: "12", label: "Normal · 12 chunks" },
+  { value: "16", label: "Far · 16 chunks" },
+  { value: "24", label: "Very far · 24 chunks" },
+  { value: "32", label: "Maximum · 32 chunks" },
+];
+
+const INSTALL_NODE =
+  "curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash - && sudo apt install -y nodejs";
+const INSTALL_PROJECT =
+  "mkdir -p mc-bot && cd mc-bot && npm init -y && npm install mineflayer mineflayer-pathfinder vec3";
+const RUN_BOT = "cd mc-bot && node bot.js";
+
+function toInt(value: string, fallback: number): number {
+  const parsed = Number.parseInt(value, 10);
+  return Number.isFinite(parsed) ? parsed : fallback;
+}
+
+type SetupStepProps = {
+  number: number;
+  title: string;
+  command: string;
+  copyId: string;
+  copied: string | null;
+  onCopy: (value: string, id: string) => void;
+};
+
+function SetupStep({ number, title, command, copyId, copied, onCopy }: SetupStepProps) {
+  const isCopied = copied === copyId;
+  return (
+    <div className="bot-step">
+      <span className="bot-step-number">{number}</span>
+      <div className="bot-step-body">
+        <div className="bot-step-head">
+          <h3>{title}</h3>
+          <button
+            type="button"
+            className="bot-mini-btn"
+            onClick={() => onCopy(command, copyId)}
+          >
+            <Icon name={isCopied ? "check" : "copy"} size={12} />
+            {isCopied ? "Copied" : "Copy"}
+          </button>
+        </div>
+        <pre className="bot-command">{command}</pre>
+      </div>
+    </div>
+  );
+}
+
 export default function BotPage() {
-  const [ip, setIp] = useState("");
-  const [port, setPort] = useState("25565");
-  const [botName, setBotName] = useState("");
-  const [owner, setOwner] = useState("");
-  const [reconnectDelay, setReconnectDelay] = useState("5");
-  const [eatThreshold, setEatThreshold] = useState("15");
-  const [jumpInterval, setJumpInterval] = useState("45");
-  const [walkInterval, setWalkInterval] = useState("60");
-  const [viewDistance, setViewDistance] = useState("far");
-  const [generated, setGenerated] = useState("// Generated code will appear here...");
-  const [copiedIdx, setCopiedIdx] = useState<number|null>(null);
+  const [host, setHost] = useState(DEFAULT_BOT_CONFIG.host);
+  const [port, setPort] = useState(String(DEFAULT_BOT_CONFIG.port));
+  const [username, setUsername] = useState(DEFAULT_BOT_CONFIG.username);
+  const [owners, setOwners] = useState(DEFAULT_BOT_CONFIG.owners.join(", "));
+  const [auth, setAuth] = useState<BotAuth>(DEFAULT_BOT_CONFIG.auth);
+  const [version, setVersion] = useState(DEFAULT_BOT_CONFIG.version);
+  const [prefix, setPrefix] = useState(DEFAULT_BOT_CONFIG.prefix);
+  const [reconnectDelay, setReconnectDelay] = useState(String(DEFAULT_BOT_CONFIG.reconnectDelay));
+  const [autoEat, setAutoEat] = useState(DEFAULT_BOT_CONFIG.autoEat);
+  const [eatThreshold, setEatThreshold] = useState(String(DEFAULT_BOT_CONFIG.eatThreshold));
+  const [antiAfkJump, setAntiAfkJump] = useState(DEFAULT_BOT_CONFIG.antiAfkJump);
+  const [jumpInterval, setJumpInterval] = useState(String(DEFAULT_BOT_CONFIG.jumpInterval));
+  const [antiAfkWalk, setAntiAfkWalk] = useState(DEFAULT_BOT_CONFIG.antiAfkWalk);
+  const [walkInterval, setWalkInterval] = useState(String(DEFAULT_BOT_CONFIG.walkInterval));
+  const [viewDistance, setViewDistance] = useState(String(DEFAULT_BOT_CONFIG.viewDistance));
+  const [copied, setCopied] = useState<string | null>(null);
 
-  function copy(text: string, idx?: number){
-    navigator.clipboard.writeText(text);
-    if(idx!==undefined){ setCopiedIdx(idx); setTimeout(()=>setCopiedIdx(null),1200); }
+  const config: BotConfig = {
+    host,
+    port: toInt(port, DEFAULT_BOT_CONFIG.port),
+    username,
+    owners: owners
+      .split(",")
+      .map((name) => name.trim())
+      .filter(Boolean),
+    auth,
+    version,
+    prefix,
+    reconnectDelay: toInt(reconnectDelay, DEFAULT_BOT_CONFIG.reconnectDelay),
+    autoEat,
+    eatThreshold: toInt(eatThreshold, DEFAULT_BOT_CONFIG.eatThreshold),
+    antiAfkJump,
+    jumpInterval: toInt(jumpInterval, DEFAULT_BOT_CONFIG.jumpInterval),
+    antiAfkWalk,
+    walkInterval: toInt(walkInterval, DEFAULT_BOT_CONFIG.walkInterval),
+    viewDistance: toInt(viewDistance, DEFAULT_BOT_CONFIG.viewDistance),
+  };
+
+  const normalized = normalizeBotConfig(config);
+  const code = generateBotScript(config);
+  const lineCount = code.split("\n").length;
+  const byteSize = new TextEncoder().encode(code).length;
+  const displayPrefix = normalized.prefix;
+
+  async function copy(value: string, id: string) {
+    try {
+      await navigator.clipboard.writeText(value);
+      setCopied(id);
+      window.setTimeout(() => setCopied((current) => (current === id ? null : current)), 1400);
+    } catch {
+      setCopied(null);
+    }
   }
 
-  function generateBotCode() {
-    const cfgIp = ip.trim() || "localhost";
-    const cfgPort = parseInt(port) || 25565;
-    const cfgName = botName.trim() || "KSBot";
-    const cfgOwner = owner.trim() || "YourMinecraftName";
-    const cfgReconnect = (parseInt(reconnectDelay) || 5) * 1000;
-    const cfgEat = parseInt(eatThreshold) || 15;
-    const cfgJump = (parseInt(jumpInterval) || 45) * 1000;
-    const cfgWalk = (parseInt(walkInterval) || 60) * 1000;
-    const cfgView = viewDistance.trim() || "far";
-
-    const jsCode = `const mineflayer = require('mineflayer')
-const Vec3 = require('vec3').Vec3
-
-process.on('uncaughtException', err => console.log('Uncaught Exception:', err.message))
-process.on('unhandledRejection', err => console.log('Unhandled Rejection:', err))
-
-const config = {
-  host: '${cfgIp}',
-  port: ${cfgPort},
-  username: '${cfgName}',
-  owner: '${cfgOwner}',
-  reconnectDelay: ${cfgReconnect},
-  eatFoodThreshold: ${cfgEat},
-  antiAfkJumpInterval: ${cfgJump},
-  antiAfkWalkInterval: ${cfgWalk},
-  viewDistance: '${cfgView}'
-}
-let bot
-function createBot(){
-  bot = mineflayer.createBot({
-    host: config.host,
-    port: config.port,
-    username: config.username,
-    viewDistance: config.viewDistance
-  })
-  bot.on('login', () => console.log(config.username + ' joined the server'))
-  bot.on('spawn', () => console.log('Bot spawned'))
-  bot.on('death', () => setTimeout(()=>bot.respawn(),1200))
-  bot.on('end', () => setTimeout(createBot, config.reconnectDelay))
-  bot.on('chat', (username, message)=>{
-    if(username !== config.owner) return
-    if(message === '!come') bot.pathfinder?.goto(new Vec3(bot.entity.position.x, bot.entity.position.y, bot.entity.position.z))
-    if(message === '!help') bot.chat('Commands: !come, !stop, !follow, !guard, !mine <block>')
-  })
-}
-createBot()
-`;
-    setGenerated(jsCode);
+  function downloadBot() {
+    const blob = new Blob([code], { type: "text/javascript;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "bot.js";
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    window.setTimeout(() => URL.revokeObjectURL(url), 1000);
   }
-
-  const installCode = "sudo apt update && sudo apt install curl -y && curl -fsSL https://deb.nodesource.com/setup_current.x | sudo -E bash - && sudo apt install nodejs -y";
-  const projectCode = "mkdir mc-bot\ncd mc-bot\nnpm init -y\nnpm install mineflayer vec3";
 
   return (
     <div className="bot-page">
@@ -82,80 +141,285 @@ createBot()
         <div className="bot-bg-orb o1" />
         <div className="bot-bg-orb o2" />
       </div>
+
       <div className="bot-shell">
-        <div className="bot-card">
-          <h3><Icon name="terminal" size={16} /> Install Node.js</h3>
-          <pre className="bot-code">{installCode}</pre>
-          <button className="bot-btn" onClick={() => copy(installCode,1)}><Icon name={copiedIdx===1 ? "check" : "copy"} size={14} />{copiedIdx===1 ? "Copied" : "Copy Code"}</button>
-        </div>
+        <header className="bot-hero">
+          <span className="bot-hero-icon" aria-hidden>
+            <Icon name="bot" size={22} />
+          </span>
+          <div className="bot-hero-text">
+            <h1>Minecraft Bot</h1>
+          </div>
+        </header>
 
-        <div className="bot-card">
-          <h3><Icon name="folder" size={16} /> Create project folder</h3>
-          <pre className="bot-code">{projectCode}</pre>
-          <button className="bot-btn" onClick={() => copy(projectCode,2)}><Icon name={copiedIdx===2 ? "check" : "copy"} size={14} />{copiedIdx===2 ? "Copied" : "Copy Code"}</button>
-        </div>
+        <section className="bot-panel">
+          <div className="bot-panel-head">
+            <div className="bot-panel-title">
+              <Icon name="globe" size={15} />
+              <h2>Connection</h2>
+            </div>
+            <span className="bot-panel-meta">
+              {normalized.host}:{normalized.port}
+            </span>
+          </div>
 
-        <div className="bot-card">
-          <h3><Icon name="sliders" size={16} /> Enter your server details</h3>
-          <label className="bot-label">Server IP</label>
-          <TextField className="bot-input" value={ip} onChange={(e) => setIp(e.target.value)} placeholder="e.g., yourserver.aternos.me" />
-          <label className="bot-label">Server Port</label>
-          <TextField className="bot-input" type="text" inputMode="numeric" value={port} onChange={(e) => setPort(e.target.value)} placeholder="e.g., 25565" />
-          <label className="bot-label">Bot Username</label>
-          <TextField className="bot-input" value={botName} onChange={(e) => setBotName(e.target.value)} placeholder="Bot's in-game name" />
-          <label className="bot-label">Owner Username</label>
-          <TextField className="bot-input" value={owner} onChange={(e) => setOwner(e.target.value)} placeholder="Your in-game name" />
-          <div style={{display:"grid", gridTemplateColumns:"1fr 1fr", gap:10}}>
-            <div>
-              <label className="bot-label">Reconnect Delay (s)</label>
-              <TextField className="bot-input" type="text" inputMode="numeric" value={reconnectDelay} onChange={(e) => setReconnectDelay(e.target.value)} placeholder="5" />
+          <div className="bot-fields">
+            <div className="bot-field wide">
+              <label>Server IP</label>
+              <TextField
+                value={host}
+                onChange={(event) => setHost(event.target.value)}
+                placeholder="play.example.com"
+                spellCheck={false}
+              />
             </div>
-            <div>
-              <label className="bot-label">Eat Threshold</label>
-              <TextField className="bot-input" type="text" inputMode="numeric" value={eatThreshold} onChange={(e) => setEatThreshold(e.target.value)} placeholder="15" />
+            <div className="bot-field">
+              <label>Port</label>
+              <TextField
+                value={port}
+                onChange={(event) => setPort(event.target.value)}
+                inputMode="numeric"
+                placeholder="25565"
+              />
             </div>
-            <div>
-              <label className="bot-label">Jump Interval (s)</label>
-              <TextField className="bot-input" type="text" inputMode="numeric" value={jumpInterval} onChange={(e) => setJumpInterval(e.target.value)} placeholder="45" />
+            <div className="bot-field">
+              <label>Bot username</label>
+              <TextField
+                value={username}
+                onChange={(event) => setUsername(event.target.value)}
+                placeholder="KSBot"
+                spellCheck={false}
+              />
             </div>
-            <div>
-              <label className="bot-label">Walk Interval (s)</label>
-              <TextField className="bot-input" type="text" inputMode="numeric" value={walkInterval} onChange={(e) => setWalkInterval(e.target.value)} placeholder="60" />
+            <div className="bot-field wide">
+              <label>Owner usernames</label>
+              <TextField
+                value={owners}
+                onChange={(event) => setOwners(event.target.value)}
+                placeholder="YourMinecraftName, FriendName"
+                spellCheck={false}
+              />
+            </div>
+            <div className="bot-field">
+              <label>Authentication</label>
+              <Select
+                value={auth}
+                onChange={(next) => setAuth(next as BotAuth)}
+                options={authOptions}
+                ariaLabel="Authentication"
+              />
+            </div>
+            <div className="bot-field">
+              <label>Minecraft version</label>
+              <TextField
+                value={version}
+                onChange={(event) => setVersion(event.target.value)}
+                placeholder="Auto-detect"
+                spellCheck={false}
+              />
             </div>
           </div>
-          <label className="bot-label">View Distance</label>
-          <TextField className="bot-input" value={viewDistance} onChange={(e) => setViewDistance(e.target.value)} placeholder="far or normal" />
-          <div style={{display:"flex", gap:8, marginTop:12, flexWrap:"wrap"}}>
-            <button className="bot-btn primary" onClick={generateBotCode}><Icon name="zap" size={14} /> Generate bot.js</button>
-            <button className="bot-btn" onClick={() => copy(generated,3)}><Icon name={copiedIdx===3 ? "check" : "copy"} size={14} />{copiedIdx===3 ? "Copied" : "Copy Generated"}</button>
-          </div>
-          <pre className="bot-code" style={{marginTop:12}}>{generated}</pre>
-          <p style={{marginTop:8, color:"#a3a3a3", fontSize:11}}>Paste the copied code into bot.js</p>
-        </div>
+        </section>
 
-        <div className="bot-card">
-          <h3><Icon name="play" size={16} /> Run the bot</h3>
-          <pre className="bot-code">node bot.js</pre>
-          <button className="bot-btn" onClick={() => copy("node bot.js",4)}><Icon name={copiedIdx===4 ? "check" : "copy"} size={14} />{copiedIdx===4 ? "Copied" : "Copy Code"}</button>
-          <p style={{marginTop:10, color:"#a3a3a3", fontSize:11, lineHeight:1.6}}>Tip: Use <code style={{background:"rgba(255,255,255,0.06)", padding:"2px 6px", borderRadius:5}}>screen -S bot</code> then run, detach with Ctrl+A+D, reattach with <code style={{background:"rgba(255,255,255,0.06)", padding:"2px 6px", borderRadius:5}}>screen -r bot</code> or <code style={{background:"rgba(255,255,255,0.06)", padding:"2px 6px", borderRadius:5}}>nohup node bot.js &amp;</code></p>
-        </div>
-
-        <div className="bot-card">
-          <h3><Icon name="bot" size={16} /> Commands (owner only)</h3>
-          <div className="bot-list">
-            <span>!follow &lt;name&gt; — Bot follows you</span>
-            <span>!come — Bot comes to your position</span>
-            <span>!guard — Guard & protect you</span>
-            <span>!stopguard — Stop protecting</span>
-            <span>!stop — Stop current action</span>
-            <span>!attack &lt;player&gt; — Attack player</span>
-            <span>!huntmobs — Hunt hostile mobs</span>
-            <span>!mine &lt;block&gt; — Mine block</span>
-            <span>!equip — Re-equip best gear</span>
-            <span>!totem — Equip totem offhand</span>
-            <span>!help — List all commands</span>
+        <section className="bot-panel">
+          <div className="bot-panel-head">
+            <div className="bot-panel-title">
+              <Icon name="sliders" size={15} />
+              <h2>Behavior</h2>
+            </div>
+            <span className="bot-panel-meta">
+              Reconnect {normalized.reconnectDelay}s
+            </span>
           </div>
-        </div>
+
+          <div className="bot-fields">
+            <div className="bot-field">
+              <label>Reconnect delay (s)</label>
+              <TextField
+                value={reconnectDelay}
+                onChange={(event) => setReconnectDelay(event.target.value)}
+                inputMode="numeric"
+                placeholder="5"
+              />
+            </div>
+            <div className="bot-field">
+              <label>Eat below food level</label>
+              <TextField
+                value={eatThreshold}
+                onChange={(event) => setEatThreshold(event.target.value)}
+                inputMode="numeric"
+                placeholder="15"
+                disabled={!autoEat}
+              />
+            </div>
+            <div className="bot-field">
+              <label>Jump interval (s)</label>
+              <TextField
+                value={jumpInterval}
+                onChange={(event) => setJumpInterval(event.target.value)}
+                inputMode="numeric"
+                placeholder="45"
+                disabled={!antiAfkJump}
+              />
+            </div>
+            <div className="bot-field">
+              <label>Walk interval (s)</label>
+              <TextField
+                value={walkInterval}
+                onChange={(event) => setWalkInterval(event.target.value)}
+                inputMode="numeric"
+                placeholder="60"
+                disabled={!antiAfkWalk}
+              />
+            </div>
+            <div className="bot-field">
+              <label>View distance</label>
+              <Select
+                value={viewDistance}
+                onChange={setViewDistance}
+                options={viewDistanceOptions}
+                ariaLabel="View distance"
+              />
+            </div>
+            <div className="bot-field">
+              <label>Command prefix</label>
+              <TextField
+                value={prefix}
+                onChange={(event) => setPrefix(event.target.value)}
+                placeholder="!"
+                maxLength={3}
+                spellCheck={false}
+              />
+            </div>
+          </div>
+
+          <div className="bot-toggle-row">
+            <label className="bot-toggle">
+              <input
+                type="checkbox"
+                checked={autoEat}
+                onChange={(event) => setAutoEat(event.target.checked)}
+              />
+              <span>Auto-eat</span>
+            </label>
+            <label className="bot-toggle">
+              <input
+                type="checkbox"
+                checked={antiAfkJump}
+                onChange={(event) => setAntiAfkJump(event.target.checked)}
+              />
+              <span>Anti-AFK jump</span>
+            </label>
+            <label className="bot-toggle">
+              <input
+                type="checkbox"
+                checked={antiAfkWalk}
+                onChange={(event) => setAntiAfkWalk(event.target.checked)}
+              />
+              <span>Anti-AFK walk</span>
+            </label>
+          </div>
+        </section>
+
+        <section className="bot-panel bot-code-panel">
+          <div className="bot-code-head">
+            <span className="bot-code-icon" aria-hidden>
+              <Icon name="terminal" size={18} />
+            </span>
+            <div className="bot-code-text">
+              <h2>bot.js</h2>
+              <p>
+                {lineCount} lines · {(byteSize / 1024).toFixed(1)} KB · mineflayer
+              </p>
+            </div>
+            <div className="bot-code-actions">
+              <button
+                type="button"
+                className="bot-btn secondary"
+                onClick={() => copy(code, "code")}
+              >
+                <Icon name={copied === "code" ? "check" : "copy"} size={14} />
+                {copied === "code" ? "Copied" : "Copy Code"}
+              </button>
+              <button type="button" className="bot-btn primary" onClick={downloadBot}>
+                <Icon name="download" size={14} />
+                Download bot.js
+              </button>
+            </div>
+          </div>
+          <pre className="bot-preview" tabIndex={0}>
+            {code}
+          </pre>
+        </section>
+
+        <section className="bot-panel">
+          <div className="bot-panel-head">
+            <div className="bot-panel-title">
+              <Icon name="rocket" size={15} />
+              <h2>Setup</h2>
+            </div>
+            <span className="bot-panel-meta">Linux / VPS</span>
+          </div>
+
+          <div className="bot-steps">
+            <SetupStep
+              number={1}
+              title="Install Node.js 22 LTS"
+              command={INSTALL_NODE}
+              copyId="node"
+              copied={copied}
+              onCopy={copy}
+            />
+            <SetupStep
+              number={2}
+              title="Create the project and install dependencies"
+              command={INSTALL_PROJECT}
+              copyId="project"
+              copied={copied}
+              onCopy={copy}
+            />
+            <SetupStep
+              number={3}
+              title="Start the bot"
+              command={RUN_BOT}
+              copyId="run"
+              copied={copied}
+              onCopy={copy}
+            />
+          </div>
+
+          <p className="bot-note">
+            Save the generated file as <code>bot.js</code> inside <code>mc-bot</code>. Microsoft
+            authentication prints a device-code link in the console on first run. Use{" "}
+            <code>screen</code>, <code>tmux</code>, or a process manager to keep the bot online.
+          </p>
+        </section>
+
+        <section className="bot-panel">
+          <div className="bot-panel-head">
+            <div className="bot-panel-title">
+              <Icon name="terminal" size={15} />
+              <h2>Commands</h2>
+            </div>
+            <span className="bot-panel-meta">Owner only · {displayPrefix} prefix</span>
+          </div>
+
+          <div className="bot-command-grid">
+            {BOT_COMMANDS.map((item) => (
+              <div className="bot-command" key={item.command}>
+                <code>
+                  {displayPrefix}
+                  {item.command}
+                </code>
+                <span>{item.description}</span>
+              </div>
+            ))}
+          </div>
+
+          <p className="bot-note">
+            Commands are sent in public chat. Senders that are not in the owner list are ignored.
+          </p>
+        </section>
       </div>
     </div>
   );
