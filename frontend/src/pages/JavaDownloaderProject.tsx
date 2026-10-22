@@ -94,9 +94,9 @@ export default function JavaDownloaderProject() {
           <Icon name="chevron-left" size={16} /> Back to Universal Downloader
         </Link>
 
-        {loading && <div className="jd-loading">Loading project…</div>}
+        {loading && !project && <div className="jd-loading">Loading project…</div>}
 
-        {!loading && error && (
+        {!loading && error && !project && (
           <div className="jd-empty">
             Couldn't load this project.{" "}
             <button type="button" className="jd-retry" onClick={() => setReload((value) => value + 1)}>
@@ -105,7 +105,7 @@ export default function JavaDownloaderProject() {
           </div>
         )}
 
-        {!loading && !error && project && (
+        {project && (
           <>
             <header className="jd-detail-hero">
               <img
