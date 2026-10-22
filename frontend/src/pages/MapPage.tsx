@@ -605,17 +605,10 @@ export default function MapPage() {
 
   const resetMap = useCallback(() => {
     setSelection(null);
-    setActiveCat("All");
     setQuery("");
     interacted.current = false;
     fitView(true);
   }, [fitView]);
-
-  const clearFilters = useCallback(() => {
-    setQuery("");
-    setActiveCat("All");
-    setSelection(null);
-  }, []);
 
   const zoomBy = useCallback(
     (factor: number) => {
