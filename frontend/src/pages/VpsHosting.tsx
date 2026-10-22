@@ -22,6 +22,8 @@ const diskOptions = [
   { value: "100", label: "≥100 GB" },
 ];
 
+const typeOrder = ["VPS", "Cloud shell", "Cloud IDE", "Notebook", "Sandbox"];
+
 const toNumber = (value: string | number) => {
   const parsed = Number.parseFloat(String(value));
   return Number.isFinite(parsed) ? parsed : 0;
@@ -30,6 +32,7 @@ const toNumber = (value: string | number) => {
 export default function VpsHostingPage() {
   const [list, setList] = useState<VpsHosting[]>([]);
   const [q, setQ] = useState("");
+  const [providerType, setProviderType] = useState("");
   const [location, setLocation] = useState("");
   const [ram, setRam] = useState("");
   const [disk, setDisk] = useState("");
@@ -44,6 +47,17 @@ export default function VpsHostingPage() {
     return ()=>{ alive=false; };
   }, []);
 
+  const typeOptions = useMemo(() => [
+    { value: "", label: "Type • All" },
+    ...Array.from(new Set(list.map((v) => v.type).filter(Boolean)))
+      .sort((a, b) => {
+        const ai = typeOrder.indexOf(a);
+        const bi = typeOrder.indexOf(b);
+        return (ai === -1 ? typeOrder.length : ai) - (bi === -1 ? typeOrder.length : bi) || a.localeCompare(b);
+      })
+      .map((value) => ({ value, label: value })),
+  ], [list]);
+
   const locationOptions = useMemo(() => [
     { value: "", label: "Location • All" },
     ...Array.from(new Set(list.map((v) => v.location).filter(Boolean)))
@@ -53,6 +67,7 @@ export default function VpsHostingPage() {
 
   const filtered = useMemo(() => list.filter((v) => {
     if (q && !v.name.toLowerCase().includes(q.toLowerCase())) return false;
+    if (providerType && v.type !== providerType) return false;
     if (location && !v.location.toLowerCase().includes(location.toLowerCase())) return false;
     if (ram && toNumber(v.ram) < Number(ram)) return false;
     if (disk && toNumber(v.disk) < Number(disk)) return false;
@@ -60,13 +75,14 @@ export default function VpsHostingPage() {
     if (sudoOnly && !v.sudo) return false;
     if (alwaysOnOnly && !v.alwaysOn) return false;
     return true;
-  }), [list, q, location, ram, disk, renewOnly, sudoOnly, alwaysOnOnly]);
+  }), [list, q, providerType, location, ram, disk, renewOnly, sudoOnly, alwaysOnOnly]);
 
-  const activeCount = [location, ram, disk].filter(Boolean).length
+  const activeCount = [providerType, location, ram, disk].filter(Boolean).length
     + [renewOnly, sudoOnly, alwaysOnOnly].filter(Boolean).length;
 
   const clearFilters = () => {
     setQ("");
+    setProviderType("");
     setLocation("");
     setRam("");
     setDisk("");
@@ -84,7 +100,12 @@ export default function VpsHostingPage() {
       </div>
       <div className="v-shell">
         <header className="v-header">
-          <PageHero variant="inline" icon="cloud" title="Free VPS Hosting" />
+          <PageHero
+            variant="inline"
+            icon="cloud"
+            title="Free VPS Hosting"
+            subtitle="Always-free VPS and cloud dev environments. Trials, credits, and paid plans are excluded. Checked Oct 2026."
+          />
 
           <div className="v-search-wrap">
             <div className="v-search-row">
@@ -92,11 +113,18 @@ export default function VpsHostingPage() {
                 className="v-search"
                 value={q}
                 onValueChange={setQ}
-                placeholder="Search VPS by name…"
-                ariaLabel="Search VPS"
+                placeholder="Search providers by name…"
+                ariaLabel="Search providers"
               />
               <FilterMenu activeCount={activeCount}>
                 <div className="v-filter-fields">
+                  <Select
+                    className="v-select"
+                    value={providerType}
+                    onChange={setProviderType}
+                    options={typeOptions}
+                    ariaLabel="Provider type"
+                  />
                   <Select
                     className="v-select"
                     value={location}
@@ -127,7 +155,7 @@ export default function VpsHostingPage() {
                         aria-pressed={renewOnly}
                         onClick={() => setRenewOnly((value) => !value)}
                       >
-                        Renew
+                        Recurring
                       </button>
                       <button
                         type="button"
@@ -164,7 +192,7 @@ export default function VpsHostingPage() {
         ) : filtered.length===0 ? (
           <div className="v-empty">
             <div style={{marginBottom:8, color:"var(--v-muted)"}}><Icon name="search" size={26} /></div>
-            <div style={{fontWeight:900, marginBottom:6}}>No VPS found</div>
+            <div style={{fontWeight:900, marginBottom:6}}>No providers found</div>
             <div style={{color:"var(--v-muted)", fontSize:13}}>Try different search or filters.</div>
           </div>
         ) : (
@@ -172,8 +200,11 @@ export default function VpsHostingPage() {
             {filtered.map((vps)=> (
               <article key={vps.name} className="v-card">
                 <div className="v-card-top">
-                  <div className="v-card-name" title={vps.name}>{vps.name}</div>
-                  <button className="v-visit" onClick={()=>window.open(vps.link,"_blank")}><Icon name="external-link" size={12} /> Visit</button>
+                  <div className="v-card-heading">
+                    <span className="v-type">{vps.type}</span>
+                    <div className="v-card-name" title={vps.name}>{vps.name}</div>
+                  </div>
+                  <button className="v-visit" onClick={()=>window.open(vps.link,"_blank")} aria-label={`Visit ${vps.name}`}><Icon name="external-link" size={12} /> Visit</button>
                 </div>
                 <div className="v-meta">
                   <div className="v-meta-row">
@@ -183,10 +214,15 @@ export default function VpsHostingPage() {
                   </div>
                   <div style={{fontSize:12, color:"var(--v-muted)", display:"flex", alignItems:"center", gap:6}}><Icon name="map-pin" size={13} /> {vps.location}</div>
                 </div>
+                <div className="v-facts">
+                  <div className="v-fact"><Icon name="smartphone" size={13} /><span><b>Verification:</b> {vps.verification}</span></div>
+                  <div className="v-fact"><Icon name="warning" size={13} /><span><b>Limits:</b> {vps.limits}</span></div>
+                </div>
+                <div className="v-note"><Icon name="sparkles" size={14} /><span>{vps.notes}</span></div>
                 <div className="v-tags">
-                  <span className={`v-pill ${vps.renew?"yes":"no"}`}><Icon name={vps.renew ? "check" : "close"} size={12} /> Renew</span>
-                  <span className={`v-pill ${vps.sudo?"yes":"no"}`}><Icon name={vps.sudo ? "check" : "close"} size={12} /> Sudo</span>
-                  <span className={`v-pill ${vps.alwaysOn?"yes":"no"}`}><Icon name={vps.alwaysOn ? "check" : "close"} size={12} /> 24/7</span>
+                  <span className={`v-pill ${vps.renew?"yes":"neutral"}`}><Icon name={vps.renew ? "check" : "warning"} size={12} /> {vps.renew ? "Recurring" : "Trial"}</span>
+                  <span className={`v-pill ${vps.sudo?"yes":"neutral"}`}><Icon name={vps.sudo ? "check" : "close"} size={12} /> {vps.sudo ? "Sudo" : "No sudo"}</span>
+                  <span className={`v-pill ${vps.alwaysOn?"yes":"neutral"}`}><Icon name={vps.alwaysOn ? "check" : "warning"} size={12} /> {vps.alwaysOn ? "24/7" : "Not 24/7"}</span>
                 </div>
               </article>
             ))}
