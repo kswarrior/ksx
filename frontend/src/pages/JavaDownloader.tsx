@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import FilterMenu from "../components/FilterMenu";
 import { SearchField, Select, type SelectOption } from "../components/ui";
@@ -48,8 +48,50 @@ type McpedlSearchItem = {
   highlight?: { description?: string[] };
 };
 
+type ModrinthSearchResponse = {
+  hits?: ModrinthHit[];
+  total_hits?: number;
+};
+
+type McpedlSearchResponse = {
+  results?: McpedlSearchItem[];
+  meta?: {
+    total?: number;
+    page?: number;
+    page_size?: number;
+    page_count?: number;
+  };
+};
+
+type ResultBatch = {
+  items: Project[];
+  hasMore: boolean;
+  nextPage?: number;
+};
+
 const MODRINTH_API = `${API_BASE}/api/modrinth`;
 const MCPEDL_API = `${API_BASE}/api/mcpedl`;
+const BEDROCK_PAGE_SIZE = 20;
+
+function getResultsBatchSize(): number {
+  if (typeof window === "undefined") return 24;
+  const shellWidth = Math.min(1120, window.innerWidth - 32);
+  const columns = Math.max(1, Math.floor((shellWidth + 12) / 262));
+  const rows = Math.max(3, Math.ceil((window.innerHeight - 220) / 150) + 1);
+  return Math.max(8, Math.min(60, columns * rows));
+}
+
+function appendUnique(previous: Project[], next: Project[]): Project[] {
+  if (next.length === 0) return previous;
+  const seen = new Set(previous.map((project) => project.id));
+  const merged = [...previous];
+  for (const project of next) {
+    if (seen.has(project.id)) continue;
+    seen.add(project.id);
+    merged.push(project);
+  }
+  return merged;
+}
 
 const platformOptions: SelectOption[] = [
   { value: "java", label: "Java Edition" },
@@ -131,9 +173,17 @@ export default function JavaDownloader() {
   const [mcpedlRoots, setMcpedlRoots] = useState<McpedlTag[]>([]);
   const [results, setResults] = useState<Project[]>([]);
   const [loading, setLoading] = useState(false);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [hasMore, setHasMore] = useState(false);
+  const [loadMoreError, setLoadMoreError] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
   const [error, setError] = useState(false);
   const requestId = useRef(0);
+  const nextBedrockPage = useRef(1);
+  const loadingMoreRef = useRef(false);
+  const resultsRef = useRef<Project[]>([]);
+  const sentinelRef = useRef<HTMLDivElement | null>(null);
+  resultsRef.current = results;
 
   const provider = platform === "bedrock" ? "MCPEDL" : "Modrinth";
 
