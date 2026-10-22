@@ -68,9 +68,8 @@ function cacheKey(config: ResolvedConfig): string {
     youtubeApi: Boolean(config.youtubeApiKey),
     discordInvite: config.discordInvite,
     instagramUsername: config.instagramUsername,
-    instagramGraph: Boolean(
-      config.instagramAccessToken && config.instagramUserId
-    ),
+    instagramGraph: Boolean(config.instagramAccessToken),
+    instagramUserId: config.instagramUserId,
   });
 }
 
