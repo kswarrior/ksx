@@ -22,6 +22,13 @@
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
 }
 
+.page-hero-logo {
+  padding: 6px;
+  background: linear-gradient(135deg, #ffffff, #f1f1f1);
+  border-color: rgba(255, 255, 255, 0.12);
+  color: #111111;
+}
+
 .page-hero-text {
   position: relative;
   z-index: 1;

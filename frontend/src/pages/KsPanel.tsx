@@ -18,6 +18,7 @@ export default function KsPanel() {
           <PageHero
             variant="inline"
             icon="server"
+            logoSrc="/image/ks-logo.webp"
             title="KS Panel"
             className="ab-page-hero"
           />

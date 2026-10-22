@@ -47,6 +47,7 @@ export interface VpsHosting {
 }
 export interface WebsiteHosting {
     name: string;
+    logo: string;
     type: string;
     storage: string;
     bandwidth: string;
@@ -63,6 +64,7 @@ export interface WebsiteHosting {
 }
 export interface DatabaseHosting {
     name: string;
+    logo: string;
     type: string;
     storage: string;
     transfer: string;

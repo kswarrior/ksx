@@ -28,7 +28,12 @@ export default function KsClient() {
         <div className="ks-bg-orb o2" />
       </div>
       <div className="ks-shell">
-        <PageHero icon="gamepad" title="KS Client" className="ks-page-hero" />
+        <PageHero
+          icon="gamepad"
+          logoSrc="/minecraft/bedrock/pack_icon.webp"
+          title="KS Client"
+          className="ks-page-hero"
+        />
 
         <div className="ks-card">
           <div className="ks-card-title"><Icon name="sparkles" size={15} /> What you get</div>

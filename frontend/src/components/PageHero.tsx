@@ -31,9 +31,13 @@ export default function PageHero({
         .filter(Boolean)
         .join(" ")}
     >
-      <span className="page-hero-icon" aria-hidden>
-        <Icon name={icon} size={22} />
-      </span>
+      {logoSrc ? (
+        <BrandLogo className="page-hero-icon page-hero-logo" src={logoSrc} fallback={icon} iconSize={22} />
+      ) : (
+        <span className="page-hero-icon" aria-hidden>
+          <Icon name={icon} size={22} />
+        </span>
+      )}
       <div className="page-hero-text">
         {kicker && <span className="page-hero-kicker">{kicker}</span>}
         <h1>{title}</h1>
