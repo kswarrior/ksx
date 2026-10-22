@@ -54,8 +54,8 @@
 .ci-frame-wrap{height:455px; border-radius:5px; overflow:hidden; background:#ffffff;}
 .ci-frame{display:block; width:100%; height:100%; border:none; background:#ffffff;}
 .customip-page.ci-fullscreen{height:calc(100vh - 56px); height:calc(100dvh - 56px); min-height:0; overflow:hidden;}
-.ci-fullscreen .ci-shell{height:100%; display:flex; flex-direction:column;}
-.ci-fullscreen .ci-stage.wide{flex:1; min-height:0; display:flex; margin-top:12px; margin-bottom:0;}
+.ci-fullscreen .ci-shell{height:100%; display:flex; flex-direction:column; padding-bottom:12px;}
+.ci-fullscreen .ci-stage.wide{flex:1; width:100%; min-height:0; display:flex; margin:12px 0 0;}
 .ci-fullscreen .ci-stage.wide .ci-card{flex:1; min-height:0; display:flex; flex-direction:column; padding:14px; contain:none; content-visibility:visible;}
 .ci-fullscreen .ci-card-head{flex:0 0 auto;}
 .ci-fullscreen .ci-card > p{flex:0 0 auto; margin-bottom:10px;}
