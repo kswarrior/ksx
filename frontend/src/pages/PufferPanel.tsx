@@ -284,7 +284,7 @@ export default function PufferPanel() {
                 label={isDocker ? "Create admin in Docker" : "Create admin on host"}
                 code={
                   isDocker
-                    ? `docker start pufferpanel\ndocker exec -it pufferpanel /pufferpanel/bin/pufferpanel user add\ndocker logs -f pufferpanel`
+                    ? `docker start pufferpanel\ndocker exec -it pufferpanel /pufferpanel/bin/pufferpanel user add\ndocker logs --tail 50 pufferpanel`
                     : `sudo pufferpanel user add\nsudo systemctl enable --now pufferpanel\nsudo systemctl status pufferpanel --no-pager`
                 }
               />

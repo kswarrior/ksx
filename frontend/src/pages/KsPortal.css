@@ -135,26 +135,6 @@
   animation: portalPulse 2.4s ease-in-out infinite;
 }
 
-.portal-state {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 5px 9px;
-  border-radius: 999px;
-  border: 1px solid rgba(246, 201, 76, 0.22);
-  background: rgba(246, 201, 76, 0.08);
-  color: #f6d97a;
-  font-size: 9.5px;
-  font-weight: 800;
-  letter-spacing: 0.7px;
-  text-transform: uppercase;
-  white-space: nowrap;
-}
-
-.portal-state svg {
-  display: block;
-}
-
 .portal-release h1 {
   margin: 8px 0 8px;
   font-size: clamp(26px, 4vw, 38px);
