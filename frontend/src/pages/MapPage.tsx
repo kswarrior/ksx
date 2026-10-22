@@ -987,7 +987,10 @@ export default function MapPage() {
             })}
           </svg>
 
-          <div className="mp-node mp-core-node">
+          <div
+            className="mp-node mp-core-node"
+            style={{ left: CORE.x, top: CORE.y }}
+          >
             <button
               className="mp-core"
               type="button"
