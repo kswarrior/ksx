@@ -43,15 +43,40 @@ const FEATURES = [
   },
 ] as const;
 
+const DETAILS = [
+  { icon: "package", label: "Version", value: `v${APP_VERSION}` },
+  { icon: "smartphone", label: "Platform", value: "Android" },
+  { icon: "satellite", label: "Channel", value: "Latest" },
+  { icon: "rocket", label: "Status", value: "In development" },
+] as const;
+
+const ROADMAP = [
+  {
+    step: "01",
+    title: "Android",
+    text: "The first KS Portal build, shipping in KS Apps.",
+    state: "active",
+    label: "Shipping soon",
+  },
+  {
+    step: "02",
+    title: "Windows",
+    text: "The same fast portal, built for desktop.",
+    state: "",
+    label: "Planned",
+  },
+  {
+    step: "03",
+    title: "Linux",
+    text: "One experience across every device.",
+    state: "",
+    label: "Planned",
+  },
+] as const;
+
 export default function KsPortal() {
   return (
     <div className="portal-page">
-      <div className="portal-bg" aria-hidden="true">
-        <span className="portal-glow g1" />
-        <span className="portal-glow g2" />
-        <span className="portal-grid" />
-      </div>
-
       <div className="portal-shell">
         <header className="portal-appbar">
           <div className="pa-left">
@@ -71,7 +96,7 @@ export default function KsPortal() {
           </div>
           <div className="pa-right">
             <span className="pa-version" title="Latest version">
-              <em>Latest</em>
+              <i aria-hidden="true" />
               <b>v{APP_VERSION}</b>
             </span>
             <a
@@ -87,55 +112,46 @@ export default function KsPortal() {
           </div>
         </header>
 
-        <section className="portal-hero">
-          <div className="portal-orbit" aria-hidden="true">
-            <span className="po-ring r1" />
-            <span className="po-ring r2" />
-            <span className="po-core">
-              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="12" cy="12" r="4" stroke="#fff" strokeWidth="1.5" />
-                <ellipse
-                  cx="12"
-                  cy="12"
-                  rx="9"
-                  ry="3.6"
-                  transform="rotate(-24 12 12)"
-                  stroke="#38bdf8"
-                  strokeWidth="1.3"
-                />
-                <ellipse
-                  cx="12"
-                  cy="12"
-                  rx="9"
-                  ry="3.6"
-                  transform="rotate(24 12 12)"
-                  stroke="#a78bfa"
-                  strokeWidth="1.1"
-                  opacity="0.8"
-                />
-                <circle cx="19.2" cy="7.2" r="1.2" fill="#22c55e" />
-              </svg>
+        <section className="portal-release" aria-labelledby="portal-release-title">
+          <div className="portal-release-head">
+            <span className="portal-release-icon">
+              <img src="/portal.png" alt="" width={64} height={64} />
             </span>
-            <span className="po-sat s1" />
-            <span className="po-sat s2" />
-            <span className="po-sat s3" />
+            <div className="portal-release-info">
+              <div className="portal-release-top">
+                <span className="portal-kicker">
+                  <i aria-hidden="true" />
+                  Latest release
+                </span>
+                <span className="portal-state">
+                  <Icon name="rocket" size={11} />
+                  Coming soon
+                </span>
+              </div>
+              <h1 id="portal-release-title">
+                KS Portal <span>v{APP_VERSION}</span>
+              </h1>
+              <p>
+                A fast, private browser built for the KS ecosystem — your gateway
+                to everything KSX, in one tab.
+              </p>
+            </div>
           </div>
 
-          <span className="portal-badge">
-            <i aria-hidden="true" />
-            Coming soon
-          </span>
-          <h1>
-            KS <span>Portal</span>
-          </h1>
-          <p className="portal-tagline">
-            A fast, private browser built for the KS ecosystem — your gateway to
-            everything KSX, in one tab.
-          </p>
           <div className="portal-actions">
-            <Link className="portal-btn primary" to="/dashboard">
+            <a
+              className="portal-btn primary"
+              href={DOWNLOAD_URL}
+              download
+              onClick={trackDownload}
+            >
+              <Icon name="download" size={15} />
+              Download APK
+              <span className="portal-btn-version">v{APP_VERSION}</span>
+            </a>
+            <Link className="portal-btn" to="/dashboard">
+              <Icon name="gamepad" size={14} />
               Explore KSX
-              <Icon name="arrow-right" size={15} />
             </Link>
             <Link className="portal-btn" to="/map">
               <Icon name="map-pin" size={14} />
@@ -144,72 +160,82 @@ export default function KsPortal() {
           </div>
         </section>
 
-        <section className="portal-preview" aria-label="Preview of the KS Portal browser">
-          <div className="pp-bar">
-            <span className="pp-dots" aria-hidden="true">
-              <i />
-              <i />
-              <i />
-            </span>
-            <span className="pp-address">
-              <Icon name="globe" size={12} />
-              ks://portal
-            </span>
-            <span className="pp-live">
-              <i aria-hidden="true" />
-              Soon
-            </span>
-          </div>
-          <div className="pp-body" aria-hidden="true">
-            <div className="pp-side">
-              <span className="pp-pill w90" />
-              <span className="pp-pill w70" />
-              <span className="pp-pill w80" />
-              <span className="pp-pill w60" />
+        <div className="portal-grid">
+          <section className="portal-panel" aria-labelledby="portal-highlights-title">
+            <div className="portal-panel-head">
+              <h2 id="portal-highlights-title">
+                <span className="portal-panel-icon" style={{ color: "#f2c94c" }}>
+                  <Icon name="sparkles" size={16} />
+                </span>
+                Highlights
+              </h2>
+              <span className="portal-panel-count">{FEATURES.length}</span>
             </div>
-            <div className="pp-main">
-              <span className="pp-line w60" />
-              <span className="pp-line w40" />
-              <div className="pp-tiles">
-                {Array.from({ length: 6 }).map((_, i) => (
-                  <span key={i} />
-                ))}
-              </div>
-              <div className="pp-coming">
-                <Icon name="rocket" size={15} />
-                <span>Coming soon</span>
-              </div>
+            <div className="portal-list">
+              {FEATURES.map((feature) => (
+                <div key={feature.title} className="portal-list-item">
+                  <span className="portal-item-icon">
+                    <Icon name={feature.icon} size={16} />
+                  </span>
+                  <span className="portal-item-text">
+                    <span className="name">{feature.title}</span>
+                    <span className="sub">{feature.text}</span>
+                  </span>
+                </div>
+              ))}
             </div>
-          </div>
-        </section>
+          </section>
 
-        <section className="portal-cards" aria-label="KS Portal highlights">
-          {FEATURES.map((feature) => (
-            <article key={feature.title} className="portal-card">
-              <span className="portal-card-icon">
-                <Icon name={feature.icon} size={18} />
+          <section className="portal-panel" aria-labelledby="portal-info-title">
+            <div className="portal-panel-head">
+              <h2 id="portal-info-title">
+                <span className="portal-panel-icon" style={{ color: "#ff6b6b" }}>
+                  <Icon name="package" size={16} />
+                </span>
+                App info
+              </h2>
+            </div>
+            <div className="portal-list">
+              {DETAILS.map((detail) => (
+                <div key={detail.label} className="portal-list-item compact">
+                  <span className="portal-item-icon small">
+                    <Icon name={detail.icon} size={14} />
+                  </span>
+                  <span className="portal-item-text">
+                    <span className="name">{detail.label}</span>
+                  </span>
+                  <span className="portal-item-value">{detail.value}</span>
+                </div>
+              ))}
+            </div>
+          </section>
+        </div>
+
+        <section className="portal-panel" aria-labelledby="portal-roadmap-title">
+          <div className="portal-panel-head">
+            <h2 id="portal-roadmap-title">
+              <span className="portal-panel-icon" style={{ color: "#9ecbff" }}>
+                <Icon name="rocket" size={16} />
               </span>
-              <h3>{feature.title}</h3>
-              <p>{feature.text}</p>
-            </article>
-          ))}
-        </section>
-
-        <section className="portal-status">
-          <span className="portal-status-icon">
-            <Icon name="rocket" size={20} />
-          </span>
-          <div className="portal-status-text">
-            <h3>In development</h3>
-            <p>
-              KS Portal is being built now. The Android build will land in KS
-              Apps first, with Windows and Linux to follow.
-            </p>
+              Roadmap
+            </h2>
+            <span className="portal-panel-count">In development</span>
           </div>
-          <Link to="/map" className="portal-status-link">
-            Browse KS Apps
-            <Icon name="arrow-right" size={13} />
-          </Link>
+          <div className="portal-roadmap">
+            {ROADMAP.map((item) => (
+              <article
+                key={item.title}
+                className={`portal-step${item.state ? ` ${item.state}` : ""}`}
+              >
+                <div className="portal-step-top">
+                  <span className="portal-step-num">{item.step}</span>
+                  <span className="portal-step-state">{item.label}</span>
+                </div>
+                <h3>{item.title}</h3>
+                <p>{item.text}</p>
+              </article>
+            ))}
+          </div>
         </section>
       </div>
     </div>
