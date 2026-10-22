@@ -803,8 +803,29 @@
     display: none;
   }
 
+  .mp-meta {
+    left: 12px;
+    bottom: 12px;
+  }
+
+  .mp-meta-hint,
+  .mp-meta-divider {
+    display: none;
+  }
+
+  .map-page.has-selection .mp-meta {
+    opacity: 0;
+    visibility: hidden;
+  }
+
   .mp-results {
     max-height: 38dvh;
+  }
+}
+
+@media (max-width: 520px) {
+  .mp-meta {
+    display: none;
   }
 }
 
