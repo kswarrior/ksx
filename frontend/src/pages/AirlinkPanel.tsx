@@ -368,11 +368,12 @@ export default function AirlinkPanel() {
                 <li>Create the node in <strong>Admin → Nodes</strong> with its address, port and resource limits.</li>
                 <li>Install the daemon on the node using the same key.</li>
                 <li>Click <strong>Verify</strong> in the node page — it should return the daemon version.</li>
-                <li>If verification fails, check <code>systemctl status airlink-daemon</code> and test <code>curl -s http://NODE_IP:3002/api/health</code>.</li>
+                <li>If verification fails, check <code>systemctl status airlink-daemon</code> and test <code>curl -s -u "Airlink:YOUR_NODE_KEY" http://NODE_IP:3002/</code>.</li>
               </ol>
               <p className="setup-note">
-                Keep the node key private. The daemon port only needs to be reachable from the
-                panel, not from the public internet.
+                Keep the node key private. The daemon has no <code>/api/health</code> route — its
+                root endpoint is protected with HTTP basic auth. Port 3002 only needs to be
+                reachable from the panel, not from the public internet; SFTP uses 3003.
               </p>
             </Panel>
           )}
