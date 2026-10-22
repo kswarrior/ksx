@@ -4,7 +4,56 @@ import Icon from "../components/Icon";
 import { TextField } from "../components/ui";
 import "./ServerInfo.css";
 
-type McStatus = Record<string, unknown>;
+type McStatus = {
+  online?: boolean;
+  ip?: string;
+  port?: number;
+  hostname?: string;
+  version?: string;
+  protocol?: { version?: number; name?: string };
+  players?: { online?: number; max?: number; list?: string[] };
+  motd?: { clean?: string[]; raw?: string[] };
+  icon?: string;
+  software?: string;
+  plugins?: unknown[];
+  mods?: unknown[];
+  eula_blocked?: boolean;
+  debug?: { query?: boolean; bedrock?: boolean; srv?: boolean };
+};
+
+function decodeMotd(text: string) {
+  return text
+    .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&quot;/g, '"')
+    .replace(/&#0*39;/g, "'")
+    .replace(/&apos;/g, "'");
+}
+
+function buildStats(data: McStatus) {
+  const stats: { label: string; value: string }[] = [];
+  const players = data.players;
+  if (players?.online !== undefined || players?.max !== undefined) {
+    stats.push({ label: "Players", value: `${players?.online ?? "—"} / ${players?.max ?? "—"}` });
+  }
+  const version = data.version || data.protocol?.name;
+  if (version) stats.push({ label: "Version", value: version });
+  if (data.protocol?.version !== undefined && data.protocol.version !== -1) {
+    stats.push({ label: "Protocol", value: String(data.protocol.version) });
+  }
+  if (data.ip) stats.push({ label: "IP", value: data.ip });
+  if (data.port !== undefined) stats.push({ label: "Port", value: String(data.port) });
+  if (data.hostname) stats.push({ label: "Hostname", value: data.hostname });
+  if (data.software) stats.push({ label: "Software", value: data.software });
+  if (data.plugins?.length) stats.push({ label: "Plugins", value: String(data.plugins.length) });
+  if (data.mods?.length) stats.push({ label: "Mods", value: String(data.mods.length) });
+  if (data.debug?.bedrock) stats.push({ label: "Edition", value: "Bedrock" });
+  if (data.eula_blocked !== undefined) {
+    stats.push({ label: "EULA Blocked", value: data.eula_blocked ? "Yes" : "No" });
+  }
+  return stats;
+}
 
 export default function ServerInfo() {
   const [searchParams] = useSearchParams();
@@ -12,19 +61,27 @@ export default function ServerInfo() {
   const [ip, setIp] = useState(initialIp);
   const [data, setData] = useState<McStatus | null>(null);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const autoChecked = useRef(false);
 
   async function fetchInfo(target?: string) {
     const value = (target ?? ip).trim();
-    if (!value) { alert("Please enter a server IP"); return; }
+    if (!value) {
+      setError("Please enter a server IP.");
+      return;
+    }
     setLoading(true);
+    setError(null);
     try {
-      const res = await fetch(`https://api.mcsrvstat.us/3/${value}`);
-      const json = await res.json();
+      const res = await fetch(`https://api.mcsrvstat.us/3/${encodeURIComponent(value)}`);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const json = (await res.json()) as McStatus;
       setData(json);
     } catch {
-      alert("Failed to fetch");
-    } finally { setLoading(false); }
+      setError("Failed to fetch server information. Try again in a moment.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   useEffect(() => {
@@ -33,8 +90,11 @@ export default function ServerInfo() {
     void fetchInfo(initialIp);
   }, [initialIp]);
 
-  const online = data ? Boolean((data as { online?: boolean }).online) : null;
-  const players = data ? (data as { players?: { online?: number; max?: number } }).players : null;
+  const online = data ? Boolean(data.online) : false;
+  const name = data?.hostname || data?.ip || ip.trim() || "Minecraft Server";
+  const icon = data?.icon?.startsWith("data:image/") ? data.icon : null;
+  const motdLines = (data?.motd?.clean ?? []).map(decodeMotd);
+  const stats = data ? buildStats(data) : [];
 
   return (
     <div className="si-page">
@@ -51,32 +111,67 @@ export default function ServerInfo() {
           </div>
         </header>
 
+        {error && !loading && (
+          <div className="si-card si-state si-error"><Icon name="warning" size={16} /> {error}</div>
+        )}
+
         {data && (
-          <div className="si-card">
-            <div style={{display:"flex", gap:8, alignItems:"center", flexWrap:"wrap"}}>
-              <span style={{padding:"6px 10px", borderRadius:8, fontSize:12, fontWeight:900, background: online ? "rgba(34,197,94,0.15)" : "rgba(239,68,68,0.15)", color: online ? "#4ade80" : "#f87171", border:"1px solid rgba(255,255,255,0.08)"}}>{online ? "● Online" : "● Offline"}</span>
-              {players && <span style={{fontSize:12, color:"var(--si-muted)"}}>{players.online} / {players.max} players</span>}
-              <button className="si-btn" style={{marginLeft:"auto", padding:"8px 12px", fontSize:12, background:"rgba(255,255,255,0.06)", color:"#fff", border:"1px solid rgba(255,255,255,0.12)"}} onClick={()=> navigator.clipboard.writeText(JSON.stringify(data,null,2))}>Copy JSON</button>
-            </div>
-
-            {players && (
-              <div className="si-grid">
-                <div className="si-stat"><b>Online</b><span>{players.online ?? "—"}</span></div>
-                <div className="si-stat"><b>Max</b><span>{players.max ?? "—"}</span></div>
-                <div className="si-stat"><b>IP</b><span style={{fontSize:12, wordBreak:"break-all"}}>{String((data as { ip?:string }).ip || ip)}</span></div>
-                <div className="si-stat"><b>Port</b><span>{String((data as { port?:number }).port || "25565")}</span></div>
+          <>
+            <section className={`si-server-card ${online ? "is-online" : "is-offline"}`}>
+              <div className="si-server-top">
+                <div className="si-avatar">
+                  {icon ? <img src={icon} alt={`${name} icon`} /> : <span>{name.slice(0, 2).toUpperCase()}</span>}
+                </div>
+                <div className="si-server-scroll">
+                  <div className="si-identity">
+                    <div className="si-name-row">
+                      <h2 className="si-name" title={name}>{name}</h2>
+                      <span className="si-badge">{online ? "Online" : "Offline"}</span>
+                    </div>
+                    <div className="si-motd">
+                      {motdLines.length > 0
+                        ? motdLines.map((line, index) => (
+                            <span className="si-motd-line" key={index}>{line || "\u00A0"}</span>
+                          ))
+                        : <span className="si-motd-line si-motd-empty">No MOTD available</span>}
+                    </div>
+                  </div>
+                </div>
               </div>
-            )}
+              {!online && (
+                <p className="si-offline-note"><Icon name="warning" size={13} /> This server is offline or unreachable right now.</p>
+              )}
+            </section>
 
-            <pre className="si-pre">{JSON.stringify(data, null, 2)}</pre>
+            {stats.length > 0 && (
+              <section className="si-info">
+                <h3 className="si-section-title"><Icon name="sliders" size={14} /> Server Information</h3>
+                <div className="si-grid">
+                  {stats.map((stat) => (
+                    <div className="si-stat" key={stat.label}>
+                      <b>{stat.label}</b>
+                      <span title={stat.value}>{stat.value}</span>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
+          </>
+        )}
+
+        {!data && !loading && !error && (
+          <div className="si-card si-state">
+            <div className="si-state-icon"><Icon name="search" size={22} /></div>
+            <div className="si-state-title">No query yet</div>
+            <div>Enter a server IP above to see live stats. Example: play.cubecraft.net</div>
           </div>
         )}
 
-        {!data && (
-          <div className="si-card" style={{textAlign:"center", color:"var(--si-muted)", fontSize:13}}>
-            <div style={{marginBottom:8, color:"var(--si-muted)"}}><Icon name="search" size={22} /></div>
-            <div style={{fontWeight:800, color:"var(--si-text)", marginBottom:6}}>No query yet</div>
-            <div>Enter a server IP above to see live stats. Example: play.cubecraft.net</div>
+        {loading && !data && (
+          <div className="si-card si-state">
+            <div className="si-state-icon"><Icon name="search" size={22} /></div>
+            <div className="si-state-title">Checking server…</div>
+            <div>Fetching live status, MOTD and player counts.</div>
           </div>
         )}
       </div>
