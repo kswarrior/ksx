@@ -289,7 +289,7 @@
   letter-spacing: 0.1px;
   line-height: 1.2;
   white-space: nowrap;
-  pointer-events: none;
+  cursor: pointer;
   text-shadow: 0 1px 8px rgba(0, 0, 0, 0.85);
   transform: translateX(-50%) scale(var(--mp-inv, 1));
   transform-origin: top center;

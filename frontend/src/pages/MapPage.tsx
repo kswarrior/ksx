@@ -1096,10 +1096,13 @@ export default function MapPage() {
                           __html: star.category.icon,
                         }}
                       />
+                      <span
+                        className="mp-label mp-star-label"
+                        aria-hidden="true"
+                      >
+                        {catKey}
+                      </span>
                     </button>
-                    <span className="mp-label mp-star-label" aria-hidden="true">
-                      {catKey}
-                    </span>
                   </div>
                 )}
 
@@ -1156,13 +1159,13 @@ export default function MapPage() {
                                 __html: planet.section.icon,
                               }}
                             />
+                            <span
+                              className="mp-label mp-planet-label"
+                              aria-hidden="true"
+                            >
+                              {planet.section.title}
+                            </span>
                           </button>
-                          <span
-                            className="mp-label mp-planet-label"
-                            aria-hidden="true"
-                          >
-                            {planet.section.title}
-                          </span>
                         </div>
                       )}
 
@@ -1216,13 +1219,13 @@ export default function MapPage() {
                                   __html: moon.page.logo,
                                 }}
                               />
+                              <span
+                                className="mp-label mp-moon-label"
+                                aria-hidden="true"
+                              >
+                                {moon.page.name}
+                              </span>
                             </Link>
-                            <span
-                              className="mp-label mp-moon-label"
-                              aria-hidden="true"
-                            >
-                              {moon.page.name}
-                            </span>
                           </div>
                         );
                       })}
