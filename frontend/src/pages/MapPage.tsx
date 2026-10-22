@@ -107,6 +107,10 @@ function clamp(value: number, min: number, max: number) {
   return Math.min(max, Math.max(min, value));
 }
 
+function plural(count: number, word: string) {
+  return `${count} ${word}${count === 1 ? "" : "s"}`;
+}
+
 function categoryAngles(count: number): number[] {
   if (count <= 1) return [0];
   if (count === 2) return [Math.PI, 0];
@@ -1044,7 +1048,7 @@ export default function MapPage() {
                     onClick={() =>
                       selectCategory(star.category.category)
                     }
-                    aria-label={`${star.category.category} star — ${star.planets.length} planets, ${star.pageCount} moons`}
+                    aria-label={`${star.category.category} star — ${plural(star.planets.length, "planet")}, ${plural(star.pageCount, "moon")}`}
                   >
                     <span
                       className="mp-star-icon"
@@ -1058,7 +1062,8 @@ export default function MapPage() {
                       {star.category.category}
                     </strong>
                     <em className="mp-star-meta">
-                      {star.planets.length} planets · {star.pageCount} moons
+                      {plural(star.planets.length, "planet")} ·{" "}
+                      {plural(star.pageCount, "moon")}
                     </em>
                   </span>
                 </div>
@@ -1103,7 +1108,7 @@ export default function MapPage() {
                               planet.section.title
                             )
                           }
-                          aria-label={`${planet.section.title} planet — ${planet.moons.length} moons in ${star.category.category}`}
+                          aria-label={`${planet.section.title} planet — ${plural(planet.moons.length, "moon")} in ${star.category.category}`}
                         >
                           <span
                             className="mp-planet-icon"
@@ -1117,8 +1122,7 @@ export default function MapPage() {
                             {planet.section.title}
                           </strong>
                           <em className="mp-planet-meta">
-                            {planet.moons.length} moon
-                            {planet.moons.length === 1 ? "" : "s"}
+                            {plural(planet.moons.length, "moon")}
                           </em>
                         </span>
                       </div>
@@ -1240,7 +1244,8 @@ export default function MapPage() {
             ) : (
               <>
                 <strong>{totalPages}</strong> pages ·{" "}
-                <strong>{totalSections}</strong> planets
+                <strong>{totalSections}</strong>{" "}
+                {totalSections === 1 ? "planet" : "planets"}
               </>
             )}
           </span>
@@ -1359,8 +1364,8 @@ export default function MapPage() {
               <span className="mp-eyebrow">Moon system</span>
               <h2>{selectedSec.title}</h2>
               <p className="mp-details-sub">
-                {selectedCat.category} · {selectedSec.pages.length} moon
-                {selectedSec.pages.length === 1 ? "" : "s"} linked
+                {selectedCat.category} ·{" "}
+                {plural(selectedSec.pages.length, "moon")} linked
               </p>
               <div className="mp-details-list">
                 {selectedSec.pages.map((page) => (
@@ -1398,12 +1403,14 @@ export default function MapPage() {
               <span className="mp-eyebrow">Category star</span>
               <h2>{selectedCat.category}</h2>
               <p className="mp-details-sub">
-                {selectedCat.sections.length} planets ·{" "}
-                {selectedCat.sections.reduce(
-                  (a, s) => a + s.pages.length,
-                  0
-                )}{" "}
-                moons
+                {plural(selectedCat.sections.length, "planet")} ·{" "}
+                {plural(
+                  selectedCat.sections.reduce(
+                    (a, s) => a + s.pages.length,
+                    0
+                  ),
+                  "moon"
+                )}
               </p>
               <div className="mp-details-list">
                 {selectedCat.sections.map((section) => (
@@ -1421,10 +1428,7 @@ export default function MapPage() {
                     />
                     <span className="mp-detail-text">
                       <strong>{section.title}</strong>
-                      <em>
-                        {section.pages.length} moon
-                        {section.pages.length === 1 ? "" : "s"}
-                      </em>
+                      <em>{plural(section.pages.length, "moon")}</em>
                     </span>
                     <Icon name="chevron-right" size={13} />
                   </button>
@@ -1520,7 +1524,8 @@ export default function MapPage() {
                 <span className="mp-eyebrow">Complete index</span>
                 <h2>Sitemap directory</h2>
                 <p>
-                  {filteredCount} pages in {filtered.length} categories
+                  {plural(filteredCount, "page")} in{" "}
+                  {plural(filtered.length, "category").replace("categorys", "categories")}
                 </p>
               </div>
               <button
@@ -1552,7 +1557,7 @@ export default function MapPage() {
                           dangerouslySetInnerHTML={{ __html: cat.icon }}
                         />
                         {cat.category}
-                        <em>{count} pages</em>
+                        <em>{plural(count, "page")}</em>
                       </div>
 
                       {cat.sections.map((sec) => (
