@@ -480,6 +480,66 @@ export default function BotPage() {
               </div>
             </section>
 
+            {auth === "microsoft" && (
+              <section className="bot-panel">
+                <div className="bot-panel-head">
+                  <div className="bot-panel-title">
+                    <Icon name="sparkles" size={15} />
+                    <h2>Premium server login</h2>
+                  </div>
+                  <span className="bot-panel-meta">Microsoft account</span>
+                </div>
+
+                <p className="bot-hint">
+                  Mineflayer prints a Microsoft device code in the terminal. Open the link it shows,
+                  enter the code, and finish the sign-in. No Microsoft password is stored in{" "}
+                  <code>bot.js</code>.
+                </p>
+
+                <div className="bot-fields">
+                  <div className="bot-field">
+                    <label>Server password (optional)</label>
+                    <TextField
+                      type="password"
+                      value={serverPassword}
+                      onChange={(event) => setServerPassword(event.target.value)}
+                      placeholder="Server /login password"
+                      autoComplete="new-password"
+                      spellCheck={false}
+                    />
+                  </div>
+                  <div className="bot-field">
+                    <label>Login delay (s)</label>
+                    <TextField
+                      value={loginDelay}
+                      onChange={(event) => setLoginDelay(event.target.value)}
+                      inputMode="numeric"
+                      placeholder="3"
+                    />
+                  </div>
+                  <div className="bot-field wide">
+                    <label>Login command (optional)</label>
+                    <TextField
+                      value={loginCommand}
+                      onChange={(event) => setLoginCommand(event.target.value)}
+                      placeholder="/login {password}"
+                      spellCheck={false}
+                    />
+                    <p className="bot-step-note">
+                      Leave empty to send <code>/login password</code>. You can use{" "}
+                      <code>{"{password}"}</code> and <code>{"{username}"}</code>. For a first
+                      join, use <code>/register {"{password}"} {"{password}"}</code>.
+                    </p>
+                  </div>
+                </div>
+
+                <p className="bot-note">
+                  This is your Minecraft server password, not your Microsoft password. It is saved
+                  in <code>bot.js</code> as plain text, so keep the file private.
+                </p>
+              </section>
+            )}
+
             <section className="bot-panel">
               <div className="bot-panel-head">
                 <div className="bot-panel-title">
