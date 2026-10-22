@@ -100,8 +100,8 @@ const PALETTE = [
   { accent: "#c2a8a8", rgb: "194, 168, 168" },
 ];
 
-const ZOOM_FAR = 0.62;
-const ZOOM_NEAR = 1.02;
+const ZOOM_FAR = 0.8;
+const ZOOM_NEAR = 1.15;
 
 function sameKeys(a: Set<string>, b: Set<string>) {
   if (a.size !== b.size) return false;
