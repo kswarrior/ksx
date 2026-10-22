@@ -509,7 +509,7 @@ async function autoEat() {
 }
 
 async function autoTotem() {
-  if (!CONFIG.autoTotem || eating || !bot || !bot.entity) return
+  if (!CONFIG.autoTotem || eating || busy || !bot || !bot.entity) return
   if (bot.health > 8) return
   const offhand = bot.inventory.slots[45]
   if (offhand && offhand.name === 'totem_of_undying') return
