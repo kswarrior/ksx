@@ -16,21 +16,23 @@ function CopySection({ label, code, icon }: { label: string; code: string; icon?
   const [copied, setCopied] = useState(false);
   return (
     <div className="p-card">
-      <h2>{icon && <Icon name={icon} size={16} />} {label}</h2>
-      <pre className="codespre">{code}</pre>
-      <div style={{ display: "flex", alignItems: "center", marginTop: 12, flexWrap: "wrap", gap: 8 }}>
+      <h2>
+        <span className="p-card-title">{icon && <Icon name={icon} size={16} />} {label}</span>
         <button
-          className="panel-btn primary"
+          className={`copy-icon-btn ${copied ? "is-copied" : ""}`}
+          type="button"
+          aria-label={copied ? "Copied" : "Copy command"}
+          title={copied ? "Copied" : "Copy command"}
           onClick={async () => {
             await navigator.clipboard.writeText(code);
             setCopied(true);
             setTimeout(() => setCopied(false), 1200);
           }}
         >
-          <Icon name={copied ? "check" : "copy"} size={14} /> {copied ? "Copied" : "Copy Command"}
+          <Icon name={copied ? "check" : "copy"} size={15} />
         </button>
-        <span className={`copied ${copied ? "show" : ""}`}><Icon name="check" size={12} /> Copied</span>
-      </div>
+      </h2>
+      <pre className="codespre">{code}</pre>
     </div>
   );
 }

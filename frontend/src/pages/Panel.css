@@ -24,7 +24,12 @@
 .p-sub{position:relative; color:var(--p-muted); font-size:13px; line-height:1.6; max-width:600px; margin:0 auto;}
 .p-card{background:var(--p-card); border:1px solid var(--p-border); border-radius:var(--p-radius); padding:20px; margin-top:14px; contain:layout paint style; content-visibility:auto; contain-intrinsic-size:160px; transition:border-color .2s, box-shadow .2s, background .2s;}
 .p-card:hover{border-color:var(--p-border2); box-shadow:0 14px 36px rgba(0, 0, 0,0.32); background:var(--p-card2);}
-.p-card h2{font-size:15px; font-weight:900; letter-spacing:-0.3px; margin-bottom:10px; display:flex; align-items:center; gap:8px;}
+.p-card h2{font-size:15px; font-weight:900; letter-spacing:-0.3px; margin-bottom:10px; display:flex; align-items:center; justify-content:space-between; gap:8px;}
+.p-card-title{display:inline-flex; align-items:center; gap:8px; min-width:0;}
+.copy-icon-btn{appearance:none; flex-shrink:0; display:inline-flex; align-items:center; justify-content:center; width:30px; height:30px; padding:0; margin-left:auto; background:transparent; color:var(--p-muted); border:1px solid var(--p-border); border-radius:6px; cursor:pointer; transition:background .2s, color .2s, border-color .2s;}
+.copy-icon-btn:hover{background:rgba(255, 255, 255,0.08); color:#ffffff; border-color:var(--p-border2);}
+.copy-icon-btn:active{transform:scale(0.94);}
+.copy-icon-btn.is-copied{color:#4ade80; border-color:rgba(74, 222, 128,0.4);}
 .p-card p{font-size:13px; color:var(--p-muted); line-height:1.6; margin-bottom:8px;}
 .codespre{background:#0b0b0b; color:#e4e4e4; border-radius:5px; padding:14px; font-family:"JetBrains Mono","Consolas",monospace; font-size:13px; overflow-x:auto; border:1px solid rgba(255, 255, 255,0.09); white-space:pre-wrap; word-break:break-all; line-height:1.5;}
 .panel-btn{appearance:none; background:rgba(255, 255, 255,0.06); color:#ffffff; border:1px solid rgba(255, 255, 255,0.12); padding:10px 16px; border-radius:6px; font-weight:800; font-size:12px; cursor:pointer; transition:background .2s, transform .15s, border-color .2s; display:inline-flex; align-items:center; gap:8px;}
