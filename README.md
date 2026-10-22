@@ -66,7 +66,22 @@ On Cloudflare Workers this writes to the `app_downloads` D1 table. The Worker
 creates the tables and seeds the `apps` table automatically on the first request,
 so a manual seed is optional. Migration and seed files live in `backend/migrations/`.
 
-One-time setup:
+### Option 1 — Cloudflare dashboard (no CLI)
+
+1. Cloudflare Dashboard → **Storage & Databases → D1 SQL Database → Create database**, name it `ksx-db`.
+2. Open the database and copy its **Database ID**.
+3. If you deploy with Wrangler or Workers Builds, paste the ID into
+   `backend/wrangler.toml` (`database_id = "..."`) and root `wrangler.toml` if used.
+   If you deploy only from the dashboard, add the binding in
+   **Worker → Settings → Bindings → Add → D1 database**: variable name `DB`, database `ksx-db`.
+4. Open the D1 database → **Console** and run `backend/migrations/0001_apps.sql`,
+   then `backend/migrations/0002_seed_ks_portal.sql` (or skip this: the Worker
+   auto-creates and seeds on the first download).
+5. Redeploy the Worker.
+
+No API token is needed when Cloudflare deploys the Worker for you.
+
+### Option 2 — Wrangler CLI
 
 ```bash
 cd backend
@@ -82,6 +97,18 @@ Check recorded downloads:
 ```bash
 npx wrangler d1 execute ksx-db --remote --command "SELECT COUNT(*) AS downloads FROM app_downloads;"
 ```
+
+### Credentials and `.env` safety
+
+- `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` are only needed for CLI/CI.
+  Create a token at **My Profile → API Tokens** (Workers + D1 edit permissions).
+  For GitHub Actions, store them in **Repo Settings → Secrets and variables → Actions**.
+- Locally, copy `.env.example` to `backend/.env` (or use `backend/.dev.vars`).
+  Both are git-ignored — never commit real tokens.
+- Production Worker secrets (YouTube/Instagram keys) belong in
+  **Worker → Settings → Variables and Secrets**, not in the repository.
+- The D1 **Database ID** is not a secret. The **API token is** — never put it in
+  `wrangler.toml`, frontend code, or a committed `.env`.
 
 The local Express server has no D1 binding; it accepts the click and returns
 `recorded: false`. Use `npm run dev:worker` to test D1 locally.
