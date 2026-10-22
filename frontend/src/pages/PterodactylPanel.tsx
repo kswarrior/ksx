@@ -5,12 +5,57 @@ import { GuideCodeBlock as CodeBlock, GuidePanel as Panel } from "../components/
 import { Select, TextField, type SelectOption } from "../components/ui";
 import "./SetupServer.css";
 
-type PanelOs = "ubuntu24" | "other";
+type PanelOs = "ubuntu24" | "ubuntu22" | "ubuntu26" | "debian12" | "debian13";
 
 const OS_OPTIONS: SelectOption[] = [
   { value: "ubuntu24", label: "Ubuntu 24.04 · recommended" },
-  { value: "other", label: "Other supported OS" },
+  { value: "ubuntu22", label: "Ubuntu 22.04" },
+  { value: "ubuntu26", label: "Ubuntu 26.04" },
+  { value: "debian12", label: "Debian 12" },
+  { value: "debian13", label: "Debian 13" },
 ];
+
+const OS_LABELS: Record<PanelOs, string> = {
+  ubuntu24: "Ubuntu 24.04",
+  ubuntu22: "Ubuntu 22.04",
+  ubuntu26: "Ubuntu 26.04",
+  debian12: "Debian 12",
+  debian13: "Debian 13",
+};
+
+const OS_PREP: Record<PanelOs, string> = {
+  ubuntu24: "",
+  ubuntu22: `sudo apt -y install software-properties-common
+sudo LC_ALL=C.UTF-8 add-apt-repository -y ppa:ondrej/php
+sudo apt update`,
+  ubuntu26: `sudo apt -y install curl ca-certificates gnupg2 lsb-release
+echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/sury-php.list
+curl -fsSL https://packages.sury.org/php/apt.gpg | sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/sury-keyring.gpg
+sudo apt update`,
+  debian12: `sudo apt -y install curl ca-certificates gnupg2 lsb-release
+echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/sury-php.list
+curl -fsSL https://packages.sury.org/php/apt.gpg | sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/sury-keyring.gpg
+
+curl -fsSL https://packages.redis.io/gpg | sudo gpg --dearmor -o /usr/share/keyrings/redis-archive-keyring.gpg
+echo "deb [signed-by=/usr/share/keyrings/redis-archive-keyring.gpg] https://packages.redis.io/deb $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/redis.list
+curl -LsS https://r.mariadb.com/downloads/mariadb_repo_setup | sudo bash
+
+sudo apt update`,
+  debian13: `sudo apt -y install curl ca-certificates gnupg2 lsb-release
+echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/sury-php.list
+curl -fsSL https://packages.sury.org/php/apt.gpg | sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/sury-keyring.gpg
+
+sudo apt update
+sudo apt -y install cron`,
+};
+
+const OS_NOTES: Record<PanelOs, string> = {
+  ubuntu24: "Ubuntu 24.04 includes PHP 8.3, so no extra PHP repository is needed.",
+  ubuntu22: "Ubuntu 22.04 needs the Ondrej PHP PPA for PHP 8.3.",
+  ubuntu26: "Ubuntu 26.04 needs Sury's repository for PHP 8.3.",
+  debian12: "Debian 12 also needs the Redis and MariaDB repositories.",
+  debian13: "Debian 13 also needs the cron package.",
+};
 
 const STEPS: { id: string; label: string; icon: IconName }[] = [
   { id: "requirements", label: "Requirements", icon: "sliders" },
@@ -24,17 +69,6 @@ const STEPS: { id: string; label: string; icon: IconName }[] = [
 ];
 
 const PANEL_VERSION = "v2.0.0-beta.2";
-
-const PHP_REPO = `# Ubuntu 22.04 — add the PHP repository
-sudo apt -y install software-properties-common
-LC_ALL=C.UTF-8 sudo add-apt-repository -y ppa:ondrej/php
-
-# Ubuntu 26.04 / Debian 12 / Debian 13 — add Sury's repository
-sudo apt -y install curl ca-certificates gnupg2 lsb-release
-echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/sury-php.list
-curl -fsSL https://packages.sury.org/php/apt.gpg | sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/sury-keyring.gpg
-
-sudo apt update`;
 
 const DEPENDENCIES = `sudo apt update
 sudo apt -y install php8.3 php8.3-{common,cli,gd,mysql,mbstring,bcmath,xml,fpm,curl,zip,intl} mariadb-server redis-server tar unzip curl nginx
@@ -196,6 +230,7 @@ export default function PterodactylPanel() {
   const number = stepIndex + 1;
   const host = domain.trim() || "panel.example.com";
   const panelUrl = `https://${host}`;
+  const osLabel = OS_LABELS[os];
   const isUbuntu24 = os === "ubuntu24";
 
   function goToStep(next: number) {
@@ -238,12 +273,8 @@ export default function PterodactylPanel() {
         <div className="setup-summary">
           <Icon name={isUbuntu24 ? "server" : "terminal"} size={16} />
           <div>
-            <b>{isUbuntu24 ? "Ubuntu 24.04 · NGINX · PHP 8.3" : "Other supported OS"}</b>
-            <p>
-              {isUbuntu24
-                ? "Ubuntu 24.04 includes PHP 8.3, so the Panel can be installed without an extra PHP repository."
-                : "Ubuntu 22.04/26.04 and Debian 12/13 need extra PHP repositories. Debian 12 also needs Redis and MariaDB repositories."}
-            </p>
+            <b>{osLabel} · NGINX · PHP 8.3</b>
+            <p>{OS_NOTES[os]}</p>
           </div>
         </div>
 
