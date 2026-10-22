@@ -17,7 +17,8 @@
     "typecheck": "npm run typecheck --prefix backend && npm run typecheck --prefix frontend",
     "deploy:frontend": "npm run deploy --prefix frontend",
     "deploy": "npm run build && npm run deploy --prefix backend",
-    "deploy:worker": "npm run build --prefix frontend && npm run deploy:worker --prefix backend"
+    "deploy:worker": "npm run build --prefix frontend && npm run deploy:worker --prefix backend",
+    "mcp": "node mcp/ksx-server.mjs"
   },
   "devDependencies": {
     "@modelcontextprotocol/sdk": "^1.32.1",

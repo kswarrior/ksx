@@ -112,6 +112,32 @@ GET /api/social
 
 Search mimics original `s-*` grouping; `localStorage` keys `ks-web-recent`/`ks-web-fav`/`ks-web-last-page` preserved.
 
+## MCP & Skills
+
+This repo ships a local [MCP](https://modelcontextprotocol.io) server and opencode skills so agents can explore and operate the site.
+
+| File | Purpose |
+| --- | --- |
+| `opencode.json` | Registers the `ksx` MCP server with opencode (restart opencode after editing) |
+| `mcp/ksx-server.mjs` | Stdio MCP server reading `backend/src/data/` and the live API |
+| `.opencode/skills/ksx-site/` | Repo structure, routes, data rules, common tasks |
+| `.opencode/skills/ksx-api/` | API/MCP tool reference, filters, response shapes, gotchas |
+| `.opencode/skills/ksx-deploy/` | Cloudflare Workers/Pages build, deploy, env, SPA notes |
+
+```bash
+npm install          # installs @modelcontextprotocol/sdk + zod
+npm run mcp          # run the MCP server manually
+```
+
+MCP tools: `ksx_site_summary`, `ksx_get_sitemap`, `ksx_search_pages`, `ksx_find_minecraft_hosting`, `ksx_find_vps_hosting`, `ksx_get_social_stats`, `ksx_api_get`. Resources: `ksx://sitemap`, `ksx://hosting/minecraft`, `ksx://hosting/vps`.
+
+Sitemap and hosting tools read the JSON data directly. Live tools default to `http://localhost:4000` (start `npm run dev:backend`) and can be pointed elsewhere:
+
+```bash
+KSX_API_BASE=https://ksx-backend.<subdomain>.workers.dev opencode
+# optional: KSX_DATA_DIR=/path/to/backend/src/data
+```
+
 ## What was removed
 
 ```
