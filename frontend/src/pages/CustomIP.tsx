@@ -83,36 +83,65 @@ export default function CustomIP() {
         <div className="ci-bg-orb o2" />
       </div>
       <div className="ci-shell">
-        <div className="ci-grid">
-          <div className="ci-card">
-            <h3><span>1</span> Resolve IP / Domain</h3>
-            <p>Enter your server IP or domain to fetch location & ISP info.</p>
-            <div className="ci-input-row">
-              <TextField className="ci-input" placeholder="e.g. aternos.org or 8.8.8.8" value={input} onChange={(e) => setInput(e.target.value)} onKeyDown={(e)=> e.key==="Enter" && loadIPInfo()} />
-              <button className="ci-btn" onClick={loadIPInfo}><Icon name="search" size={14} /> {loading ? "Checking…" : "Search"}</button>
-            </div>
-            <div className="ci-result">
-              {loading && <p style={{ display: "flex", alignItems: "center", gap: 6 }}><Icon name="search" size={14} /> Fetching data...</p>}
-              {error && <p style={{ color: "#f87171", fontWeight: 800, display: "flex", alignItems: "center", gap: 6 }}><Icon name="warning" size={14} /> {error}</p>}
-              {result && (
-                <>
-                  <p><b>IP Address:</b> <span>{result.ip} <button className="ci-copy" onClick={() => copyToClipboard(result.ip)}><Icon name={copied ? "check" : "copy"} size={12} /> {copied ? "Copied" : "Copy"}</button></span></p>
-                  <p><b>City:</b> <span>{result.city || "N/A"}</span></p>
-                  <p><b>Region:</b> <span>{result.region || "N/A"}</span></p>
-                  <p><b>Country:</b> <span>{result.country_name || "N/A"}</span></p>
-                  <p><b>ISP:</b> <span>{result.org || "N/A"}</span></p>
-                  <p><b>Timezone:</b> <span>{result.timezone || "N/A"}</span></p>
-                </>
-              )}
-              {!loading && !error && !result && <p style={{ color: "var(--ci-muted)" }}>Result will appear here</p>}
+        {step === 1 && (
+          <div className="ci-stage ci-anim" key="step-1">
+            <div className="ci-card">
+              <h3><span>1</span> Resolve IP / Domain</h3>
+              <p>Enter your server IP or domain to fetch location & ISP info.</p>
+              <div className="ci-input-row">
+                <TextField className="ci-input" placeholder="e.g. aternos.org or 8.8.8.8" value={input} onChange={(e) => setInput(e.target.value)} onKeyDown={(e)=> e.key==="Enter" && loadIPInfo()} />
+                <button className="ci-btn" onClick={loadIPInfo}><Icon name="search" size={14} /> {loading ? "Checking…" : "Search"}</button>
+              </div>
+              <div className="ci-result">
+                {loading && <p style={{ display: "flex", alignItems: "center", gap: 6 }}><Icon name="search" size={14} /> Fetching data...</p>}
+                {error && <p style={{ color: "#f87171", fontWeight: 800, display: "flex", alignItems: "center", gap: 6 }}><Icon name="warning" size={14} /> {error}</p>}
+                {result && (
+                  <>
+                    <p><b>IP Address:</b> <span>{result.ip} <button className="ci-copy" onClick={() => copyToClipboard(result.ip)}><Icon name={copied ? "check" : "copy"} size={12} /> {copied ? "Copied" : "Copy"}</button></span></p>
+                    <p><b>City:</b> <span>{result.city || "N/A"}</span></p>
+                    <p><b>Region:</b> <span>{result.region || "N/A"}</span></p>
+                    <p><b>Country:</b> <span>{result.country_name || "N/A"}</span></p>
+                    <p><b>ISP:</b> <span>{result.org || "N/A"}</span></p>
+                    <p><b>Timezone:</b> <span>{result.timezone || "N/A"}</span></p>
+                  </>
+                )}
+                {!loading && !error && !result && <p style={{ color: "var(--ci-muted)" }}>Result will appear here</p>}
+              </div>
             </div>
           </div>
+        )}
 
-          <div className="ci-card">
-            <h3><span>2</span> Create Free Subdomain</h3>
-            <p>Fill all information and click create — free subdomain for your server.</p>
-            <iframe title="subdomain" className="ci-frame" height={455} width="100%" src="https://shockbyte.com/es/subdomain-creator" loading="lazy" />
+        {step === 2 && (
+          <div className="ci-stage wide ci-anim" key="step-2">
+            <div className="ci-card">
+              <h3><span>2</span> Create Free Subdomain</h3>
+              <p>Fill all information and click create — free subdomain for your server.</p>
+              <iframe title="subdomain" className="ci-frame" height={455} width="100%" src="https://shockbyte.com/es/subdomain-creator" loading="lazy" />
+            </div>
           </div>
+        )}
+
+        {step === 3 && (
+          <div className="ci-stage ci-anim" key="step-3">
+            <div className="ci-card ci-coming">
+              <div className="ci-coming-icon"><Icon name="rocket" size={26} /></div>
+              <h3>3 More coming soon</h3>
+              <p>This page is still under construction — something new is on the way. Check back soon!</p>
+            </div>
+          </div>
+        )}
+
+        <div className="ci-nav">
+          {step > 1 && (
+            <button className="ci-btn secondary" onClick={() => setStep(step - 1)}>
+              <Icon name="arrow-left" size={14} /> Back
+            </button>
+          )}
+          {step < 3 && (
+            <button className="ci-btn ci-nav-next" onClick={() => setStep(step + 1)}>
+              Next <Icon name="arrow-right" size={14} />
+            </button>
+          )}
         </div>
 
         <div className="ci-footer">
