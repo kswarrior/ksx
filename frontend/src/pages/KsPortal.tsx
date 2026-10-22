@@ -47,6 +47,7 @@ const DETAILS = [
   { icon: "package", label: "Version", value: `v${APP_VERSION}` },
   { icon: "smartphone", label: "Platform", value: "Android" },
   { icon: "satellite", label: "Channel", value: "Latest" },
+  { icon: "download", label: "Format", value: "APK" },
   { icon: "rocket", label: "Status", value: "In development" },
 ] as const;
 
