@@ -66,6 +66,7 @@ export type ServerJarInfo = {
   sha256?: string;
   md5?: string;
   channel?: string;
+  status?: string;
   releasedAt?: string;
   java?: number;
   installCommand?: string;
@@ -495,7 +496,7 @@ export async function fetchArtifact(
     const detail = await getJson<PurpurBuild>(
       `${PURPUR_API}/${encodeURIComponent(version)}/${encodeURIComponent(selected)}`
     );
-    const url = `${PURPUR_API}/versions/${encodeURIComponent(version)}/builds/${encodeURIComponent(selected)}/download`;
+    const url = `${PURPUR_API}/${encodeURIComponent(version)}/${encodeURIComponent(selected)}/download`;
     const info = await headInfo(url);
     return {
       software,
@@ -506,7 +507,7 @@ export async function fetchArtifact(
       url,
       size: info.size,
       md5: detail.md5,
-      channel: detail.result,
+      status: detail.result,
       releasedAt: detail.timestamp ? new Date(detail.timestamp).toISOString() : info.releasedAt,
       java: javaForVersion(version),
     };

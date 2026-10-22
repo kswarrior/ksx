@@ -191,12 +191,14 @@ export default function ServerJarDownloader() {
       });
     }
     if (artifact.channel) stats.push({ label: "Channel", value: artifact.channel });
+    if (artifact.status) stats.push({ label: "Status", value: artifact.status });
     if (artifact.releasedAt) stats.push({ label: "Released", value: formatDate(artifact.releasedAt) });
     if (artifact.size) stats.push({ label: "Size", value: formatBytes(artifact.size) });
     if (artifact.java) stats.push({ label: "Java", value: `${artifact.java}+` });
   }
 
   function changeSoftware(next: string) {
+    if (next === softwareId) return;
     setSoftwareId(next as ServerSoftwareId);
     setVersion("");
     setBuild("");
