@@ -202,7 +202,7 @@ export default function KsPortal() {
               </span>
               <span className="portal-item-text">
                 <span className="name">Downloads</span>
-                <span className="sub">Total from D1</span>
+                <span className="sub">All time</span>
               </span>
               <span className="portal-item-value">{downloadLabel}</span>
             </div>
