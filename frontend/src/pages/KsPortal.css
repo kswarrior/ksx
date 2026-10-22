@@ -691,6 +691,30 @@
     padding: 14px 10px 40px;
   }
 
+  .portal-release,
+  .portal-panel {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .portal-gallery-track {
+    gap: 10px;
+  }
+
+  .portal-shot {
+    width: 148px;
+    border-radius: 10px;
+  }
+
+  .portal-about-md h2 {
+    font-size: 15px;
+  }
+
+  .portal-about-md li,
+  .portal-about-md table {
+    font-size: 12.5px;
+  }
+
   .portal-release {
     padding: 16px;
   }
