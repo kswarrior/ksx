@@ -107,6 +107,23 @@
 .list-item:hover .li-arrow{ transform: translateX(2px); color:#0a0a0a; background: linear-gradient(135deg,#f5f5f5,#9a9a9a); border-color: transparent; }
 
 .empty{ text-align:center; padding:28px 18px 22px; display:flex; flex-direction:column; align-items:center; gap:10px; }
+.empty-visual{ position:relative; min-height:130px; justify-content:center; padding:20px 18px; overflow:hidden; }
+.empty-visual-icon{
+  position:relative; z-index:1;
+  width:56px; height:56px; display:grid; place-items:center;
+  border-radius:16px; color:rgba(255,255,255,0.72);
+  background: rgba(255,255,255,0.05);
+  border:1px solid rgba(255,255,255,0.09);
+  box-shadow: 0 14px 30px rgba(0,0,0,0.25);
+}
+.empty-visual-icon svg{ display:block; }
+.empty-visual-ring{
+  position:absolute; left:50%; top:50%;
+  width:180px; height:94px;
+  transform:translate(-50%,-50%);
+  color:rgba(255,255,255,0.55);
+  pointer-events:none;
+}
 .empty-icon{ width:44px; height:44px; display:grid; place-items:center; border-radius:12px; background: rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.08); font-size:18px; color: rgba(255,255,255,0.6); }
 .empty-title{ font-size:14px; font-weight:800; }
 .empty-sub{ font-size:12px; color: var(--dash-muted); max-width:260px; line-height:1.5; }

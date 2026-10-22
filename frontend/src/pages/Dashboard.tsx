@@ -43,6 +43,26 @@ function NewsIcon({ size = 18 }: IconProps) {
   );
 }
 
+function EmptyState({ kind }: { kind: "pin" | "recent" }) {
+  return (
+    <div
+      className="empty empty-visual"
+      role="img"
+      aria-label={kind === "pin" ? "No pinned pages yet" : "No recent pages yet"}
+    >
+      <span className="empty-visual-icon">
+        {kind === "pin" ? <PinIcon size={26} /> : <ClockIcon size={26} />}
+      </span>
+      <svg className="empty-visual-ring" viewBox="0 0 140 72" fill="none" aria-hidden="true">
+        <ellipse cx="70" cy="36" rx="56" ry="30" stroke="currentColor" strokeWidth="1" strokeDasharray="3 6" opacity="0.28" />
+        <circle cx="18" cy="16" r="2" fill="currentColor" opacity="0.4" />
+        <circle cx="124" cy="56" r="2.4" fill="currentColor" opacity="0.35" />
+        <circle cx="118" cy="16" r="1.4" fill="currentColor" opacity="0.25" />
+      </svg>
+    </div>
+  );
+}
+
 function SparklesIcon({ size = 18 }: IconProps) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -137,9 +157,7 @@ export default function Dashboard() {
         </div>
         <div className={`panel-body${pins.length ? " pin-grid" : ""}`}>
           {pins.length === 0 ? (
-            <div className="empty">
-              <div className="empty-title">No pinned yet</div>
-            </div>
+            <EmptyState kind="pin" />
           ) : (
             pins.map((item) => (
               <div key={item.url} className="list-item" onClick={() => navigate(item.url)}>
@@ -168,11 +186,9 @@ export default function Dashboard() {
           <h2><span className="panel-icon" style={{ color: "#9ecbff" }}><ClockIcon size={16} /></span> Recent</h2>
           <span className="panel-count">{recentTop.length}</span>
         </div>
-        <div className="panel-body">
+        <div className={`panel-body${recentTop.length ? " pin-grid" : ""}`}>
           {recentTop.length === 0 ? (
-            <div className="empty">
-              <div className="empty-title">No recent yet</div>
-            </div>
+            <EmptyState kind="recent" />
           ) : (
             recentTop.map((item) => (
               <div key={item.url} className="list-item" onClick={() => navigate(item.url)}>

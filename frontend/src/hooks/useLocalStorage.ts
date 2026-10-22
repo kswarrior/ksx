@@ -28,7 +28,7 @@ export const RECENT_KEY = "ks-web-recent";
 export const PIN_KEY = "ks-web-pin";
 export const LEGACY_FAV_KEY = "ks-web-fav";
 export const LAST_PAGE_KEY = "ks-web-last-page";
-export const MAX_RECENT = 5;
+export const MAX_RECENT = 3;
 
 export function readPins(): PinItem[] {
   try {
