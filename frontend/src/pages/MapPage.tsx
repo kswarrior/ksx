@@ -437,7 +437,7 @@ export default function MapPage() {
         const last = lastVisTf.current;
         if (
           last &&
-          Math.abs(t.z - last.z) < 0.0005 &&
+          Math.abs(t.z - last.z) < 0.01 &&
           Math.abs(t.x - last.x) < 18 &&
           Math.abs(t.y - last.y) < 18
         ) {

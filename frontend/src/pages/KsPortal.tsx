@@ -33,7 +33,7 @@ export default function KsPortal() {
         <nav className="portal-crumb" aria-label="Breadcrumb">
           <Link to="/map">KS Apps</Link>
           <Icon name="chevron-right" size={12} />
-          <span>Browser</span>
+          <span>Android</span>
         </nav>
 
         <section className="portal-hero">
@@ -151,8 +151,8 @@ export default function KsPortal() {
           <div className="portal-status-text">
             <h3>In development</h3>
             <p>
-              KS Portal is being built now. Android, Windows and Linux builds
-              will land in KS Apps first.
+              KS Portal is being built now. The Android build will land in KS
+              Apps first, with Windows and Linux to follow.
             </p>
           </div>
           <Link to="/map" className="portal-status-link">
