@@ -543,9 +543,9 @@ export default function MapPage() {
 
   useEffect(
     () => () => {
-      if (visRaf.current) cancelAnimationFrame(visRaf.current);
+      window.clearTimeout(visTimer.current);
     },
-    []
+    [syncVisible]
   );
 
   const clampView = useCallback((view: View, rect: DOMRect): View => {
@@ -1141,8 +1141,10 @@ export default function MapPage() {
               aria-label="KS core — reset the map view"
               title="KS core — reset view"
             >
+              <span className="mp-core-orbit" aria-hidden="true" />
               <span className="mp-core-inner">
                 <span className="mp-core-text">KS</span>
+                <span className="mp-core-sub">Sites Map</span>
               </span>
             </button>
           </div>
