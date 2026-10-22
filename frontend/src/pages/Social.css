@@ -11,22 +11,9 @@
 .so-bg-orb.o1{width:520px;height:520px; left:-120px; top:-140px; background:radial-gradient(circle at 30% 30%, #d4d4d4 0%, #737373 42%, transparent 72%); animation:soOrb 10s ease-in-out infinite;}
 .so-bg-orb.o2{width:460px;height:460px; right:-100px; top:12%; background:radial-gradient(circle at 30% 30%, #a3a3a3 0%, #525252 44%, transparent 72%); animation:soOrb 12s ease-in-out infinite reverse;}
 
-.so-shell{max-width:1120px; margin:0 auto; padding:30px 16px 44px;}
+.so-shell{max-width:1120px; margin:0 auto; padding:16px 16px 40px;}
 
-.so-header{max-width:720px; margin:0 auto 26px; text-align:center;}
-.so-kicker{
-  display:inline-flex; align-items:center; gap:7px; padding:5px 10px;
-  border:1px solid rgba(255,255,255,0.11); border-radius:999px;
-  background:rgba(255,255,255,0.035); color:rgba(255,255,255,0.58);
-  font-size:10px; font-weight:900; letter-spacing:1.4px; text-transform:uppercase;
-}
-.so-kicker-dot{
-  width:6px; height:6px; border-radius:50%; background:#4ade80;
-  box-shadow:0 0 10px rgba(74,222,128,0.75); animation:soPulse 1.8s ease-in-out infinite;
-}
-.so-title{margin-top:14px; font-size:clamp(28px,4vw,42px); font-weight:900; letter-spacing:-1.4px; line-height:1.05;}
-.so-title span{color:#9a9a9a;}
-.so-sub{margin-top:12px; font-size:13.5px; line-height:1.65; color:rgba(255,255,255,0.5); font-weight:600;}
+.so-tools{display:flex; justify-content:flex-end; margin-bottom:12px;}
 
 .so-grid{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px;}
 
@@ -126,25 +113,17 @@
 .so-arrow svg{width:16px; height:16px;}
 .so-card:hover .so-arrow{transform:translate(3px,-3px); background:var(--brand); color:#fff; border-color:transparent;}
 
-.so-footer{
-  display:flex; align-items:center; justify-content:space-between; gap:14px;
-  margin-top:20px; padding-top:16px; border-top:1px solid rgba(255,255,255,0.08);
-}
-.so-updated{font-size:11.5px; font-weight:700; color:rgba(255,255,255,0.42);}
-.so-updated time{color:rgba(255,255,255,0.68); font-variant-numeric:tabular-nums;}
-.so-updated.is-error{color:#fca5a5;}
 .so-refresh{
-  display:inline-flex; align-items:center; gap:7px; flex-shrink:0;
-  padding:8px 12px; border-radius:999px; border:1px solid rgba(255,255,255,0.14);
+  width:34px; height:34px; display:inline-grid; place-items:center; flex-shrink:0;
+  padding:0; border-radius:999px; border:1px solid rgba(255,255,255,0.14);
   background:rgba(255,255,255,0.05); color:#f5f5f5;
-  font-size:11.5px; font-weight:800; cursor:pointer;
-  transition:background .2s ease, border-color .2s ease, transform .2s ease;
+  cursor:pointer; transition:background .2s ease, border-color .2s ease, transform .2s ease;
 }
 .so-refresh:hover{background:rgba(255,255,255,0.1); border-color:rgba(255,255,255,0.24);}
 .so-refresh:active{transform:scale(0.97);}
 .so-refresh:focus-visible{outline:2px solid #f5f5f5; outline-offset:3px;}
 .so-refresh:disabled{cursor:default; opacity:0.72;}
-.so-refresh svg{width:13px; height:13px;}
+.so-refresh svg{width:15px; height:15px;}
 .so-refresh.is-busy svg{animation:soSpin .9s linear infinite;}
 
 @keyframes soOrb{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-14px) scale(1.03)}}
@@ -154,14 +133,12 @@
 
 @media(max-width:900px){
   .so-grid{grid-template-columns:1fr; gap:12px; max-width:620px; margin:0 auto;}
-  .so-footer{max-width:620px; margin-left:auto; margin-right:auto;}
+  .so-tools{max-width:620px; margin-left:auto; margin-right:auto;}
 }
 @media(max-width:768px){
   .so-bg-orb{display:none !important;}
   .so-bg-grad{background:linear-gradient(180deg, #0a0a0a 0%, #0b0b0b 100%) !important;}
-  .so-shell{padding:20px 10px 32px;}
-  .so-header{margin-bottom:20px;}
-  .so-sub{font-size:12.5px;}
+  .so-shell{padding:12px 10px 28px;}
   .so-card{min-height:172px; border-radius:5px; padding:16px; gap:12px; contain-intrinsic-size:172px;}
   .so-logo{width:48px; height:48px; border-radius:5px;}
   .so-logo svg{width:26px; height:26px;}
@@ -169,7 +146,6 @@
   .so-head h3{font-size:14.5px;}
   .so-stat strong{font-size:30px;}
   .so-arrow{right:14px; bottom:14px; width:32px; height:32px;}
-  .so-footer{flex-wrap:wrap;}
 }
 @media(hover:none) and (pointer:coarse){
   .so-card:hover{transform:none; box-shadow:0 8px 28px rgba(0,0,0,0.3);}
@@ -180,5 +156,5 @@
   .so-bg-orb{animation:none !important;}
   .so-card,.so-logo,.so-arrow{transition:none !important;}
   .so-card::before{display:none;}
-  .so-kicker-dot,.so-status-dot,.so-stat-skeleton,.so-refresh.is-busy svg{animation:none !important;}
+  .so-status-dot,.so-stat-skeleton,.so-refresh.is-busy svg{animation:none !important;}
 }
