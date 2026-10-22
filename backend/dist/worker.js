@@ -64,6 +64,30 @@ app.get("/api/modrinth/*", async (c) => {
         return c.json({ error: "Modrinth request failed" }, 502);
     }
 });
+// MCPEDL API proxy (PE / Bedrock content)
+const MCPEDL_API = "https://api.mcpedl.com/api";
+app.get("/api/mcpedl/*", async (c) => {
+    const upstreamPath = c.req.path.slice("/api/mcpedl".length);
+    const search = new URL(c.req.url).search;
+    try {
+        const res = await fetch(`${MCPEDL_API}${upstreamPath}${search}`, {
+            headers: {
+                "User-Agent": "Mozilla/5.0 (compatible; ksx-backend/1.0; +https://github.com/anomalyco/ksx)",
+                Accept: "application/json",
+            },
+        });
+        return new Response(res.body, {
+            status: res.status,
+            headers: {
+                "Content-Type": res.headers.get("content-type") ?? "application/json",
+                "Cache-Control": "public, max-age=60, s-maxage=120",
+            },
+        });
+    }
+    catch {
+        return c.json({ error: "MCPEDL request failed" }, 502);
+    }
+});
 // Sitemap
 app.get("/api/sitemap", (c) => c.json(sitemap));
 app.get("/api/sitemap/search", (c) => {

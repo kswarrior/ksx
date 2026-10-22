@@ -41,6 +41,26 @@ app.get("/api/modrinth/*", async (req, res) => {
         res.status(502).json({ error: "Modrinth request failed" });
     }
 });
+// MCPEDL API proxy (PE / Bedrock content)
+const MCPEDL_API = "https://api.mcpedl.com/api";
+app.get("/api/mcpedl/*", async (req, res) => {
+    const upstreamPath = req.originalUrl.slice("/api/mcpedl".length);
+    try {
+        const upstream = await fetch(`${MCPEDL_API}${upstreamPath}`, {
+            headers: {
+                "User-Agent": "Mozilla/5.0 (compatible; ksx-backend/1.0; +https://github.com/anomalyco/ksx)",
+                Accept: "application/json",
+            },
+        });
+        res.status(upstream.status);
+        res.setHeader("Content-Type", upstream.headers.get("content-type") ?? "application/json");
+        res.setHeader("Cache-Control", "public, max-age=60, s-maxage=120");
+        res.send(Buffer.from(await upstream.arrayBuffer()));
+    }
+    catch {
+        res.status(502).json({ error: "MCPEDL request failed" });
+    }
+});
 // Legacy JSON for old static fetch("free.json") compatibility
 app.get("/minecraft/hosting/free.json", (_req, res) => res.json(mcData));
 app.get("/vps/hosting/list/free.json", (_req, res) => res.json(vpsData));
