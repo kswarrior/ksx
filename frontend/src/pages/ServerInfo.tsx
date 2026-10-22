@@ -200,14 +200,17 @@ export default function ServerInfo() {
   const [data, setData] = useState<McStatus | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const autoChecked = useRef(false);
+  const lastAutoChecked = useRef("");
+  const requestId = useRef(0);
 
   async function fetchInfo(target?: string) {
     const value = (target ?? ip).trim();
     if (!value) {
       setError("Please enter a server IP.");
+      setData(null);
       return;
     }
+    const currentRequest = ++requestId.current;
     setLoading(true);
     setError(null);
     setData(null);
@@ -215,24 +218,29 @@ export default function ServerInfo() {
       const res = await fetch(`https://api.mcsrvstat.us/3/${encodeURIComponent(value)}`);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const json = (await res.json()) as McStatus;
+      if (currentRequest !== requestId.current) return;
       setData(json);
     } catch {
+      if (currentRequest !== requestId.current) return;
       setError("Failed to fetch server information. Try again in a moment.");
     } finally {
-      setLoading(false);
+      if (currentRequest === requestId.current) setLoading(false);
     }
   }
 
   useEffect(() => {
-    if (autoChecked.current || !initialIp) return;
-    autoChecked.current = true;
+    if (!initialIp || lastAutoChecked.current === initialIp) return;
+    lastAutoChecked.current = initialIp;
+    setIp(initialIp);
     void fetchInfo(initialIp);
   }, [initialIp]);
 
   const online = data ? Boolean(data.online) : false;
   const name = data?.hostname || data?.ip || ip.trim() || "Minecraft Server";
   const icon = data?.icon?.startsWith("data:image/") ? data.icon : null;
-  const motdLines = (data?.motd?.raw ?? data?.motd?.clean ?? []).map((line) => parseMotd(decodeMotd(line)));
+  const motdLines = (data?.motd?.raw?.length ? data.motd.raw : data?.motd?.clean ?? []).map((line) =>
+    parseMotd(decodeMotd(line))
+  );
   const stats = data ? buildStats(data) : [];
 
   return (
