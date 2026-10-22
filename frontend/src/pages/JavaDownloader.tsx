@@ -102,18 +102,6 @@ export default function JavaDownloader() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [type, loader, version, sort]);
 
-  async function openDetails(p: Project) {
-    setSelected(p);
-    setShowDetail(true);
-    try {
-      const r = await fetch(`${API}/project/${p.project_id}`);
-      const d = await r.json();
-      setDetailData(d);
-    } catch {
-      setDetailData(null);
-    }
-  }
-
   return (
     <div className="jd-page">
       <div className="jd-bg" aria-hidden>
@@ -189,38 +177,17 @@ export default function JavaDownloader() {
         )}
         <div className="jd-grid">
           {results.map((p) => (
-            <article key={p.project_id} className="jd-card" onClick={() => openDetails(p)}>
+            <Link key={p.project_id} className="jd-card" to={`/minecraft/java/downloader/${p.project_id}`}>
               <img className="jd-icon" src={p.icon_url || "https://via.placeholder.com/64"} alt="" loading="lazy" decoding="async" />
               <div className="jd-info">
                 <h3 title={p.title}>{p.title}</h3>
                 <p>{p.description}</p>
                 <div className="jd-meta">{p.downloads.toLocaleString()} downloads • {p.project_type}</div>
               </div>
-            </article>
+            </Link>
           ))}
         </div>
       </div>
-
-      {showDetail && selected && (
-        <div className="jd-modal" onClick={() => setShowDetail(false)}>
-          <div className="jd-modal-content" onClick={(e) => e.stopPropagation()}>
-            <button type="button" className="jd-close" onClick={() => setShowDetail(false)} aria-label="Close"><Icon name="close" size={18} /></button>
-            <div style={{ display: "flex", gap: 16, alignItems: "center", marginBottom: 16 }}>
-              <img src={selected.icon_url || "https://via.placeholder.com/64"} alt="" style={{ width: 64, height: 64, borderRadius:5, border:"1px solid rgba(255,255,255,0.12)" }} />
-              <div style={{minWidth:0}}>
-                <h2 style={{ fontSize: 18, fontWeight:900, letterSpacing:-0.4 }}>{detailData ? String((detailData as { title: string }).title) : selected.title}</h2>
-                <p style={{ color: "#a3a3a3", fontSize:13, marginTop:4, lineHeight:1.5 }}>{selected.description}</p>
-              </div>
-            </div>
-            <button className="jd-btn" onClick={() => { if (detailData) window.open(`https://modrinth.com/${(detailData as { project_type: string }).project_type}/${(detailData as { slug: string }).slug}`, "_blank"); }}>
-              <Icon name="external-link" size={14} /> View on Modrinth
-            </button>
-            <div style={{ marginTop: 16, color: "#a3a3a3", fontSize: 13, lineHeight: 1.6, whiteSpace:"pre-wrap", wordBreak:"break-word", background:"rgba(255,255,255,0.04)", border:"1px solid rgba(255,255,255,0.06)", padding:14, borderRadius:5 }}>
-              {detailData ? String((detailData as { body: string }).body || "").slice(0, 2500) || "No description" : "Loading..."}
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
