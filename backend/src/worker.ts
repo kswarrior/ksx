@@ -348,6 +348,55 @@ app.post("/api/apps/:slug/download", async (c) => {
   }
 });
 
+app.get("/api/apps/:slug/stats", async (c) => {
+  const slug = c.req.param("slug");
+  const app = apps.find((item) => item.slug === slug);
+  if (!app) return c.json({ error: "Unknown app" }, 404);
+
+  c.header("Cache-Control", "no-store");
+  const db = c.env.DB;
+  if (!db) {
+    return c.json({
+      slug: app.slug,
+      name: app.name,
+      version: app.version,
+      platform: app.platform,
+      downloads: null,
+      available: false,
+      reason: "D1 binding DB is not configured",
+    });
+  }
+
+  try {
+    await ensureAppDb(db);
+    const row = await db
+      .prepare("SELECT COUNT(*) AS downloads FROM app_downloads WHERE app_slug = ?")
+      .bind(app.slug)
+      .first<{ downloads: number }>();
+    return c.json({
+      slug: app.slug,
+      name: app.name,
+      version: app.version,
+      platform: app.platform,
+      downloads: Number(row?.downloads ?? 0),
+      available: true,
+    });
+  } catch (error) {
+    return c.json(
+      {
+        slug: app.slug,
+        name: app.name,
+        version: app.version,
+        platform: app.platform,
+        downloads: null,
+        available: false,
+        error: error instanceof Error ? error.message : "D1 query failed",
+      },
+      500
+    );
+  }
+});
+
 // Minecraft hosting
 app.get("/api/hosting/minecraft", (c) => {
   const q = (c.req.query("q") ?? "").toLowerCase();
