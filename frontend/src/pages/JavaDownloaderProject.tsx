@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import Icon from "../components/Icon";
 import Markdown from "../components/Markdown";
 import { API_BASE } from "../lib/api";
+import { readSession, writeSession } from "../lib/sessionCache";
 import "./JavaDownloader.css";
 
 type ProjectDetail = {
@@ -32,27 +33,33 @@ function formatDate(value: string): string {
 
 export default function JavaDownloaderProject() {
   const { projectId } = useParams<{ projectId: string }>();
-  const [project, setProject] = useState<ProjectDetail | null>(null);
+  const cacheKey = projectId ? `ksx:modrinth:project:${projectId}` : "";
+  const [project, setProject] = useState<ProjectDetail | null>(() =>
+    readSession<ProjectDetail>(cacheKey)
+  );
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [reload, setReload] = useState(0);
 
   useEffect(() => {
     if (!projectId) return;
+    const cached = readSession<ProjectDetail>(cacheKey);
     let cancelled = false;
     setLoading(true);
     setError(false);
-    setProject(null);
+    setProject(cached);
     fetch(`${API}/project/${projectId}`)
       .then((r) => {
         if (!r.ok) throw new Error(`HTTP ${r.status}`);
         return r.json() as Promise<ProjectDetail>;
       })
       .then((data: ProjectDetail) => {
-        if (!cancelled) setProject(data);
+        if (cancelled) return;
+        setProject(data);
+        writeSession(cacheKey, data);
       })
       .catch(() => {
-        if (!cancelled) setError(true);
+        if (!cancelled && !cached) setError(true);
       })
       .finally(() => {
         if (!cancelled) setLoading(false);
@@ -60,7 +67,7 @@ export default function JavaDownloaderProject() {
     return () => {
       cancelled = true;
     };
-  }, [projectId, reload]);
+  }, [projectId, reload, cacheKey]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
