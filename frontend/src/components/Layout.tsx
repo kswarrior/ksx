@@ -2,17 +2,10 @@ import { Suspense, useCallback, useEffect, useState, useRef } from "react";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { api, SearchItem } from "../lib/api";
 import Icon from "./Icon";
+import KsLoader from "./KsLoader";
 import { TextField } from "./ui";
 import { PIN_KEY, LAST_PAGE_KEY, RECENT_KEY, MAX_RECENT, RecentItem, PinItem, readPins } from "../hooks/useLocalStorage";
 import "./Layout.css";
-
-function PageSpinner() {
-  return (
-    <div style={{ display: "grid", placeItems: "center", minHeight: "50vh", color: "var(--muted)" }}>
-      <div style={{ width: 36, height: 36, border: "3px solid rgba(255,255,255,0.12)", borderTopColor: "#3b82f6", borderRadius: "50%", animation: "spin 0.8s linear infinite" }} />
-    </div>
-  );
-}
 
 export default function Layout() {
   const [sitemap, setSitemap] = useState<SearchItem[]>([]);
@@ -422,7 +415,7 @@ export default function Layout() {
       </nav>
 
       <div id="content" className={sidebarOpen ? "sidebar-open" : ""}>
-        <Suspense fallback={<PageSpinner />}>
+        <Suspense fallback={<KsLoader label="Loading KS" />}>
           <Outlet />
         </Suspense>
       </div>
