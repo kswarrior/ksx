@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import { api, type SocialStat, type SocialStats } from "../lib/api";
+import PageHero from "../components/PageHero";
 import "./Social.css";
 
 const ArrowIcon = () => (
@@ -184,6 +185,8 @@ export default function Social() {
         <div className="so-bg-orb o2" />
       </div>
       <div className="so-shell">
+        <PageHero icon="heart" title="Social" />
+
         <div className="so-grid">
           <SocialCard
             className="yt"

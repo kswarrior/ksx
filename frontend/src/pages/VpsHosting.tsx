@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { api, VpsHosting } from "../lib/api";
 import Icon from "../components/Icon";
 import FilterMenu from "../components/FilterMenu";
+import PageHero from "../components/PageHero";
 import { SearchField, Select } from "../components/ui";
 import "./Vps.css";
 
@@ -83,6 +84,8 @@ export default function VpsHostingPage() {
       </div>
       <div className="v-shell">
         <header className="v-header">
+          <PageHero variant="inline" icon="cloud" title="Free VPS Hosting" />
+
           <div className="v-search-wrap">
             <div className="v-search-row">
               <SearchField

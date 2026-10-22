@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { api, MinecraftHosting } from "../lib/api";
 import FilterMenu from "../components/FilterMenu";
 import Icon from "../components/Icon";
+import PageHero from "../components/PageHero";
 import { SearchField, Select, type SelectOption } from "../components/ui";
 import "./Hosting.css";
 
@@ -70,6 +71,8 @@ export default function MinecraftHostingPage() {
       </div>
       <div className="h-shell">
         <header className="h-header">
+          <PageHero variant="inline" icon="server" title="Free Minecraft Hosting" />
+
           <div className="h-search-wrap">
             <div className="h-search-row">
               <SearchField
