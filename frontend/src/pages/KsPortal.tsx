@@ -218,6 +218,21 @@ export default function KsPortal() {
           </section>
         </div>
 
+        <section className="portal-panel portal-about" aria-labelledby="portal-about-title">
+          <div className="portal-panel-head">
+            <h2 id="portal-about-title">
+              <span className="portal-panel-icon" style={{ color: "#86efac" }}>
+                <Icon name="heart" size={16} />
+              </span>
+              About KS Portal
+            </h2>
+            <span className="portal-panel-count">v{APP_VERSION}</span>
+          </div>
+          <div className="portal-about-md">
+            <Markdown source={portalMarkdown} />
+          </div>
+        </section>
+
         <section className="portal-panel" aria-labelledby="portal-roadmap-title">
           <div className="portal-panel-head">
             <h2 id="portal-roadmap-title">
