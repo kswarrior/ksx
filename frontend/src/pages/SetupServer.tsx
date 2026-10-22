@@ -5,6 +5,8 @@ import { Select, TextField, type SelectOption } from "../components/ui";
 import "./SetupServer.css";
 
 type Platform = "codesandbox" | "github" | "gitpod" | "colab" | "vps" | "vm";
+type AddressProvider = "minekube" | "playit";
+type RunMode = "foreground" | "screen" | "tmux";
 
 type PlatformInfo = {
   label: string;
@@ -48,6 +50,43 @@ const PLATFORMS: Record<Platform, PlatformInfo> = {
 const platformOptions: SelectOption[] = (Object.keys(PLATFORMS) as Platform[]).map(
   (value) => ({ value, label: PLATFORMS[value].label })
 );
+
+const javaVersionOptions: SelectOption[] = [
+  { value: "25", label: "Java 25 · latest" },
+  { value: "21", label: "Java 21 · LTS" },
+  { value: "17", label: "Java 17 · LTS" },
+];
+
+const javaReadyOptions: SelectOption[] = [
+  { value: "install", label: "No — install Java" },
+  { value: "ready", label: "Yes — already installed" },
+];
+
+const runModeOptions: SelectOption[] = [
+  { value: "foreground", label: "Foreground" },
+  { value: "screen", label: "screen · background" },
+  { value: "tmux", label: "tmux · background" },
+];
+
+const guiOptions: SelectOption[] = [
+  { value: "nogui", label: "No GUI · recommended" },
+  { value: "gui", label: "GUI enabled" },
+];
+
+const addressOptions: SelectOption[] = [
+  { value: "minekube", label: "Minekube Connect · custom IP" },
+  { value: "playit", label: "playit.gg · free tunnel" },
+];
+
+const DEFAULT_JAR_URL =
+  "https://fill-data.papermc.io/v1/objects/f3a5953094696578193b38fa2831e86db254dfbf4817b1ac6cfca55a2d18ca94/paper-26.3-211.jar";
+
+const AIKAR_FLAGS =
+  "-XX:+UseG1GC -XX:+ParallelRefProcEnabled -XX:MaxGCPauseMillis=200 -XX:+UnlockExperimentalVMOptions -XX:+DisableExplicitGC -XX:+AlwaysPreTouch -XX:G1NewSizePercent=30 -XX:G1MaxNewSizePercent=40 -XX:G1HeapRegionSize=8M -XX:G1ReservePercent=20 -XX:G1HeapWastePercent=5 -XX:G1MixedGCCountTarget=4 -XX:InitiatingHeapOccupancyPercent=15 -XX:G1MixedGCLiveThresholdPercent=90 -XX:G1RSetUpdatingPauseTimePercent=5 -XX:SurvivorRatio=32 -XX:+PerfDisableSharedMem -XX:MaxTenuringThreshold=1 -Dusing.aikars.flags=https://mcflags.emc.gs -Daikars.new.flags=true";
+
+const PLAYIT_COMMAND = `curl -fsSL https://packages.playit.gg/install.sh | bash -s -- -y
+sudo systemctl enable --now playit
+playit setup`;
 
 type Step = { id: string; label: string };
 
@@ -108,13 +147,24 @@ export default function SetupServer() {
   const navigate = useNavigate();
   const [platform, setPlatform] = useState<Platform>("codesandbox");
   const [stepIndex, setStepIndex] = useState(0);
-  const [mcUrl, setMcUrl] = useState("https://fill-data.papermc.io/v1/objects/f3a5953094696578193b38fa2831e86db254dfbf4817b1ac6cfca55a2d18ca94/paper-26.3-211.jar");
-  const [mcCode, setMcCode] = useState("");
+
+  const [javaVersion, setJavaVersion] = useState("25");
+  const [javaReady, setJavaReady] = useState(false);
+
+  const [mcUrl, setMcUrl] = useState(DEFAULT_JAR_URL);
+  const [jarFile, setJarFile] = useState("server.jar");
+
+  const [addressProvider, setAddressProvider] = useState<AddressProvider>("minekube");
   const [endpointName, setEndpointName] = useState("kssmp");
   const [token, setToken] = useState("");
-  const [configCode, setConfigCode] = useState("");
+  const [serverPort, setServerPort] = useState("25565");
+
   const [ram, setRam] = useState("1024");
-  const [startCode, setStartCode] = useState("");
+  const [runMode, setRunMode] = useState<RunMode>("foreground");
+  const [gui, setGui] = useState("nogui");
+  const [aikar, setAikar] = useState(false);
+  const [autoRestart, setAutoRestart] = useState(false);
+
   const [copied, setCopied] = useState<string | null>(null);
 
   const info = PLATFORMS[platform];
@@ -130,9 +180,9 @@ export default function SetupServer() {
     }
     list.push(
       { id: "java", label: "Java" },
-      { id: "jar", label: "JAR" },
-      { id: "ip", label: "Address" },
-      { id: "start", label: "Start" }
+      { id: "jar", label: "Download JAR" },
+      { id: "start", label: "Start" },
+      { id: "ip", label: "Address" }
     );
     return list;
   }, [platform]);
@@ -154,6 +204,46 @@ export default function SetupServer() {
           onClick: () => navigate("/minecraft/server/statics.html"),
         };
 
+  const javaCommand = useMemo(() => {
+    if (javaReady) return "java -version";
+    return `wget https://download.oracle.com/java/${javaVersion}/latest/jdk-${javaVersion}_linux-x64_bin.tar.gz
+tar -xvf jdk-${javaVersion}_linux-x64_bin.tar.gz
+export JAVA_HOME=$(pwd)/$(ls -d jdk-* | head -n1)
+export PATH=$JAVA_HOME/bin:$PATH
+java -version`;
+  }, [javaReady, javaVersion]);
+
+  const jarCommand = useMemo(() => {
+    const url = mcUrl.trim() || DEFAULT_JAR_URL;
+    const file = jarFile.trim() || "server.jar";
+    return `mkdir -p mc-server && cd mc-server && echo "eula=true" > eula.txt && wget ${url} -O ${file}`;
+  }, [mcUrl, jarFile]);
+
+  const startCommand = useMemo(() => {
+    const memory = parseInt(ram) || 1024;
+    const file = jarFile.trim() || "server.jar";
+    const flags = aikar ? ` ${AIKAR_FLAGS}` : "";
+    const guiArg = gui === "nogui" ? " nogui" : "";
+    const base = `java -Xms${memory}M -Xmx${memory}M${flags} -jar ${file}${guiArg}`;
+    const inner = autoRestart
+      ? `while true; do ${base}; echo "Server stopped — restarting in 5s..."; sleep 5; done`
+      : base;
+    if (runMode === "screen") {
+      return `screen -dmS mc-server bash -c '${inner.replace(/'/g, "'\\''")}'`;
+    }
+    if (runMode === "tmux") {
+      return `tmux new-session -d -s mc-server "${inner.replace(/"/g, '\\"')}"`;
+    }
+    return inner;
+  }, [aikar, autoRestart, gui, jarFile, ram, runMode]);
+
+  const addressCommand = useMemo(() => {
+    if (addressProvider === "playit") return PLAYIT_COMMAND;
+    if (!token.trim()) return "";
+    const name = endpointName.trim() || "kssmp";
+    return `mkdir -p plugins/connect && echo "endpoint: ${name}" > plugins/connect/config.yml && echo '{"token":"${token.trim()}"}' > plugins/connect/token.json && wget https://github.com/minekube/connect-java/releases/download/latest/connect-spigot.jar -O plugins/connect-spigot.jar`;
+  }, [addressProvider, endpointName, token]);
+
   function changePlatform(next: Platform) {
     setPlatform(next);
     setStepIndex(0);
@@ -173,27 +263,6 @@ export default function SetupServer() {
       setCopied(null);
     }
   }
-
-  function genMc() {
-    const url = mcUrl.trim() || "https://fill-data.papermc.io/v1/objects/f3a5953094696578193b38fa2831e86db254dfbf4817b1ac6cfca55a2d18ca94/paper-26.3-211.jar";
-    setMcCode(`mkdir mc-server && cd mc-server && echo "eula=true" > eula.txt && wget ${url} -O server.jar`);
-  }
-
-  function genConfig() {
-    if (!token.trim()) {
-      alert("Please paste your Minekube token first");
-      return;
-    }
-    const name = endpointName.trim() || "kssmp";
-    setConfigCode(`echo "endpoint: ${name}" > plugins/connect/config.yml\necho '{"token":"${token}"}' > plugins/connect/token.json\nmkdir plugins && cd plugins && wget https://github.com/minekube/connect-java/releases/download/latest/connect-spigot.jar`);
-  }
-
-  function genStart() {
-    const r = parseInt(ram) || 1024;
-    setStartCode(`java -Xmx${r}M -Xms${r}M -jar server.jar nogui`);
-  }
-
-  const javaInstall = `wget https://download.oracle.com/java/25/latest/jdk-25_linux-x64_bin.tar.gz\ntar -xvf jdk-25_linux-x64_bin.tar.gz\nexport JAVA_HOME=$(pwd)/jdk-25.0.2\nexport PATH=$JAVA_HOME/bin:$PATH\njava -version`;
 
   return (
     <div className="setup-page">
@@ -343,20 +412,44 @@ export default function SetupServer() {
               number={number}
               icon="coffee"
               title="Install Latest Java"
-              meta="Oracle JDK 25"
+              meta={javaReady ? "Already installed" : `Java ${javaVersion}`}
             >
               <p className="setup-hint">
-                Installs Oracle JDK 25 into the current folder and exports it for this shell.
+                Choose the Java version that matches your server software, then run the script in
+                the folder where Java should live.
               </p>
+              <div className="setup-fields">
+                <div className="setup-field">
+                  <label>Java version</label>
+                  <Select
+                    value={javaVersion}
+                    onChange={setJavaVersion}
+                    options={javaVersionOptions}
+                    ariaLabel="Java version"
+                    disabled={javaReady}
+                  />
+                </div>
+                <div className="setup-field">
+                  <label>Java installed?</label>
+                  <Select
+                    value={javaReady ? "ready" : "install"}
+                    onChange={(next) => setJavaReady(next === "ready")}
+                    options={javaReadyOptions}
+                    ariaLabel="Java installed"
+                  />
+                </div>
+              </div>
               <CodeBlock
-                code={javaInstall}
+                code={javaCommand}
                 copyId="java"
                 copied={copied}
                 onCopy={copy}
-                label="Install script"
+                label={javaReady ? "Verify Java" : "Install script"}
               />
               <p className="setup-note">
-                Run the export lines again in a new terminal, or add them to your shell profile.
+                {javaReady
+                  ? "Skip the download and verify the installed Java version before continuing."
+                  : "The export lines only apply to the current shell. Add them to your shell profile for a permanent setup."}
               </p>
             </Panel>
           )}
@@ -370,8 +463,8 @@ export default function SetupServer() {
               meta="Paper"
             >
               <p className="setup-hint">
-                Default is Paper — replace the URL with any server JAR you want. The generated
-                command also accepts the EULA and creates the server folder.
+                Paste a direct JAR URL or use the downloader to find one. The command creates{" "}
+                <code>mc-server</code>, accepts the EULA and saves the JAR.
               </p>
               <div className="setup-fields">
                 <div className="setup-field wide">
@@ -383,70 +476,36 @@ export default function SetupServer() {
                     placeholder="https://..."
                     spellCheck={false}
                   />
+                  <div className="setup-actions">
+                    <button
+                      className="setup-btn secondary"
+                      onClick={() => window.open("/minecraft/make-server/server.jar-downloader.html", "_blank")}
+                    >
+                      <Icon name="external-link" size={13} /> Get Server URL
+                    </button>
+                  </div>
+                </div>
+                <div className="setup-field">
+                  <label htmlFor="setup-jar-name">Save as</label>
+                  <TextField
+                    id="setup-jar-name"
+                    value={jarFile}
+                    onChange={(event) => setJarFile(event.target.value)}
+                    placeholder="server.jar"
+                    spellCheck={false}
+                  />
                 </div>
               </div>
-              <div className="setup-actions">
-                <button
-                  className="setup-btn secondary"
-                  onClick={() => window.open("/minecraft/make-server/server.jar-downloader.html", "_blank")}
-                >
-                  <Icon name="external-link" size={13} /> Get Server URL
-                </button>
-                <button className="setup-btn primary" onClick={genMc}>
-                  <Icon name="zap" size={13} /> Generate Command
-                </button>
-              </div>
-              {mcCode && (
-                <CodeBlock code={mcCode} copyId="mc" copied={copied} onCopy={copy} label="Download & prepare" />
-              )}
-            </Panel>
-          )}
-
-          {current.id === "ip" && (
-            <Panel
-              id="ip"
-              number={number}
-              icon="globe"
-              title="Setup Server IP Address"
-              meta="Minekube Connect"
-            >
-              <p className="setup-hint">
-                Sign up at{" "}
-                <a href="https://app.minekube.com/" target="_blank" rel="noreferrer">
-                  app.minekube.com
-                </a>{" "}
-                (free), create an endpoint, then paste its name and token here.
+              <CodeBlock
+                code={jarCommand}
+                copyId="jar"
+                copied={copied}
+                onCopy={copy}
+                label="Download & prepare"
+              />
+              <p className="setup-note">
+                Continue from inside the <code>mc-server</code> folder for the next steps.
               </p>
-              <div className="setup-fields">
-                <div className="setup-field">
-                  <label htmlFor="setup-endpoint">Endpoint name</label>
-                  <TextField
-                    id="setup-endpoint"
-                    value={endpointName}
-                    onChange={(event) => setEndpointName(event.target.value)}
-                    placeholder="kssmp"
-                    spellCheck={false}
-                  />
-                </div>
-                <div className="setup-field">
-                  <label htmlFor="setup-token">Endpoint token</label>
-                  <TextField
-                    id="setup-token"
-                    value={token}
-                    onChange={(event) => setToken(event.target.value)}
-                    placeholder="Paste token here"
-                    spellCheck={false}
-                  />
-                </div>
-              </div>
-              <div className="setup-actions">
-                <button className="setup-btn primary" onClick={genConfig}>
-                  <Icon name="zap" size={13} /> Generate Config
-                </button>
-              </div>
-              {configCode && (
-                <CodeBlock code={configCode} copyId="cfg" copied={copied} onCopy={copy} label="Connect plugin config" />
-              )}
             </Panel>
           )}
 
@@ -456,8 +515,12 @@ export default function SetupServer() {
               number={number}
               icon="rocket"
               title="Start Server"
-              meta="RAM allocation"
+              meta="RAM & runtime"
             >
+              <p className="setup-hint">
+                Tune memory, choose how the server runs and add performance flags. The command
+                updates as you change options.
+              </p>
               <div className="setup-fields">
                 <div className="setup-field">
                   <label htmlFor="setup-ram">RAM allocation (MB)</label>
@@ -469,19 +532,198 @@ export default function SetupServer() {
                     placeholder="1024"
                   />
                 </div>
+                <div className="setup-field">
+                  <label htmlFor="setup-jar-file">Server JAR file</label>
+                  <TextField
+                    id="setup-jar-file"
+                    value={jarFile}
+                    onChange={(event) => setJarFile(event.target.value)}
+                    placeholder="server.jar"
+                    spellCheck={false}
+                  />
+                </div>
+                <div className="setup-field">
+                  <label>Run mode</label>
+                  <Select
+                    value={runMode}
+                    onChange={(next) => setRunMode(next as RunMode)}
+                    options={runModeOptions}
+                    ariaLabel="Run mode"
+                  />
+                </div>
+                <div className="setup-field">
+                  <label>GUI</label>
+                  <Select
+                    value={gui}
+                    onChange={setGui}
+                    options={guiOptions}
+                    ariaLabel="GUI"
+                  />
+                </div>
               </div>
-              <div className="setup-actions">
-                <button className="setup-btn primary" onClick={genStart}>
-                  <Icon name="zap" size={13} /> Generate Start
-                </button>
+              <div className="setup-toggle-row">
+                <label className="setup-toggle">
+                  <input
+                    type="checkbox"
+                    checked={aikar}
+                    onChange={(event) => setAikar(event.target.checked)}
+                  />
+                  <span>Aikar&apos;s performance flags</span>
+                </label>
+                <label className="setup-toggle">
+                  <input
+                    type="checkbox"
+                    checked={autoRestart}
+                    onChange={(event) => setAutoRestart(event.target.checked)}
+                  />
+                  <span>Auto-restart</span>
+                </label>
               </div>
-              {startCode && (
-                <CodeBlock code={startCode} copyId="start" copied={copied} onCopy={copy} label="Start command" />
+              <CodeBlock
+                code={startCommand}
+                copyId="start"
+                copied={copied}
+                onCopy={copy}
+                label="Start command"
+              />
+              {runMode !== "foreground" && (
+                <p className="setup-note">
+                  Attach later with{" "}
+                  <code>{runMode === "screen" ? "screen -r mc-server" : "tmux attach -t mc-server"}</code>
+                  . Stop with{" "}
+                  <code>{runMode === "screen" ? 'screen -S mc-server -X quit' : "tmux kill-session -t mc-server"}</code>
+                  .
+                </p>
               )}
               <p className="setup-note">
                 1024 MB is enough for a small SMP. Increase it if your host has more memory
                 available.
               </p>
+            </Panel>
+          )}
+
+          {current.id === "ip" && (
+            <Panel
+              id="ip"
+              number={number}
+              icon="globe"
+              title="Setup Server Address"
+              meta={addressProvider === "minekube" ? "Minekube Connect" : "playit.gg"}
+            >
+              <div className="setup-fields">
+                <div className="setup-field wide">
+                  <label>Address provider</label>
+                  <Select
+                    value={addressProvider}
+                    onChange={(next) => setAddressProvider(next as AddressProvider)}
+                    options={addressOptions}
+                    ariaLabel="Address provider"
+                  />
+                </div>
+              </div>
+
+              {addressProvider === "minekube" ? (
+                <>
+                  <p className="setup-hint">
+                    Sign up at{" "}
+                    <a href="https://app.minekube.com/" target="_blank" rel="noreferrer">
+                      app.minekube.com
+                    </a>{" "}
+                    (free), create an endpoint, then paste its name and token here.
+                  </p>
+                  <div className="setup-fields">
+                    <div className="setup-field">
+                      <label htmlFor="setup-endpoint">Endpoint name</label>
+                      <TextField
+                        id="setup-endpoint"
+                        value={endpointName}
+                        onChange={(event) => setEndpointName(event.target.value)}
+                        placeholder="kssmp"
+                        spellCheck={false}
+                      />
+                    </div>
+                    <div className="setup-field">
+                      <label htmlFor="setup-token">Endpoint token</label>
+                      <TextField
+                        id="setup-token"
+                        value={token}
+                        onChange={(event) => setToken(event.target.value)}
+                        placeholder="Paste token here"
+                        spellCheck={false}
+                      />
+                    </div>
+                  </div>
+                  <div className="setup-actions">
+                    <a
+                      className="setup-btn secondary"
+                      href="https://app.minekube.com/"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      <Icon name="external-link" size={13} /> Open Minekube
+                    </a>
+                  </div>
+                  {addressCommand ? (
+                    <CodeBlock
+                      code={addressCommand}
+                      copyId="minekube"
+                      copied={copied}
+                      onCopy={copy}
+                      label="Connect plugin config"
+                    />
+                  ) : (
+                    <p className="setup-note">Paste your endpoint token to generate the config command.</p>
+                  )}
+                  <p className="setup-note">
+                    Restart the server after installing the plugin so the address goes live.
+                  </p>
+                </>
+              ) : (
+                <>
+                  <p className="setup-hint">
+                    Install the playit agent, claim it to your account and create a Minecraft Java
+                    tunnel in the{" "}
+                    <a href="https://playit.gg/" target="_blank" rel="noreferrer">
+                      playit.gg
+                    </a>{" "}
+                    dashboard.
+                  </p>
+                  <div className="setup-fields">
+                    <div className="setup-field">
+                      <label htmlFor="setup-port">Server port</label>
+                      <TextField
+                        id="setup-port"
+                        inputMode="numeric"
+                        value={serverPort}
+                        onChange={(event) => setServerPort(event.target.value)}
+                        placeholder="25565"
+                      />
+                    </div>
+                  </div>
+                  <div className="setup-actions">
+                    <a
+                      className="setup-btn secondary"
+                      href="https://playit.gg/"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      <Icon name="external-link" size={13} /> Open playit.gg
+                    </a>
+                  </div>
+                  <CodeBlock
+                    code={addressCommand}
+                    copyId="playit"
+                    copied={copied}
+                    onCopy={copy}
+                    label="Install playit agent"
+                  />
+                  <p className="setup-note">
+                    In playit.gg, create a Minecraft Java tunnel pointing to{" "}
+                    <code>127.0.0.1:{serverPort || "25565"}</code>. Keep the agent running with{" "}
+                    <code>sudo systemctl status playit</code>.
+                  </p>
+                </>
+              )}
             </Panel>
           )}
         </div>
