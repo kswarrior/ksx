@@ -128,11 +128,12 @@ sudo systemctl enable --now pteroq.service
 # Add the scheduler entry (runs every minute)
 (sudo crontab -l 2>/dev/null; echo "* * * * * php /var/www/pterodactyl/artisan schedule:run >> /dev/null 2>&1") | sudo crontab -`;
 
-const WINGS_INSTALL = `sudo mkdir -p /etc/pterodactyl
-sudo curl -L -o /usr/local/bin/wings "https://github.com/pterodactyl/wings/releases/latest/download/wings_linux_$([[ "$(uname -m)" == "x86_64" ]] && echo "amd64" || echo "arm64")"
-sudo chmod u+x /usr/local/bin/wings
+const WINGS_INSTALL = `curl -sSL https://get.docker.com/ | sudo CHANNEL=stable bash
+sudo systemctl enable --now docker
 
-sudo systemctl enable --now docker`;
+sudo mkdir -p /etc/pterodactyl
+sudo curl -L -o /usr/local/bin/wings "https://github.com/pterodactyl/wings/releases/latest/download/wings_linux_$([[ "$(uname -m)" == "x86_64" ]] && echo "amd64" || echo "arm64")"
+sudo chmod u+x /usr/local/bin/wings`;
 
 const WINGS_SERVICE = `sudo tee /etc/systemd/system/wings.service > /dev/null <<'EOF'
 [Unit]
@@ -499,8 +500,11 @@ sudo wings configure --panel-url ${panelUrl} --token ptla_... --node 1`}
               />
               <p className="setup-hint">
                 The token and node ID come from the node's <strong>Configuration</strong> tab.
-                Generate a token there, run the command, then start Wings as a service.
+                Generate a token there and run the command. Then start Wings once in debug mode to
+                make sure Docker initializes cleanly — press <kbd>Ctrl</kbd>+<kbd>C</kbd> after it
+                starts.
               </p>
+              <CodeBlock label="Test Wings" code={`sudo wings --debug`} />
               <CodeBlock label="Run Wings with systemd" code={WINGS_SERVICE} />
               <p className="setup-hint">
                 Add allocations in the node's <strong>Allocation</strong> tab. Use the node's public
