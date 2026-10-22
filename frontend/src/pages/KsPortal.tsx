@@ -2,6 +2,29 @@ import { Link } from "react-router-dom";
 import Icon from "../components/Icon";
 import "./KsPortal.css";
 
+const APP_SLUG = "ks-portal";
+const APP_VERSION = "1.4.0";
+const DOWNLOAD_URL =
+  "https://github.com/kswarrior/opencode/raw/refs/heads/main/ks-apps/browser/android/release/ks-portal_1.4.0.apk";
+
+function trackDownload() {
+  const payload = JSON.stringify({ version: APP_VERSION, platform: "android" });
+  try {
+    if (navigator.sendBeacon) {
+      const blob = new Blob([payload], { type: "application/json" });
+      if (navigator.sendBeacon(`/api/apps/${APP_SLUG}/download`, blob)) return;
+    }
+  } catch {
+    /* fall through to fetch */
+  }
+  void fetch(`/api/apps/${APP_SLUG}/download`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: payload,
+    keepalive: true,
+  }).catch(() => {});
+}
+
 const FEATURES = [
   {
     icon: "zap",
@@ -30,11 +53,39 @@ export default function KsPortal() {
       </div>
 
       <div className="portal-shell">
-        <nav className="portal-crumb" aria-label="Breadcrumb">
-          <Link to="/map">KS Apps</Link>
-          <Icon name="chevron-right" size={12} />
-          <span>Android</span>
-        </nav>
+        <header className="portal-appbar">
+          <div className="pa-left">
+            <img
+              className="pa-logo"
+              src="/portal.png"
+              alt="KS Portal logo"
+              width={48}
+              height={48}
+            />
+            <div className="pa-id">
+              <span className="pa-name">KS Portal</span>
+              <span className="pa-owner">
+                <b>KS Warrior</b> · Owner
+              </span>
+            </div>
+          </div>
+          <div className="pa-right">
+            <span className="pa-version" title="Latest version">
+              <em>Latest</em>
+              <b>v{APP_VERSION}</b>
+            </span>
+            <a
+              className="pa-download"
+              href={DOWNLOAD_URL}
+              download
+              onClick={trackDownload}
+              title={`Download APK · v${APP_VERSION}`}
+              aria-label={`Download KS Portal ${APP_VERSION} APK`}
+            >
+              <Icon name="download" size={18} />
+            </a>
+          </div>
+        </header>
 
         <section className="portal-hero">
           <div className="portal-orbit" aria-hidden="true">
