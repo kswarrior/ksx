@@ -81,6 +81,11 @@
 .jd-detail-body pre code{background:none; border:none; padding:0; color:#e5e5e5;}
 .jd-detail-body img{max-width:100%; height:auto; border-radius:5px;}
 .jd-detail-empty{margin:0; color:var(--jd-muted); font-size:13px;}
+.jd-detail-body .jd-downloads{list-style:none; margin:0 0 24px; padding:0; display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:8px;}
+.jd-detail-body .jd-downloads li{margin:0;}
+.jd-detail-body .jd-downloads a{display:flex; align-items:center; gap:9px; padding:10px 12px; background:rgba(255, 255, 255,0.04); border:1px solid var(--jd-border); border-radius:5px; color:var(--jd-text); font-size:12px; font-weight:700; line-height:1.4; text-decoration:none; transition:background .2s, border-color .2s;}
+.jd-detail-body .jd-downloads a:hover{background:rgba(255, 255, 255,0.08); border-color:var(--jd-border2);}
+.jd-detail-body .jd-downloads svg{flex-shrink:0; color:var(--jd-muted);}
 @media(max-width:768px){
   .jd-bg-orb{display:none !important;}
   .jd-bg-grad{background:linear-gradient(180deg, #131313 0%, #080808 100%) !important;}

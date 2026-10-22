@@ -61,6 +61,7 @@ export default function App() {
           <Route path="minecraft/java/downloader" element={<JavaDownloader />} />
           <Route path="minecraft/java/downloader.html" element={<JavaDownloader />} />
           <Route path="minecraft/java/downloader/:projectId" element={<JavaDownloaderProject />} />
+          <Route path="minecraft/bedrock/downloader/:slug" element={<BedrockDownloaderProject />} />
           <Route path="minecraft/bedrock/ks-client" element={<KsClient />} />
           <Route path="minecraft/bedrock/ks-client.html" element={<KsClient />} />
           <Route path="minecraft/server/statics" element={<ServerInfo />} />
