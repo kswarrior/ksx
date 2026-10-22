@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { api, VpsHosting } from "../lib/api";
+import BrandLogo from "../components/BrandLogo";
 import Icon from "../components/Icon";
 import FilterMenu from "../components/FilterMenu";
 import PageHero from "../components/PageHero";
@@ -201,8 +202,11 @@ export default function VpsHostingPage() {
               <article key={vps.name} className="v-card">
                 <div className="v-card-top">
                   <div className="v-card-heading">
-                    <span className="v-type">{vps.type}</span>
-                    <div className="v-card-name" title={vps.name}>{vps.name}</div>
+                    <BrandLogo className="v-logo" src={vps.logo} fallback="cloud" iconSize={20} />
+                    <div className="v-heading-copy">
+                      <span className="v-type">{vps.type}</span>
+                      <div className="v-card-name" title={vps.name}>{vps.name}</div>
+                    </div>
                   </div>
                   <button className="v-visit" onClick={()=>window.open(vps.link,"_blank")} aria-label={`Visit ${vps.name}`}><Icon name="external-link" size={12} /> Visit</button>
                 </div>

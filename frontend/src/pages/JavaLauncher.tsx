@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import FilterMenu from "../components/FilterMenu";
+import BrandLogo from "../components/BrandLogo";
 import Icon, { type IconName } from "../components/Icon";
 import PageHero from "../components/PageHero";
 import { SearchField, Select, type SelectOption } from "../components/ui";
@@ -13,6 +14,7 @@ type Source = "Official" | "Open source" | "Freeware";
 
 type Launcher = {
   name: string;
+  logo: string;
   tagline: string;
   platforms: Platform[];
   category: Category;
@@ -27,6 +29,7 @@ type Launcher = {
 const launchers: Launcher[] = [
   {
     name: "Minecraft Launcher",
+    logo: "https://www.google.com/s2/favicons?domain=minecraft.net&sz=128",
     tagline: "The official Mojang launcher for Java and Bedrock.",
     platforms: ["Windows", "macOS", "Linux"],
     category: "Official",
@@ -43,6 +46,7 @@ const launchers: Launcher[] = [
   },
   {
     name: "Prism Launcher",
+    logo: "https://github.com/PrismLauncher.png?size=128",
     tagline: "Powerful open-source launcher for modded instances.",
     platforms: ["Windows", "macOS", "Linux"],
     category: "Modded",
@@ -60,6 +64,7 @@ const launchers: Launcher[] = [
   },
   {
     name: "Modrinth App",
+    logo: "https://github.com/modrinth.png?size=128",
     tagline: "Modrinth-native launcher with one-click mods and packs.",
     platforms: ["Windows", "macOS", "Linux"],
     category: "Modded",
@@ -77,6 +82,7 @@ const launchers: Launcher[] = [
   },
   {
     name: "GDLauncher",
+    logo: "https://github.com/gorilla-devs.png?size=128",
     tagline: "Polished modpack launcher with cloud instance sharing.",
     platforms: ["Windows", "macOS", "Linux"],
     category: "Modded",
@@ -94,6 +100,7 @@ const launchers: Launcher[] = [
   },
   {
     name: "ATLauncher",
+    logo: "https://github.com/ATLauncher.png?size=128",
     tagline: "Modpack-focused launcher with a large built-in catalog.",
     platforms: ["Windows", "macOS", "Linux"],
     category: "Modded",
@@ -111,6 +118,7 @@ const launchers: Launcher[] = [
   },
   {
     name: "MultiMC",
+    logo: "https://github.com/MultiMC.png?size=128",
     tagline: "Lightweight, predictable instance manager.",
     platforms: ["Windows", "macOS", "Linux"],
     category: "Modded",
@@ -128,6 +136,7 @@ const launchers: Launcher[] = [
   },
   {
     name: "CurseForge App",
+    logo: "https://github.com/CurseForge.png?size=128",
     tagline: "The official CurseForge app for mods and modpacks.",
     platforms: ["Windows", "macOS", "Linux"],
     category: "Modded",
@@ -145,6 +154,7 @@ const launchers: Launcher[] = [
   },
   {
     name: "FTB App",
+    logo: "https://github.com/FTBTeam.png?size=128",
     tagline: "Official launcher for Feed The Beast modpacks.",
     platforms: ["Windows", "macOS", "Linux"],
     category: "Modded",
@@ -162,6 +172,7 @@ const launchers: Launcher[] = [
   },
   {
     name: "Technic Launcher",
+    logo: "https://github.com/TechnicPack.png?size=128",
     tagline: "Classic platform for community modpacks.",
     platforms: ["Windows", "macOS", "Linux"],
     category: "Modded",
@@ -179,6 +190,7 @@ const launchers: Launcher[] = [
   },
   {
     name: "Lunar Client",
+    logo: "https://github.com/LunarClient.png?size=128",
     tagline: "PvP-focused client with performance mods.",
     platforms: ["Windows", "macOS", "Linux"],
     category: "PvP",
@@ -196,6 +208,7 @@ const launchers: Launcher[] = [
   },
   {
     name: "Badlion Client",
+    logo: "https://github.com/BadlionClient.png?size=128",
     tagline: "PvP client with 100+ mods and FPS boosts.",
     platforms: ["Windows", "macOS", "Linux"],
     category: "PvP",
@@ -213,6 +226,7 @@ const launchers: Launcher[] = [
   },
   {
     name: "Amethyst",
+    logo: "https://github.com/AngelAuraMC.png?size=128",
     tagline: "PojavLauncher successor for Java on mobile.",
     platforms: ["Android", "iOS"],
     category: "Mobile",
@@ -230,6 +244,7 @@ const launchers: Launcher[] = [
   },
   {
     name: "Zalith Launcher 2",
+    logo: "https://github.com/ZalithLauncher.png?size=128",
     tagline: "Modern Android launcher with Material 3 UI.",
     platforms: ["Android"],
     category: "Mobile",
@@ -247,6 +262,7 @@ const launchers: Launcher[] = [
   },
   {
     name: "Fold Craft Launcher",
+    logo: "https://github.com/FCL-Team.png?size=128",
     tagline: "Android launcher with mods, shaders and controls.",
     platforms: ["Android"],
     category: "Mobile",
@@ -264,6 +280,7 @@ const launchers: Launcher[] = [
   },
   {
     name: "Mojo Launcher",
+    logo: "https://github.com/MojoLauncher.png?size=128",
     tagline: "Android Java launcher with broad mod support.",
     platforms: ["Android"],
     category: "Mobile",
@@ -378,7 +395,7 @@ export default function JavaLauncher() {
             {filtered.map((l) => (
               <article key={l.name} className={`launcher-card cat-${l.category.toLowerCase()}`}>
                 <div className="launcher-top">
-                  <div className="launcher-logo" aria-hidden><Icon name={l.icon} size={28} /></div>
+                  <BrandLogo className="launcher-logo" src={l.logo} fallback={l.icon} iconSize={28} />
                   <div className="launcher-heading">
                     <div className="launcher-name">{l.name}</div>
                     <div className="launcher-tagline">{l.tagline}</div>

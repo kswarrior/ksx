@@ -46,7 +46,7 @@
 .paid-card .download-btn:hover{transform:translateY(-1px); background:#f0f0f0; box-shadow:0 8px 18px rgba(0, 0, 0,0.18);}
 .paid-card .download-btn:active{transform:scale(0.97);}
 .paid-size{margin-left:auto; font-size:11px; font-weight:700; color:rgba(0, 0, 0,0.55); background:rgba(0, 0, 0,0.07); padding:2px 6px; border-radius:4px; white-space:nowrap;}
-.paid-icon{flex:0 0 auto; width:44px; height:44px; border-radius:5px; display:grid; place-items:center; background:linear-gradient(135deg,#a7a7a7,#777777); color:#ffffff; font-size:18px; box-shadow:0 6px 16px rgba(167, 167, 167,0.24);}
+.paid-icon{flex:0 0 auto; width:44px; height:44px; padding:6px; border-radius:5px; background:linear-gradient(135deg,#ffffff,#f1f1f1); color:#111111; border:1px solid rgba(255,255,255,0.12); box-shadow:0 4px 12px rgba(0,0,0,0.18);}
 .paid-empty{text-align:center; padding:28px; color:var(--pp-muted); background:rgba(15, 15, 15,0.9); border:1px solid var(--pp-border); border-radius:5px; margin-top:14px;}
 @media(max-width:768px){
   .paid-bg-orb{display:none !important;}
