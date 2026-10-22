@@ -445,6 +445,7 @@
 }
 @media(prefers-reduced-motion:reduce){
   .setup-bg-orb{animation:none !important;}
-  .setup-btn,.setup-mini-btn,.setup-progress-step{transition:none !important;}
+  .setup-btn,.setup-mini-btn,.setup-progress-step,
+  .setup-toggle input,.setup-toggle input::after{transition:none !important;}
   .setup-anim{animation:none !important;}
 }

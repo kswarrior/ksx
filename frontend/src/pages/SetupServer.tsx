@@ -208,7 +208,7 @@ export default function SetupServer() {
     if (javaReady) return "java -version";
     return `wget https://download.oracle.com/java/${javaVersion}/latest/jdk-${javaVersion}_linux-x64_bin.tar.gz
 tar -xvf jdk-${javaVersion}_linux-x64_bin.tar.gz
-export JAVA_HOME=$(pwd)/$(ls -d jdk-* | head -n1)
+export JAVA_HOME=$(find "$(pwd)" -maxdepth 1 -type d -name 'jdk-*' | head -n1)
 export PATH=$JAVA_HOME/bin:$PATH
 java -version`;
   }, [javaReady, javaVersion]);
