@@ -121,7 +121,7 @@ server.registerTool(
         "GET /api/stats",
         "GET /api/sitemap",
         "GET /api/sitemap/search?q=",
-        "GET /api/hosting/minecraft?q=&uptime=&location=&ram=",
+        "GET /api/hosting/minecraft?q=&uptime=&alwaysOn=&location=&ram=",
         "GET /api/hosting/vps?q=&type=&renew=&sudo=&alwaysOn=",
         "GET /api/social",
       ],
@@ -190,20 +190,22 @@ server.registerTool(
   {
     title: "Find free Minecraft hosting",
     description:
-      "Find free Minecraft server hosts from the KSX list. Filter by name, location, uptime status, and minimum RAM.",
+      "Find free Minecraft server hosts from the KSX list. Filter by name, location, always-on support, minimum RAM, or legacy uptime status. Includes player slots, verification, limits, and notes.",
     inputSchema: {
       query: z.string().optional().describe("Case-insensitive host name filter"),
       location: z.string().optional().describe("Case-insensitive location filter, e.g. Germany, USA, India"),
-      uptime: z.string().optional().describe("Exact uptime status, e.g. good, danger, excellent (always-on)"),
+      alwaysOn: z.boolean().optional().describe("Whether the free server stays online when empty"),
+      uptime: z.string().optional().describe("Legacy exact uptime status, e.g. good, danger, excellent (always-on)"),
       minRam: z.number().nonnegative().optional().describe("Minimum RAM in GB"),
     },
     annotations: { readOnlyHint: true },
   },
-  async ({ query, location, uptime, minRam }) => {
+  async ({ query, location, alwaysOn, uptime, minRam }) => {
     const { minecraft } = loadData();
     const data = minecraft.filter((host) => {
       if (query && !includes(host.name, query)) return false;
       if (location && !includes(host.location, location)) return false;
+      if (alwaysOn !== undefined && host.alwaysOn !== alwaysOn) return false;
       if (uptime && String(host.uptime).toLowerCase() !== uptime.toLowerCase()) return false;
       if (minRam !== undefined) {
         const ram = Number(host.ram);
@@ -213,7 +215,7 @@ server.registerTool(
     });
     return text({
       count: data.length,
-      filters: { query, location, uptime, minRam },
+      filters: { query, location, alwaysOn, uptime, minRam },
       data,
     });
   }
@@ -335,7 +337,7 @@ server.registerResource(
   "ksx://hosting/minecraft",
   {
     title: "Free Minecraft hosting list",
-    description: "KSX free Minecraft host list with RAM, CPU, disk, location, uptime, and link",
+    description: "KSX free Minecraft host list with RAM, CPU, disk, players, location, always-on status, verification, limits, notes, and link",
     mimeType: "application/json",
   },
   async (uri) => {

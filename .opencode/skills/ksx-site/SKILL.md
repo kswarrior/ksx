@@ -63,7 +63,7 @@ Most routes are registered twice in `frontend/src/App.tsx`: with and without `.h
 - To add a page to the map/search, update `backend/src/data/sitemap.json` (category -> sections -> pages) and `frontend/public/sitemap.xml`.
 - `frontend/public/sitemap.json` is a stale legacy copy. The React app never reads it; do not treat it as source of truth. Update it only if a task explicitly asks for the static copy.
 - Sitemap page URLs keep the `.html` suffix even though React Router serves both forms.
-- `uptime` values in Minecraft data include `good`, `danger`, and `excellent (always-on)`. The UI treats `good` and anything starting with `excellent` as 24/7; the API's `uptime` filter is an exact match.
+- Minecraft entries keep a legacy `uptime` string (`good`, `danger`, or `excellent (always-on)`) plus the boolean `alwaysOn`. Filter with `alwaysOn`; `uptime` remains an exact-match legacy filter. Each entry also has `players`, `verification`, `limits`, and `notes`.
 - Never fabricate social counts. `/api/social` reports `available: false` when a platform cannot be reached.
 
 ## Adding a page

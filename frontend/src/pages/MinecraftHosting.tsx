@@ -6,10 +6,10 @@ import PageHero from "../components/PageHero";
 import { SearchField, Select, type SelectOption } from "../components/ui";
 import "./Hosting.css";
 
-const uptimeOptions: SelectOption[] = [
-  { value: "", label: "Uptime • All" },
-  { value: "good", label: "24/7 only" },
-  { value: "danger", label: "non-24/7" },
+const availabilityOptions: SelectOption[] = [
+  { value: "", label: "Availability • All" },
+  { value: "true", label: "24/7 only" },
+  { value: "false", label: "Not 24/7" },
 ];
 
 const ramOptions: SelectOption[] = [
@@ -22,14 +22,10 @@ const ramOptions: SelectOption[] = [
   { value: "16", label: "≥16 GB" },
 ];
 
-const isAlwaysOn = (value: string) => value === "good" || value.startsWith("excellent");
-
-const uptimeLabel = (value: string) => isAlwaysOn(value) ? "24/7" : value === "warning" ? "Partial" : "non-24/7";
-
 export default function MinecraftHostingPage() {
   const [data, setData] = useState<MinecraftHosting[]>([]);
   const [q, setQ] = useState("");
-  const [uptime, setUptime] = useState("");
+  const [alwaysOn, setAlwaysOn] = useState("");
   const [location, setLocation] = useState("");
   const [ram, setRam] = useState("");
   const [loading, setLoading] = useState(true);
@@ -53,14 +49,13 @@ export default function MinecraftHostingPage() {
 
   const filtered = useMemo(() => data.filter((h) => {
     if (q && !h.name.toLowerCase().includes(q.toLowerCase())) return false;
-    if (uptime === "good" && !isAlwaysOn(h.uptime)) return false;
-    if (uptime === "danger" && isAlwaysOn(h.uptime)) return false;
+    if (alwaysOn && h.alwaysOn !== (alwaysOn === "true")) return false;
     if (location && !h.location.toLowerCase().includes(location.toLowerCase())) return false;
     if (ram && Number(h.ram) < Number(ram)) return false;
     return true;
-  }), [q, uptime, location, ram, data]);
+  }), [q, alwaysOn, location, ram, data]);
 
-  const clearFilters = () => { setQ(""); setUptime(""); setLocation(""); setRam(""); };
+  const clearFilters = () => { setQ(""); setAlwaysOn(""); setLocation(""); setRam(""); };
 
   return (
     <div className="hosting-page">
@@ -71,7 +66,12 @@ export default function MinecraftHostingPage() {
       </div>
       <div className="h-shell">
         <header className="h-header">
-          <PageHero variant="inline" icon="server" title="Free Minecraft Hosting" />
+          <PageHero
+            variant="inline"
+            icon="server"
+            title="Free Minecraft Hosting"
+            subtitle="Always-free Minecraft hosts with limits and renewal rules. Trials, credits, and paid plans are excluded. Checked Oct 2026."
+          />
 
           <div className="h-search-wrap">
             <div className="h-search-row">
@@ -82,14 +82,14 @@ export default function MinecraftHostingPage() {
                 placeholder="Search hosting name…"
                 ariaLabel="Search hosting"
               />
-              <FilterMenu activeCount={[uptime, location, ram].filter(Boolean).length}>
+              <FilterMenu activeCount={[alwaysOn, location, ram].filter(Boolean).length}>
                 <div className="h-filters">
                   <Select
                     className="h-select"
-                    value={uptime}
-                    onChange={setUptime}
-                    options={uptimeOptions}
-                    ariaLabel="Uptime"
+                    value={alwaysOn}
+                    onChange={setAlwaysOn}
+                    options={availabilityOptions}
+                    ariaLabel="Availability"
                   />
                   <Select
                     className="h-select"
@@ -105,7 +105,7 @@ export default function MinecraftHostingPage() {
                     options={ramOptions}
                     ariaLabel="RAM"
                   />
-                  {(q||uptime||location||ram) && <button className="h-filter" onClick={clearFilters}>Clear filters <Icon name="close" size={12} /></button>}
+                  {(q||alwaysOn||location||ram) && <button className="h-filter" onClick={clearFilters}>Clear filters <Icon name="close" size={12} /></button>}
                 </div>
               </FilterMenu>
             </div>
@@ -135,11 +135,17 @@ export default function MinecraftHostingPage() {
                 <div className="h-specs">
                   <span><b>{h.ram} GB</b> RAM</span>
                   <span><b>{h.cpu}</b> CPU</span>
-                  <span><b>{h.disk} GB</b> Disk</span>
+                  <span><b>{h.disk}</b> Disk</span>
+                  <span><b>{h.players}</b> Players</span>
                 </div>
+                <div className="h-facts">
+                  <div className="h-fact"><Icon name="smartphone" size={13} /><span><b>Verification:</b> {h.verification}</span></div>
+                  <div className="h-fact"><Icon name="warning" size={13} /><span><b>Limits:</b> {h.limits}</span></div>
+                </div>
+                <div className="h-note"><Icon name="sparkles" size={14} /><span>{h.notes}</span></div>
                 <div className="h-card-bottom">
                   <span style={{display:"inline-flex", alignItems:"center", gap:6}}><Icon name="map-pin" size={13} /> {h.location}</span>
-                  <span className={`h-tag ${isAlwaysOn(h.uptime)?"good":h.uptime==="warning"?"warn":"bad"}`}>{uptimeLabel(h.uptime)}</span>
+                  <span className={`h-tag ${h.alwaysOn ? "good" : "neutral"}`}>{h.alwaysOn ? "24/7" : "Not 24/7"}</span>
                 </div>
               </article>
             ))}
