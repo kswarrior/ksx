@@ -276,7 +276,7 @@ export default function MapPage() {
   const lastVisTf = useRef<View | null>(null);
   const viewportSize = useRef({ w: 0, h: 0 });
   const invRef = useRef(1);
-  const visRaf = useRef(0);
+  const visTimer = useRef<number | undefined>(undefined);
   const zoomBucket = useRef("");
   const suppressClickUntil = useRef(0);
   const lastTap = useRef<{ time: number; x: number; y: number } | null>(null);
