@@ -139,5 +139,5 @@
   .so-bg-orb{animation:none !important;}
   .so-card,.so-logo,.so-arrow{transition:none !important;}
   .so-card::before{display:none;}
-  .so-status-dot,.so-stat-skeleton,.so-refresh.is-busy svg{animation:none !important;}
+  .so-status-dot,.so-stat-skeleton{animation:none !important;}
 }

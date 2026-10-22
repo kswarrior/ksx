@@ -41,6 +41,8 @@ export default function JavaDownloader() {
   const [versionsList, setVersionsList] = useState<string[]>([]);
   const [results, setResults] = useState<Project[]>([]);
   const [loading, setLoading] = useState(false);
+  const [hasSearched, setHasSearched] = useState(false);
+  const [error, setError] = useState(false);
   const [selected, setSelected] = useState<Project | null>(null);
   const [showDetail, setShowDetail] = useState(false);
   const [detailData, setDetailData] = useState<Record<string, unknown> | null>(null);
@@ -62,22 +64,26 @@ export default function JavaDownloader() {
 
   async function searchContent() {
     setLoading(true);
+    setError(false);
     setResults([]);
-    const facets: string[] = [];
-    if (type) facets.push(`["project_type:${type}"]`);
-    if (loader) facets.push(`["categories:${loader}"]`);
-    if (version) facets.push(`["versions:${version}"]`);
-    const facetsStr = facets.length ? `&facets=[${facets.join(",")}]` : "";
+    const facets: string[][] = [];
+    if (type) facets.push([`project_type:${type}`]);
+    if (loader) facets.push([`categories:${loader}`]);
+    if (version) facets.push([`versions:${version}`]);
     const index = sort === "downloads" ? "downloads" : sort === "newest" ? "newest" : sort === "updated" ? "updated" : "relevance";
-    const url = `${API}/search?query=${encodeURIComponent(query || "")}&limit=24&index=${index}${facetsStr}`;
+    const params = new URLSearchParams({ query: query || "", limit: "24", index });
+    if (facets.length) params.set("facets", JSON.stringify(facets));
     try {
-      const r = await fetch(url);
+      const r = await fetch(`${API}/search?${params.toString()}`);
+      if (!r.ok) throw new Error(`HTTP ${r.status}`);
       const d = await r.json();
       const hits: Project[] = d.hits || [];
       setResults(hits);
     } catch {
+      setError(true);
       setResults([]);
     } finally {
+      setHasSearched(true);
       setLoading(false);
     }
   }
@@ -164,7 +170,15 @@ export default function JavaDownloader() {
         </header>
 
         {loading && <div className="jd-loading">Searching Modrinth…</div>}
-        {!loading && results.length === 0 && <div className="jd-empty">No results. Try different filters or search term.</div>}
+        {!loading && error && (
+          <div className="jd-empty">
+            Couldn't load results from Modrinth.{" "}
+            <button type="button" className="jd-retry" onClick={searchContent}>Retry</button>
+          </div>
+        )}
+        {!loading && !error && hasSearched && results.length === 0 && (
+          <div className="jd-empty">No results. Try different filters or search term.</div>
+        )}
         <div className="jd-grid">
           {results.map((p) => (
             <article key={p.project_id} className="jd-card" onClick={() => openDetails(p)}>

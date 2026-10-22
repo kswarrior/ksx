@@ -43,6 +43,8 @@
 .jd-loading::before{content:""; width:22px; height:22px; border:3px solid rgba(255, 255, 255,0.18); border-top-color:#898989; border-radius:50%; animation:spin .8s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg)}}
 .jd-empty{text-align:center; padding:34px 18px; background:rgba(15, 15, 15,0.9); border:1px solid var(--jd-border); border-radius:5px; color:var(--jd-muted); font-size:13px;}
+.jd-retry{padding:0; background:none; border:none; color:var(--jd-text); font:inherit; font-weight:800; cursor:pointer; text-decoration:underline; text-underline-offset:2px;}
+.jd-retry:hover{color:#ffffff;}
 .jd-modal{position:fixed; inset:0; background:rgba(0, 0, 0,0.62); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); z-index:1000; display:flex; align-items:center; justify-content:center; padding:16px;}
 .jd-modal-content{background:rgba(19, 19, 19,0.98); border:1px solid var(--jd-border); border-radius:5px; padding:20px; width:100%; max-width:780px; max-height:90vh; overflow:auto; box-shadow:0 20px 60px rgba(0, 0, 0,0.5);}
 .jd-close{float:right; padding:0; color:inherit; font:inherit; cursor:pointer; width:36px; height:36px; display:grid; place-items:center; border-radius:6px; background:rgba(255, 255, 255,0.06); border:1px solid var(--jd-border); transition:background .2s;}
