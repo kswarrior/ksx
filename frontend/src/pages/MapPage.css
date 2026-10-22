@@ -1,7 +1,7 @@
 /* ===== KS UNIVERSE MAP ===== */
 .map-page {
   --mp-bg: #05070d;
-  --mp-panel: rgba(8, 12, 20, 0.84);
+  --mp-panel: rgba(8, 12, 20, 0.94);
   --mp-panel-solid: #080d16;
   --mp-border: rgba(255, 255, 255, 0.1);
   --mp-border-strong: rgba(255, 255, 255, 0.2);
@@ -61,7 +61,6 @@
   background-size: 260px 260px, 380px 380px, 170px 170px;
   background-position: 70px 10px, 30px 190px, 110px 80px;
   opacity: 0.36;
-  animation: mpTwinkle 9s ease-in-out infinite alternate;
 }
 
 .mp-stars.s3 {
@@ -284,7 +283,6 @@
   inset: -27px;
   border-radius: 50%;
   border: 1px dashed rgba(160, 195, 255, 0.22);
-  animation: mpSpin 48s linear infinite;
 }
 
 .mp-core::after {
@@ -399,24 +397,6 @@
   inset: -15px;
   border-radius: 50%;
   border: 1px solid rgba(var(--rgb), 0.16);
-}
-
-.mp-star::after {
-  content: "";
-  position: absolute;
-  inset: -3px;
-  border-radius: 50%;
-  background: conic-gradient(
-    from 0deg,
-    transparent 0 62%,
-    rgba(var(--rgb), 0.56) 77%,
-    transparent 92%
-  );
-  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 1px));
-  mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 1px));
-  animation: mpSpin 10s linear infinite;
-  opacity: 0.8;
-  pointer-events: none;
 }
 
 .mp-star:hover {
@@ -674,8 +654,6 @@
   border-radius: var(--mp-radius);
   background: var(--mp-panel);
   box-shadow: var(--mp-shadow);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
 }
 
 /* search */
@@ -813,9 +791,6 @@
   border-radius: var(--mp-radius);
   background: var(--mp-panel);
   box-shadow: var(--mp-shadow);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-  animation: mpPanelIn 0.3s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .mp-details-close {
@@ -976,8 +951,6 @@
   border-radius: 12px;
   background: var(--mp-panel);
   box-shadow: 0 12px 34px rgba(0, 0, 0, 0.45);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
 }
 
 .mp-zoom button {
@@ -1034,8 +1007,6 @@
   border-radius: 14px;
   background: var(--mp-panel);
   box-shadow: 0 12px 34px rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
 }
 
 .mp-legend-title {
@@ -1139,8 +1110,6 @@
     width: auto;
     padding: 10px;
     border-radius: 14px;
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
     background: rgba(8, 12, 20, 0.95);
   }
 
@@ -1186,8 +1155,6 @@
     max-height: 46dvh;
     padding-bottom: calc(16px + env(safe-area-inset-bottom));
     border-radius: 16px;
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
     background: rgba(8, 12, 20, 0.97);
   }
 
@@ -1198,8 +1165,6 @@
   .mp-zoom {
     right: 12px;
     bottom: 12px;
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
     background: rgba(8, 12, 20, 0.96);
   }
 

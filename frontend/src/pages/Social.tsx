@@ -114,12 +114,6 @@ function formatOnline(count: number): string {
   return new Intl.NumberFormat("en-US").format(count);
 }
 
-function formatTime(iso: string): string {
-  const date = new Date(iso);
-  if (Number.isNaN(date.getTime())) return "just now";
-  return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-}
-
 type SocialCardProps = {
   className: string;
   url: string;
@@ -208,19 +202,18 @@ export default function Social() {
         <div className="so-bg-orb o2" />
       </div>
       <div className="so-shell">
-        <header className="so-header">
-          <div className="so-kicker">
-            <span className="so-kicker-dot" aria-hidden />
-            Social • Live
-          </div>
-          <h1 className="so-title">
-            Community <span>Stats</span>
-          </h1>
-          <p className="so-sub">
-            YouTube subscribers, Discord members and Instagram followers — read
-            straight from each platform and refreshed automatically.
-          </p>
-        </header>
+        <div className="so-tools">
+          <button
+            type="button"
+            className={`so-refresh ${refreshing ? "is-busy" : ""}`}
+            onClick={refresh}
+            disabled={refreshing || loading}
+            aria-label={refreshing ? "Refreshing live stats" : "Refresh live stats"}
+            title={failed ? "Couldn't refresh live stats" : "Refresh live stats"}
+          >
+            <RefreshIcon />
+          </button>
+        </div>
 
         <div className="so-grid">
           <SocialCard
@@ -259,30 +252,6 @@ export default function Social() {
             loading={loading}
           />
         </div>
-
-        <footer className="so-footer">
-          <span className={`so-updated ${failed ? "is-error" : ""}`}>
-            {stats ? (
-              <>
-                {failed ? "Couldn't refresh • last update " : "Last update "}
-                <time dateTime={stats.updatedAt}>{formatTime(stats.updatedAt)}</time>
-              </>
-            ) : loading ? (
-              "Connecting to live stats…"
-            ) : (
-              "Live stats are unavailable right now"
-            )}
-          </span>
-          <button
-            type="button"
-            className={`so-refresh ${refreshing ? "is-busy" : ""}`}
-            onClick={refresh}
-            disabled={refreshing}
-          >
-            <RefreshIcon />
-            {refreshing ? "Refreshing" : "Refresh"}
-          </button>
-        </footer>
       </div>
     </div>
   );
