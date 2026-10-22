@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import Icon from "../components/Icon";
 import { TextField } from "../components/ui";
 import "./ServerInfo.css";
@@ -6,21 +7,31 @@ import "./ServerInfo.css";
 type McStatus = Record<string, unknown>;
 
 export default function ServerInfo() {
-  const [ip, setIp] = useState("");
+  const [searchParams] = useSearchParams();
+  const initialIp = (searchParams.get("ip") ?? "").trim();
+  const [ip, setIp] = useState(initialIp);
   const [data, setData] = useState<McStatus | null>(null);
   const [loading, setLoading] = useState(false);
+  const autoChecked = useRef(false);
 
-  async function fetchInfo() {
-    if (!ip.trim()) { alert("Please enter a server IP"); return; }
+  async function fetchInfo(target?: string) {
+    const value = (target ?? ip).trim();
+    if (!value) { alert("Please enter a server IP"); return; }
     setLoading(true);
     try {
-      const res = await fetch(`https://api.mcsrvstat.us/3/${ip.trim()}`);
+      const res = await fetch(`https://api.mcsrvstat.us/3/${value}`);
       const json = await res.json();
       setData(json);
     } catch {
       alert("Failed to fetch");
     } finally { setLoading(false); }
   }
+
+  useEffect(() => {
+    if (autoChecked.current || !initialIp) return;
+    autoChecked.current = true;
+    void fetchInfo(initialIp);
+  }, [initialIp]);
 
   const online = data ? Boolean((data as { online?: boolean }).online) : null;
   const players = data ? (data as { players?: { online?: number; max?: number } }).players : null;
