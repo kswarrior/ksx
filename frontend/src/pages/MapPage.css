@@ -1,15 +1,14 @@
-/* ===== KS UNIVERSE MAP ===== */
+/* ===== KS SITEMAP ===== */
 .map-page {
-  --mp-bg: #c9ced5;
-  --mp-panel: rgba(250, 251, 252, 0.94);
-  --mp-panel-solid: #f7f8fa;
-  --mp-border: rgba(36, 43, 52, 0.16);
-  --mp-border-strong: rgba(36, 43, 52, 0.28);
-  --mp-text: #222831;
-  --mp-muted: #5d6673;
-  --mp-accent: #4053d6;
-  --mp-radius: 16px;
-  --mp-shadow: none;
+  --mp-bg: #2d3137;
+  --mp-panel: #383d44;
+  --mp-panel-solid: #383d44;
+  --mp-border: rgba(255, 255, 255, 0.12);
+  --mp-border-strong: rgba(255, 255, 255, 0.22);
+  --mp-text: #f1f3f5;
+  --mp-muted: #a6adb5;
+  --mp-accent: #aab7ff;
+  --mp-radius: 14px;
   position: relative;
   height: calc(100vh - 56px);
   height: calc(100dvh - 56px);
@@ -18,6 +17,7 @@
   isolation: isolate;
   background: var(--mp-bg);
   color: var(--mp-text);
+  color-scheme: dark;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -26,25 +26,6 @@
 .map-page *::after {
   -webkit-tap-highlight-color: transparent;
   box-shadow: none !important;
-}
-
-/* ---------- SKY ---------- */
-.mp-sky {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-  pointer-events: none;
-  background:
-    repeating-linear-gradient(115deg, rgba(255, 255, 255, 0.14) 0 1px, transparent 1px 9px),
-    radial-gradient(1200px 800px at 16% 6%, rgba(255, 255, 255, 0.72), transparent 62%),
-    radial-gradient(1000px 760px at 88% 94%, rgba(112, 122, 136, 0.22), transparent 64%),
-    linear-gradient(135deg, #e0e3e7 0%, #cbd0d6 46%, #bcc2ca 100%);
-}
-
-.mp-vignette {
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(ellipse at center, transparent 58%, rgba(66, 74, 86, 0.14) 100%);
 }
 
 /* ---------- VIEWPORT / WORLD ---------- */
@@ -71,7 +52,7 @@
   transform-origin: 0 0;
   will-change: transform;
   opacity: 0;
-  transition: opacity 0.36s ease;
+  transition: opacity 0.2s ease;
 }
 
 .mp-world.is-ready {
@@ -79,71 +60,10 @@
 }
 
 .mp-world.is-animating {
-  transition: transform 0.48s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.mp-grid {
-  position: absolute;
-  inset: 0;
-  background-image:
-    linear-gradient(rgba(50, 60, 74, 0.055) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(50, 60, 74, 0.055) 1px, transparent 1px);
-  background-size: 80px 80px;
-  -webkit-mask-image: radial-gradient(ellipse 58% 54% at 50% 50%, #000 24%, transparent 78%);
-  mask-image: radial-gradient(ellipse 58% 54% at 50% 50%, #000 24%, transparent 78%);
-}
-
-.mp-links {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  overflow: visible;
-  pointer-events: none;
-}
-
-.mp-link {
-  fill: none;
-  stroke-linecap: round;
-  vector-effect: non-scaling-stroke;
-}
-
-.mp-link--core {
-  stroke: rgba(45, 55, 68, 0.32);
-  stroke-width: 1.2;
-  stroke-dasharray: 2 9;
-}
-
-.mp-link--star {
-  stroke-width: 1.1;
-  opacity: 0.72;
-}
-
-.mp-link--moon {
-  stroke: rgba(45, 55, 68, 0.2);
-  stroke-width: 1;
-}
-
-.mp-orbit-line {
-  fill: none;
-  stroke: rgba(45, 55, 68, 0.16);
-  stroke-width: 1;
-  stroke-dasharray: 2 10;
-  vector-effect: non-scaling-stroke;
-}
-
-.mp-orbit-core {
-  stroke: rgba(45, 55, 68, 0.2);
-  stroke-dasharray: 3 14;
-}
-
-.mp-orbit-line--moon {
-  stroke-width: 1;
-  stroke-dasharray: 1 8;
-  opacity: 0.85;
-}
-
-/* ---------- NODES ---------- */
+/* ---------- CIRCLES ---------- */
 .mp-node {
   position: absolute;
   transform: translate(-50%, -50%);
@@ -154,46 +74,6 @@
   z-index: 6;
 }
 
-.mp-node-label {
-  position: absolute;
-  left: 50%;
-  top: calc(100% + 12px);
-  transform: translateX(-50%) scale(var(--mp-inv, 1));
-  transform-origin: top center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
-  padding: 6px 10px;
-  border-radius: 10px;
-  background: rgba(255, 255, 255, 0.92);
-  border: 1px solid rgba(36, 43, 52, 0.16);
-  color: var(--mp-text);
-  text-align: center;
-  white-space: nowrap;
-  pointer-events: none;
-  transition: opacity 0.2s ease, visibility 0.2s ease;
-}
-
-.mp-star-name,
-.mp-planet-name {
-  font-size: 12px;
-  font-weight: 900;
-  letter-spacing: -0.2px;
-  line-height: 1.15;
-}
-
-.mp-star-meta,
-.mp-planet-meta {
-  font-style: normal;
-  font-size: 8.5px;
-  font-weight: 750;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-  color: var(--mp-muted);
-}
-
-/* core */
 .mp-core-node {
   z-index: 4;
 }
@@ -204,110 +84,57 @@
   height: 132px;
   padding: 0;
   appearance: none;
-  border: 2px solid rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.16);
   border-radius: 50%;
   display: grid;
   place-items: center;
   color: #fff;
   cursor: pointer;
-  background:
-    radial-gradient(circle at 32% 26%, rgba(255, 255, 255, 0.94) 0 5%, rgba(255, 255, 255, 0.28) 17%, transparent 38%),
-    linear-gradient(145deg, #66717e 0%, #3d4753 52%, #242b33 100%);
-  transition: transform 0.2s ease, border-color 0.2s ease;
+  background: #474d55;
+  transition: border-color 0.15s ease;
 }
 
 .mp-core:hover {
-  transform: scale(1.04);
-  border-color: #fff;
+  border-color: rgba(255, 255, 255, 0.4);
 }
 
 .mp-core-inner {
-  position: relative;
-  z-index: 1;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 3px;
+  justify-content: center;
 }
 
 .mp-core-text {
   font-size: 46px;
-  line-height: 0.92;
+  line-height: 1;
   font-weight: 900;
   letter-spacing: -2.5px;
   color: #fff;
 }
 
-.mp-core-caption {
-  padding-left: 4px;
-  font-size: 8px;
-  font-weight: 800;
-  letter-spacing: 4px;
-  color: rgba(255, 255, 255, 0.72);
-}
-
-.mp-core-label {
-  position: absolute;
-  left: 50%;
-  top: calc(100% + 19px);
-  transform: translateX(-50%) scale(var(--mp-inv, 1));
-  transform-origin: top center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
-  padding: 6px 11px;
-  border-radius: 10px;
-  background: rgba(255, 255, 255, 0.92);
-  border: 1px solid rgba(36, 43, 52, 0.16);
-  color: var(--mp-text);
-  white-space: nowrap;
-  pointer-events: none;
-}
-
-.mp-core-label strong {
-  font-size: 12px;
-  font-weight: 900;
-  letter-spacing: -0.2px;
-}
-
-.mp-core-label em {
-  font-style: normal;
-  font-size: 8px;
-  font-weight: 700;
-  letter-spacing: 0.6px;
-  text-transform: uppercase;
-  color: var(--mp-muted);
-}
-
-/* star */
 .mp-star {
   position: relative;
   width: 104px;
   height: 104px;
   padding: 0;
   appearance: none;
-  border: 2px solid rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.16);
   border-radius: 50%;
   display: grid;
   place-items: center;
   color: #fff;
   cursor: pointer;
-  background:
-    radial-gradient(circle at 30% 24%, rgba(255, 255, 255, 0.9) 0 5%, rgba(255, 255, 255, 0.24) 18%, transparent 40%),
-    linear-gradient(145deg, rgba(var(--rgb), 0.78), rgba(var(--rgb), 1));
-  transition: transform 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
+  background: rgb(var(--rgb));
+  transition: border-color 0.15s ease, opacity 0.15s ease;
 }
 
 .mp-star:hover {
-  transform: scale(1.04);
-  border-color: #fff;
+  border-color: rgba(255, 255, 255, 0.48);
 }
 
+.mp-star.is-active,
 .mp-star.is-focused {
   border-color: #fff;
-  outline: 2px solid rgba(var(--rgb), 0.38);
-  outline-offset: 4px;
 }
 
 .mp-star-icon {
@@ -324,42 +151,28 @@
   display: block;
 }
 
-.mp-star-label {
-  border-color: rgba(var(--rgb), 0.4);
-}
-
-.mp-star.is-active + .mp-star-label {
-  border-color: rgba(var(--rgb), 0.7);
-}
-
-/* planet */
 .mp-planet {
   position: relative;
   width: 58px;
   height: 58px;
   padding: 0;
   appearance: none;
-  border: 2px solid rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.16);
   border-radius: 50%;
   display: grid;
   place-items: center;
   color: #fff;
   cursor: pointer;
-  background:
-    radial-gradient(circle at 32% 26%, rgba(255, 255, 255, 0.9) 0 5%, rgba(255, 255, 255, 0.2) 20%, transparent 42%),
-    linear-gradient(145deg, rgba(var(--rgb), 0.72), rgba(var(--rgb), 1));
-  transition: transform 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
+  background: rgb(var(--rgb));
+  transition: border-color 0.15s ease, opacity 0.15s ease;
 }
 
 .mp-planet:hover {
-  transform: scale(1.06);
-  border-color: #fff;
+  border-color: rgba(255, 255, 255, 0.48);
 }
 
 .mp-planet.is-focused {
   border-color: #fff;
-  outline: 2px solid rgba(var(--rgb), 0.38);
-  outline-offset: 4px;
 }
 
 .mp-planet-icon {
@@ -376,16 +189,6 @@
   display: block;
 }
 
-.mp-planet-label {
-  top: calc(100% + 36px);
-  padding: 5px 9px;
-}
-
-.mp-planet-name {
-  font-size: 11px;
-}
-
-/* moon */
 .mp-moon {
   position: relative;
   width: 38px;
@@ -393,23 +196,18 @@
   display: grid;
   place-items: center;
   border-radius: 50%;
-  border: 2px solid rgba(255, 255, 255, 0.7);
-  background:
-    radial-gradient(circle at 32% 26%, rgba(255, 255, 255, 0.9) 0 5%, rgba(255, 255, 255, 0.18) 22%, transparent 44%),
-    linear-gradient(145deg, rgba(var(--rgb), 0.82), rgba(var(--rgb), 0.98));
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgb(var(--rgb));
   color: #fff;
-  transition: transform 0.18s ease, border-color 0.18s ease, opacity 0.2s ease;
+  transition: border-color 0.15s ease, opacity 0.15s ease;
 }
 
 .mp-moon:hover {
-  transform: scale(1.08);
-  border-color: #fff;
+  border-color: rgba(255, 255, 255, 0.48);
 }
 
 .mp-moon.is-focused {
   border-color: #fff;
-  outline: 2px solid rgba(var(--rgb), 0.4);
-  outline-offset: 3px;
 }
 
 .mp-moon-logo {
@@ -427,70 +225,30 @@
   display: block;
 }
 
-.mp-moon-label {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%) translate(var(--mx, 0px), var(--my, 0px)) scale(var(--mp-inv, 1));
-  transform-origin: center;
-  padding: 5px 8px;
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.94);
-  border: 1px solid rgba(var(--rgb), 0.42);
-  font-size: 10px;
-  font-weight: 750;
-  line-height: 1.2;
-  white-space: nowrap;
-  color: var(--mp-text);
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-  transition: opacity 0.18s ease, visibility 0.18s ease;
-  z-index: 3;
-}
-
-.mp-moon.is-focused + .mp-moon-label,
-.mp-moon-node:hover .mp-moon-label,
-.mp-moon-node:focus-within .mp-moon-label {
-  opacity: 1;
-  visibility: visible;
-}
-
-/* focus / filter states */
+/* states */
 .mp-star.is-muted,
 .mp-planet.is-muted,
 .mp-moon.is-muted {
-  opacity: 0.26;
+  opacity: 0.35;
 }
 
 .mp-star.is-dimmed,
 .mp-planet.is-dimmed,
 .mp-moon.is-dimmed {
-  opacity: 0.1;
-  pointer-events: none;
+  opacity: 0.14;
 }
 
-.map-page[data-zoom="far"] .mp-planet-label {
-  opacity: 0;
-  visibility: hidden;
-}
-
-.map-page[data-zoom="far"] .mp-star-label {
-  padding: 5px 9px;
-}
-
-/* keyboard focus */
 .mp-core:focus-visible,
 .mp-star:focus-visible,
 .mp-planet:focus-visible,
 .mp-moon:focus-visible,
 .mp-zoom button:focus-visible,
 .mp-details-close:focus-visible {
-  outline: 2px solid #4053d6;
-  outline-offset: 4px;
+  outline: 2px solid #fff;
+  outline-offset: 3px;
 }
 
-/* ---------- HUD ---------- */
+/* ---------- SEARCH ---------- */
 .mp-hud {
   position: absolute;
   z-index: 30;
@@ -502,41 +260,30 @@
   width: min(390px, calc(100% - 32px));
 }
 
-/* search */
 .mp-search.ks-search {
-  border: 1px solid rgba(36, 43, 52, 0.16);
-  border-radius: 14px;
-  background: var(--mp-panel-solid);
+  border: 1px solid var(--mp-border);
+  border-radius: 12px;
+  background: var(--mp-panel);
   color: var(--mp-text);
   padding: 0 12px;
 }
 
 .mp-search.ks-search:focus-within {
-  border-color: rgba(64, 83, 214, 0.55);
-  background: #fff;
-}
-
-.mp-search .ks-search-input::placeholder {
-  color: rgba(34, 40, 49, 0.45);
-}
-
-.mp-search .ks-search-icon {
-  color: rgba(34, 40, 49, 0.55);
-}
-
-.mp-search .ks-search-clear {
-  color: var(--mp-text);
-  border-color: rgba(36, 43, 52, 0.14);
-  background: rgba(36, 43, 52, 0.05);
-}
-
-.mp-search .ks-search-clear:hover {
-  background: rgba(36, 43, 52, 0.1);
+  border-color: var(--mp-border-strong);
+  background: #3e444c;
 }
 
 .mp-search .ks-search-input {
   height: 44px;
   font-size: 13px;
+}
+
+.mp-search .ks-search-input::placeholder {
+  color: rgba(255, 255, 255, 0.42);
+}
+
+.mp-search .ks-search-icon {
+  color: rgba(255, 255, 255, 0.55);
 }
 
 .mp-search .ks-search-icon svg {
@@ -548,6 +295,13 @@
   width: 28px;
   height: 28px;
   border-radius: 8px;
+  border-color: var(--mp-border);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--mp-text);
+}
+
+.mp-search .ks-search-clear:hover {
+  background: rgba(255, 255, 255, 0.12);
 }
 
 /* ---------- SEARCH RESULTS ---------- */
@@ -559,7 +313,7 @@
   margin-top: 8px;
   padding: 8px;
   border: 1px solid var(--mp-border);
-  border-radius: 14px;
+  border-radius: 12px;
   background: var(--mp-panel-solid);
   overflow-y: auto;
   overscroll-behavior: contain;
@@ -580,11 +334,11 @@
   gap: 9px;
   padding: 7px 8px;
   border-radius: 9px;
-  transition: background 0.18s;
+  transition: background 0.15s ease;
 }
 
 .mp-result:hover {
-  background: rgba(36, 43, 52, 0.06);
+  background: rgba(255, 255, 255, 0.06);
 }
 
 .mp-result-logo {
@@ -594,8 +348,8 @@
   display: grid;
   place-items: center;
   border-radius: 7px;
-  background: #3d4753;
-  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: #4b5159;
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .mp-result-logo svg,
@@ -666,16 +420,16 @@
   height: 28px;
   display: grid;
   place-items: center;
-  border: 1px solid rgba(36, 43, 52, 0.14);
+  border: 1px solid var(--mp-border);
   border-radius: 8px;
-  background: rgba(36, 43, 52, 0.05);
+  background: rgba(255, 255, 255, 0.05);
   color: var(--mp-muted);
   cursor: pointer;
-  transition: background 0.2s, color 0.2s;
+  transition: background 0.15s ease, color 0.15s ease;
 }
 
 .mp-details-close:hover {
-  background: rgba(36, 43, 52, 0.1);
+  background: rgba(255, 255, 255, 0.1);
   color: var(--mp-text);
 }
 
@@ -687,7 +441,7 @@
   font-weight: 900;
   letter-spacing: 1.4px;
   text-transform: uppercase;
-  color: #4053d6;
+  color: var(--mp-accent);
 }
 
 .mp-details h2 {
@@ -718,23 +472,23 @@
   align-items: center;
   gap: 10px;
   padding: 9px 10px;
-  border: 1px solid rgba(36, 43, 52, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 10px;
-  background: rgba(36, 43, 52, 0.035);
+  background: rgba(255, 255, 255, 0.035);
   color: inherit;
   font: inherit;
   text-align: left;
   cursor: pointer;
-  transition: background 0.2s, border-color 0.2s;
+  transition: background 0.15s ease, border-color 0.15s ease;
 }
 
 .mp-detail-link:hover {
-  background: rgba(36, 43, 52, 0.07);
-  border-color: rgba(36, 43, 52, 0.18);
+  background: rgba(255, 255, 255, 0.07);
+  border-color: var(--mp-border);
 }
 
 .mp-detail-link:active {
-  transform: scale(0.99);
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .mp-detail-logo {
@@ -743,9 +497,9 @@
   flex-shrink: 0;
   display: grid;
   place-items: center;
-  border: 1px solid rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 9px;
-  background: #3d4753;
+  background: #4b5159;
   color: #fff;
 }
 
@@ -767,9 +521,6 @@
 .mp-detail-text strong {
   font-size: 11.5px;
   font-weight: 800;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .mp-detail-text em {
@@ -792,7 +543,7 @@
   appearance: none;
   border: 0;
   background: none;
-  color: #4053d6;
+  color: var(--mp-accent);
   font: inherit;
   font-size: 10px;
   font-weight: 800;
@@ -824,7 +575,7 @@
   place-items: center;
   appearance: none;
   border: 0;
-  border-bottom: 1px solid rgba(36, 43, 52, 0.1);
+  border-bottom: 1px solid var(--mp-border);
   background: transparent;
   color: var(--mp-text);
   font-family: inherit;
@@ -832,7 +583,7 @@
   font-weight: 600;
   line-height: 1;
   cursor: pointer;
-  transition: background 0.15s;
+  transition: background 0.15s ease;
 }
 
 .mp-zoom button:last-child {
@@ -840,11 +591,11 @@
 }
 
 .mp-zoom button:hover {
-  background: rgba(36, 43, 52, 0.06);
+  background: rgba(255, 255, 255, 0.07);
 }
 
 .mp-zoom button:active {
-  background: rgba(36, 43, 52, 0.1);
+  background: rgba(255, 255, 255, 0.12);
 }
 
 .mp-zoom .mp-zoom-fit svg {
@@ -856,95 +607,12 @@
   stroke-linecap: round;
 }
 
-/* ---------- LEGEND ---------- */
-.mp-legend {
-  position: absolute;
-  left: 16px;
-  bottom: 16px;
-  z-index: 24;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  max-width: 250px;
-  padding: 12px 14px;
-  border: 1px solid var(--mp-border);
-  border-radius: 14px;
-  background: var(--mp-panel);
-}
-
-.mp-legend-title {
-  font-size: 8.5px;
-  font-weight: 900;
-  letter-spacing: 1.4px;
-  text-transform: uppercase;
-  color: var(--mp-muted);
-}
-
-.mp-legend-row {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  font-size: 9px;
-  color: var(--mp-muted);
-}
-
-.mp-legend-row strong {
-  display: block;
-  font-size: 10.5px;
-  font-weight: 800;
-  color: var(--mp-text);
-}
-
-.mp-legend-row em {
-  font-style: normal;
-  font-size: 9px;
-}
-
-.mp-legend-dot {
-  width: 15px;
-  height: 15px;
-  flex-shrink: 0;
-  border-radius: 50%;
-}
-
-.mp-legend-dot.core {
-  background: #3d4753;
-}
-
-.mp-legend-dot.star {
-  background: #1d9e82;
-}
-
-.mp-legend-dot.planet {
-  width: 11px;
-  height: 11px;
-  background: #4f6bd6;
-}
-
-.mp-legend-dot.moon {
-  width: 8px;
-  height: 8px;
-  background: #8b95a3;
-}
-
-.mp-legend-hint {
-  margin-top: 2px;
-  font-size: 8.5px;
-  color: rgba(139, 154, 178, 0.8);
-}
-
-/* ---------- LITE / PAUSED ---------- */
+/* ---------- LITE ---------- */
 .mp-lite .mp-world {
   will-change: auto;
 }
 
 /* ---------- RESPONSIVE ---------- */
-@media (max-width: 1100px) {
-  .mp-legend {
-    display: none;
-  }
-}
-
 @media (max-width: 899px) {
   .map-page {
     min-height: 0;
@@ -962,34 +630,6 @@
     font-size: 13px;
   }
 
-  .mp-star-label {
-    top: calc(100% + 8px);
-    padding: 5px 8px;
-    border-radius: 8px;
-  }
-
-  .mp-star-name {
-    font-size: 12px;
-  }
-
-  .mp-star-meta {
-    display: none;
-  }
-
-  .mp-core-label {
-    top: calc(100% + 14px);
-    padding: 5px 8px;
-    border-radius: 8px;
-  }
-
-  .mp-core-label strong {
-    font-size: 12px;
-  }
-
-  .mp-core-label em {
-    font-size: 7px;
-  }
-
   .mp-details {
     left: 10px;
     right: 10px;
@@ -998,8 +638,7 @@
     width: auto;
     max-height: 46dvh;
     padding-bottom: calc(16px + env(safe-area-inset-bottom));
-    border-radius: 16px;
-    background: rgba(250, 251, 252, 0.97);
+    border-radius: 14px;
   }
 
   .mp-details h2 {
@@ -1027,25 +666,6 @@
   }
 }
 
-/* touch devices: no hover lift */
-@media (hover: none) and (pointer: coarse) {
-  .mp-star:hover,
-  .mp-planet:hover,
-  .mp-moon:hover,
-  .mp-core:hover {
-    transform: none;
-  }
-
-  .mp-star:active {
-    transform: scale(0.97);
-  }
-
-  .mp-planet:active,
-  .mp-moon:active {
-    transform: scale(0.95);
-  }
-}
-
 /* reduced motion */
 @media (prefers-reduced-motion: reduce) {
   .mp-world,
@@ -1055,10 +675,7 @@
   .mp-star,
   .mp-planet,
   .mp-moon,
-  .mp-core,
-  .mp-node-label,
-  .mp-core-label,
-  .mp-moon-label {
+  .mp-core {
     animation: none !important;
     transition-duration: 0.01ms !important;
   }
