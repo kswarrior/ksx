@@ -86,12 +86,12 @@ const MIN_ZOOM = 0.3;
 const MAX_ZOOM = 2.2;
 
 const PALETTE = [
-  { accent: "#6ee7b7", rgb: "110, 231, 183" },
-  { accent: "#a5b4fc", rgb: "165, 180, 252" },
-  { accent: "#7dd3fc", rgb: "125, 211, 252" },
-  { accent: "#f0abfc", rgb: "240, 171, 252" },
-  { accent: "#fcd34d", rgb: "252, 211, 77" },
-  { accent: "#fca5a5", rgb: "252, 165, 165" },
+  { accent: "#0f8f72", rgb: "15, 143, 114" },
+  { accent: "#4f5fd6", rgb: "79, 95, 214" },
+  { accent: "#2f7fb5", rgb: "47, 127, 181" },
+  { accent: "#a34f9e", rgb: "163, 79, 158" },
+  { accent: "#b9841f", rgb: "185, 132, 31" },
+  { accent: "#b45353", rgb: "180, 83, 83" },
 ];
 
 function useDebounced<T>(value: T, ms = 140) {
@@ -907,7 +907,7 @@ export default function MapPage() {
                     cx={star.pos.x}
                     cy={star.pos.y}
                     r={PLANET_DIST}
-                    style={{ stroke: `rgba(${star.rgb}, 0.16)` }}
+                    style={{ stroke: `rgba(${star.rgb}, 0.3)` }}
                   />
                   <line
                     className="mp-link mp-link--core"
@@ -931,7 +931,7 @@ export default function MapPage() {
                           cx={planet.pos.x}
                           cy={planet.pos.y}
                           r={MOON_DIST}
-                          style={{ stroke: `rgba(${star.rgb}, 0.18)` }}
+                          style={{ stroke: `rgba(${star.rgb}, 0.32)` }}
                         />
                         <line
                           className="mp-link mp-link--star"
@@ -939,7 +939,7 @@ export default function MapPage() {
                           y1={starLine.y1}
                           x2={starLine.x2}
                           y2={starLine.y2}
-                          style={{ stroke: `rgba(${star.rgb}, 0.52)` }}
+                          style={{ stroke: `rgba(${star.rgb}, 0.7)` }}
                         />
                         {planet.moons.map((moon) => {
                           const moonLine = trimLine(
