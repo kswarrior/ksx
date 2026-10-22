@@ -12,6 +12,7 @@ import { SearchField } from "../components/ui";
 import { api, SitemapCategory } from "../lib/api";
 import Icon from "../components/Icon";
 import KsLoader from "../components/KsLoader";
+import PageHero from "../components/PageHero";
 import { RECENT_KEY, MAX_RECENT } from "../hooks/useLocalStorage";
 import "./MapPage.css";
 
@@ -1341,6 +1342,8 @@ export default function MapPage() {
       </div>
 
       <div className="mp-hud mp-search-hud" role="search">
+        <PageHero icon="map-pin" title="Site Map" className="mp-page-hero" />
+
         <SearchField
           ref={searchRef}
           className="mp-search"

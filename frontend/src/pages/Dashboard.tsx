@@ -2,6 +2,7 @@ import { useEffect, useState, type ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import { RECENT_KEY, RecentItem, PinItem, readPins } from "../hooks/useLocalStorage";
 import Icon from "../components/Icon";
+import PageHero from "../components/PageHero";
 import "./Dashboard.css";
 
 function timeAgo(ts: number): string {
@@ -125,6 +126,8 @@ export default function Dashboard() {
 
   return (
     <div className="dashboard">
+      <PageHero icon="gamepad" title="Dashboard" className="dashboard-hero" />
+
       <section className="news news-3d">
         <div className="news-head">
           <div className="news-left"><h2><span className="panel-icon" style={{ color: "#f2c94c" }}><NewsIcon size={16} /></span> Updates & News</h2></div>

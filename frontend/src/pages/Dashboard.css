@@ -23,6 +23,8 @@
 }
 
 /* ---------- PANELS ---------- */
+.dashboard-hero{margin-bottom:0;}
+
 .panel-3d{
   background: var(--dash-card);
   border:1px solid var(--dash-border);
