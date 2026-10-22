@@ -135,7 +135,14 @@ export default function CustomIP() {
                 />
               </div>
               <p>Fill all information and click create — free subdomain for your server.</p>
-              <iframe key={activeProvider.value} title={`${activeProvider.label} subdomain`} className="ci-frame" height={455} width="100%" src={activeProvider.url} loading="lazy" />
+              <div className="ci-embed">
+                <div className="ci-embed-icon"><Icon name="globe" size={26} /></div>
+                <h4>{activeProvider.label} Subdomain Creator</h4>
+                <p>{activeProvider.label} blocks embedding its website on other sites for security, so it can't be shown here. Open it in a new tab to create your free subdomain.</p>
+                <a className="ci-btn ci-embed-link" href={activeProvider.url} target="_blank" rel="noreferrer">
+                  Open {activeProvider.label} <Icon name="external-link" size={14} />
+                </a>
+              </div>
             </div>
           </div>
         )}
