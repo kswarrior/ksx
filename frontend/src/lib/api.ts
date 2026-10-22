@@ -4,7 +4,7 @@ export type SitemapCategory = {
   sections: {
     title: string;
     icon: string;
-    pages: { name: string; url: string; logo: string }[];
+    pages: { name: string; url: string; logo: string; soon?: boolean }[];
   }[];
 };
 

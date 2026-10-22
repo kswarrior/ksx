@@ -1302,11 +1302,12 @@ export default function MapPage() {
                                 secFocused ? "is-focused" : "",
                                 moonMuted ? "is-muted" : "",
                                 moonDimmed ? "is-dimmed" : "",
+                                moon.page.soon ? "is-soon" : "",
                               ]
                                 .filter(Boolean)
                                 .join(" ")}
                               title={moon.page.name}
-                              aria-label={`Open ${moon.page.name}`}
+                              aria-label={`Open ${moon.page.name}${moon.page.soon ? " — coming soon" : ""}`}
                               onClick={() =>
                                 saveRecent(
                                   moon.page,
@@ -1326,6 +1327,9 @@ export default function MapPage() {
                                 aria-hidden="true"
                               >
                                 {moon.page.name}
+                                {moon.page.soon && (
+                                  <span className="mp-soon-pill">Soon</span>
+                                )}
                               </span>
                             </Link>
                           </div>
@@ -1382,6 +1386,7 @@ export default function MapPage() {
                     <strong>{result.page.name}</strong>
                     <em>
                       {result.section.title} · {result.category.category}
+                      {result.page.soon ? " · Coming soon" : ""}
                     </em>
                   </span>
                   <Icon name="arrow-up-right" size={12} />
@@ -1431,7 +1436,7 @@ export default function MapPage() {
                     />
                     <span className="mp-detail-text">
                       <strong>{page.name}</strong>
-                      <em>Open moon</em>
+                      <em>{page.soon ? "Coming soon" : "Open moon"}</em>
                     </span>
                     <Icon name="arrow-up-right" size={13} />
                   </Link>

@@ -33,6 +33,7 @@ const NotFound = lazy(() => import("./pages/NotFound"));
 const PterodactylPage = lazy(() => import("./pages/PterodactylPanel"));
 const PufferPage = lazy(() => import("./pages/PufferPanel"));
 const AirlinkPage = lazy(() => import("./pages/AirlinkPanel"));
+const KsPanelPage = lazy(() => import("./pages/KsPanel"));
 
 export default function App() {
   return (
@@ -61,6 +62,8 @@ export default function App() {
           <Route path="minecraft/make-hosting/puffer.html" element={<PufferPage />} />
           <Route path="minecraft/make-hosting/airlink" element={<AirlinkPage />} />
           <Route path="minecraft/make-hosting/airlink.html" element={<AirlinkPage />} />
+          <Route path="minecraft/make-hosting/ks-panel" element={<KsPanelPage />} />
+          <Route path="minecraft/make-hosting/ks-panel.html" element={<KsPanelPage />} />
 
           <Route path="minecraft/java/launcher" element={<JavaLauncher />} />
           <Route path="minecraft/java/launcher.html" element={<JavaLauncher />} />

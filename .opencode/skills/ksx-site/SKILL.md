@@ -48,7 +48,7 @@ Run `npm run typecheck` before finishing changes. There is no test suite or lint
 | `/about` | About page (content in `frontend/src/pages/about.md`) |
 | `/minecraft/hosting/free[.html]` | Free Minecraft host list |
 | `/vps/hosting/list/free[.html]` | Free VPS list |
-| `/minecraft/make-hosting/{pterodactyl,puffer,airlink}[.html]` | Panel setup guides |
+| `/minecraft/make-hosting/{pterodactyl,puffer,airlink,ks-panel}[.html]` | Panel setup guides (KS Panel is coming soon) |
 | `/minecraft/java/{launcher,downloader}[.html]` | Java tools |
 | `/minecraft/bedrock/ks-client[.html]` | Bedrock client page |
 | `/minecraft/server/{statics,bot}[.html]` | Server stat lookup / bot setup |
@@ -61,6 +61,7 @@ Most routes are registered twice in `frontend/src/App.tsx`: with and without `.h
 
 - Edit hosting data only in `backend/src/data/*.json`; the API and UI read it at runtime.
 - To add a page to the map/search, update `backend/src/data/sitemap.json` (category -> sections -> pages) and `frontend/public/sitemap.xml`.
+- Add `"soon": true` to a sitemap page to show a Coming Soon badge on `/map`; still register a route/page so the link works.
 - `frontend/public/sitemap.json` is a stale legacy copy. The React app never reads it; do not treat it as source of truth. Update it only if a task explicitly asks for the static copy.
 - Sitemap page URLs keep the `.html` suffix even though React Router serves both forms.
 - Minecraft entries keep a legacy `uptime` string (`good`, `danger`, or `excellent (always-on)`) plus the boolean `alwaysOn`. Filter with `alwaysOn`; `uptime` remains an exact-match legacy filter. Each entry also has `players`, `verification`, `limits`, and `notes`.
