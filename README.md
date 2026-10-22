@@ -59,6 +59,33 @@ npm run typecheck
 npm start                # node backend/dist/index.js serves frontend/dist
 ```
 
+## App downloads (Cloudflare D1)
+
+The KS Portal download button sends a click to `POST /api/apps/ks-portal/download`.
+On Cloudflare Workers this writes to the `app_downloads` D1 table. The Worker
+creates the tables and seeds the `apps` table automatically on the first request,
+so a manual seed is optional. Migration and seed files live in `backend/migrations/`.
+
+One-time setup:
+
+```bash
+cd backend
+npx wrangler login                  # or set CLOUDFLARE_API_TOKEN
+npx wrangler d1 create ksx-db       # copy the printed database_id
+# paste the id into backend/wrangler.toml (and root wrangler.toml if deploying from root)
+npx wrangler d1 migrations apply ksx-db --local
+npx wrangler d1 migrations apply ksx-db --remote
+```
+
+Check recorded downloads:
+
+```bash
+npx wrangler d1 execute ksx-db --remote --command "SELECT COUNT(*) AS downloads FROM app_downloads;"
+```
+
+The local Express server has no D1 binding; it accepts the click and returns
+`recorded: false`. Use `npm run dev:worker` to test D1 locally.
+
 ## Deploy to Cloudflare
 
 ### Option A — Single Worker with Assets (recommended, 1 deployment)

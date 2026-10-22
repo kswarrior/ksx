@@ -7,9 +7,71 @@ import { getSocialStats } from "./social.js";
 import sitemapData from "./data/sitemap.json" with { type: "json" };
 import mcData from "./data/minecraft-hosting.json" with { type: "json" };
 import vpsData from "./data/vps-hosting.json" with { type: "json" };
+import appsData from "./data/apps.json" with { type: "json" };
 const sitemap = sitemapData;
 const mcHosting = mcData;
 const vpsHosting = vpsData;
+const apps = appsData;
+const CREATE_APPS_TABLE = `
+  CREATE TABLE IF NOT EXISTS apps (
+    slug TEXT PRIMARY KEY,
+    name TEXT NOT NULL,
+    owner TEXT NOT NULL,
+    platform TEXT NOT NULL,
+    version TEXT NOT NULL,
+    download_url TEXT NOT NULL,
+    created_at TEXT NOT NULL DEFAULT (datetime('now')),
+    updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+  )
+`;
+const CREATE_DOWNLOADS_TABLE = `
+  CREATE TABLE IF NOT EXISTS app_downloads (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    app_slug TEXT NOT NULL,
+    version TEXT NOT NULL,
+    platform TEXT NOT NULL,
+    download_url TEXT NOT NULL,
+    referrer TEXT,
+    user_agent TEXT,
+    country TEXT,
+    created_at TEXT NOT NULL DEFAULT (datetime('now')),
+    FOREIGN KEY (app_slug) REFERENCES apps(slug)
+  )
+`;
+const CREATE_DOWNLOADS_INDEX = `
+  CREATE INDEX IF NOT EXISTS idx_app_downloads_app_created
+  ON app_downloads (app_slug, created_at DESC)
+`;
+let appDbReady = null;
+async function ensureAppDb(db) {
+    if (!appDbReady) {
+        appDbReady = (async () => {
+            await db.batch([
+                db.prepare(CREATE_APPS_TABLE),
+                db.prepare(CREATE_DOWNLOADS_TABLE),
+                db.prepare(CREATE_DOWNLOADS_INDEX),
+            ]);
+            for (const app of apps) {
+                await db
+                    .prepare(`INSERT INTO apps (slug, name, owner, platform, version, download_url, updated_at)
+             VALUES (?, ?, ?, ?, ?, ?, datetime('now'))
+             ON CONFLICT(slug) DO UPDATE SET
+               name = excluded.name,
+               owner = excluded.owner,
+               platform = excluded.platform,
+               version = excluded.version,
+               download_url = excluded.download_url,
+               updated_at = datetime('now')`)
+                    .bind(app.slug, app.name, app.owner, app.platform, app.version, app.downloadUrl)
+                    .run();
+            }
+        })().catch((error) => {
+            appDbReady = null;
+            throw error;
+        });
+    }
+    return appDbReady;
+}
 const app = new Hono();
 // Global middleware
 app.use("*", cors({ origin: "*", allowMethods: ["GET", "POST", "OPTIONS"], allowHeaders: ["Content-Type"] }));
@@ -191,6 +253,50 @@ app.get("/api/sitemap/search", (c) => {
     }
     const matched = flat.filter((i) => i.name.toLowerCase().includes(q) || i.title.toLowerCase().includes(q) || i.category.toLowerCase().includes(q));
     return c.json(matched);
+});
+// App download tracking (Cloudflare D1)
+app.post("/api/apps/:slug/download", async (c) => {
+    const slug = c.req.param("slug");
+    const app = apps.find((item) => item.slug === slug);
+    if (!app)
+        return c.json({ error: "Unknown app" }, 404);
+    const db = c.env.DB;
+    if (!db) {
+        return c.json({
+            ok: true,
+            recorded: false,
+            reason: "D1 binding DB is not configured",
+        });
+    }
+    let body = {};
+    try {
+        body = await c.req.json();
+    }
+    catch {
+        /* body is optional */
+    }
+    const version = String(body.version ?? app.version).slice(0, 40);
+    const platform = String(body.platform ?? app.platform).slice(0, 40);
+    const referrer = c.req.header("referer")?.slice(0, 512) ?? null;
+    const userAgent = c.req.header("user-agent")?.slice(0, 512) ?? null;
+    const country = c.req.header("cf-ipcountry")?.slice(0, 8) ?? null;
+    try {
+        await ensureAppDb(db);
+        await db
+            .prepare(`INSERT INTO app_downloads
+          (app_slug, version, platform, download_url, referrer, user_agent, country)
+         VALUES (?, ?, ?, ?, ?, ?, ?)`)
+            .bind(app.slug, version, platform, app.downloadUrl, referrer, userAgent, country)
+            .run();
+        return c.json({ ok: true, recorded: true });
+    }
+    catch (error) {
+        return c.json({
+            ok: false,
+            recorded: false,
+            error: error instanceof Error ? error.message : "D1 insert failed",
+        }, 500);
+    }
 });
 // Minecraft hosting
 app.get("/api/hosting/minecraft", (c) => {
