@@ -232,7 +232,7 @@ export default function AirlinkPanel() {
                 <li><strong>Node.js 18+</strong> and <strong>npm 9+</strong>.</li>
                 <li><strong>SQLite</strong> by default — no external database is required. Redis is optional.</li>
                 <li><strong>Docker</strong> on each machine that will host servers.</li>
-                <li><strong>Port 3000</strong> for the panel, <strong>3002</strong> for the daemon and <strong>3003</strong> for SFTP.</li>
+                <li><strong>Port 3000</strong> for the panel and <strong>3002</strong> for the daemon. SFTP sessions use a port from <strong>3003–4000</strong>.</li>
                 <li><strong>Port 25565</strong> (or your chosen port) for each Minecraft server.</li>
                 <li>The first registered account automatically becomes the panel admin.</li>
               </ul>
