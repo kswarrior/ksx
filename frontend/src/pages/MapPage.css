@@ -159,7 +159,7 @@
 }
 
 .mp-link--core {
-  stroke: rgba(190, 215, 255, 0.28);
+  stroke: rgba(45, 55, 68, 0.32);
   stroke-width: 1.2;
   stroke-dasharray: 2 9;
 }
@@ -170,20 +170,20 @@
 }
 
 .mp-link--moon {
-  stroke: rgba(255, 255, 255, 0.14);
+  stroke: rgba(45, 55, 68, 0.2);
   stroke-width: 1;
 }
 
 .mp-orbit-line {
   fill: none;
-  stroke: rgba(255, 255, 255, 0.08);
+  stroke: rgba(45, 55, 68, 0.16);
   stroke-width: 1;
   stroke-dasharray: 2 10;
   vector-effect: non-scaling-stroke;
 }
 
 .mp-orbit-core {
-  stroke: rgba(160, 195, 255, 0.1);
+  stroke: rgba(45, 55, 68, 0.2);
   stroke-dasharray: 3 14;
 }
 
@@ -866,7 +866,6 @@
   border: 1px solid var(--mp-border);
   border-radius: 12px;
   background: var(--mp-panel);
-  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.38);
 }
 
 .mp-zoom button {
@@ -876,7 +875,7 @@
   place-items: center;
   appearance: none;
   border: 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  border-bottom: 1px solid rgba(36, 43, 52, 0.1);
   background: transparent;
   color: var(--mp-text);
   font-family: inherit;
@@ -892,11 +891,11 @@
 }
 
 .mp-zoom button:hover {
-  background: rgba(255, 255, 255, 0.09);
+  background: rgba(36, 43, 52, 0.06);
 }
 
 .mp-zoom button:active {
-  background: rgba(255, 255, 255, 0.14);
+  background: rgba(36, 43, 52, 0.1);
 }
 
 .mp-zoom .mp-zoom-fit svg {
@@ -922,7 +921,6 @@
   border: 1px solid var(--mp-border);
   border-radius: 14px;
   background: var(--mp-panel);
-  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.36);
 }
 
 .mp-legend-title {
@@ -961,24 +959,23 @@
 }
 
 .mp-legend-dot.core {
-  background: radial-gradient(circle at 35% 30%, #fff, #6f9bff 42%, #0b1730 82%);
-  box-shadow: 0 0 10px rgba(110, 155, 255, 0.6);
+  background: #3d4753;
 }
 
 .mp-legend-dot.star {
-  background: radial-gradient(circle at 35% 30%, #fff, #9fd8ff 35%, #122033 82%);
+  background: #1d9e82;
 }
 
 .mp-legend-dot.planet {
   width: 11px;
   height: 11px;
-  background: radial-gradient(circle at 35% 30%, #fff, #7eb6ff 35%, #111d32 82%);
+  background: #4f6bd6;
 }
 
 .mp-legend-dot.moon {
   width: 8px;
   height: 8px;
-  background: #cfe2ff;
+  background: #8b95a3;
 }
 
 .mp-legend-hint {
