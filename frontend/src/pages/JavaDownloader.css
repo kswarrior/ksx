@@ -55,6 +55,7 @@
   .jd-title{font-size:22px;}
   .jd-row1{flex-direction:column; align-items:stretch;}
   .jd-select, .jd-input, .jd-search{width:100%;}
+  .jd-row1 .jd-btn{align-self:flex-end; width:max-content; flex:0 0 auto;}
   .jd-grid{grid-template-columns:1fr; gap:12px;}
   .jd-card{border-radius:5px; contain-intrinsic-size:120px;}
 }
