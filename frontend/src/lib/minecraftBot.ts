@@ -15,6 +15,9 @@ export type BotConfig = {
   jumpInterval: number;
   antiAfkWalk: boolean;
   walkInterval: number;
+  autoTotem: boolean;
+  autoArmor: boolean;
+  autoDefend: boolean;
   viewDistance: number;
 };
 
@@ -38,21 +41,32 @@ export const DEFAULT_BOT_CONFIG: BotConfig = {
   jumpInterval: 45,
   antiAfkWalk: true,
   walkInterval: 60,
+  autoTotem: true,
+  autoArmor: true,
+  autoDefend: true,
   viewDistance: 12,
 };
 
 export const BOT_COMMANDS: BotCommand[] = [
   { command: "help", description: "List every available command." },
+  { command: "status", description: "Show health, food, position and current mode." },
+  { command: "players", description: "List visible players and their distances." },
+  { command: "inventory", description: "List every item in the bot inventory." },
   { command: "follow <player>", description: "Follow a player until stopped." },
-  { command: "come", description: "Walk to the owner or a named player." },
+  { command: "come [player]", description: "Walk to the owner or a named player." },
+  { command: "goto <x> <y> <z>", description: "Walk to exact coordinates." },
   { command: "guard", description: "Follow the owner and attack nearby hostile mobs." },
   { command: "stopguard", description: "Stop guard mode." },
-  { command: "stop", description: "Cancel the current action and clear movement." },
   { command: "attack <player>", description: "Chase and attack a player." },
   { command: "huntmobs", description: "Hunt hostile mobs within 32 blocks." },
-  { command: "mine <block>", description: "Find and mine a nearby block by name." },
+  { command: "mine <block> [count]", description: "Find and mine nearby blocks by name." },
+  { command: "collect", description: "Walk to and pick up nearby dropped items." },
   { command: "equip", description: "Equip the best armor and weapon in inventory." },
   { command: "totem", description: "Move a totem of undying to the off-hand." },
+  { command: "drop <item> [count]", description: "Drop an item from the inventory." },
+  { command: "say <message>", description: "Send a chat message from the bot." },
+  { command: "stop", description: "Cancel the current action and clear movement." },
+  { command: "respawn", description: "Respawn the bot after death." },
 ];
 
 const HOSTILE_MOBS = [
@@ -89,6 +103,7 @@ const HOSTILE_MOBS = [
   "zoglin",
   "warden",
   "breeze",
+  "creaking",
   "wither",
 ];
 
@@ -139,6 +154,9 @@ export function normalizeBotConfig(input: BotConfig): BotConfig {
     jumpInterval: clampInt(input.jumpInterval, 45, 5, 3600),
     antiAfkWalk: input.antiAfkWalk,
     walkInterval: clampInt(input.walkInterval, 60, 5, 3600),
+    autoTotem: input.autoTotem,
+    autoArmor: input.autoArmor,
+    autoDefend: input.autoDefend,
     viewDistance: clampInt(input.viewDistance, 12, 2, 32),
   };
 }
@@ -161,10 +179,12 @@ export function generateBotScript(input: BotConfig): string {
     jumpInterval: config.jumpInterval,
     antiAfkWalk: config.antiAfkWalk,
     walkInterval: config.walkInterval,
+    autoTotem: config.autoTotem,
+    autoArmor: config.autoArmor,
+    autoDefend: config.autoDefend,
   };
 
   return `const mineflayer = require('mineflayer')
-const { pathfinder, Movements, goals } = require('mineflayer-pathfinder')
 
 const CONFIG = ${JSON.stringify(runtimeConfig, null, 2)}
 
@@ -182,12 +202,20 @@ const HELP = ${JSON.stringify(BOT_COMMANDS.map((item) => `${item.command} - ${it
 let bot = null
 let timers = []
 let followName = null
+let comeTarget = null
 let guardMode = false
 let huntMode = false
 let attackName = null
+let autoDefendActive = false
 let reconnectTimer = null
 let eating = false
 let lastNoFoodLog = 0
+let lastJumpAt = 0
+let lastPos = null
+let stuckTicks = 0
+let strafeUntil = 0
+let busy = false
+let actionToken = 0
 
 function log(...args) {
   console.log('[' + new Date().toISOString() + ']', ...args)
@@ -195,8 +223,12 @@ function log(...args) {
 
 function say(message) {
   try {
-    if (bot) bot.chat(String(message))
+    if (bot) bot.chat(String(message).slice(0, 240))
   } catch {}
+}
+
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
 function isOwner(username) {
@@ -216,16 +248,7 @@ function playerEntity(name) {
   return found && found.player.entity ? found.player.entity : null
 }
 
-function clearGoal() {
-  try {
-    if (bot && bot.pathfinder) {
-      bot.pathfinder.stop()
-      bot.pathfinder.setGoal(null)
-    }
-  } catch {}
-}
-
-function stopControls() {
+function stopMovement() {
   if (!bot) return
   for (const control of CONTROLS) {
     try {
@@ -235,12 +258,17 @@ function stopControls() {
 }
 
 function resetModes() {
+  actionToken += 1
+  busy = false
   followName = null
+  comeTarget = null
   guardMode = false
   huntMode = false
   attackName = null
-  clearGoal()
-  stopControls()
+  autoDefendActive = false
+  lastPos = null
+  stuckTicks = 0
+  stopMovement()
   try {
     if (bot) bot.stopDigging()
   } catch {}
@@ -261,31 +289,129 @@ function nearestEntity(position, names, maxDistance) {
   return best
 }
 
+function nearestItem(maxDistance) {
+  let best = null
+  let bestDistance = maxDistance
+  for (const entity of Object.values(bot.entities)) {
+    if (!entity || entity === bot.entity || !entity.position) continue
+    if (entity.name !== 'item' && entity.objectType !== 'Item') continue
+    const distance = entity.position.distanceTo(bot.entity.position)
+    if (distance < bestDistance) {
+      best = entity
+      bestDistance = distance
+    }
+  }
+  return best
+}
+
+function currentMode() {
+  if (busy) return 'busy'
+  if (attackName) return 'attacking ' + attackName
+  if (guardMode) return 'guard'
+  if (followName) return 'following ' + followName
+  if (comeTarget) return 'coming to ' + comeTarget
+  if (huntMode) return 'hunting'
+  if (autoDefendActive) return 'defending'
+  return 'idle'
+}
+
+function steerTo(target, range) {
+  if (!bot || !bot.entity || !target) return false
+  const pos = bot.entity.position
+  const distance = pos.distanceTo(target)
+  if (distance <= range) {
+    stopMovement()
+    return true
+  }
+
+  try {
+    bot.lookAt(target.offset(0, 1, 0), true)
+  } catch {}
+
+  try {
+    bot.setControlState('forward', true)
+    bot.setControlState('sprint', distance > 5)
+  } catch {}
+
+  if (lastPos && lastPos.distanceTo(pos) < 0.04) stuckTicks += 1
+  else stuckTicks = 0
+  lastPos = pos.clone()
+
+  if (stuckTicks > 3 && Date.now() > strafeUntil) {
+    strafeUntil = Date.now() + 800
+    const control = Math.random() > 0.5 ? 'left' : 'right'
+    try {
+      bot.setControlState(control, true)
+      setTimeout(() => {
+        try {
+          if (bot) bot.setControlState(control, false)
+        } catch {}
+      }, 500)
+    } catch {}
+  }
+
+  if (bot.entity.onGround && Date.now() - lastJumpAt > 800) {
+    const needsJump = target.y - pos.y > 0.6 || stuckTicks > 1 || distance > 8
+    if (needsJump) {
+      lastJumpAt = Date.now()
+      try {
+        bot.setControlState('jump', true)
+        setTimeout(() => {
+          try {
+            if (bot) bot.setControlState('jump', false)
+          } catch {}
+        }, 250)
+      } catch {}
+    }
+  }
+
+  return false
+}
+
+async function moveTo(target, range, timeout) {
+  const token = actionToken
+  const started = Date.now()
+  let reached = false
+  while (bot && bot.entity && token === actionToken && Date.now() - started < timeout) {
+    if (bot.entity.position.distanceTo(target) <= range) {
+      reached = true
+      break
+    }
+    steerTo(target, range)
+    await sleep(100)
+  }
+  if (token === actionToken) stopMovement()
+  return reached
+}
+
 function engage(entity) {
   if (!entity || !entity.position) return false
   const distance = bot.entity.position.distanceTo(entity.position)
   if (distance <= 3.4) {
     try {
-      bot.lookAt(entity.position.offset(0, (entity.height || 1.6) * 0.8, 0), true)
+      bot.setControlState('forward', false)
+      bot.setControlState('sprint', false)
+    } catch {}
+    try {
+      const height = entity.height || 1.6
+      bot.lookAt(entity.position.offset(0, height * 0.8, 0), true)
       bot.attack(entity)
     } catch {}
   } else {
-    try {
-      bot.pathfinder.setGoal(new goals.GoalFollow(entity, 1.5), true)
-    } catch {}
+    steerTo(entity.position, 2.5)
   }
   return true
 }
 
 function combatTick() {
-  if (!bot || !bot.entity || !bot.pathfinder) return
+  if (!bot || !bot.entity || busy) return
 
   if (attackName) {
     const target = playerEntity(attackName)
     if (!target) {
       say(attackName + ' is not visible.')
       attackName = null
-      clearGoal()
+      stopMovement()
       return
     }
     engage(target)
@@ -295,16 +421,13 @@ function combatTick() {
   if (guardMode) {
     const owner = playerEntity(CONFIG.owners[0])
     const anchor = owner || bot.entity
-    const hostile = nearestEntity(anchor.position, HOSTILE_MOBS, 14)
+    const hostile = nearestEntity(anchor.position, HOSTILE_MOBS, 16)
     if (hostile) {
       engage(hostile)
       return
     }
-    if (owner) {
-      try {
-        bot.pathfinder.setGoal(new goals.GoalFollow(owner, 3), true)
-      } catch {}
-    }
+    if (owner) steerTo(owner.position, 3)
+    else stopMovement()
     return
   }
 
@@ -313,12 +436,25 @@ function combatTick() {
     if (!target) {
       say(followName + ' is not visible.')
       followName = null
-      clearGoal()
+      stopMovement()
       return
     }
-    try {
-      bot.pathfinder.setGoal(new goals.GoalFollow(target, 2), true)
-    } catch {}
+    steerTo(target.position, 2)
+    return
+  }
+
+  if (comeTarget) {
+    const target = playerEntity(comeTarget)
+    if (!target) {
+      say(comeTarget + ' is not visible.')
+      comeTarget = null
+      stopMovement()
+      return
+    }
+    if (steerTo(target.position, 2)) {
+      say('Arrived at ' + comeTarget + '.')
+      comeTarget = null
+    }
     return
   }
 
@@ -329,8 +465,23 @@ function combatTick() {
       return
     }
     huntMode = false
-    clearGoal()
+    stopMovement()
     say('No hostile mobs nearby.')
+    return
+  }
+
+  if (CONFIG.autoDefend) {
+    const hostile = nearestEntity(bot.entity.position, HOSTILE_MOBS, 10)
+    if (hostile) {
+      autoDefendActive = true
+      engage(hostile)
+      return
+    }
+  }
+
+  if (autoDefendActive) {
+    autoDefendActive = false
+    stopMovement()
   }
 }
 
@@ -349,10 +500,26 @@ async function autoEat() {
   try {
     await bot.equip(food, 'hand')
     await bot.consume()
+    if (CONFIG.autoArmor) await equipBestGear(true)
   } catch (error) {
     log('Auto-eat failed:', error.message)
   } finally {
     eating = false
+  }
+}
+
+async function autoTotem() {
+  if (!CONFIG.autoTotem || eating || !bot || !bot.entity) return
+  if (bot.health > 8) return
+  const offhand = bot.inventory.slots[45]
+  if (offhand && offhand.name === 'totem_of_undying') return
+  const totem = bot.inventory.items().find((item) => item.name === 'totem_of_undying')
+  if (!totem) return
+  try {
+    await bot.equip(totem, 'off-hand')
+    log('Auto-equipped a totem of undying.')
+  } catch (error) {
+    log('Auto-totem failed:', error.message)
   }
 }
 
@@ -364,14 +531,22 @@ function startLoops() {
     } catch (error) {
       log('Combat loop error:', error.message)
     }
-  }, 800))
+  }, 500))
   timers.push(setInterval(() => {
-    autoEat()
+    autoEat().catch((error) => log('Auto-eat error:', error.message))
+    autoTotem().catch((error) => log('Auto-totem error:', error.message))
   }, 2000))
+
+  if (CONFIG.autoArmor) {
+    timers.push(setInterval(() => {
+      if (busy || !bot || !bot.entity) return
+      equipBestGear(true).catch((error) => log('Auto-armor error:', error.message))
+    }, 60000))
+  }
 
   if (CONFIG.antiAfkJump) {
     timers.push(setInterval(() => {
-      if (!bot || !bot.entity || followName || guardMode || huntMode || attackName) return
+      if (!bot || !bot.entity || busy || followName || guardMode || huntMode || attackName || comeTarget || autoDefendActive) return
       try {
         bot.setControlState('jump', true)
         setTimeout(() => {
@@ -385,7 +560,7 @@ function startLoops() {
 
   if (CONFIG.antiAfkWalk) {
     timers.push(setInterval(() => {
-      if (!bot || !bot.entity || followName || guardMode || huntMode || attackName) return
+      if (!bot || !bot.entity || busy || followName || guardMode || huntMode || attackName || comeTarget || autoDefendActive) return
       try {
         bot.look(Math.random() * Math.PI * 2, 0, true)
         bot.setControlState('forward', true)
@@ -404,18 +579,61 @@ function stopLoops() {
   timers = []
 }
 
-function sendHelp() {
-  let message = 'Commands:'
-  for (const entry of HELP) {
-    const next = message + (message === 'Commands:' ? ' ' : ' | ') + CONFIG.prefix + entry
-    if (next.length > 250) {
+function sendChunks(title, entries) {
+  let message = title + ':'
+  for (const entry of entries) {
+    const chunk = message === title + ':' ? ' ' + entry : ' | ' + entry
+    if ((message + chunk).length > 240) {
       say(message)
-      message = CONFIG.prefix + entry
+      message = entry
     } else {
-      message = next
+      message += chunk
     }
   }
   if (message) say(message)
+}
+
+function sendHelp() {
+  sendChunks('Commands', HELP.map((entry) => CONFIG.prefix + entry))
+}
+
+function sendStatus() {
+  if (!bot || !bot.entity) return
+  const pos = bot.entity.position
+  const health = typeof bot.health === 'number' ? Math.round(bot.health) : 0
+  const food = typeof bot.food === 'number' ? Math.round(bot.food) : 0
+  say('Health ' + health + '/20 | Food ' + food + '/20 | Position ' + pos.x.toFixed(1) + ', ' + pos.y.toFixed(1) + ', ' + pos.z.toFixed(1) + ' | Mode: ' + currentMode())
+}
+
+function listPlayers() {
+  if (!bot || !bot.entity) return
+  const entries = []
+  for (const player of Object.values(bot.players)) {
+    if (!player || !player.entity || player.username === bot.username) continue
+    const distance = player.entity.position.distanceTo(bot.entity.position)
+    entries.push(player.username + ' (' + Math.round(distance) + 'm)')
+  }
+  if (entries.length === 0) {
+    say('No other players nearby.')
+    return
+  }
+  sendChunks('Players', entries)
+}
+
+function findInventoryItem(query) {
+  const wanted = String(query || '').toLowerCase().replace('minecraft:', '')
+  if (!wanted || !bot) return null
+  return bot.inventory.items().find((item) => item.name === wanted || item.name.indexOf(wanted) !== -1) || null
+}
+
+function listInventory() {
+  if (!bot) return
+  const entries = bot.inventory.items().map((item) => item.count + 'x ' + item.name)
+  if (entries.length === 0) {
+    say('Inventory is empty.')
+    return
+  }
+  sendChunks('Inventory', entries)
 }
 
 function itemTier(name) {
@@ -424,7 +642,7 @@ function itemTier(name) {
   return index === -1 ? 0 : order.length - index
 }
 
-async function equipBestGear() {
+async function equipBestGear(quiet) {
   if (!bot) return
   let equipped = 0
   const items = bot.inventory.items()
@@ -458,7 +676,7 @@ async function equipBestGear() {
     }
   }
 
-  say(equipped > 0 ? 'Equipped best gear.' : 'No better gear found.')
+  if (!quiet) say(equipped > 0 ? 'Equipped best gear.' : 'No better gear found.')
 }
 
 async function equipTotem() {
@@ -481,9 +699,28 @@ async function equipTotem() {
   }
 }
 
-async function mineBlock(rawName) {
+async function dropItem(rawName, rawCount) {
   if (!rawName) {
-    say('Usage: ' + CONFIG.prefix + 'mine <block>')
+    say('Usage: ' + CONFIG.prefix + 'drop <item> [count]')
+    return
+  }
+  const item = findInventoryItem(rawName)
+  if (!item) {
+    say('Item not found in inventory: ' + rawName)
+    return
+  }
+  const count = Math.max(1, Math.min(item.count, parseInt(rawCount, 10) || item.count))
+  try {
+    await bot.toss(item.type, null, count)
+    say('Dropped ' + count + 'x ' + item.name + '.')
+  } catch (error) {
+    say('Drop failed: ' + error.message)
+  }
+}
+
+async function mineBlock(rawName, rawCount, token) {
+  if (!rawName) {
+    say('Usage: ' + CONFIG.prefix + 'mine <block> [count]')
     return
   }
   if (!bot || !bot.registry || !bot.registry.blocksByName) {
@@ -496,18 +733,72 @@ async function mineBlock(rawName) {
     say('Unknown block: ' + name)
     return
   }
-  const target = bot.findBlock({ matching: block.id, maxDistance: 32 })
-  if (!target) {
-    say('No ' + name + ' within 32 blocks.')
+  const count = Math.max(1, Math.min(64, parseInt(rawCount, 10) || 1))
+  let mined = 0
+
+  while (bot && bot.entity && token === actionToken && mined < count) {
+    const target = bot.findBlock({ matching: block.id, maxDistance: 32 })
+    if (!target) break
+    if (bot.entity.position.distanceTo(target.position) > 3.8) {
+      const reached = await moveTo(target.position, 3, 12000)
+      if (!reached) break
+    }
+    try {
+      await bot.dig(target)
+      mined += 1
+    } catch (error) {
+      say('Could not mine ' + name + ': ' + error.message)
+      break
+    }
+  }
+
+  if (mined > 0) say('Mined ' + mined + ' ' + name + '.')
+  else say('No ' + name + ' within reach.')
+}
+
+async function collectItems(token) {
+  const seen = new Set()
+  let collected = 0
+  while (bot && bot.entity && token === actionToken) {
+    const item = nearestItem(10)
+    if (!item || seen.has(item.id)) break
+    seen.add(item.id)
+    const reached = await moveTo(item.position, 1.2, 6000)
+    if (!reached) break
+    collected += 1
+  }
+  if (collected > 0) say('Collected ' + collected + ' item drops.')
+  else say('No dropped items nearby.')
+}
+
+async function goToCoords(x, y, z, token) {
+  if (!bot || !bot.entity) return
+  if (!Number.isFinite(x) || !Number.isFinite(y) || !Number.isFinite(z)) {
+    say('Usage: ' + CONFIG.prefix + 'goto <x> <y> <z>')
     return
   }
-  say('Mining ' + name + '...')
+  const pos = bot.entity.position
+  const target = pos.offset(x - pos.x, y - pos.y, z - pos.z)
+  const reached = await moveTo(target, 1.5, 30000)
+  if (token !== actionToken) return
+  if (reached) say('Arrived at ' + x + ' ' + y + ' ' + z + '.')
+  else say('Could not reach those coordinates.')
+}
+
+async function runAction(task) {
+  resetModes()
+  const token = actionToken
+  busy = true
   try {
-    await bot.pathfinder.goto(new goals.GoalNear(target.position.x, target.position.y, target.position.z, 2))
-    await bot.dig(target)
-    say('Mined ' + name + '.')
+    await task(token)
   } catch (error) {
-    say('Could not mine ' + name + ': ' + error.message)
+    log('Action failed:', error.message)
+    say('Action failed: ' + error.message)
+  } finally {
+    if (token === actionToken) {
+      busy = false
+      stopMovement()
+    }
   }
 }
 
@@ -525,6 +816,18 @@ async function handleChat(username, message) {
     sendHelp()
     return
   }
+  if (command === 'status') {
+    sendStatus()
+    return
+  }
+  if (command === 'players') {
+    listPlayers()
+    return
+  }
+  if (command === 'inventory') {
+    listInventory()
+    return
+  }
   if (command === 'stop') {
     resetModes()
     say('Stopped.')
@@ -538,12 +841,8 @@ async function handleChat(username, message) {
       return
     }
     resetModes()
-    try {
-      bot.pathfinder.setGoal(new goals.GoalNear(target.position.x, target.position.y, target.position.z, 2))
-      say('Coming to ' + targetName + '.')
-    } catch {
-      say('Could not path to ' + targetName + '.')
-    }
+    comeTarget = targetName
+    say('Coming to ' + targetName + '.')
     return
   }
   if (command === 'follow') {
@@ -554,9 +853,6 @@ async function handleChat(username, message) {
     }
     resetModes()
     followName = found.username
-    try {
-      bot.pathfinder.setGoal(new goals.GoalFollow(found.player.entity, 2), true)
-    } catch {}
     say('Following ' + found.username + '.')
     return
   }
@@ -568,8 +864,7 @@ async function handleChat(username, message) {
   }
   if (command === 'stopguard') {
     guardMode = false
-    clearGoal()
-    stopControls()
+    stopMovement()
     say('Stopped guarding.')
     return
   }
@@ -591,18 +886,41 @@ async function handleChat(username, message) {
     return
   }
   if (command === 'mine') {
-    resetModes()
-    await mineBlock(arg)
+    await runAction((token) => mineBlock(arg, parts[1], token))
+    return
+  }
+  if (command === 'collect') {
+    await runAction((token) => collectItems(token))
+    return
+  }
+  if (command === 'goto') {
+    await runAction((token) => goToCoords(Number(parts[0]), Number(parts[1]), Number(parts[2]), token))
     return
   }
   if (command === 'equip') {
-    resetModes()
-    await equipBestGear()
+    await equipBestGear(false)
     return
   }
   if (command === 'totem') {
-    resetModes()
     await equipTotem()
+    return
+  }
+  if (command === 'drop') {
+    await dropItem(arg, parts[1])
+    return
+  }
+  if (command === 'say') {
+    const text = parts.join(' ').trim()
+    if (text) say(text)
+    return
+  }
+  if (command === 'respawn') {
+    try {
+      bot.respawn()
+      say('Respawning.')
+    } catch (error) {
+      say('Could not respawn: ' + error.message)
+    }
     return
   }
   say('Unknown command. Use ' + CONFIG.prefix + 'help.')
@@ -625,14 +943,11 @@ function createBot() {
 
   log('Connecting to ' + CONFIG.host + ':' + CONFIG.port + ' as ' + CONFIG.username)
   bot = mineflayer.createBot(options)
-  bot.loadPlugin(pathfinder)
 
   bot.once('spawn', () => {
-    const movements = new Movements(bot)
-    movements.canDig = false
-    bot.pathfinder.setMovements(movements)
     startLoops()
     log('Spawned')
+    if (CONFIG.autoArmor) equipBestGear(true).catch((error) => log('Auto-armor failed:', error.message))
   })
   bot.on('login', () => log('Logged in'))
   bot.on('death', () => {
@@ -653,6 +968,7 @@ function createBot() {
     log('Disconnected:', reason)
     stopLoops()
     resetModes()
+    bot = null
     if (CONFIG.reconnectDelay > 0) {
       log('Reconnecting in ' + CONFIG.reconnectDelay + 's')
       reconnectTimer = setTimeout(createBot, CONFIG.reconnectDelay * 1000)
