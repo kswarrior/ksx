@@ -33,8 +33,11 @@ app.get("/api/stats", (c) => {
     });
 });
 app.get("/api/social", async (c) => {
-    const stats = await getSocialStats(c.env);
-    c.header("Cache-Control", "public, max-age=300, s-maxage=300, stale-while-revalidate=600");
+    const force = c.req.query("refresh") === "1";
+    const stats = await getSocialStats(c.env, { force });
+    c.header("Cache-Control", force
+        ? "no-store"
+        : "public, max-age=300, s-maxage=300, stale-while-revalidate=600");
     return c.json(stats);
 });
 // Sitemap
