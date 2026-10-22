@@ -21,6 +21,26 @@ app.use(express.json());
 app.use("/api/sitemap", sitemapRouter);
 app.use("/api/hosting", hostingRouter);
 app.use("/api", metaRouter);
+// Modrinth API proxy (avoids browser CORS/network restrictions)
+const MODRINTH_API = "https://api.modrinth.com/v2";
+app.get("/api/modrinth/*", async (req, res) => {
+    const upstreamPath = req.originalUrl.slice("/api/modrinth".length);
+    try {
+        const upstream = await fetch(`${MODRINTH_API}${upstreamPath}`, {
+            headers: {
+                "User-Agent": "ksx-backend/1.0 (+https://github.com/anomalyco/ksx)",
+                Accept: "application/json",
+            },
+        });
+        res.status(upstream.status);
+        res.setHeader("Content-Type", upstream.headers.get("content-type") ?? "application/json");
+        res.setHeader("Cache-Control", "public, max-age=60, s-maxage=120");
+        res.send(Buffer.from(await upstream.arrayBuffer()));
+    }
+    catch {
+        res.status(502).json({ error: "Modrinth request failed" });
+    }
+});
 // Legacy JSON for old static fetch("free.json") compatibility
 app.get("/minecraft/hosting/free.json", (_req, res) => res.json(mcData));
 app.get("/vps/hosting/list/free.json", (_req, res) => res.json(vpsData));
