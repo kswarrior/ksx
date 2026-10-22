@@ -7,6 +7,9 @@ export type BotConfig = {
   owners: string[];
   auth: BotAuth;
   version: string;
+  serverPassword: string;
+  loginCommand: string;
+  loginDelay: number;
   prefix: string;
   reconnectDelay: number;
   autoEat: boolean;
@@ -33,6 +36,9 @@ export const DEFAULT_BOT_CONFIG: BotConfig = {
   owners: ["YourMinecraftName"],
   auth: "offline",
   version: "",
+  serverPassword: "",
+  loginCommand: "",
+  loginDelay: 3,
   prefix: "!",
   reconnectDelay: 5,
   autoEat: true,
@@ -146,6 +152,9 @@ export function normalizeBotConfig(input: BotConfig): BotConfig {
     owners,
     auth: input.auth === "microsoft" ? "microsoft" : "offline",
     version: input.version.trim(),
+    serverPassword: input.serverPassword.trim(),
+    loginCommand: input.loginCommand.trim(),
+    loginDelay: clampInt(input.loginDelay, 3, 0, 120),
     prefix: input.prefix.trim() || "!",
     reconnectDelay: clampInt(input.reconnectDelay, 5, 0, 3600),
     autoEat: input.autoEat,
@@ -170,6 +179,9 @@ export function generateBotScript(input: BotConfig): string {
     owners: config.owners,
     auth: config.auth,
     version: config.version || null,
+    serverPassword: config.serverPassword,
+    loginCommand: config.loginCommand,
+    loginDelay: config.loginDelay,
     viewDistance: config.viewDistance,
     prefix: config.prefix,
     reconnectDelay: config.reconnectDelay,
