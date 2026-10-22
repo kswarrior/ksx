@@ -5,7 +5,7 @@ description: "Use when exploring or changing the KSX website repo (ksx / KS Warr
 
 # KSX Site
 
-KSX is the KS Warrior hub: a TypeScript monorepo with a React frontend and an API implemented twice (Express for local dev, Hono for Cloudflare Workers). It lists Minecraft tools, free Minecraft hosts, free VPS providers, free website hosting, panel install guides, and social counts.
+KSX is the KS Warrior hub: a TypeScript monorepo with a React frontend and an API implemented twice (Express for local dev, Hono for Cloudflare Workers). It lists Minecraft tools, free Minecraft hosts, free VPS providers, free website hosting, free database hosting, panel install guides, and social counts.
 
 ## Layout
 
@@ -14,7 +14,7 @@ backend/src/index.ts        Express server (local dev, serves frontend/dist when
 backend/src/worker.ts       Hono app with the same API for Cloudflare Workers
 backend/src/routes/         Express routers: sitemap, hosting, meta
 backend/src/social.ts       YouTube/Discord/Instagram stat fetchers with 5 min cache
-backend/src/data/           sitemap.json, minecraft-hosting.json, vps-hosting.json, website-hosting.json (source of truth)
+backend/src/data/           sitemap.json, minecraft-hosting.json, vps-hosting.json, website-hosting.json, database-hosting.json (source of truth)
 frontend/src/App.tsx        React Router route table
 frontend/src/pages/         One component (+ .css) per page
 frontend/src/lib/api.ts     Typed API client used by pages
@@ -49,12 +49,13 @@ Run `npm run typecheck` before finishing changes. There is no test suite or lint
 | `/minecraft/hosting/free[.html]` | Free Minecraft host list |
 | `/vps/hosting/list/free[.html]` | Free VPS list |
 | `/website/hosting/list/free[.html]` | Free website hosting list |
+| `/database/hosting/list/free[.html]` | Free database hosting list |
 | `/minecraft/make-hosting/{pterodactyl,puffer,airlink,ks-panel}[.html]` | Panel setup guides (KS Panel is coming soon) |
 | `/minecraft/java/{launcher,downloader}[.html]` | Java tools |
 | `/minecraft/bedrock/ks-client[.html]` | Bedrock client page |
 | `/minecraft/server/{statics,bot}[.html]` | Server stat lookup / bot setup |
 | `/minecraft/make-server/{setup-server-in-vps,server.jar-downloader,paid-plugin-free,custom-ip}[.html]` | Server guides |
-| `/minecraft/*`, `/vps/*`, `/website/*` | Generic placeholder fallback |
+| `/minecraft/*`, `/vps/*`, `/website/*`, `/database/*` | Generic placeholder fallback |
 
 Most routes are registered twice in `frontend/src/App.tsx`: with and without `.html`, because the old static site used `.html` URLs and the sitemap still does. Preserve both when adding a page.
 
