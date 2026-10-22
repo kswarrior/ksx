@@ -209,6 +209,62 @@
   border: 1px solid rgba(0, 0, 0, 0.08);
 }
 
+/* ---------- GALLERY ---------- */
+.portal-gallery-track {
+  position: relative;
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-behavior: smooth;
+  scroll-snap-type: x proximity;
+  padding-bottom: 4px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.portal-gallery-track::-webkit-scrollbar {
+  height: 4px;
+}
+
+.portal-gallery-track::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.portal-gallery-track::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+}
+
+.portal-shot {
+  flex: 0 0 auto;
+  width: clamp(148px, 23vw, 206px);
+  display: block;
+  scroll-snap-align: start;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #0b0b0b;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+  transition:
+    transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+
+.portal-shot:hover {
+  transform: translateY(-3px);
+  border-color: var(--p-border-strong);
+  box-shadow: 0 18px 38px rgba(0, 0, 0, 0.45);
+}
+
+.portal-shot img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 412 / 915;
+  object-fit: cover;
+}
+
 /* ---------- PANELS ---------- */
 .portal-grid {
   display: grid;

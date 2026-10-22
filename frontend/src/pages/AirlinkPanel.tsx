@@ -118,7 +118,7 @@ sudo systemctl enable --now airlink-daemon
 sudo systemctl status airlink-daemon --no-pager`;
 
 const FIREWALL = `sudo ufw allow 3000/tcp
-sudo ufw allow 3003/tcp
+sudo ufw allow 3003:4000/tcp
 sudo ufw allow 25565/tcp
 
 # Separate node only: allow the panel server to reach the daemon
@@ -373,7 +373,8 @@ export default function AirlinkPanel() {
               <p className="setup-note">
                 Keep the node key private. The daemon has no <code>/api/health</code> route — its
                 root endpoint is protected with HTTP basic auth. Port 3002 only needs to be
-                reachable from the panel, not from the public internet; SFTP uses 3003.
+                reachable from the panel, not from the public internet; SFTP uses ports
+                3003–4000.
               </p>
             </Panel>
           )}
@@ -478,7 +479,7 @@ export default function AirlinkPanel() {
               <ol className="guide-list guide-list-numbered">
                 <li>Stop the old server and the new Airlink server before copying files.</li>
                 <li>Open the server in the panel and generate its <strong>SFTP credentials</strong>.</li>
-                <li>Connect with FileZilla or WinSCP using the panel host and SFTP port (default <code>3003</code>).</li>
+                <li>Connect with FileZilla or WinSCP using the host, port, username and password shown in the <strong>SFTP credentials</strong> dialog (the first session usually gets port <code>3003</code>).</li>
                 <li>Upload <code>world</code>, <code>plugins</code>, configs and the server JAR.</li>
                 <li>Make sure the JAR name matches the image startup command, then start the server.</li>
               </ol>
@@ -504,7 +505,7 @@ export default function AirlinkPanel() {
               </p>
               <ul className="guide-list">
                 <li>Allow <strong>25565/tcp</strong> (or your chosen allocation) for players.</li>
-                <li>Keep <strong>3000</strong> for the panel, <strong>3002</strong> for the daemon and <strong>3003</strong> for SFTP.</li>
+                <li>Expose <strong>3000</strong> for the panel (or only 443 behind a proxy), <strong>3003–4000</strong> for SFTP, and <strong>3002</strong> only to the panel.</li>
                 <li>Use HTTPS and enable <strong>require2faForAdmins</strong> in Admin → Settings.</li>
                 <li>If using nginx, enable <strong>Behind Reverse Proxy</strong> so client IPs and redirects work correctly.</li>
               </ul>
