@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import FilterMenu from "../components/FilterMenu";
 import Icon from "../components/Icon";
 import { SearchField, Select, type SelectOption } from "../components/ui";
@@ -94,6 +94,17 @@ export default function JavaDownloader() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const filtersInitialized = useRef(false);
+
+  useEffect(() => {
+    if (!filtersInitialized.current) {
+      filtersInitialized.current = true;
+      return;
+    }
+    searchContent();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [type, loader, version, sort]);
+
   async function openDetails(p: Project) {
     setSelected(p);
     setShowDetail(true);
@@ -125,7 +136,6 @@ export default function JavaDownloader() {
                 ariaLabel="Search projects"
                 onKeyDown={(e) => e.key === "Enter" && searchContent()}
               />
-              <button onClick={searchContent} className="jd-btn"><Icon name="search" size={15} /> Search</button>
               <FilterMenu activeCount={[type, loader, version, sort !== "relevance" ? sort : ""].filter(Boolean).length}>
                 <div className="jd-filter-fields">
                   <Select
