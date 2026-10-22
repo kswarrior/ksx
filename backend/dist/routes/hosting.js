@@ -1,9 +1,11 @@
 import { Router } from "express";
 import mcData from "../data/minecraft-hosting.json" with { type: "json" };
 import vpsData from "../data/vps-hosting.json" with { type: "json" };
+import websiteData from "../data/website-hosting.json" with { type: "json" };
 const router = Router();
 const mcHosting = mcData;
 const vpsHosting = vpsData;
+const websiteHosting = websiteData;
 // Minecraft free hosting with filters: ?q=&uptime=&alwaysOn=&location=&ram=
 router.get("/minecraft", (req, res) => {
     const q = String(req.query.q ?? "").toLowerCase();
@@ -62,6 +64,33 @@ router.get("/vps", (req, res) => {
     if (alwaysOn !== undefined && alwaysOn !== "") {
         const b = alwaysOn === "true";
         result = result.filter((v) => v.alwaysOn === b);
+    }
+    res.json({ count: result.length, data: result });
+});
+// Website free hosting
+router.get("/website", (req, res) => {
+    const q = String(req.query.q ?? "").toLowerCase();
+    const type = String(req.query.type ?? "").toLowerCase();
+    const customDomain = req.query.customDomain;
+    const ssl = req.query.ssl;
+    const ads = req.query.ads;
+    const alwaysFree = req.query.alwaysFree;
+    let result = websiteHosting;
+    if (q)
+        result = result.filter((h) => h.name.toLowerCase().includes(q));
+    if (type)
+        result = result.filter((h) => h.type.toLowerCase().includes(type));
+    if (customDomain !== undefined && customDomain !== "") {
+        result = result.filter((h) => h.customDomain === (customDomain === "true"));
+    }
+    if (ssl !== undefined && ssl !== "") {
+        result = result.filter((h) => h.ssl === (ssl === "true"));
+    }
+    if (ads !== undefined && ads !== "") {
+        result = result.filter((h) => h.ads === (ads === "true"));
+    }
+    if (alwaysFree !== undefined && alwaysFree !== "") {
+        result = result.filter((h) => h.alwaysFree === (alwaysFree === "true"));
     }
     res.json({ count: result.length, data: result });
 });

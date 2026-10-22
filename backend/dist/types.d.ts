@@ -43,6 +43,22 @@ export interface VpsHosting {
     notes: string;
     link: string;
 }
+export interface WebsiteHosting {
+    name: string;
+    type: string;
+    storage: string;
+    bandwidth: string;
+    sites: string;
+    database: string;
+    customDomain: boolean;
+    ssl: boolean;
+    ads: boolean;
+    alwaysFree: boolean;
+    verification: string;
+    limits: string;
+    notes: string;
+    link: string;
+}
 export interface SearchItem {
     category: string;
     icon: string;

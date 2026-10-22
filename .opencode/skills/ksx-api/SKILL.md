@@ -1,6 +1,6 @@
 ---
 name: ksx-api
-description: "Use when querying KSX site data (sitemap, free Minecraft hosting, free VPS, social stats) through the ksx MCP tools or the /api endpoints, or when changing API filters and response shapes."
+description: "Use when querying KSX site data (sitemap, free Minecraft hosting, free VPS, free website hosting, social stats) through the ksx MCP tools or the /api endpoints, or when changing API filters and response shapes."
 ---
 
 # KSX API and MCP
@@ -16,10 +16,11 @@ The `ksx` MCP server is registered in `opencode.json` and runs `mcp/ksx-server.m
 | `ksx_search_pages` | Search pages by name, section, or category |
 | `ksx_find_minecraft_hosting` | Filter hosts by `query`, `location`, `uptime`, `alwaysOn`, `minRam` |
 | `ksx_find_vps_hosting` | Filter providers by `query`, `type`, `location`, `renew`, `sudo`, `alwaysOn` |
+| `ksx_find_website_hosting` | Filter providers by `query`, `type`, `customDomain`, `ssl`, `ads`, `alwaysFree` |
 | `ksx_get_social_stats` | Live counts from `/api/social` |
 | `ksx_api_get` | GET any `/api/...` path on the configured API |
 
-Resources: `ksx://sitemap`, `ksx://hosting/minecraft`, `ksx://hosting/vps`.
+Resources: `ksx://sitemap`, `ksx://hosting/minecraft`, `ksx://hosting/vps`, `ksx://hosting/website`.
 
 The MCP server reads `backend/src/data/*.json` directly, so sitemap and hosting tools work without the backend running. Social and `ksx_api_get` need a reachable API:
 
@@ -41,6 +42,7 @@ curl localhost:8080/api/sitemap
 curl "localhost:8080/api/sitemap/search?q=hosting"
 curl "localhost:8080/api/hosting/minecraft?q=&alwaysOn=true&location=india&ram=4"
 curl "localhost:8080/api/hosting/vps?q=&type=VPS&renew=true&sudo=true&alwaysOn=true"
+curl "localhost:8080/api/hosting/website?q=&type=Static&customDomain=true&ssl=true&ads=false&alwaysFree=true"
 curl localhost:8080/api/social
 ```
 
@@ -50,10 +52,11 @@ curl localhost:8080/api/social
 - `/api/sitemap/search?q=` -> flat `SearchItem[]`; matches page `name`, section `title`, or category. Empty `q` -> `[]`.
 - `/api/hosting/minecraft` -> `{ count, data: MinecraftHosting[] }`, filtered by name substring, location substring, minimum RAM, legacy exact `uptime`, and `alwaysOn` (`"true"`/`"false"`). Each entry also includes `players`, `alwaysOn`, `verification`, `limits`, and `notes`.
 - `/api/hosting/vps` -> `{ count, data: VpsHosting[] }`; `type` matches a substring of `VPS`, `Cloud shell`, `Cloud IDE`, `Notebook`, or `Sandbox`; `renew`, `sudo`, `alwaysOn` accept `"true"`/`"false"`. Each entry also includes `verification`, `limits`, and `notes`.
+- `/api/hosting/website` -> `{ count, data: WebsiteHosting[] }`; `type` matches a substring such as `Static`, `PHP`, `Python`, or `builder`; `customDomain`, `ssl`, `ads`, `alwaysFree` accept `"true"`/`"false"`. Each entry has `storage`, `bandwidth`, `sites`, `database`, `verification`, `limits`, and `notes`.
 - `/api/social` -> `{ updatedAt, platforms: { youtube, discord, instagram } }`; each platform has `count`, `display`, `available`, `source`, optional `online`/`name`/`error`, and `fetchedAt`. Add `?refresh=1` to bypass the 5 minute server cache.
 - `/api/hosting/minecraft/:id` exists only on Express (index into the data array); the Worker does not implement it. Do not rely on it in frontend code.
 
-Legacy aliases still work: `/minecraft/hosting/free.json`, `/vps/hosting/list/free.json`, `/sitemap.json`.
+Legacy aliases still work: `/minecraft/hosting/free.json`, `/vps/hosting/list/free.json`, `/website/hosting/list/free.json`, `/sitemap.json`.
 
 ## Gotchas
 
