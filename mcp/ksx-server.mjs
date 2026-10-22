@@ -20,6 +20,7 @@ function loadData() {
     sitemap: loadJson("sitemap.json"),
     minecraft: loadJson("minecraft-hosting.json"),
     vps: loadJson("vps-hosting.json"),
+    website: loadJson("website-hosting.json"),
   };
 }
 
@@ -95,13 +96,13 @@ server.registerTool(
     annotations: { readOnlyHint: true },
   },
   async () => {
-    const { sitemap, minecraft, vps } = loadData();
+    const { sitemap, minecraft, vps, website } = loadData();
     const pages = flattenSitemap(sitemap);
     return text({
       name: "KSX",
       url: SITE_URL,
       description:
-        "KS Warrior hub for Minecraft tools, free Minecraft hosting, free VPS lists, panels, clients, and community links.",
+        "KS Warrior hub for Minecraft tools, free Minecraft hosting, free VPS lists, free website hosting, panels, clients, and community links.",
       stack: {
         backend: "Express (local) + Hono (Cloudflare Workers) + TypeScript",
         frontend: "Vite + React 18 + React Router + TypeScript",
@@ -113,6 +114,7 @@ server.registerTool(
         pages: pages.length,
         minecraftHosts: minecraft.length,
         vpsHosts: vps.length,
+        websiteHosts: website.length,
       },
       categories: sitemap.map((c) => c.category),
       pages,
@@ -123,12 +125,14 @@ server.registerTool(
         "GET /api/sitemap/search?q=",
         "GET /api/hosting/minecraft?q=&uptime=&alwaysOn=&location=&ram=",
         "GET /api/hosting/vps?q=&type=&renew=&sudo=&alwaysOn=",
+        "GET /api/hosting/website?q=&type=&customDomain=&ssl=&ads=&alwaysFree=",
         "GET /api/social",
       ],
       dataFiles: [
         "backend/src/data/sitemap.json",
         "backend/src/data/minecraft-hosting.json",
         "backend/src/data/vps-hosting.json",
+        "backend/src/data/website-hosting.json",
       ],
     });
   }
@@ -257,6 +261,41 @@ server.registerTool(
 );
 
 server.registerTool(
+  "ksx_find_website_hosting",
+  {
+    title: "Find free website hosting",
+    description:
+      "Find free website hosting providers, static hosts, and site builders from the KSX list. Filter by name, type, custom domain, SSL, ads, and always-free status. Includes storage, traffic, site limits, verification requirements, and notes.",
+    inputSchema: {
+      query: z.string().optional().describe("Case-insensitive provider name filter"),
+      type: z.string().optional().describe("Case-insensitive type filter, e.g. Static, PHP, builder"),
+      customDomain: z.boolean().optional().describe("Whether a free custom domain is supported"),
+      ssl: z.boolean().optional().describe("Whether free SSL is included"),
+      ads: z.boolean().optional().describe("Whether the free plan shows ads or forces branding"),
+      alwaysFree: z.boolean().optional().describe("Whether the free tier has no time limit"),
+    },
+    annotations: { readOnlyHint: true },
+  },
+  async ({ query, type, customDomain, ssl, ads, alwaysFree }) => {
+    const { website } = loadData();
+    const data = website.filter((host) => {
+      if (query && !includes(host.name, query)) return false;
+      if (type && !includes(host.type, type)) return false;
+      if (customDomain !== undefined && host.customDomain !== customDomain) return false;
+      if (ssl !== undefined && host.ssl !== ssl) return false;
+      if (ads !== undefined && host.ads !== ads) return false;
+      if (alwaysFree !== undefined && host.alwaysFree !== alwaysFree) return false;
+      return true;
+    });
+    return text({
+      count: data.length,
+      filters: { query, type, customDomain, ssl, ads, alwaysFree },
+      data,
+    });
+  }
+);
+
+server.registerTool(
   "ksx_get_social_stats",
   {
     title: "Get KSX social stats",
@@ -370,6 +409,28 @@ server.registerResource(
           uri: uri.href,
           mimeType: "application/json",
           text: JSON.stringify(vps, null, 2),
+        },
+      ],
+    };
+  }
+);
+
+server.registerResource(
+  "ksx-website-hosting",
+  "ksx://hosting/website",
+  {
+    title: "Free website hosting list",
+    description: "KSX free website hosting list with type, storage, bandwidth, site limits, database, custom domain, SSL, ads, verification, limits, and notes",
+    mimeType: "application/json",
+  },
+  async (uri) => {
+    const { website } = loadData();
+    return {
+      contents: [
+        {
+          uri: uri.href,
+          mimeType: "application/json",
+          text: JSON.stringify(website, null, 2),
         },
       ],
     };
