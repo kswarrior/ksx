@@ -4,7 +4,7 @@ export type SitemapCategory = {
   sections: {
     title: string;
     icon: string;
-    pages: { name: string; url: string; logo: string; soon?: boolean }[];
+    pages: { name: string; url: string; logo: string; logoUrl?: string; soon?: boolean }[];
   }[];
 };
 
@@ -16,6 +16,7 @@ export type SearchItem = {
   name: string;
   url: string;
   logo: string;
+  logoUrl?: string;
 };
 
 export type MinecraftHosting = {

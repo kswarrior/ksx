@@ -289,7 +289,7 @@ app.get("/api/sitemap/search", (c) => {
   for (const cat of sitemap) {
     for (const sec of cat.sections) {
       for (const page of sec.pages) {
-        flat.push({ category: cat.category, icon: cat.icon, title: sec.title, sectionIcon: sec.icon, name: page.name, url: page.url, logo: page.logo });
+        flat.push({ category: cat.category, icon: cat.icon, title: sec.title, sectionIcon: sec.icon, name: page.name, url: page.url, logo: page.logo, logoUrl: page.logoUrl });
       }
     }
   }

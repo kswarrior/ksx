@@ -2,6 +2,7 @@ export interface SitemapPage {
   name: string;
   url: string;
   logo: string;
+  logoUrl?: string;
   soon?: boolean;
 }
 
@@ -94,6 +95,7 @@ export interface SearchItem {
   name: string;
   url: string;
   logo: string;
+  logoUrl?: string;
 }
 
 export type SocialPlatformName = "youtube" | "discord" | "instagram";

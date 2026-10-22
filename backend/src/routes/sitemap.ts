@@ -29,6 +29,7 @@ router.get("/search", (req, res) => {
           name: page.name,
           url: page.url,
           logo: page.logo,
+          logoUrl: page.logoUrl,
         });
       }
     }
