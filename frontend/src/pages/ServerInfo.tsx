@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { useSearchParams } from "react-router-dom";
 import Icon from "../components/Icon";
+import PageHero from "../components/PageHero";
 import { TextField } from "../components/ui";
 import "./ServerInfo.css";
 
@@ -254,6 +255,8 @@ export default function ServerInfo() {
       </div>
       <div className="si-shell">
         <header className="si-header">
+          <PageHero variant="inline" icon="server" title="Minecraft Server Info" className="si-page-hero" />
+
           <div className="si-search">
             <TextField className="si-input" value={ip} onChange={(e) => setIp(e.target.value)} placeholder="Enter server IP (e.g. play.hypixel.net)" aria-label="Server IP" onKeyDown={(e)=> e.key==="Enter" && fetchInfo()} />
             <button className="si-btn" onClick={() => fetchInfo()}><Icon name="search" size={14} /> {loading ? "Checking…" : "Search"}</button>

@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import FilterMenu from "../components/FilterMenu";
+import PageHero from "../components/PageHero";
 import { SearchField, Select, type SelectOption } from "../components/ui";
 import { API_BASE } from "../lib/api";
 import "./JavaDownloader.css";
@@ -421,6 +422,8 @@ export default function JavaDownloader() {
       </div>
       <div className="jd-shell">
         <header className="jd-header">
+          <PageHero variant="inline" icon="download" title="Universal Downloader" />
+
           <div className="jd-controls">
             <div className="jd-row1">
               <SearchField

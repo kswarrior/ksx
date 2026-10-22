@@ -1,4 +1,5 @@
 import Icon from "../components/Icon";
+import PageHero from "../components/PageHero";
 import "./KsClient.css";
 
 export default function KsClient() {
@@ -27,6 +28,8 @@ export default function KsClient() {
         <div className="ks-bg-orb o2" />
       </div>
       <div className="ks-shell">
+        <PageHero icon="gamepad" title="KS Client" className="ks-page-hero" />
+
         <div className="ks-card">
           <div className="ks-card-title"><Icon name="sparkles" size={15} /> What you get</div>
           <div style={{color:"var(--ks-muted)", fontSize:13, lineHeight:1.6}}>Packed for performance + visuals. One tap install, works on Bedrock PE.</div>

@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Icon from "../components/Icon";
+import PageHero from "../components/PageHero";
 import { Select, TextField } from "../components/ui";
 import "./CustomIP.css";
 
@@ -153,6 +154,8 @@ export default function CustomIP() {
         <div className="ci-bg-orb o2" />
       </div>
       <div className="ci-shell">
+        <PageHero icon="globe" title="Custom IP" className="ci-page-hero" />
+
         {step === 1 && (
           <div className="ci-stage ci-anim" key="step-1">
             <div className="ci-card">

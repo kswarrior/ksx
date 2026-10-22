@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import FilterMenu from "../components/FilterMenu";
 import Icon, { type IconName } from "../components/Icon";
+import PageHero from "../components/PageHero";
 import { SearchField } from "../components/ui";
 import "./JavaLauncher.css";
 
@@ -124,6 +125,8 @@ export default function JavaLauncher() {
       </div>
       <div className="jl-shell">
         <header className="jl-header">
+          <PageHero variant="inline" icon="gamepad" title="Java Launcher" />
+
           <div className="jl-search-wrap">
             <div className="jl-search-row">
               <SearchField

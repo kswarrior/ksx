@@ -25,6 +25,7 @@
 .ci-title{position:relative; margin:12px 0 8px; font-size:clamp(24px,5vw,34px); font-weight:900; letter-spacing:-1.2px; line-height:1;}
 .ci-title span{background:linear-gradient(90deg,#a1a1a1 0%,#9a9a9a 55%,#a0a0a0 100%); -webkit-background-clip:text; background-clip:text; color:transparent;}
 .ci-sub{position:relative; color:var(--ci-muted); font-size:13px; line-height:1.6; max-width:600px; margin:0 auto;}
+.ci-page-hero{margin-bottom:0;}
 .ci-stage{max-width:700px; margin:16px auto 0;}
 .ci-stage.wide{max-width:1000px;}
 .ci-anim{animation:ciStepIn .28s ease both;}

@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import Icon from "../components/Icon";
+import PageHero from "../components/PageHero";
 import { SearchField } from "../components/ui";
 import "./PaidPluginFree.css";
 
@@ -34,6 +35,8 @@ export default function PaidPluginFree() {
       </div>
       <div className="paid-shell">
         <header className="paid-header">
+          <PageHero variant="inline" icon="puzzle" title="Free Paid Plugins" />
+
           <div className="paid-search-wrap">
             <SearchField
               className="paid-search"
