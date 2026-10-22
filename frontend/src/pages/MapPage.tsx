@@ -245,7 +245,6 @@ export default function MapPage() {
   const [selection, setSelection] = useState<Selection>(null);
   const [ready, setReady] = useState(false);
   const [lite, setLite] = useState(false);
-  const [paused, setPaused] = useState(false);
 
   const pageRef = useRef<HTMLDivElement>(null);
   const viewportRef = useRef<HTMLDivElement>(null);
@@ -519,13 +518,6 @@ export default function MapPage() {
     const mql = window.matchMedia("(prefers-reduced-motion: reduce)");
     mql.addEventListener("change", detect);
     return () => mql.removeEventListener("change", detect);
-  }, []);
-
-  useEffect(() => {
-    const onVis = () => setPaused(document.hidden);
-    onVis();
-    document.addEventListener("visibilitychange", onVis);
-    return () => document.removeEventListener("visibilitychange", onVis);
   }, []);
 
   useEffect(() => {
@@ -860,7 +852,6 @@ export default function MapPage() {
       className={[
         "map-page",
         lite ? "mp-lite" : "",
-        paused ? "is-paused" : "",
         selection ? "has-selection" : "",
       ]
         .filter(Boolean)
