@@ -220,6 +220,8 @@ let huntMode = false
 let attackName = null
 let autoDefendActive = false
 let reconnectTimer = null
+let loginTimer = null
+let serverLoginDone = false
 let eating = false
 let lastNoFoodLog = 0
 let lastJumpAt = 0
@@ -241,6 +243,39 @@ function say(message) {
 
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms))
+}
+
+function serverLoginCommand() {
+  if (CONFIG.loginCommand) {
+    return CONFIG.loginCommand.split('{password}').join(CONFIG.serverPassword).split('{username}').join(bot.username || CONFIG.username)
+  }
+  if (CONFIG.serverPassword) return '/login ' + CONFIG.serverPassword
+  return null
+}
+
+function sendServerLogin() {
+  loginTimer = null
+  if (!bot || serverLoginDone) return
+  const command = serverLoginCommand()
+  if (!command) return
+  serverLoginDone = true
+  try {
+    bot.chat(command)
+    log('Sent the configured server login command.')
+  } catch (error) {
+    serverLoginDone = false
+    log('Server login failed:', error.message)
+  }
+}
+
+function scheduleServerLogin() {
+  if (loginTimer) {
+    clearTimeout(loginTimer)
+    loginTimer = null
+  }
+  serverLoginDone = false
+  if (!CONFIG.serverPassword && !CONFIG.loginCommand) return
+  loginTimer = setTimeout(sendServerLogin, Math.max(0, CONFIG.loginDelay) * 1000)
 }
 
 function isOwner(username) {
@@ -960,6 +995,7 @@ function createBot() {
   bot.once('spawn', () => {
     startLoops()
     log('Spawned')
+    scheduleServerLogin()
     if (CONFIG.autoArmor) equipBestGear(true).catch((error) => log('Auto-armor failed:', error.message))
   })
   bot.on('login', () => log('Logged in'))
@@ -979,6 +1015,11 @@ function createBot() {
   })
   bot.on('end', (reason) => {
     log('Disconnected:', reason)
+    if (loginTimer) {
+      clearTimeout(loginTimer)
+      loginTimer = null
+    }
+    serverLoginDone = false
     stopLoops()
     resetModes()
     bot = null
