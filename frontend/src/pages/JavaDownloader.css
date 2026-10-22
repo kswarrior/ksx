@@ -43,6 +43,9 @@
 .jd-loading::before{content:""; width:22px; height:22px; border:3px solid rgba(255, 255, 255,0.18); border-top-color:#898989; border-radius:50%; animation:spin .8s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg)}}
 .jd-empty{text-align:center; padding:34px 18px; background:rgba(15, 15, 15,0.9); border:1px solid var(--jd-border); border-radius:5px; color:var(--jd-muted); font-size:13px;}
+.jd-sentinel{min-height:1px;}
+.jd-sentinel .jd-loading{padding:26px 0 4px;}
+.jd-sentinel .jd-empty{margin-top:16px;}
 .jd-retry{padding:0; background:none; border:none; color:var(--jd-text); font:inherit; font-weight:800; cursor:pointer; text-decoration:underline; text-underline-offset:2px;}
 .jd-retry:hover{color:#ffffff;}
 .jd-back{display:inline-flex; align-items:center; gap:6px; margin-bottom:12px; padding:9px 12px; background:rgba(255, 255, 255,0.06); border:1px solid var(--jd-border); border-radius:6px; color:var(--jd-text); font-size:12px; font-weight:800; text-decoration:none; transition:background .2s, border-color .2s;}
