@@ -1,3 +1,5 @@
+import { API_BASE } from "./api";
+
 export type ServerSoftwareId =
   | "paper"
   | "purpur"
@@ -83,10 +85,14 @@ const SPIGOT_DOWNLOAD = "https://download.getbukkit.org";
 const jsonCache = new Map<string, Promise<unknown>>();
 const textCache = new Map<string, Promise<string>>();
 
+function proxyUrl(url: string): string {
+  return `${API_BASE}/api/server-jars/proxy?url=${encodeURIComponent(url)}`;
+}
+
 async function getJson<T>(url: string): Promise<T> {
   let cached = jsonCache.get(url) as Promise<T> | undefined;
   if (!cached) {
-    cached = fetch(url, { headers: { Accept: "application/json" } })
+    cached = fetch(proxyUrl(url), { headers: { Accept: "application/json" } })
       .then(async (response) => {
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
         return (await response.json()) as T;

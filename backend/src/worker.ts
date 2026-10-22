@@ -58,6 +58,60 @@ app.get("/api/social", async (c) => {
   return c.json(stats);
 });
 
+// Server jar metadata proxy (keeps browser requests same-origin)
+const SERVER_JAR_PROXY_HOSTS: Record<string, string[]> = {
+  "fill.papermc.io": ["/v3/"],
+  "api.purpurmc.org": ["/v2/purpur"],
+  "launchermeta.mojang.com": ["/mc/"],
+  "piston-meta.mojang.com": ["/v1/packages/"],
+  "meta.fabricmc.net": ["/v2/"],
+  "meta.quiltmc.org": ["/v3/"],
+  "maven.minecraftforge.net": ["/net/minecraftforge/forge/"],
+  "maven.neoforged.net": ["/api/maven/versions/", "/releases/net/neoforged/neoforge/"],
+  "maven.quiltmc.org": ["/repository/release/"],
+  "getbukkit.org": ["/api/jars/"],
+  "download.getbukkit.org": ["/spigot/"],
+  "fill-data.papermc.io": ["/v1/objects/"],
+  "piston-data.mojang.com": ["/v1/objects/"],
+};
+
+function isAllowedServerJarProxy(target: URL, method: string): boolean {
+  const prefixes = SERVER_JAR_PROXY_HOSTS[target.hostname];
+  if (!prefixes || !prefixes.some((prefix) => target.pathname.startsWith(prefix))) return false;
+  return method === "HEAD" || !/\.(jar|zip|gz|tar)$/i.test(target.pathname);
+}
+
+app.on(["GET", "HEAD"], "/api/server-jars/proxy", async (c) => {
+  let target: URL;
+  try {
+    target = new URL(c.req.query("url") ?? "");
+  } catch {
+    return c.json({ error: "Invalid URL" }, 400);
+  }
+  if (target.protocol !== "https:" || !isAllowedServerJarProxy(target, c.req.method)) {
+    return c.json({ error: "URL not allowed" }, 400);
+  }
+  try {
+    const upstream = await fetch(target, {
+      method: c.req.method,
+      headers: {
+        "User-Agent": "ksx-backend/1.0 (+https://github.com/anomalyco/ksx)",
+        Accept: c.req.header("accept") ?? "*/*",
+      },
+    });
+    const headers = new Headers();
+    for (const name of ["content-type", "content-length", "last-modified", "etag"]) {
+      const value = upstream.headers.get(name);
+      if (value) headers.set(name, value);
+    }
+    headers.set("Cache-Control", "public, max-age=300, s-maxage=900");
+    if (c.req.method === "HEAD") return new Response(null, { status: upstream.status, headers });
+    return new Response(upstream.body, { status: upstream.status, headers });
+  } catch {
+    return c.json({ error: "Server jar request failed" }, 502);
+  }
+});
+
 // Modrinth API proxy (avoids browser CORS/network restrictions)
 const MODRINTH_API = "https://api.modrinth.com/v2";
 
