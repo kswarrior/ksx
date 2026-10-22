@@ -3,7 +3,10 @@
   "version": "1.0.0",
   "private": true,
   "description": "KSX – Backend TS + Frontend React+TS (converted from static HTML)",
-  "workspaces": ["backend", "frontend"],
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
   "scripts": {
     "dev:backend": "npm run dev --prefix backend",
     "dev:worker": "npm run dev:worker --prefix backend",
@@ -17,6 +20,8 @@
     "deploy:worker": "npm run build --prefix frontend && npm run deploy:worker --prefix backend"
   },
   "devDependencies": {
-    "concurrently": "^8.2.2"
+    "@modelcontextprotocol/sdk": "^1.32.1",
+    "concurrently": "^8.2.2",
+    "zod": "^4.6.7"
   }
 }
