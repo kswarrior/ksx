@@ -1,6 +1,6 @@
 ---
 name: ksx-deploy
-description: Use when building or deploying the KSX website to Cloudflare (Workers, Pages, wrangler), changing wrangler.toml, configuring VITE_API_BASE or worker secrets/vars, or debugging SPA/asset routing in production.
+description: "Use when building or deploying the KSX website to Cloudflare (Workers, Pages, wrangler), changing wrangler.toml, configuring VITE_API_BASE or worker secrets/vars, or debugging SPA/asset routing in production."
 ---
 
 # KSX Deploy

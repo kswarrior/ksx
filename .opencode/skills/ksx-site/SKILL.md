@@ -1,6 +1,6 @@
 ---
 name: ksx-site
-description: Use when exploring or changing the KSX website repo (ksx / KS Warrior hub): routes, pages, hosting lists, sitemap data, React + Express/Hono monorepo structure, or running dev/build/typecheck.
+description: "Use when exploring or changing the KSX website repo (ksx / KS Warrior hub): routes, pages, hosting lists, sitemap data, React + Express/Hono monorepo structure, or running dev/build/typecheck."
 ---
 
 # KSX Site

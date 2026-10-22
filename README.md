@@ -136,6 +136,7 @@ Sitemap and hosting tools read the JSON data directly. Live tools default to `ht
 ```bash
 KSX_API_BASE=https://ksx-backend.<subdomain>.workers.dev opencode
 # optional: KSX_DATA_DIR=/path/to/backend/src/data
+# optional: KSX_SITE_URL=https://your-site.example (used in site summaries)
 ```
 
 ## What was removed

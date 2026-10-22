@@ -1,6 +1,6 @@
 ---
 name: ksx-api
-description: Use when querying KSX site data (sitemap, free Minecraft hosting, free VPS, social stats) through the ksx MCP tools or the /api endpoints, or when changing API filters and response shapes.
+description: "Use when querying KSX site data (sitemap, free Minecraft hosting, free VPS, social stats) through the ksx MCP tools or the /api endpoints, or when changing API filters and response shapes."
 ---
 
 # KSX API and MCP
@@ -26,6 +26,7 @@ The MCP server reads `backend/src/data/*.json` directly, so sitemap and hosting 
 - Default: `http://localhost:4000` (start with `npm run dev:backend`)
 - Override: `KSX_API_BASE=https://your-deployment` in the environment that starts opencode
 - Override data location: `KSX_DATA_DIR=/path/to/data`
+- Override summary URL: `KSX_SITE_URL=https://your-site.example`
 
 Run the server manually with `npm run mcp`.
 
