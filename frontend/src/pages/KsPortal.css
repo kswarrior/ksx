@@ -536,6 +536,144 @@
   color: var(--p-muted);
 }
 
+/* ---------- ABOUT MARKDOWN ---------- */
+.portal-about-md {
+  position: relative;
+  max-width: 860px;
+  color: #cfcfcf;
+  font-size: 13.5px;
+  line-height: 1.7;
+}
+
+.portal-about-md > :first-child {
+  margin-top: 0;
+}
+
+.portal-about-md > :last-child {
+  margin-bottom: 0;
+}
+
+.portal-about-md p {
+  margin: 0 0 14px;
+}
+
+.portal-about-md h2 {
+  margin: 24px 0 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--p-border);
+  color: var(--p-text);
+  font-size: 16px;
+  font-weight: 900;
+  letter-spacing: -0.3px;
+}
+
+.portal-about-md h3 {
+  margin: 20px 0 8px;
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.portal-about-md ul,
+.portal-about-md ol {
+  margin: 0 0 16px;
+  padding-left: 20px;
+  display: grid;
+  gap: 7px;
+}
+
+.portal-about-md li {
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.portal-about-md li::marker {
+  color: #8a8a8a;
+}
+
+.portal-about-md strong {
+  color: var(--p-text);
+  font-weight: 800;
+}
+
+.portal-about-md a {
+  color: var(--p-text);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: rgba(255, 255, 255, 0.35);
+  transition: text-decoration-color 0.2s;
+}
+
+.portal-about-md a:hover {
+  text-decoration-color: #fff;
+}
+
+.portal-about-md code {
+  padding: 2px 5px;
+  border: 1px solid var(--p-border);
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.08);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.92em;
+}
+
+.portal-about-md hr {
+  margin: 22px 0;
+  border: none;
+  border-top: 1px solid var(--p-border);
+}
+
+.portal-about-md blockquote {
+  margin: 18px 0;
+  padding: 12px 16px;
+  border-left: 3px solid #d4d4d4;
+  border-radius: 0 5px 5px 0;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.portal-about-md blockquote p {
+  margin: 0;
+  color: #bdbdbd;
+}
+
+.portal-about-md .md-table-wrap {
+  margin: 0 0 18px;
+  overflow-x: auto;
+  border: 1px solid var(--p-border);
+  border-radius: 5px;
+}
+
+.portal-about-md table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12.5px;
+}
+
+.portal-about-md th {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--p-border);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--p-muted);
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.7px;
+  text-align: left;
+  text-transform: uppercase;
+}
+
+.portal-about-md td {
+  padding: 10px 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  color: #cfcfcf;
+}
+
+.portal-about-md tr:last-child td {
+  border-bottom: none;
+}
+
 /* ---------- RESPONSIVE ---------- */
 @media (max-width: 860px) {
   .portal-grid {

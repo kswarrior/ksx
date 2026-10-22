@@ -8,8 +8,8 @@ import "./SetupServer.css";
 type InstallMethod = "quick" | "manual";
 
 const METHOD_OPTIONS: SelectOption[] = [
+  { value: "manual", label: "Manual · npm + SQLite · recommended" },
   { value: "quick", label: "Quick installer · interactive" },
-  { value: "manual", label: "Manual · npm + SQLite" },
 ];
 
 const STEPS: { id: string; label: string; icon: IconName }[] = [
@@ -41,11 +41,16 @@ sudo chown -R "$USER":"$USER" /var/www/panel
 cd /var/www/panel
 cp example.env .env
 
-# Edit .env before continuing:
+# Edit .env before continuing.
+# Direct HTTP:
 # URL="http://YOUR_SERVER_IP:3000"
+# NODE_ENV="development"
 # DATABASE_URL="file:./dev.db"
-# NODE_ENV="production"
 # SESSION_SECRET="<paste output of: openssl rand -hex 32>"
+
+# Behind an HTTPS reverse proxy, use:
+# URL="https://panel.example.com"
+# NODE_ENV="production"
 
 npm install
 npx prisma generate
@@ -128,7 +133,7 @@ sudo ufw reload`;
 
 export default function AirlinkPanel() {
   const navigate = useNavigate();
-  const [method, setMethod] = useState<InstallMethod>("quick");
+  const [method, setMethod] = useState<InstallMethod>("manual");
   const [stepIndex, setStepIndex] = useState(0);
   const [serverIp, setServerIp] = useState("");
 
@@ -272,7 +277,9 @@ export default function AirlinkPanel() {
                     <code>pm2 startup</code> prints a command — run it to enable boot startup.
                     Set a unique <code>SESSION_SECRET</code> before exposing the panel. The SQLite
                     database is created under <code>prisma/</code>; back up both it and{" "}
-                    <code>.env</code>.
+                    <code>.env</code>. The panel forces secure session cookies when{" "}
+                    <code>NODE_ENV=production</code>, so use development mode for direct HTTP or
+                    put it behind HTTPS first.
                   </p>
                 </>
               ) : (
@@ -293,6 +300,12 @@ export default function AirlinkPanel() {
                     configure nginx or SSL — add those separately. It also does not currently
                     accept the <code>--panel-only</code>/<code>--daemon-only</code> flags shown in
                     some docs; use the menu. Keep <code>.env</code> and the database when updating.
+                  </p>
+                  <p className="setup-note">
+                    Upstream issue: the current installer still calls{" "}
+                    <code>npm run seed</code>, but the panel package no longer defines that script.
+                    If it exits at <strong>“Seeding database with images”</strong>, use the manual
+                    method and import images from the Image Store after signing in.
                   </p>
                 </>
               )}
