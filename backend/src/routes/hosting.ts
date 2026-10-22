@@ -1,12 +1,14 @@
 import { Router } from "express";
-import type { MinecraftHosting, VpsHosting } from "../types.js";
+import type { MinecraftHosting, VpsHosting, WebsiteHosting } from "../types.js";
 import mcData from "../data/minecraft-hosting.json" with { type: "json" };
 import vpsData from "../data/vps-hosting.json" with { type: "json" };
+import websiteData from "../data/website-hosting.json" with { type: "json" };
 
 const router = Router();
 
 const mcHosting = mcData as MinecraftHosting[];
 const vpsHosting = vpsData as VpsHosting[];
+const websiteHosting = websiteData as WebsiteHosting[];
 
 // Minecraft free hosting with filters: ?q=&uptime=&alwaysOn=&location=&ram=
 router.get("/minecraft", (req, res) => {
@@ -64,6 +66,34 @@ router.get("/vps", (req, res) => {
   if (alwaysOn !== undefined && alwaysOn !== "") {
     const b = alwaysOn === "true";
     result = result.filter((v) => v.alwaysOn === b);
+  }
+
+  res.json({ count: result.length, data: result });
+});
+
+// Website free hosting
+router.get("/website", (req, res) => {
+  const q = String(req.query.q ?? "").toLowerCase();
+  const type = String(req.query.type ?? "").toLowerCase();
+  const customDomain = req.query.customDomain as string | undefined;
+  const ssl = req.query.ssl as string | undefined;
+  const ads = req.query.ads as string | undefined;
+  const alwaysFree = req.query.alwaysFree as string | undefined;
+
+  let result = websiteHosting;
+  if (q) result = result.filter((h) => h.name.toLowerCase().includes(q));
+  if (type) result = result.filter((h) => h.type.toLowerCase().includes(type));
+  if (customDomain !== undefined && customDomain !== "") {
+    result = result.filter((h) => h.customDomain === (customDomain === "true"));
+  }
+  if (ssl !== undefined && ssl !== "") {
+    result = result.filter((h) => h.ssl === (ssl === "true"));
+  }
+  if (ads !== undefined && ads !== "") {
+    result = result.filter((h) => h.ads === (ads === "true"));
+  }
+  if (alwaysFree !== undefined && alwaysFree !== "") {
+    result = result.filter((h) => h.alwaysFree === (alwaysFree === "true"));
   }
 
   res.json({ count: result.length, data: result });
