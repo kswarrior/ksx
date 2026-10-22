@@ -1,15 +1,15 @@
 /* ===== KS UNIVERSE MAP ===== */
 .map-page {
-  --mp-bg: #05070d;
-  --mp-panel: rgba(8, 12, 20, 0.94);
-  --mp-panel-solid: #080d16;
-  --mp-border: rgba(255, 255, 255, 0.1);
-  --mp-border-strong: rgba(255, 255, 255, 0.2);
-  --mp-text: #f4f7fc;
-  --mp-muted: #8b9ab2;
-  --mp-accent: #9fc1ff;
+  --mp-bg: #c9ced5;
+  --mp-panel: rgba(250, 251, 252, 0.94);
+  --mp-panel-solid: #f7f8fa;
+  --mp-border: rgba(36, 43, 52, 0.16);
+  --mp-border-strong: rgba(36, 43, 52, 0.28);
+  --mp-text: #222831;
+  --mp-muted: #5d6673;
+  --mp-accent: #4053d6;
   --mp-radius: 16px;
-  --mp-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+  --mp-shadow: none;
   position: relative;
   height: calc(100vh - 56px);
   height: calc(100dvh - 56px);
@@ -25,6 +25,7 @@
 .map-page *::before,
 .map-page *::after {
   -webkit-tap-highlight-color: transparent;
+  box-shadow: none !important;
 }
 
 /* ---------- SKY ---------- */
@@ -41,6 +42,7 @@
 }
 
 .mp-stars {
+  display: none;
   position: absolute;
   inset: -6%;
   background-image:
@@ -74,11 +76,7 @@
 }
 
 .mp-nebula {
-  position: absolute;
-  width: 62vw;
-  height: 62vw;
-  border-radius: 50%;
-  opacity: 0.65;
+  display: none;
 }
 
 .mp-nebula.n1 {
@@ -96,7 +94,7 @@
 .mp-vignette {
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse at center, transparent 42%, rgba(0, 0, 0, 0.5) 100%);
+  background: radial-gradient(ellipse at center, transparent 58%, rgba(66, 74, 86, 0.14) 100%);
 }
 
 /* ---------- VIEWPORT / WORLD ---------- */
