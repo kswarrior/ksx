@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import Icon from "../components/Icon";
 import { Select, TextField } from "../components/ui";
 import "./CustomIP.css";
@@ -186,10 +187,18 @@ export default function CustomIP() {
 
         {step === 3 && (
           <div className="ci-stage ci-anim" key="step-3">
-            <div className="ci-card ci-coming">
-              <div className="ci-coming-icon"><Icon name="rocket" size={26} /></div>
-              <h3>3 More coming soon</h3>
-              <p>This page is still under construction — something new is on the way. Check back soon!</p>
+            <div className="ci-card ci-done">
+              <div className="ci-done-icon"><Icon name="sparkles" size={26} /></div>
+              <h3>3 Test Your Server</h3>
+              <p>Start your server for testing, or open the Minecraft Statics page to check live server stats.</p>
+              <div className="ci-done-actions">
+                <Link className="ci-btn secondary" to="/minecraft/make-server/setup-server-in-vps.html">
+                  <Icon name="rocket" size={14} /> Start Server
+                </Link>
+                <Link className="ci-btn" to="/minecraft/server/statics.html">
+                  <Icon name="globe" size={14} /> Open MC Statics
+                </Link>
+              </div>
             </div>
           </div>
         )}
