@@ -122,6 +122,20 @@ function clamp(value: number, min: number, max: number) {
   return Math.min(max, Math.max(min, value));
 }
 
+function edgeLine(from: Vec, to: Vec, fromR: number, toR: number) {
+  const dx = to.x - from.x;
+  const dy = to.y - from.y;
+  const len = Math.hypot(dx, dy) || 1;
+  const ux = dx / len;
+  const uy = dy / len;
+  return {
+    x1: from.x + ux * (fromR + 6),
+    y1: from.y + uy * (fromR + 6),
+    x2: to.x - ux * (toR + 6),
+    y2: to.y - uy * (toR + 6),
+  };
+}
+
 function plural(count: number, singular: string, pluralForm?: string) {
   return `${count} ${count === 1 ? singular : pluralForm ?? `${singular}s`}`;
 }
@@ -258,6 +272,8 @@ export default function MapPage() {
   const tfRef = useRef<View>({ x: 0, y: 0, z: 0.8 });
   const visibleTf = useRef<View>({ x: 0, y: 0, z: 0.8 });
   const visibleRef = useRef<VisibleKeys | null>(null);
+  const lastVisTf = useRef<View | null>(null);
+  const invRef = useRef(1);
   const visRaf = useRef(0);
   const zoomBucket = useRef("");
   const suppressClickUntil = useRef(0);
@@ -417,6 +433,16 @@ export default function MapPage() {
         const vp = viewportRef.current;
         if (!vp) return;
         const t = visibleTf.current;
+        const last = lastVisTf.current;
+        if (
+          last &&
+          Math.abs(t.z - last.z) < 0.0005 &&
+          Math.abs(t.x - last.x) < 18 &&
+          Math.abs(t.y - last.y) < 18
+        ) {
+          return;
+        }
+        lastVisTf.current = t;
         const rect = vp.getBoundingClientRect();
         const z = Math.max(t.z, 0.001);
         const pad = 140 / z;
