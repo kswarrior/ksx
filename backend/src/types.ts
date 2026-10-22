@@ -67,6 +67,23 @@ export interface WebsiteHosting {
   link: string;
 }
 
+export interface DatabaseHosting {
+  name: string;
+  type: string;
+  storage: string;
+  transfer: string;
+  databases: string;
+  region: string;
+  backups: string;
+  ssl: boolean;
+  cardRequired: boolean;
+  alwaysFree: boolean;
+  verification: string;
+  limits: string;
+  notes: string;
+  link: string;
+}
+
 export interface SearchItem {
   category: string;
   icon: string;
