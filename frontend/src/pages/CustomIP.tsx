@@ -13,6 +13,7 @@ type IpInfo = {
 };
 
 export default function CustomIP() {
+  const [step, setStep] = useState(1);
   const [input, setInput] = useState("");
   const [result, setResult] = useState<IpInfo | null>(null);
   const [loading, setLoading] = useState(false);
