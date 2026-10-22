@@ -1,5 +1,7 @@
+import { useEffect, useState } from "react";
 import Icon from "../components/Icon";
 import Markdown from "../components/Markdown";
+import { api } from "../lib/api";
 import portalMarkdown from "./ks-portal.md?raw";
 import "./KsPortal.css";
 
@@ -29,18 +31,23 @@ function trackDownload() {
 const FEATURES = [
   {
     icon: "zap",
-    title: "Built for speed",
-    text: "A lightweight engine that opens instantly and keeps every page smooth, even on low-end devices.",
+    title: "Fast and minimal",
+    text: "A lightweight WebView browser that opens quickly and keeps the interface out of your way.",
   },
   {
-    icon: "search",
-    title: "One smart bar",
-    text: "Search the web and jump straight into Minecraft tools, hosting lists and KS apps from one place.",
+    icon: "check",
+    title: "Private by design",
+    text: "Incognito tabs, Do Not Track, Safe Browsing and HTTPS-first connections are built in.",
   },
   {
-    icon: "smartphone",
-    title: "Every device",
-    text: "Android first, with Windows and Linux to follow — one experience, wherever you browse.",
+    icon: "bot",
+    title: "AI Mode built in",
+    text: "Open Google AI Mode, ChatGPT, Gemini, Claude, Perplexity, Copilot, Grok or DeepSeek in one tap.",
+  },
+  {
+    icon: "download",
+    title: "Downloads and tabs",
+    text: "Pause, resume, rename and organize downloads, with tab groups, pinned tabs and private tabs.",
   },
 ] as const;
 
@@ -71,31 +78,35 @@ const GALLERY = [
   },
 ] as const;
 
-const ROADMAP = [
-  {
-    step: "01",
-    title: "Android",
-    text: "The first KS Portal build, shipping in KS Apps.",
-    state: "active",
-    label: "Shipping soon",
-  },
-  {
-    step: "02",
-    title: "Windows",
-    text: "The same fast portal, built for desktop.",
-    state: "",
-    label: "Planned",
-  },
-  {
-    step: "03",
-    title: "Linux",
-    text: "One experience across every device.",
-    state: "",
-    label: "Planned",
-  },
-] as const;
-
 export default function KsPortal() {
+  const [downloads, setDownloads] = useState<number | null>(null);
+  const [downloadsLoaded, setDownloadsLoaded] = useState(false);
+  const [downloadsAvailable, setDownloadsAvailable] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    api
+      .getAppStats(APP_SLUG)
+      .then((stats) => {
+        if (cancelled) return;
+        setDownloads(stats.downloads);
+        setDownloadsAvailable(stats.available);
+        setDownloadsLoaded(true);
+      })
+      .catch(() => {
+        if (!cancelled) setDownloadsLoaded(true);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const downloadLabel = !downloadsLoaded
+    ? "…"
+    : downloads === null
+      ? "—"
+      : downloads.toLocaleString();
+
   return (
     <div className="portal-page">
       <div className="portal-shell">
@@ -167,56 +178,72 @@ export default function KsPortal() {
           </div>
         </section>
 
-        <div className="portal-grid">
-          <section className="portal-panel" aria-labelledby="portal-highlights-title">
-            <div className="portal-panel-head">
-              <h2 id="portal-highlights-title">
-                <span className="portal-panel-icon" style={{ color: "#f2c94c" }}>
-                  <Icon name="sparkles" size={16} />
+        <section className="portal-panel" aria-labelledby="portal-info-title">
+          <div className="portal-panel-head">
+            <h2 id="portal-info-title">
+              <span className="portal-panel-icon" style={{ color: "#ff6b6b" }}>
+                <Icon name="package" size={16} />
+              </span>
+              App info
+            </h2>
+            <span className="portal-panel-count">Android</span>
+          </div>
+          <div className="portal-info-grid">
+            <div
+              className="portal-info-tile downloads"
+              title={
+                downloadsAvailable
+                  ? "Total downloads recorded in D1"
+                  : "Download count is available on the live site"
+              }
+            >
+              <span className="portal-item-icon small">
+                <Icon name="download" size={14} />
+              </span>
+              <span className="portal-item-text">
+                <span className="name">Downloads</span>
+                <span className="sub">Total from D1</span>
+              </span>
+              <span className="portal-item-value">{downloadLabel}</span>
+            </div>
+            {DETAILS.map((detail) => (
+              <div key={detail.label} className="portal-info-tile">
+                <span className="portal-item-icon small">
+                  <Icon name={detail.icon} size={14} />
                 </span>
-                Highlights
-              </h2>
-              <span className="portal-panel-count">{FEATURES.length}</span>
-            </div>
-            <div className="portal-list">
-              {FEATURES.map((feature) => (
-                <div key={feature.title} className="portal-list-item">
-                  <span className="portal-item-icon">
-                    <Icon name={feature.icon} size={16} />
-                  </span>
-                  <span className="portal-item-text">
-                    <span className="name">{feature.title}</span>
-                    <span className="sub">{feature.text}</span>
-                  </span>
-                </div>
-              ))}
-            </div>
-          </section>
+                <span className="portal-item-text">
+                  <span className="name">{detail.label}</span>
+                </span>
+                <span className="portal-item-value">{detail.value}</span>
+              </div>
+            ))}
+          </div>
+        </section>
 
-          <section className="portal-panel" aria-labelledby="portal-info-title">
-            <div className="portal-panel-head">
-              <h2 id="portal-info-title">
-                <span className="portal-panel-icon" style={{ color: "#ff6b6b" }}>
-                  <Icon name="package" size={16} />
+        <section className="portal-panel" aria-labelledby="portal-highlights-title">
+          <div className="portal-panel-head">
+            <h2 id="portal-highlights-title">
+              <span className="portal-panel-icon" style={{ color: "#f2c94c" }}>
+                <Icon name="sparkles" size={16} />
+              </span>
+              Highlights
+            </h2>
+            <span className="portal-panel-count">{FEATURES.length}</span>
+          </div>
+          <div className="portal-highlights-grid">
+            {FEATURES.map((feature) => (
+              <div key={feature.title} className="portal-list-item">
+                <span className="portal-item-icon">
+                  <Icon name={feature.icon} size={16} />
                 </span>
-                App info
-              </h2>
-            </div>
-            <div className="portal-list">
-              {DETAILS.map((detail) => (
-                <div key={detail.label} className="portal-list-item compact">
-                  <span className="portal-item-icon small">
-                    <Icon name={detail.icon} size={14} />
-                  </span>
-                  <span className="portal-item-text">
-                    <span className="name">{detail.label}</span>
-                  </span>
-                  <span className="portal-item-value">{detail.value}</span>
-                </div>
-              ))}
-            </div>
-          </section>
-        </div>
+                <span className="portal-item-text">
+                  <span className="name">{feature.title}</span>
+                  <span className="sub">{feature.text}</span>
+                </span>
+              </div>
+            ))}
+          </div>
+        </section>
 
         <section className="portal-panel portal-about" aria-labelledby="portal-about-title">
           <div className="portal-panel-head">
@@ -230,33 +257,6 @@ export default function KsPortal() {
           </div>
           <div className="portal-about-md">
             <Markdown source={portalMarkdown} />
-          </div>
-        </section>
-
-        <section className="portal-panel" aria-labelledby="portal-roadmap-title">
-          <div className="portal-panel-head">
-            <h2 id="portal-roadmap-title">
-              <span className="portal-panel-icon" style={{ color: "#9ecbff" }}>
-                <Icon name="rocket" size={16} />
-              </span>
-              Roadmap
-            </h2>
-            <span className="portal-panel-count">In development</span>
-          </div>
-          <div className="portal-roadmap">
-            {ROADMAP.map((item) => (
-              <article
-                key={item.title}
-                className={`portal-step${item.state ? ` ${item.state}` : ""}`}
-              >
-                <div className="portal-step-top">
-                  <span className="portal-step-num">{item.step}</span>
-                  <span className="portal-step-state">{item.label}</span>
-                </div>
-                <h3>{item.title}</h3>
-                <p>{item.text}</p>
-              </article>
-            ))}
           </div>
         </section>
       </div>
