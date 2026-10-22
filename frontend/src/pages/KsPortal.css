@@ -467,6 +467,14 @@
   gap: 10px;
 }
 
+.portal-grid .portal-list {
+  flex: 1;
+}
+
+.portal-grid .portal-list-item {
+  flex: 1;
+}
+
 .portal-list-item {
   display: flex;
   align-items: center;
