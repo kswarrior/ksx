@@ -705,6 +705,13 @@ export default function BotPage() {
                 ))}
               </div>
 
+              <div className="bot-save-actions">
+                <button type="button" className="bot-btn secondary" onClick={downloadBot}>
+                  <Icon name="download" size={14} />
+                  Download bot.js
+                </button>
+              </div>
+
               {processManager === "pm2" && (
                 <p className="bot-note">
                   PM2 keeps the process alive after the terminal closes. To start it after a reboot,

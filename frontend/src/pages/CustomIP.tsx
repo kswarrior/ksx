@@ -116,6 +116,27 @@ export default function CustomIP() {
     setTimeout(()=>setCopied(false),1200);
   }
 
+  function downloadIPInfo() {
+    if (!result) return;
+    const lines = [
+      `IP Address: ${result.ip || "N/A"}`,
+      `City: ${result.city || "N/A"}`,
+      `Region: ${result.region || "N/A"}`,
+      `Country: ${result.country_name || "N/A"}`,
+      `ISP: ${result.org || "N/A"}`,
+      `Timezone: ${result.timezone || "N/A"}`,
+    ];
+    const blob = new Blob([lines.join("\n")], { type: "text/plain;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `${(result.ip || "ip-info").replace(/[^A-Za-z0-9._-]+/g, "-")}.txt`;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
+
   const activeProvider = PROVIDERS.find((p) => p.value === provider) ?? PROVIDERS[0];
   const navigate = useNavigate();
 
@@ -152,6 +173,11 @@ export default function CustomIP() {
                     <p><b>Country:</b> <span>{result.country_name || "N/A"}</span></p>
                     <p><b>ISP:</b> <span>{result.org || "N/A"}</span></p>
                     <p><b>Timezone:</b> <span>{result.timezone || "N/A"}</span></p>
+                    <div className="ci-result-actions">
+                      <button className="ci-btn secondary" onClick={downloadIPInfo}>
+                        <Icon name="download" size={13} /> Download IP Info
+                      </button>
+                    </div>
                   </>
                 )}
                 {!loading && !error && !result && <p style={{ color: "var(--ci-muted)" }}>Result will appear here</p>}
