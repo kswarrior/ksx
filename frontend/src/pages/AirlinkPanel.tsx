@@ -305,8 +305,9 @@ export default function AirlinkPanel() {
               meta="First account = admin"
             >
               <p className="setup-hint">
-                Start the panel and open it on port 3000. When the database has no users, register
-                the first account — Airlink automatically makes that account the administrator.
+                {isManual
+                  ? "Start the panel and open it on port 3000. When the database has no users, register the first account — Airlink automatically makes it the administrator."
+                  : "The quick installer already created your admin account and disabled public registration. Sign in with the email, username and password you entered during installation."}
               </p>
               <CodeBlock
                 label={isManual ? "Check the PM2 process" : "Check the panel service"}
@@ -314,12 +315,12 @@ export default function AirlinkPanel() {
               />
               <div className="setup-fields">
                 <div className="setup-field wide">
-                  <label htmlFor="airlink-server-ip">Server IP or hostname</label>
+                  <label htmlFor="airlink-server-ip">Panel IP or full URL</label>
                   <TextField
                     id="airlink-server-ip"
                     value={serverIp}
                     onChange={(event) => setServerIp(event.target.value)}
-                    placeholder="203.0.113.10 or panel.example.com"
+                    placeholder="203.0.113.10 or https://panel.example.com"
                     spellCheck={false}
                   />
                 </div>
@@ -347,8 +348,10 @@ export default function AirlinkPanel() {
             >
               <p className="setup-hint">
                 In the panel, open <strong>Admin → Nodes</strong>, click <strong>Create Node</strong>
-                {" "}and copy the generated node key. Install the daemon on the target machine with
-                the same panel address, port and key.
+                {" "}and copy the node key. Set the node port to <code>3002</code> to match the
+                daemon. If you chose <strong>Install Both</strong>, the daemon is already installed
+                on this machine — reuse the key from <code>/etc/daemon/.env</code>. Otherwise
+                install it on the node with the same panel address, port and key.
               </p>
               {isManual ? (
                 <>
