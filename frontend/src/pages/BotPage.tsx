@@ -114,6 +114,9 @@ export default function BotPage() {
   const [owners, setOwners] = useState(DEFAULT_BOT_CONFIG.owners.join(", "));
   const [auth, setAuth] = useState<BotAuth>(DEFAULT_BOT_CONFIG.auth);
   const [version, setVersion] = useState(DEFAULT_BOT_CONFIG.version);
+  const [serverPassword, setServerPassword] = useState(DEFAULT_BOT_CONFIG.serverPassword);
+  const [loginCommand, setLoginCommand] = useState(DEFAULT_BOT_CONFIG.loginCommand);
+  const [loginDelay, setLoginDelay] = useState(String(DEFAULT_BOT_CONFIG.loginDelay));
   const [prefix, setPrefix] = useState(DEFAULT_BOT_CONFIG.prefix);
   const [reconnectDelay, setReconnectDelay] = useState(String(DEFAULT_BOT_CONFIG.reconnectDelay));
   const [autoEat, setAutoEat] = useState(DEFAULT_BOT_CONFIG.autoEat);
@@ -142,6 +145,9 @@ export default function BotPage() {
       .filter(Boolean),
     auth,
     version,
+    serverPassword,
+    loginCommand,
+    loginDelay: toInt(loginDelay, DEFAULT_BOT_CONFIG.loginDelay),
     prefix,
     reconnectDelay: toInt(reconnectDelay, DEFAULT_BOT_CONFIG.reconnectDelay),
     autoEat,
@@ -436,11 +442,11 @@ export default function BotPage() {
                   />
                 </div>
                 <div className="bot-field">
-                  <label>Bot username</label>
+                  <label>{auth === "microsoft" ? "Microsoft email" : "Bot username"}</label>
                   <TextField
                     value={username}
                     onChange={(event) => setUsername(event.target.value)}
-                    placeholder="KSBot"
+                    placeholder={auth === "microsoft" ? "you@example.com" : "KSBot"}
                     spellCheck={false}
                   />
                 </div>
