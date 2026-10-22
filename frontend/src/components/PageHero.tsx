@@ -18,16 +18,16 @@ export default function PageHero({
   variant = "card",
   className = "",
 }: PageHeroProps) {
-  return (
-    <header
-      className={[
-        "page-hero",
-        variant === "inline" ? "page-hero--inline" : "page-hero--card",
-        className,
-      ]
-        .filter(Boolean)
-        .join(" ")}
-    >
+  const classes = [
+    "page-hero",
+    variant === "inline" ? "page-hero--inline" : "page-hero--card",
+    className,
+  ]
+    .filter(Boolean)
+    .join(" ");
+
+  const content = (
+    <>
       <span className="page-hero-icon" aria-hidden>
         <Icon name={icon} size={22} />
       </span>
@@ -36,6 +36,12 @@ export default function PageHero({
         <h1>{title}</h1>
         {subtitle && <p>{subtitle}</p>}
       </div>
-    </header>
+    </>
   );
+
+  if (variant === "inline") {
+    return <div className={classes}>{content}</div>;
+  }
+
+  return <header className={classes}>{content}</header>;
 }
