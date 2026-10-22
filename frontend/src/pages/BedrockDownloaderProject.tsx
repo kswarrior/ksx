@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import Icon from "../components/Icon";
 import { API_BASE } from "../lib/api";
+import sanitizeHtml from "../lib/sanitizeHtml";
 import "./JavaDownloader.css";
 
 type BedrockDownload = {
@@ -44,28 +45,6 @@ function formatDate(value?: string): string {
   const date = new Date(value.replace(" ", "T"));
   if (Number.isNaN(date.getTime())) return "unknown";
   return date.toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" });
-}
-
-function sanitizeHtml(html: string): string {
-  const doc = new DOMParser().parseFromString(html, "text/html");
-  doc.querySelectorAll("script, style, iframe, object, embed, form, input, button, link, meta").forEach((el) => el.remove());
-  doc.querySelectorAll("*").forEach((el) => {
-    for (const attr of Array.from(el.attributes)) {
-      const name = attr.name.toLowerCase();
-      if (name.startsWith("on")) {
-        el.removeAttribute(attr.name);
-        continue;
-      }
-      if ((name === "href" || name === "src") && /^\s*javascript:/i.test(attr.value)) {
-        el.removeAttribute(attr.name);
-      }
-    }
-    if (el.tagName === "A") {
-      el.setAttribute("target", "_blank");
-      el.setAttribute("rel", "noreferrer noopener");
-    }
-  });
-  return doc.body.innerHTML;
 }
 
 export default function BedrockDownloaderProject() {
