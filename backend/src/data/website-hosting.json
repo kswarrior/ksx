@@ -1,6 +1,7 @@
 [
   {
     "name": "Cloudflare Pages",
+    "logo": "https://www.google.com/s2/favicons?domain=pages.cloudflare.com&sz=128",
     "type": "Static / Jamstack",
     "storage": "20,000 files (25 MiB each)",
     "bandwidth": "Unlimited",
@@ -17,6 +18,7 @@
   },
   {
     "name": "GitHub Pages",
+    "logo": "https://www.google.com/s2/favicons?domain=pages.github.com&sz=128",
     "type": "Static / Git",
     "storage": "1 GB per site",
     "bandwidth": "100 GB/month (soft)",
@@ -33,6 +35,7 @@
   },
   {
     "name": "GitLab Pages",
+    "logo": "https://www.google.com/s2/favicons?domain=docs.gitlab.com&sz=128",
     "type": "Static / Git",
     "storage": "1 GB per site",
     "bandwidth": "Not published (rate-limited)",
@@ -49,6 +52,7 @@
   },
   {
     "name": "Codeberg Pages",
+    "logo": "https://www.google.com/s2/favicons?domain=codeberg.page&sz=128",
     "type": "Static / Git",
     "storage": "Not published (repo quota)",
     "bandwidth": "Not published",
@@ -65,6 +69,7 @@
   },
   {
     "name": "Netlify",
+    "logo": "https://www.google.com/s2/favicons?domain=netlify.com&sz=128",
     "type": "Static + Functions",
     "storage": "Deploy storage (not published)",
     "bandwidth": "300 credits/mo (~15 GB transfer)",
@@ -81,6 +86,7 @@
   },
   {
     "name": "Vercel",
+    "logo": "https://www.google.com/s2/favicons?domain=vercel.com&sz=128",
     "type": "Static + Serverless",
     "storage": "100 MB static upload (CLI)",
     "bandwidth": "100 GB fast data transfer",
@@ -97,6 +103,7 @@
   },
   {
     "name": "Render",
+    "logo": "https://www.google.com/s2/favicons?domain=render.com&sz=128",
     "type": "Static + PaaS",
     "storage": "Git repo / build output",
     "bandwidth": "5 GB/month (Hobby workspace)",
@@ -113,6 +120,7 @@
   },
   {
     "name": "Firebase Hosting",
+    "logo": "https://www.google.com/s2/favicons?domain=firebase.google.com&sz=128",
     "type": "Static + Serverless",
     "storage": "10 GB",
     "bandwidth": "10 GB/month (360 MB/day)",
@@ -129,6 +137,7 @@
   },
   {
     "name": "Kinsta Static Site Hosting",
+    "logo": "https://www.google.com/s2/favicons?domain=kinsta.com&sz=128",
     "type": "Static / Git",
     "storage": "1 GB build image per site",
     "bandwidth": "100 GB/month",
@@ -145,6 +154,7 @@
   },
   {
     "name": "Surge.sh",
+    "logo": "https://www.google.com/s2/favicons?domain=surge.sh&sz=128",
     "type": "Static / CLI",
     "storage": "Not published (fair use)",
     "bandwidth": "Not published (fair use)",
@@ -161,6 +171,7 @@
   },
   {
     "name": "Neocities",
+    "logo": "https://www.google.com/s2/favicons?domain=neocities.org&sz=128",
     "type": "Static / community",
     "storage": "1 GB",
     "bandwidth": "200 GB/month",
@@ -177,6 +188,7 @@
   },
   {
     "name": "tiiny.host",
+    "logo": "https://www.google.com/s2/favicons?domain=tiiny.host&sz=128",
     "type": "Static / quick share",
     "storage": "3 MB per project",
     "bandwidth": "Not published",
@@ -193,6 +205,7 @@
   },
   {
     "name": "InfinityFree",
+    "logo": "https://www.google.com/s2/favicons?domain=infinityfree.net&sz=128",
     "type": "PHP + MySQL",
     "storage": "5 GB",
     "bandwidth": "Unlimited (50,000 hits/day)",
@@ -209,6 +222,7 @@
   },
   {
     "name": "ByetHost",
+    "logo": "https://www.google.com/s2/favicons?domain=byet.host&sz=128",
     "type": "PHP + MySQL",
     "storage": "5 GB NVMe",
     "bandwidth": "Unlimited",
@@ -225,6 +239,7 @@
   },
   {
     "name": "ProFreeHost",
+    "logo": "https://www.google.com/s2/favicons?domain=profreehost.com&sz=128",
     "type": "PHP + MySQL",
     "storage": "5 GB",
     "bandwidth": "Unlimited",
@@ -241,6 +256,7 @@
   },
   {
     "name": "AwardSpace",
+    "logo": "https://www.google.com/s2/favicons?domain=awardspace.com&sz=128",
     "type": "PHP + MySQL",
     "storage": "1 GB",
     "bandwidth": "5 GB/month",
@@ -257,6 +273,7 @@
   },
   {
     "name": "FreeHostia",
+    "logo": "https://www.google.com/s2/favicons?domain=freehostia.com&sz=128",
     "type": "PHP + MySQL",
     "storage": "250 MB",
     "bandwidth": "6 GB/month",
@@ -273,6 +290,7 @@
   },
   {
     "name": "HelioHost",
+    "logo": "https://www.google.com/s2/favicons?domain=heliohost.org&sz=128",
     "type": "PHP / Python / Node",
     "storage": "1 GB (files + databases)",
     "bandwidth": "Unlimited",
@@ -289,6 +307,7 @@
   },
   {
     "name": "GoogieHost",
+    "logo": "https://www.google.com/s2/favicons?domain=googiehost.com&sz=128",
     "type": "PHP + MySQL",
     "storage": "1 GB NVMe",
     "bandwidth": "Unmetered (fair use)",
@@ -305,6 +324,7 @@
   },
   {
     "name": "x10Hosting",
+    "logo": "https://www.google.com/s2/favicons?domain=x10hosting.com&sz=128",
     "type": "PHP + MySQL",
     "storage": "500 MB",
     "bandwidth": "Unmetered",
@@ -321,6 +341,7 @@
   },
   {
     "name": "Serv00",
+    "logo": "https://www.google.com/s2/favicons?domain=serv00.com&sz=128",
     "type": "PHP / Python / Node / SSH",
     "storage": "3 GB SSD",
     "bandwidth": "Unlimited",
@@ -337,6 +358,7 @@
   },
   {
     "name": "Alwaysdata",
+    "logo": "https://www.google.com/s2/favicons?domain=alwaysdata.com&sz=128",
     "type": "PHP / Python / Node",
     "storage": "1 GB SSD",
     "bandwidth": "Unmetered",
@@ -353,6 +375,7 @@
   },
   {
     "name": "PythonAnywhere",
+    "logo": "https://www.google.com/s2/favicons?domain=pythonanywhere.com&sz=128",
     "type": "Python hosting",
     "storage": "512 MB",
     "bandwidth": "Not published (fair use)",
@@ -369,6 +392,7 @@
   },
   {
     "name": "FreeHosting.com",
+    "logo": "https://www.google.com/s2/favicons?domain=freehosting.com&sz=128",
     "type": "PHP + MySQL",
     "storage": "10 GB",
     "bandwidth": "Unmetered (fair use)",
@@ -385,6 +409,7 @@
   },
   {
     "name": "WebHostMost",
+    "logo": "https://www.google.com/s2/favicons?domain=webhostmost.com&sz=128",
     "type": "PHP / Node",
     "storage": "125 MB NVMe",
     "bandwidth": "Unlimited",
@@ -401,6 +426,7 @@
   },
   {
     "name": "WordPress.com",
+    "logo": "https://www.google.com/s2/favicons?domain=wordpress.com&sz=128",
     "type": "Website builder / CMS",
     "storage": "1 GB",
     "bandwidth": "Unmetered",
@@ -417,6 +443,7 @@
   },
   {
     "name": "Wix",
+    "logo": "https://www.google.com/s2/favicons?domain=wix.com&sz=128",
     "type": "Website builder",
     "storage": "500 MB",
     "bandwidth": "1 GB/month",
@@ -433,6 +460,7 @@
   },
   {
     "name": "Weebly",
+    "logo": "https://www.google.com/s2/favicons?domain=weebly.com&sz=128",
     "type": "Website builder",
     "storage": "500 MB",
     "bandwidth": "Unmetered",
@@ -449,6 +477,7 @@
   },
   {
     "name": "Google Sites",
+    "logo": "https://www.google.com/s2/favicons?domain=sites.google.com&sz=128",
     "type": "Website builder",
     "storage": "15 GB Google Account (shared)",
     "bandwidth": "Not published",
@@ -465,6 +494,7 @@
   },
   {
     "name": "Webflow",
+    "logo": "https://www.google.com/s2/favicons?domain=webflow.com&sz=128",
     "type": "Website builder",
     "storage": "Not published (assets)",
     "bandwidth": "1 GB/month",

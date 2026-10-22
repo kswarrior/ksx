@@ -1,6 +1,7 @@
 [
   {
     "name": "Neon",
+    "logo": "https://www.google.com/s2/favicons?domain=neon.com&sz=128",
     "type": "PostgreSQL",
     "storage": "1 GB/project (20 GB total)",
     "transfer": "5 GB/project/month",
@@ -17,6 +18,7 @@
   },
   {
     "name": "Supabase",
+    "logo": "https://www.google.com/s2/favicons?domain=supabase.com&sz=128",
     "type": "PostgreSQL",
     "storage": "500 MB/project",
     "transfer": "5 GB egress/month",
@@ -33,6 +35,7 @@
   },
   {
     "name": "Nhost",
+    "logo": "https://www.google.com/s2/favicons?domain=nhost.io&sz=128",
     "type": "PostgreSQL",
     "storage": "1 GB database",
     "transfer": "5 GB egress/month",
@@ -49,6 +52,7 @@
   },
   {
     "name": "Prisma Postgres",
+    "logo": "https://www.google.com/s2/favicons?domain=prisma.io&sz=128",
     "type": "PostgreSQL",
     "storage": "500 MB",
     "transfer": "Unlimited",
@@ -65,6 +69,7 @@
   },
   {
     "name": "CockroachDB Cloud",
+    "logo": "https://www.google.com/s2/favicons?domain=cockroachlabs.com&sz=128",
     "type": "Distributed SQL",
     "storage": "10 GiB",
     "transfer": "Included in RUs",
@@ -81,6 +86,7 @@
   },
   {
     "name": "TiDB Cloud Starter",
+    "logo": "https://www.google.com/s2/favicons?domain=pingcap.com&sz=128",
     "type": "MySQL-compatible",
     "storage": "5 GiB row + 5 GiB columnar",
     "transfer": "Included in RUs",
@@ -97,6 +103,7 @@
   },
   {
     "name": "Aiven",
+    "logo": "https://www.google.com/s2/favicons?domain=aiven.io&sz=128",
     "type": "Multi-engine",
     "storage": "1 GB SQL; 20 GB OpenSearch",
     "transfer": "Capped; network costs may apply",
@@ -113,6 +120,7 @@
   },
   {
     "name": "Render",
+    "logo": "https://www.google.com/s2/favicons?domain=render.com&sz=128",
     "type": "PostgreSQL",
     "storage": "1 GB",
     "transfer": "5 GB workspace/month",
@@ -129,6 +137,7 @@
   },
   {
     "name": "Cloudflare D1",
+    "logo": "https://www.google.com/s2/favicons?domain=developers.cloudflare.com&sz=128",
     "type": "SQLite",
     "storage": "5 GB total (500 MB/database)",
     "transfer": "No egress fees",
@@ -145,6 +154,7 @@
   },
   {
     "name": "Turso",
+    "logo": "https://www.google.com/s2/favicons?domain=turso.tech&sz=128",
     "type": "SQLite",
     "storage": "5 GB",
     "transfer": "3 GB syncs/month",
@@ -161,6 +171,7 @@
   },
   {
     "name": "SQLite Cloud",
+    "logo": "https://www.google.com/s2/favicons?domain=sqlite.ai&sz=128",
     "type": "SQLite",
     "storage": "512 MB",
     "transfer": "Not published",
@@ -177,6 +188,7 @@
   },
   {
     "name": "MongoDB Atlas",
+    "logo": "https://www.google.com/s2/favicons?domain=mongodb.com&sz=128",
     "type": "Document",
     "storage": "512 MB",
     "transfer": "10 GB in / 10 GB out per 7 days",
@@ -193,6 +205,7 @@
   },
   {
     "name": "Firebase Firestore",
+    "logo": "https://www.google.com/s2/favicons?domain=firebase.google.com&sz=128",
     "type": "Document",
     "storage": "1 GiB",
     "transfer": "10 GiB/month",
@@ -209,6 +222,7 @@
   },
   {
     "name": "IBM Cloudant",
+    "logo": "https://www.google.com/s2/favicons?domain=cloud.ibm.com&sz=128",
     "type": "Document",
     "storage": "1 GB",
     "transfer": "Not published",
@@ -225,6 +239,7 @@
   },
   {
     "name": "Redis Cloud",
+    "logo": "https://www.google.com/s2/favicons?domain=redis.io&sz=128",
     "type": "Key-value",
     "storage": "30 MB",
     "transfer": "5 GB/month",
@@ -241,6 +256,7 @@
   },
   {
     "name": "Upstash Redis",
+    "logo": "https://www.google.com/s2/favicons?domain=upstash.com&sz=128",
     "type": "Key-value",
     "storage": "250 MB",
     "transfer": "10 GB/month",
@@ -257,6 +273,7 @@
   },
   {
     "name": "Neo4j AuraDB Free",
+    "logo": "https://www.google.com/s2/favicons?domain=neo4j.com&sz=128",
     "type": "Graph",
     "storage": "1 GB",
     "transfer": "Included",
@@ -273,6 +290,7 @@
   },
   {
     "name": "Qdrant Cloud",
+    "logo": "https://www.google.com/s2/favicons?domain=qdrant.tech&sz=128",
     "type": "Vector",
     "storage": "4 GB disk",
     "transfer": "Not published",
@@ -289,6 +307,7 @@
   },
   {
     "name": "Pinecone",
+    "logo": "https://www.google.com/s2/favicons?domain=pinecone.io&sz=128",
     "type": "Vector",
     "storage": "2 GB",
     "transfer": "1 GB egress/month",
@@ -305,6 +324,7 @@
   },
   {
     "name": "Zilliz Cloud",
+    "logo": "https://www.google.com/s2/favicons?domain=docs.zilliz.com&sz=128",
     "type": "Vector",
     "storage": "5 GB",
     "transfer": "2.5M vCUs/month",
@@ -321,6 +341,7 @@
   },
   {
     "name": "InfluxDB Cloud Serverless",
+    "logo": "https://www.google.com/s2/favicons?domain=docs.influxdata.com&sz=128",
     "type": "Time series",
     "storage": "30-day retention",
     "transfer": "300 MB read / 5 min",
@@ -337,6 +358,7 @@
   },
   {
     "name": "SurrealDB Cloud",
+    "logo": "https://www.google.com/s2/favicons?domain=surrealdb.com&sz=128",
     "type": "Multi-model",
     "storage": "1 GB",
     "transfer": "1 GB egress/month",
