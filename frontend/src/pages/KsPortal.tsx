@@ -135,6 +135,38 @@ export default function KsPortal() {
           </div>
         </section>
 
+        <section className="portal-panel portal-gallery" aria-labelledby="portal-gallery-title">
+          <div className="portal-panel-head">
+            <h2 id="portal-gallery-title">
+              <span className="portal-panel-icon" style={{ color: "#7dd3fc" }}>
+                <Icon name="smartphone" size={16} />
+              </span>
+              Gallery
+            </h2>
+            <span className="portal-panel-count">{GALLERY.length} screens</span>
+          </div>
+          <div className="portal-gallery-track">
+            {GALLERY.map((shot) => (
+              <a
+                key={shot.src}
+                className="portal-shot"
+                href={shot.src}
+                target="_blank"
+                rel="noreferrer"
+              >
+                <img
+                  src={shot.src}
+                  alt={shot.alt}
+                  width={412}
+                  height={915}
+                  loading="lazy"
+                  decoding="async"
+                />
+              </a>
+            ))}
+          </div>
+        </section>
+
         <div className="portal-grid">
           <section className="portal-panel" aria-labelledby="portal-highlights-title">
             <div className="portal-panel-head">
