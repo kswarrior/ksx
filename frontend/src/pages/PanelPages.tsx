@@ -87,21 +87,3 @@ export function PterodactylPage() {
     />
   );
 }
-
-export function AirlinkPage() {
-  return (
-    <PanelPages
-      title="Airlink Panel"
-      kicker="MAKE HOSTING • AIRLINK"
-      icon="cloud"
-      subtitle="Modern game panel — sleek UI, blazing fast, easy deploy."
-      links={[
-        { label: "Official Website", href: "https://airlinklabs.xyz" },
-        { label: "Documentation", href: "https://airlinklabs.xyz/docs/quick-start/" },
-      ]}
-      commands={[
-        { label: "Install Airlink", icon: "cloud", code: "curl -fsSL https://airlinklabs.xyz/install | bash" },
-      ]}
-    />
-  );
-}

@@ -32,7 +32,7 @@ const NotFound = lazy(() => import("./pages/NotFound"));
 // re-export panel pages for lazy wrapper
 const PterodactylPage = lazy(() => import("./pages/PanelPages").then(m => ({ default: m.PterodactylPage })));
 const PufferPage = lazy(() => import("./pages/PufferPanel"));
-const AirlinkPage = lazy(() => import("./pages/PanelPages").then(m => ({ default: m.AirlinkPage })));
+const AirlinkPage = lazy(() => import("./pages/AirlinkPanel"));
 
 export default function App() {
   return (
