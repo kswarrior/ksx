@@ -145,8 +145,8 @@ export default function BotPage() {
       .filter(Boolean),
     auth,
     version,
-    serverPassword,
-    loginCommand,
+    serverPassword: auth === "microsoft" ? serverPassword : "",
+    loginCommand: auth === "microsoft" ? loginCommand : "",
     loginDelay: toInt(loginDelay, DEFAULT_BOT_CONFIG.loginDelay),
     prefix,
     reconnectDelay: toInt(reconnectDelay, DEFAULT_BOT_CONFIG.reconnectDelay),
@@ -796,8 +796,13 @@ export default function BotPage() {
                   <h2>Check if the bot joined</h2>
                   <p>
                     Open MC Statics for <code>{serverAddress}</code>. Compare the player count
-                    before and after starting the bot; <b>{normalized.username}</b> should join the
-                    server.
+                    before and after starting the bot;{" "}
+                    <b>
+                      {auth === "microsoft"
+                        ? "your Microsoft account's Minecraft name"
+                        : normalized.username}
+                    </b>{" "}
+                    should join the server.
                   </p>
                 </div>
                 <button type="button" className="bot-btn primary" onClick={openStatics}>
