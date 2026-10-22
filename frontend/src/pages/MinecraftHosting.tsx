@@ -70,7 +70,7 @@ export default function MinecraftHostingPage() {
             variant="inline"
             icon="server"
             title="Free Minecraft Hosting"
-            subtitle="Always-free Minecraft hosts with limits and renewal rules. Trials, credits, and paid plans are excluded. Checked Oct 2026."
+            subtitle="Free Minecraft hosts with their real limits and renewal rules. Trials and paid plans are excluded. Checked Oct 2026."
           />
 
           <div className="h-search-wrap">

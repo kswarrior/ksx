@@ -118,11 +118,11 @@
     "disk": "10GB",
     "players": "Unlimited",
     "location": "Germany, Finland, Canada, France, Singapore",
-    "uptime": "danger",
-    "alwaysOn": false,
+    "uptime": "good",
+    "alwaysOn": true,
     "verification": "Email",
-    "limits": "Free tiers offer 4GB, 6GB or 8GB RAM with 10GB NVMe and unlimited slots. Renew every 8, 6 or 4 hours; the server stops if a renewal is missed.",
-    "notes": "No card. SFTP, modpacks and five regions. Renewal-based, not unattended 24/7.",
+    "limits": "Free tiers offer 4GB, 6GB or 8GB RAM with 10GB NVMe and unlimited slots. Renew every 8, 6 or 4 hours; the server stays online between renewals but stops if one is missed.",
+    "notes": "No card. SFTP, modpacks and five regions. 24/7 while renewals are maintained.",
     "link": "https://tickhosting.com/portal/"
   },
   {

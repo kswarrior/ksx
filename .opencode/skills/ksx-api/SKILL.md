@@ -48,7 +48,7 @@ curl localhost:8080/api/social
 
 - `/api/sitemap` -> `SitemapCategory[]` with inline SVG `icon`/`logo` strings.
 - `/api/sitemap/search?q=` -> flat `SearchItem[]`; matches page `name`, section `title`, or category. Empty `q` -> `[]`.
-- `/api/hosting/minecraft` -> `{ count, data: MinecraftHosting[] }`, filtered by name substring, exact `uptime`, location substring, and minimum RAM. `alwaysOn` accepts `"true"`/`"false"`. Each entry also includes `players`, `alwaysOn`, `verification`, `limits`, and `notes`.
+- `/api/hosting/minecraft` -> `{ count, data: MinecraftHosting[] }`, filtered by name substring, location substring, minimum RAM, legacy exact `uptime`, and `alwaysOn` (`"true"`/`"false"`). Each entry also includes `players`, `alwaysOn`, `verification`, `limits`, and `notes`.
 - `/api/hosting/vps` -> `{ count, data: VpsHosting[] }`; `type` matches a substring of `VPS`, `Cloud shell`, `Cloud IDE`, `Notebook`, or `Sandbox`; `renew`, `sudo`, `alwaysOn` accept `"true"`/`"false"`. Each entry also includes `verification`, `limits`, and `notes`.
 - `/api/social` -> `{ updatedAt, platforms: { youtube, discord, instagram } }`; each platform has `count`, `display`, `available`, `source`, optional `online`/`name`/`error`, and `fetchedAt`. Add `?refresh=1` to bypass the 5 minute server cache.
 - `/api/hosting/minecraft/:id` exists only on Express (index into the data array); the Worker does not implement it. Do not rely on it in frontend code.
