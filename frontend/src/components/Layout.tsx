@@ -151,7 +151,6 @@ export default function Layout() {
   };
 
   const isSidebarPage = location.pathname === "/" || /^\/(dashboard|map|social|about)(\/|$)/.test(location.pathname);
-  const hideSidebar = location.pathname === "/social";
 
   const togglePin = () => {
     loadSitemap();
@@ -228,15 +227,13 @@ export default function Layout() {
   return (
     <>
       <div id="topbar" className={searchActive ? "search-active" : ""}>
-        {!hideSidebar && (
-          <button id="hamburger" aria-label="Menu" onClick={() => setSidebarOpen((o) => !o)}>
-            <svg className="menu-svg" viewBox="0 0 24 24" aria-hidden="true">
-              <line x1="4" y1="6" x2="20" y2="6" />
-              <line x1="4" y1="12" x2="20" y2="12" />
-              <line x1="4" y1="18" x2="20" y2="18" />
-            </svg>
-          </button>
-        )}
+        <button id="hamburger" aria-label="Menu" onClick={() => setSidebarOpen((o) => !o)}>
+          <svg className="menu-svg" viewBox="0 0 24 24" aria-hidden="true">
+            <line x1="4" y1="6" x2="20" y2="6" />
+            <line x1="4" y1="12" x2="20" y2="12" />
+            <line x1="4" y1="18" x2="20" y2="18" />
+          </svg>
+        </button>
 
         <div id="control-right">
           {!isSidebarPage && (
