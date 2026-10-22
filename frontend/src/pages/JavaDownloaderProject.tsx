@@ -33,7 +33,6 @@ function formatDate(value: string): string {
 export default function JavaDownloaderProject() {
   const { projectId } = useParams<{ projectId: string }>();
   const [project, setProject] = useState<ProjectDetail | null>(null);
-  const [versions, setVersions] = useState<ModrinthVersion[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [reload, setReload] = useState(0);
@@ -44,20 +43,13 @@ export default function JavaDownloaderProject() {
     setLoading(true);
     setError(false);
     setProject(null);
-    setVersions([]);
-    Promise.all([
-      fetch(`${API}/project/${projectId}`).then((r) => {
+    fetch(`${API}/project/${projectId}`)
+      .then((r) => {
         if (!r.ok) throw new Error(`HTTP ${r.status}`);
         return r.json() as Promise<ProjectDetail>;
-      }),
-      fetch(`${API}/project/${projectId}/version?featured=true`)
-        .then((r) => (r.ok ? (r.json() as Promise<ModrinthVersion[]>) : []))
-        .catch(() => [] as ModrinthVersion[]),
-    ])
-      .then(([projectData, versionData]) => {
-        if (cancelled) return;
-        setProject(projectData);
-        setVersions(Array.isArray(versionData) ? versionData : []);
+      })
+      .then((data: ProjectDetail) => {
+        if (!cancelled) setProject(data);
       })
       .catch(() => {
         if (!cancelled) setError(true);
@@ -82,18 +74,6 @@ export default function JavaDownloaderProject() {
       document.title = previous;
     };
   }, [project]);
-
-  const downloads = useMemo(() => {
-    const seen = new Set<string>();
-    const list: { url: string; filename: string }[] = [];
-    for (const version of versions.slice(0, 12)) {
-      const file = version.files.find((f) => f.primary) ?? version.files[0];
-      if (!file || seen.has(file.url)) continue;
-      seen.add(file.url);
-      list.push({ url: file.url, filename: file.filename });
-    }
-    return list;
-  }, [versions]);
 
   return (
     <div className="jd-page">
@@ -142,6 +122,14 @@ export default function JavaDownloaderProject() {
                   <span>Updated {formatDate(project.updated)}</span>
                 </div>
                 <div className="jd-detail-actions">
+                  <Link
+                    className="jd-btn jd-btn-icon"
+                    to={`/minecraft/java/downloader/${project.project_id}/downloads`}
+                    aria-label="Downloads"
+                    title="Downloads"
+                  >
+                    <Icon name="download" size={18} />
+                  </Link>
                   {project.source_url && (
                     <a className="jd-btn jd-btn-ghost" href={project.source_url} target="_blank" rel="noreferrer">Source</a>
                   )}
@@ -153,22 +141,6 @@ export default function JavaDownloaderProject() {
             </header>
 
             <section className="jd-detail-body">
-              {downloads.length > 0 && (
-                <>
-                  <h2 className="jd-detail-section-title">Downloads</h2>
-                  <ul className="jd-downloads">
-                    {downloads.map((download) => (
-                      <li key={download.url}>
-                        <a href={download.url} target="_blank" rel="noreferrer">
-                          <Icon name="download" size={15} />
-                          <span>{download.filename}</span>
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                </>
-              )}
-
               {project.body ? <Markdown source={project.body} /> : <p className="jd-detail-empty">No description provided.</p>}
             </section>
           </>

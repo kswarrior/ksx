@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { useSearchParams } from "react-router-dom";
 import Icon from "../components/Icon";
 import { TextField } from "../components/ui";
@@ -29,6 +29,144 @@ function decodeMotd(text: string) {
     .replace(/&quot;/g, '"')
     .replace(/&#0*39;/g, "'")
     .replace(/&apos;/g, "'");
+}
+
+const MC_COLORS: Record<string, string> = {
+  "0": "#000000",
+  "1": "#0000aa",
+  "2": "#00aa00",
+  "3": "#00aaaa",
+  "4": "#aa0000",
+  "5": "#aa00aa",
+  "6": "#ffaa00",
+  "7": "#aaaaaa",
+  "8": "#555555",
+  "9": "#5555ff",
+  a: "#55ff55",
+  b: "#55ffff",
+  c: "#ff5555",
+  d: "#ff55ff",
+  e: "#ffff55",
+  f: "#ffffff",
+};
+
+type MotdSegment = {
+  text: string;
+  color?: string;
+  bold?: boolean;
+  italic?: boolean;
+  underline?: boolean;
+  strikethrough?: boolean;
+  obfuscated?: boolean;
+};
+
+function parseMotd(line: string): MotdSegment[] {
+  const segments: MotdSegment[] = [];
+  let style: Omit<MotdSegment, "text"> = {};
+  let buffer = "";
+
+  const push = () => {
+    if (!buffer) return;
+    segments.push({ text: buffer, ...style });
+    buffer = "";
+  };
+
+  const format = (key: "bold" | "italic" | "underline" | "strikethrough" | "obfuscated") => {
+    push();
+    style = { ...style, [key]: true };
+  };
+
+  for (let i = 0; i < line.length; i += 1) {
+    const char = line[i];
+    if (char !== "§") {
+      buffer += char;
+      continue;
+    }
+
+    const code = line[i + 1]?.toLowerCase();
+
+    if (line[i + 1] === "#") {
+      const hex = line.slice(i + 2, i + 8);
+      if (/^[0-9a-fA-F]{6}$/.test(hex)) {
+        push();
+        style = { color: `#${hex}` };
+        i += 7;
+        continue;
+      }
+    }
+
+    if (code === "x" && line[i + 2] === "§") {
+      let hex = "";
+      let cursor = i + 2;
+      let valid = true;
+      for (let part = 0; part < 6; part += 1) {
+        const digit = line[cursor + 1];
+        if (line[cursor] !== "§" || !digit || !/^[0-9a-fA-F]$/.test(digit)) {
+          valid = false;
+          break;
+        }
+        hex += digit;
+        cursor += 2;
+      }
+      if (valid) {
+        push();
+        style = { color: `#${hex}` };
+        i = cursor - 1;
+        continue;
+      }
+    }
+
+    if (code && MC_COLORS[code]) {
+      push();
+      style = { color: MC_COLORS[code] };
+      i += 1;
+      continue;
+    }
+
+    if (code === "l") format("bold");
+    else if (code === "o") format("italic");
+    else if (code === "n") format("underline");
+    else if (code === "m") format("strikethrough");
+    else if (code === "k") format("obfuscated");
+    else if (code === "r") {
+      push();
+      style = {};
+    }
+    i += 1;
+  }
+
+  push();
+  return segments;
+}
+
+function motdSegmentStyle(segment: MotdSegment): CSSProperties {
+  const decoration = [segment.underline ? "underline" : "", segment.strikethrough ? "line-through" : ""]
+    .filter(Boolean)
+    .join(" ");
+  return {
+    color: segment.color,
+    fontWeight: segment.bold ? 800 : undefined,
+    fontStyle: segment.italic ? "italic" : undefined,
+    textDecoration: decoration || undefined,
+  };
+}
+
+function Obfuscated({ text }: { text: string }) {
+  const [display, setDisplay] = useState(text);
+
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const glyphs = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*";
+    const id = window.setInterval(() => {
+      setDisplay(
+        Array.from(text, (char) => (char === " " ? " " : glyphs[Math.floor(Math.random() * glyphs.length)]))
+          .join("")
+      );
+    }, 90);
+    return () => window.clearInterval(id);
+  }, [text]);
+
+  return <>{display}</>;
 }
 
 function buildStats(data: McStatus) {
