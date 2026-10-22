@@ -47,14 +47,17 @@ export default function CustomIP() {
     return () => window.clearTimeout(frameTimerRef.current);
   }, [step, provider, startFrameTimer]);
 
+  function isFrameOnBlank() {
+    try {
+      return frameRef.current?.contentWindow?.location.href === "about:blank";
+    } catch {
+      return false;
+    }
+  }
+
   function handleFrameLoad() {
     window.clearTimeout(frameTimerRef.current);
-    let blocked = performance.now() - frameStartRef.current < 500;
-    try {
-      if (frameRef.current?.contentWindow?.location.href === "about:blank") blocked = true;
-    } catch {
-      // Cross-origin page loaded normally.
-    }
+    const blocked = performance.now() - frameStartRef.current < 500 || isFrameOnBlank();
     setFrameBlocked(blocked);
   }
 
