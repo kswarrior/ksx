@@ -172,6 +172,14 @@ export default function BedrockDownloaderProject() {
                   {project.username && <span>By {project.username}</span>}
                 </div>
                 <div className="jd-detail-actions">
+                  <Link
+                    className="jd-btn jd-btn-icon"
+                    to={`/minecraft/bedrock/downloader/${project.slug}/downloads`}
+                    aria-label="Downloads"
+                    title="Downloads"
+                  >
+                    <Icon name="download" size={18} />
+                  </Link>
                   {project.cf_link && (
                     <a className="jd-btn jd-btn-ghost" href={project.cf_link} target="_blank" rel="noreferrer">CurseForge</a>
                   )}
@@ -183,22 +191,6 @@ export default function BedrockDownloaderProject() {
             </header>
 
             <section className="jd-detail-body">
-              {downloads.length > 0 && (
-                <>
-                  <h2 className="jd-detail-section-title">Downloads</h2>
-                  <ul className="jd-downloads">
-                    {downloads.map((download) => (
-                      <li key={download.file}>
-                        <a href={download.file} target="_blank" rel="noreferrer">
-                          <Icon name="download" size={15} />
-                          <span>{download.display_name || download.name}</span>
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                </>
-              )}
-
               {description && (
                 <>
                   <h2 className="jd-detail-section-title">Description</h2>
