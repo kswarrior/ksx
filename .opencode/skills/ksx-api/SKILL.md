@@ -50,7 +50,7 @@ curl localhost:8080/api/social
 - `/api/sitemap/search?q=` -> flat `SearchItem[]`; matches page `name`, section `title`, or category. Empty `q` -> `[]`.
 - `/api/hosting/minecraft` -> `{ count, data: MinecraftHosting[] }`, filtered by name substring, exact `uptime`, location substring, and minimum RAM.
 - `/api/hosting/vps` -> `{ count, data: VpsHosting[] }`; `renew`, `sudo`, `alwaysOn` accept `"true"`/`"false"`.
-- `/api/social` -> `{ updatedAt, platforms: { youtube, discord, instagram } }`; each platform has `count`, `display`, `available`, `source`, optional `online`/`name`/`error`, and `fetchedAt`.
+- `/api/social` -> `{ updatedAt, platforms: { youtube, discord, instagram } }`; each platform has `count`, `display`, `available`, `source`, optional `online`/`name`/`error`, and `fetchedAt`. Add `?refresh=1` to bypass the 5 minute server cache.
 - `/api/hosting/minecraft/:id` exists only on Express (index into the data array); the Worker does not implement it. Do not rely on it in frontend code.
 
 Legacy aliases still work: `/minecraft/hosting/free.json`, `/vps/hosting/list/free.json`, `/sitemap.json`.
@@ -60,5 +60,5 @@ Legacy aliases still work: `/minecraft/hosting/free.json`, `/vps/hosting/list/fr
 - Minecraft `uptime` values are `good`, `danger`, or `excellent (always-on)`. `?uptime=good` excludes the excellent ones; the UI's "24/7" filter includes both.
 - `ram` in data may be fractional or a string; `ram=4` means "at least 4 GB".
 - VPS booleans are real booleans in JSON but strings in query params; omitting a param means "no filter", while `false` is a real filter.
-- Social counts are cached for 5 minutes and fall back through multiple sources; `available: false` means the number is unknown, not zero.
+- Social counts are cached for 5 minutes (failures for 1 minute) and fall back through multiple sources; `available: false` means the number is unknown, not zero. Instagram login-gates public profiles, so live follower counts need `INSTAGRAM_ACCESS_TOKEN`.
 - Express `frontend/src/lib/api.ts` and Worker `backend/src/worker.ts` must stay behaviorally identical. When changing a filter or shape, update both and run `npm run typecheck`.

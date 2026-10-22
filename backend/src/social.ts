@@ -369,7 +369,7 @@ async function getInstagramStats(config: ResolvedConfig): Promise<SocialStat> {
           Accept: "text/html,application/xhtml+xml,application/xml;q=0.9",
         },
       },
-      15_000
+      8_000
     );
     if (!res.ok) throw new Error(`Instagram page HTTP ${res.status}`);
     const html = await res.text();
@@ -412,7 +412,8 @@ async function getInstagramStats(config: ResolvedConfig): Promise<SocialStat> {
           Origin: "https://www.instagram.com",
           Referer: `https://www.instagram.com/${config.instagramUsername}/`,
         },
-      }
+      },
+      8_000
     );
     const json = (await res.json()) as {
       data?: { user?: { edge_followed_by?: { count?: number } } };
@@ -431,7 +432,7 @@ async function getInstagramStats(config: ResolvedConfig): Promise<SocialStat> {
     const res = await fetchWithTimeout(
       `https://r.jina.ai/http://www.instagram.com/${encodeURIComponent(config.instagramUsername)}/`,
       { headers: { Accept: "text/plain" } },
-      15_000
+      8_000
     );
     if (!res.ok) throw new Error(`Instagram reader HTTP ${res.status}`);
     const text = await res.text();
