@@ -47,12 +47,11 @@
 }
 .setup-hero-icon{
   position:relative; z-index:1;
-  width:46px; height:46px; flex-shrink:0;
-  display:grid; place-items:center;
+  width:46px; height:46px; padding:6px; flex-shrink:0;
   border-radius:12px;
-  background:rgba(255,255,255,0.06);
-  border:1px solid rgba(255,255,255,0.10);
-  color:rgba(255,255,255,0.82);
+  background:linear-gradient(135deg,#ffffff,#f1f1f1);
+  border:1px solid rgba(255,255,255,0.12);
+  color:#111111;
   box-shadow:0 10px 24px rgba(0,0,0,0.28);
 }
 .setup-hero-text{position:relative; z-index:1; flex:1; min-width:200px;}
@@ -111,7 +110,9 @@
   background:rgba(255,255,255,0.035);
   border:1px solid rgba(255,255,255,0.065);
 }
+.setup-summary-logo{width:26px; height:26px; padding:3px; flex-shrink:0; margin-top:1px; border-radius:5px; background:linear-gradient(135deg,#ffffff,#f1f1f1); border:1px solid rgba(255,255,255,0.12); color:#111111;}
 .setup-summary svg{flex-shrink:0; margin-top:1px; color:rgba(255,255,255,0.65);}
+.setup-summary-logo svg{color:#111111; margin-top:0;}
 .setup-summary b{display:block; font-size:12px; font-weight:900; margin-bottom:3px;}
 .setup-summary p{font-size:11.5px; line-height:1.55; color:var(--s-muted);}
 

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import BrandLogo from "../components/BrandLogo";
 import Icon, { type IconName } from "../components/Icon";
 import { GuideCodeBlock as CodeBlock, GuidePanel as Panel } from "../components/Guide";
 import { Select, TextField, type SelectOption } from "../components/ui";
@@ -253,9 +254,12 @@ export default function PterodactylPanel() {
 
       <div className="setup-shell">
         <header className="setup-hero">
-          <span className="setup-hero-icon" aria-hidden>
-            <Icon name="rocket" size={22} />
-          </span>
+          <BrandLogo
+            className="setup-hero-icon"
+            src="https://github.com/pterodactyl.png?size=128"
+            fallback="rocket"
+            iconSize={22}
+          />
           <div className="setup-hero-text">
             <h1>Pterodactyl Panel Setup</h1>
             <p>
