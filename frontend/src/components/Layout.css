@@ -35,7 +35,7 @@
 .search-container {
   position: relative;
   width: 45px;
-  transition: width 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
   overflow: hidden;
   will-change: width;
 }
@@ -56,7 +56,8 @@
   font-size: 14px;
   outline: none;
   opacity: 0;
-  transition: opacity 0.16s ease, border-color 0.2s, box-shadow 0.2s;
+  box-shadow: none;
+  transition: opacity 0.66s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.66s ease;
 }
 
 #topbar.search-active #searchBox { opacity: 1; }
@@ -89,7 +90,7 @@
   fill: none;
   stroke-linecap: round;
   stroke-linejoin: round;
-  transition: transform 0.25s ease;
+  transition: transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
 }
 #searchTrigger:hover .search-svg, #searchTrigger:active .search-svg { stroke: #F5F5F5; transform: scale(1.15); filter: none; }
 
