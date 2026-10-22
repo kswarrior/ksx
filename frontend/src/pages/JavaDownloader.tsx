@@ -227,18 +227,23 @@ export default function JavaDownloader() {
     };
   }, [platform, mcpedlRoots.length]);
 
-  async function fetchModrinthResults(): Promise<Project[]> {
+  async function fetchModrinthResults(offset: number, limit: number): Promise<ResultBatch> {
     const facets: string[][] = [];
     if (type) facets.push([`project_type:${type}`]);
     if (loader) facets.push([`categories:${loader}`]);
     if (version) facets.push([`versions:${version}`]);
     const index = sort === "downloads" ? "downloads" : sort === "newest" ? "newest" : sort === "updated" ? "updated" : "relevance";
-    const params = new URLSearchParams({ query: query || "", limit: "24", index });
+    const params = new URLSearchParams({
+      query: query || "",
+      limit: String(limit),
+      offset: String(offset),
+      index,
+    });
     if (facets.length) params.set("facets", JSON.stringify(facets));
     const r = await fetch(`${MODRINTH_API}/search?${params.toString()}`);
     if (!r.ok) throw new Error(`HTTP ${r.status}`);
-    const d = await r.json();
-    return ((d.hits || []) as ModrinthHit[]).map((hit) => ({
+    const d = (await r.json()) as ModrinthSearchResponse;
+    const items = ((d.hits || []) as ModrinthHit[]).map((hit) => ({
       id: hit.project_id,
       title: hit.title,
       description: hit.description,
@@ -248,16 +253,18 @@ export default function JavaDownloader() {
       project_type: hit.project_type,
       platform: "java" as const,
     }));
+    const total = typeof d.total_hits === "number" ? d.total_hits : offset + items.length;
+    return { items, hasMore: items.length > 0 && offset + items.length < total };
   }
 
-  async function fetchBedrockResults(): Promise<Project[]> {
-    const params = new URLSearchParams({ q: query || "", page: "1", sort });
+  async function fetchBedrockPage(page: number): Promise<{ items: Project[]; pageCount: number }> {
+    const params = new URLSearchParams({ q: query || "", page: String(page), sort });
     if (type) params.set("type_id", type);
     if (loader) params.set("cf_tags", loader);
     const r = await fetch(`${MCPEDL_API}/search/advanced?${params.toString()}`);
     if (!r.ok) throw new Error(`HTTP ${r.status}`);
-    const d = await r.json();
-    return ((d.results || []) as McpedlSearchItem[]).map((item) => ({
+    const d = (await r.json()) as McpedlSearchResponse;
+    const items = ((d.results || []) as McpedlSearchItem[]).map((item) => ({
       id: item.slug,
       title: item.title,
       description:
@@ -271,20 +278,59 @@ export default function JavaDownloader() {
       project_type: bedrockTypeLabels[String(item.type_id)] ?? "Addon",
       platform: "bedrock" as const,
     }));
+    const total = d.meta?.total ?? items.length;
+    const pageCount =
+      d.meta?.page_count ??
+      Math.max(page, Math.ceil(total / Math.max(1, d.meta?.page_size ?? BEDROCK_PAGE_SIZE)));
+    return { items, pageCount };
+  }
+
+  async function fetchBedrockResults(startPage: number, wanted: number): Promise<ResultBatch & { nextPage: number }> {
+    const pagesToFetch = Math.max(1, Math.ceil(wanted / BEDROCK_PAGE_SIZE));
+    const items: Project[] = [];
+    let nextPage = startPage;
+    let hasMore = false;
+    for (let i = 0; i < pagesToFetch; i += 1) {
+      const pageNumber = nextPage;
+      const page = await fetchBedrockPage(pageNumber);
+      items.push(...page.items);
+      hasMore = page.items.length > 0 && pageNumber < page.pageCount;
+      nextPage = pageNumber + 1;
+      if (!hasMore) break;
+    }
+    return { items, hasMore, nextPage };
   }
 
   async function searchContent() {
     const id = ++requestId.current;
+    const batchSize = getResultsBatchSize();
     setLoading(true);
+    setLoadingMore(false);
+    loadingMoreRef.current = false;
+    setLoadMoreError(false);
     setError(false);
     setResults([]);
+    setHasMore(false);
     try {
-      const hits = platform === "bedrock" ? await fetchBedrockResults() : await fetchModrinthResults();
-      if (id === requestId.current) setResults(hits);
+      if (platform === "bedrock") {
+        const batch = await fetchBedrockResults(1, batchSize);
+        if (id === requestId.current) {
+          nextBedrockPage.current = batch.nextPage;
+          setResults(batch.items);
+          setHasMore(batch.hasMore);
+        }
+      } else {
+        const batch = await fetchModrinthResults(0, batchSize);
+        if (id === requestId.current) {
+          setResults(batch.items);
+          setHasMore(batch.hasMore);
+        }
+      }
     } catch {
       if (id === requestId.current) {
         setError(true);
         setResults([]);
+        setHasMore(false);
       }
     } finally {
       if (id === requestId.current) {
@@ -293,6 +339,37 @@ export default function JavaDownloader() {
       }
     }
   }
+
+  const loadMore = useCallback(async () => {
+    if (loading || loadingMoreRef.current || !hasMore) return;
+    const id = requestId.current;
+    const batchSize = getResultsBatchSize();
+    loadingMoreRef.current = true;
+    setLoadingMore(true);
+    setLoadMoreError(false);
+    try {
+      if (platform === "bedrock") {
+        const batch = await fetchBedrockResults(nextBedrockPage.current, batchSize);
+        if (id !== requestId.current) return;
+        nextBedrockPage.current = batch.nextPage;
+        setResults((previous) => appendUnique(previous, batch.items));
+        setHasMore(batch.hasMore);
+      } else {
+        const offset = resultsRef.current.length;
+        const batch = await fetchModrinthResults(offset, batchSize);
+        if (id !== requestId.current) return;
+        setResults((previous) => appendUnique(previous, batch.items));
+        setHasMore(batch.hasMore);
+      }
+    } catch {
+      if (id === requestId.current) setLoadMoreError(true);
+    } finally {
+      if (id === requestId.current) {
+        loadingMoreRef.current = false;
+        setLoadingMore(false);
+      }
+    }
+  }, [hasMore, loading, platform, query, type, loader, version, sort]);
 
   useEffect(() => {
     searchContent();
@@ -309,6 +386,19 @@ export default function JavaDownloader() {
     searchContent();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [platform, type, loader, version, sort]);
+
+  useEffect(() => {
+    const node = sentinelRef.current;
+    if (!node || !hasMore || loading || loadingMore || error || loadMoreError) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) void loadMore();
+      },
+      { rootMargin: "300px 0px" }
+    );
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [hasMore, loading, loadingMore, error, loadMoreError, loadMore]);
 
   function changePlatform(next: string) {
     if (next === platform) return;
