@@ -1692,6 +1692,34 @@
     margin-top: 8px;
   }
 
+  .mp-star-label {
+    top: calc(100% + 8px);
+    padding: 5px 8px;
+    border-radius: 8px;
+  }
+
+  .mp-star-name {
+    font-size: 12px;
+  }
+
+  .mp-star-meta {
+    display: none;
+  }
+
+  .mp-core-label {
+    top: calc(100% + 14px);
+    padding: 5px 8px;
+    border-radius: 8px;
+  }
+
+  .mp-core-label strong {
+    font-size: 12px;
+  }
+
+  .mp-core-label em {
+    font-size: 7px;
+  }
+
   .mp-details {
     left: 10px;
     right: 10px;
