@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "tsx watch src/index.ts",
-    "dev:worker": "wrangler dev --port 4000",
+    "dev:worker": "wrangler dev --port 8080",
     "build": "tsc",
     "start": "node dist/index.js",
     "deploy": "wrangler deploy",

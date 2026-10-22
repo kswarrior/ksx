@@ -144,6 +144,24 @@ function unavailable(
   };
 }
 
+function parseYouTubeSubscriberHtml(
+  html: string
+): { count: number; display: string } | null {
+  const patterns = [
+    /"subscriberCountText"\s*:\s*\{\s*"simpleText"\s*:\s*"([^"]+)"/,
+    /"subscriberCountText"\s*:\s*\{\s*"runs"\s*:\s*\[\s*\{\s*"text"\s*:\s*"([^"]+)"/,
+    /"subscriberCountText"\s*:\s*"([^"]+)"/,
+    /"content"\s*:\s*"([\d.,]+\s*[KMB]?\s+subscribers?)"/i,
+    /([\d.,]+\s*[KMB]?\s+subscribers?)/i,
+  ];
+  for (const pattern of patterns) {
+    const match = html.match(pattern);
+    const parsed = match ? parseSubscriberText(match[1]) : null;
+    if (parsed) return parsed;
+  }
+  return null;
+}
+
 async function getYouTubeStats(config: ResolvedConfig): Promise<SocialStat> {
   const url = `https://youtube.com/@${config.youtubeHandle}`;
   const label = "subscribers" as const;
@@ -184,39 +202,48 @@ async function getYouTubeStats(config: ResolvedConfig): Promise<SocialStat> {
     }
   }
 
-  try {
-    const res = await fetchWithTimeout(
-      `https://www.youtube.com/@${config.youtubeHandle}/about?hl=en&gl=US`,
-      { headers: { ...BROWSER_HEADERS, Accept: "text/html" } }
-    );
-    if (!res.ok) throw new Error(`YouTube page HTTP ${res.status}`);
-    const html = await res.text();
-    const patterns = [
-      /"subscriberCountText":"([^"]+)"/,
-      /"content":"([\d.,]+\s*[KMB]?\s+subscribers?)"/i,
-      /([\d.,]+\s*[KMB]?\s+subscribers?)/i,
-    ];
-    for (const pattern of patterns) {
-      const match = html.match(pattern);
-      const parsed = match ? parseSubscriberText(match[1]) : null;
-      if (parsed) {
-        return {
-          platform: "youtube",
-          url,
-          handle: config.youtubeHandle,
-          label,
-          count: parsed.count,
-          display: parsed.display,
-          available: true,
-          source: "youtube-page",
-          fetchedAt: new Date().toISOString(),
-        };
-      }
+  const pageUrls = [
+    `https://www.youtube.com/@${config.youtubeHandle}/about?hl=en&gl=US`,
+    `https://www.youtube.com/@${config.youtubeHandle}?hl=en&gl=US`,
+  ];
+  const errors: string[] = [];
+
+  for (const pageUrl of pageUrls) {
+    try {
+      const res = await fetchWithTimeout(pageUrl, {
+        headers: {
+          ...BROWSER_HEADERS,
+          Accept: "text/html,application/xhtml+xml,application/xml;q=0.9",
+          Cookie: "CONSENT=YES+cb.20240101-00-p0.en+FX+111; SOCS=CAI",
+        },
+      });
+      if (!res.ok) throw new Error(`YouTube page HTTP ${res.status}`);
+      const html = await res.text();
+      const parsed = parseYouTubeSubscriberHtml(html);
+      if (!parsed) throw new Error("YouTube subscriber count not found");
+      return {
+        platform: "youtube",
+        url,
+        handle: config.youtubeHandle,
+        label,
+        count: parsed.count,
+        display: parsed.display,
+        available: true,
+        source: "youtube-page",
+        fetchedAt: new Date().toISOString(),
+      };
+    } catch (error) {
+      errors.push(errorMessage(error));
     }
-    throw new Error("YouTube subscriber count not found");
-  } catch (error) {
-    return unavailable("youtube", url, config.youtubeHandle, label, errorMessage(error));
   }
+
+  return unavailable(
+    "youtube",
+    url,
+    config.youtubeHandle,
+    label,
+    errors.join("; ") || "YouTube subscriber count unavailable"
+  );
 }
 
 async function getDiscordStats(config: ResolvedConfig): Promise<SocialStat> {

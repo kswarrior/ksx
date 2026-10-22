@@ -26,7 +26,7 @@ Converted from static HTML (`index2.html` + `minecraft/**` + `vps/**`) to a Type
 ├── frontend/
 │   ├── src/ (Layout, Dashboard, MapPage, Social, MinecraftHosting, VpsHosting, JavaLauncher, KsClient, ServerInfo, PanelPages)
 │   ├── public/ (_redirects, _headers, robots.txt, sitemap.*) # copied for Pages
-│   ├── vite.config.ts    # proxy /api → :4000
+│   ├── vite.config.ts    # proxy /api → :8080
 │   └── wrangler deploy via Pages
 └── package.json          # monorepo: dev, build, deploy, deploy:frontend, deploy:worker
 ```
@@ -35,15 +35,15 @@ Converted from static HTML (`index2.html` + `minecraft/**` + `vps/**`) to a Type
 
 ```bash
 npm install --prefix backend && npm install --prefix frontend
-npm run dev              # Express :4000 + Vite :5173
-npm run dev:worker --prefix backend # Wrangler dev (Worker + assets) :4000
+npm run dev              # Express :8080 + Vite :5173
+npm run dev:worker --prefix backend # Wrangler dev (Worker + assets) :8080
 # or separately:
 npm run dev:backend      # Express
 npm run dev:frontend     # Vite
 ```
 
 Env:
-- `PORT` (Express only, default 4000)
+- `PORT` (Express only, default 8080)
 - `VITE_API_BASE` — `""` for same-origin (Worker assets), or `https://ksx-backend.<subdomain>.workers.dev` if deploying separately
 - `YOUTUBE_HANDLE` (optional, default `ks_warrior_pro`)
 - `YOUTUBE_API_KEY` (optional; live subscriber count uses the YouTube Data API, otherwise the public channel page)
@@ -131,7 +131,7 @@ npm run mcp          # run the MCP server manually
 
 MCP tools: `ksx_site_summary`, `ksx_get_sitemap`, `ksx_search_pages`, `ksx_find_minecraft_hosting`, `ksx_find_vps_hosting`, `ksx_get_social_stats`, `ksx_api_get`. Resources: `ksx://sitemap`, `ksx://hosting/minecraft`, `ksx://hosting/vps`.
 
-Sitemap and hosting tools read the JSON data directly. Live tools default to `http://localhost:4000` (start `npm run dev:backend`) and can be pointed elsewhere:
+Sitemap and hosting tools read the JSON data directly. Live tools default to `http://localhost:8080` (start `npm run dev:backend`) and can be pointed elsewhere:
 
 ```bash
 KSX_API_BASE=https://ksx-backend.<subdomain>.workers.dev opencode

@@ -14,7 +14,7 @@ import mcData from "./data/minecraft-hosting.json" with { type: "json" };
 import vpsData from "./data/vps-hosting.json" with { type: "json" };
 
 const app = express();
-const PORT = Number(process.env.PORT ?? 4000);
+const PORT = Number(process.env.PORT ?? 8080);
 
 app.use(helmet());
 app.use(cors({ origin: true, credentials: true }));

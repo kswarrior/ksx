@@ -23,7 +23,7 @@ Resources: `ksx://sitemap`, `ksx://hosting/minecraft`, `ksx://hosting/vps`.
 
 The MCP server reads `backend/src/data/*.json` directly, so sitemap and hosting tools work without the backend running. Social and `ksx_api_get` need a reachable API:
 
-- Default: `http://localhost:4000` (start with `npm run dev:backend`)
+- Default: `http://localhost:8080` (start with `npm run dev:backend`)
 - Override: `KSX_API_BASE=https://your-deployment` in the environment that starts opencode
 - Override data location: `KSX_DATA_DIR=/path/to/data`
 - Override summary URL: `KSX_SITE_URL=https://your-site.example`
@@ -32,16 +32,16 @@ Run the server manually with `npm run mcp`.
 
 ## HTTP endpoints
 
-Base URL: local `http://localhost:4000`, deployed Worker URL, or same-origin under `/api`.
+Base URL: local `http://localhost:8080`, deployed Worker URL, or same-origin under `/api`.
 
 ```bash
-curl localhost:4000/api/health
-curl localhost:4000/api/stats
-curl localhost:4000/api/sitemap
-curl "localhost:4000/api/sitemap/search?q=hosting"
-curl "localhost:4000/api/hosting/minecraft?q=&uptime=good&location=india&ram=4"
-curl "localhost:4000/api/hosting/vps?q=&renew=true&sudo=true&alwaysOn=true"
-curl localhost:4000/api/social
+curl localhost:8080/api/health
+curl localhost:8080/api/stats
+curl localhost:8080/api/sitemap
+curl "localhost:8080/api/sitemap/search?q=hosting"
+curl "localhost:8080/api/hosting/minecraft?q=&uptime=good&location=india&ram=4"
+curl "localhost:8080/api/hosting/vps?q=&renew=true&sudo=true&alwaysOn=true"
+curl localhost:8080/api/social
 ```
 
 ### Response shapes

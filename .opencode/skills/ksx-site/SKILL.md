@@ -28,10 +28,10 @@ mcp/ksx-server.mjs          Local MCP server exposing site data (see ksx-api ski
 
 ```bash
 npm install
-npm run dev            # Express :4000 + Vite :5173
+npm run dev            # Express :8080 + Vite :5173
 npm run dev:backend    # Express only
 npm run dev:frontend   # Vite only
-npm run dev:worker     # wrangler dev (Hono + assets) :4000
+npm run dev:worker     # wrangler dev (Hono + assets) :8080
 npm run build          # backend tsc + frontend vite build
 npm run typecheck      # tsc --noEmit for backend and frontend
 ```

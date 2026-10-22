@@ -8,7 +8,7 @@ import { z } from "zod";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const DATA_DIR = process.env.KSX_DATA_DIR || join(ROOT, "backend", "src", "data");
-const API_BASE = (process.env.KSX_API_BASE || "http://localhost:4000").replace(/\/+$/, "");
+const API_BASE = (process.env.KSX_API_BASE || "http://localhost:8080").replace(/\/+$/, "");
 const SITE_URL = (process.env.KSX_SITE_URL || "https://ksx.pages.dev").replace(/\/+$/, "");
 
 function loadJson(file) {
@@ -257,7 +257,7 @@ server.registerTool(
   {
     title: "Get KSX social stats",
     description:
-      "Fetch live YouTube subscriber, Discord member, and Instagram follower counts from the KSX API. Requires the API to be reachable; set KSX_API_BASE or run the local backend on port 4000.",
+      "Fetch live YouTube subscriber, Discord member, and Instagram follower counts from the KSX API. Requires the API to be reachable; set KSX_API_BASE or run the local backend on port 8080.",
     annotations: { readOnlyHint: true },
   },
   async () => {
