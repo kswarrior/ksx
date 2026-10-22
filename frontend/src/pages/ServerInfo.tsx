@@ -72,6 +72,7 @@ export default function ServerInfo() {
     }
     setLoading(true);
     setError(null);
+    setData(null);
     try {
       const res = await fetch(`https://api.mcsrvstat.us/3/${encodeURIComponent(value)}`);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
