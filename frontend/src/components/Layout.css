@@ -61,6 +61,13 @@
 
 #topbar.search-active #searchBox { opacity: 1; }
 
+#searchBox:hover,
+#searchBox:focus {
+  background: var(--top);
+  border-color: var(--border);
+  box-shadow: none;
+}
+
 #searchTrigger {
   position: absolute;
   left: 0; top: 0;
@@ -70,10 +77,10 @@
   color: var(--text);
   font-size: 20px;
   border-radius: 6px;
+  background: transparent;
   z-index: 2;
-  transition: color 0.2s ease;
 }
-#searchTrigger:hover { color: var(--accent); }
+#searchTrigger:hover, #searchTrigger:active { background: transparent; color: var(--text); }
 
 .search-svg {
   width: 22px; height: 22px;
@@ -82,10 +89,9 @@
   fill: none;
   stroke-linecap: round;
   stroke-linejoin: round;
-  transition: stroke 0.25s ease, transform 0.25s ease, filter 0.25s ease;
+  transition: transform 0.25s ease;
 }
-#searchTrigger:hover .search-svg { stroke: var(--accent); transform: scale(1.15); filter: drop-shadow(0 0 6px rgba(255,255,255,0.35)); }
-#topbar.search-active .search-svg { stroke: var(--accent); }
+#searchTrigger:hover .search-svg, #searchTrigger:active .search-svg { stroke: #F5F5F5; transform: scale(1.15); filter: none; }
 
 #hamburger {
   width: 40px; height: 40px;

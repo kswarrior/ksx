@@ -58,6 +58,31 @@ app.get("/api/social", async (c) => {
   return c.json(stats);
 });
 
+// Modrinth API proxy (avoids browser CORS/network restrictions)
+const MODRINTH_API = "https://api.modrinth.com/v2";
+
+app.get("/api/modrinth/*", async (c) => {
+  const upstreamPath = c.req.path.slice("/api/modrinth".length);
+  const search = new URL(c.req.url).search;
+  try {
+    const res = await fetch(`${MODRINTH_API}${upstreamPath}${search}`, {
+      headers: {
+        "User-Agent": "ksx-backend/1.0 (+https://github.com/anomalyco/ksx)",
+        Accept: "application/json",
+      },
+    });
+    return new Response(res.body, {
+      status: res.status,
+      headers: {
+        "Content-Type": res.headers.get("content-type") ?? "application/json",
+        "Cache-Control": "public, max-age=60, s-maxage=120",
+      },
+    });
+  } catch {
+    return c.json({ error: "Modrinth request failed" }, 502);
+  }
+});
+
 // Sitemap
 app.get("/api/sitemap", (c) => c.json(sitemap));
 

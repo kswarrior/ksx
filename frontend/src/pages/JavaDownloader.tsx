@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import FilterMenu from "../components/FilterMenu";
 import Icon from "../components/Icon";
 import { SearchField, Select, type SelectOption } from "../components/ui";
+import { API_BASE } from "../lib/api";
 import "./JavaDownloader.css";
 
 type Project = {
@@ -14,7 +15,7 @@ type Project = {
   project_type: string;
 };
 
-const API = "https://api.modrinth.com/v2";
+const API = `${API_BASE}/api/modrinth`;
 
 const typeOptions: SelectOption[] = [
   { value: "", label: "All Types" },

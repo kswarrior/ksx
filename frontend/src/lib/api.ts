@@ -68,7 +68,7 @@ export type SocialStats = {
   platforms: Record<SocialPlatformName, SocialStat>;
 };
 
-const API_BASE = import.meta.env.VITE_API_BASE ?? "";
+export const API_BASE = import.meta.env.VITE_API_BASE ?? "";
 
 async function fetchJson<T>(url: string): Promise<T> {
   const res = await fetch(`${API_BASE}${url}`);
