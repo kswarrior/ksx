@@ -87,6 +87,17 @@ export type DatabaseHosting = {
   link: string;
 };
 
+export type AppStats = {
+  slug: string;
+  name?: string;
+  version?: string;
+  platform?: string;
+  downloads: number | null;
+  available: boolean;
+  reason?: string;
+  error?: string;
+};
+
 export type SocialPlatformName = "youtube" | "discord" | "instagram";
 
 export type SocialStat = {
@@ -151,6 +162,8 @@ export const api = {
       `/api/hosting/database${qs}`
     );
   },
+  getAppStats: (slug: string) =>
+    fetchJson<AppStats>(`/api/apps/${encodeURIComponent(slug)}/stats`),
   getSocialStats: (refresh = false) =>
     fetchJson<SocialStats>(`/api/social${refresh ? "?refresh=1" : ""}`),
 };
