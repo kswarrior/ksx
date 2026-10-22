@@ -109,7 +109,7 @@ async function getJson<T>(url: string): Promise<T> {
 async function getText(url: string): Promise<string> {
   let cached = textCache.get(url);
   if (!cached) {
-    cached = fetch(url, { headers: { Accept: "text/plain, application/xml" } })
+    cached = fetch(proxyUrl(url), { headers: { Accept: "text/plain, application/xml" } })
       .then(async (response) => {
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
         return response.text();
@@ -125,7 +125,7 @@ async function getText(url: string): Promise<string> {
 
 async function headInfo(url: string): Promise<{ size?: number; releasedAt?: string }> {
   try {
-    const response = await fetch(url, { method: "HEAD" });
+    const response = await fetch(proxyUrl(url), { method: "HEAD" });
     if (!response.ok) return {};
     const length = response.headers.get("content-length");
     const modified = response.headers.get("last-modified");
