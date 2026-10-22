@@ -886,6 +886,7 @@ export default function MapPage() {
                     onClick={() =>
                       selectCategory(star.category.category)
                     }
+                    title={star.category.category}
                     aria-label={`${star.category.category} star — ${plural(star.planets.length, "planet")}, ${plural(star.pageCount, "moon")}`}
                   >
                     <span
@@ -937,6 +938,7 @@ export default function MapPage() {
                               planet.section.title
                             )
                           }
+                          title={planet.section.title}
                           aria-label={`${planet.section.title} planet — ${plural(planet.moons.length, "moon")} in ${star.category.category}`}
                         >
                           <span
@@ -981,6 +983,7 @@ export default function MapPage() {
                               ]
                                 .filter(Boolean)
                                 .join(" ")}
+                              title={moon.page.name}
                               aria-label={`Open ${moon.page.name}`}
                               onClick={() =>
                                 saveRecent(
