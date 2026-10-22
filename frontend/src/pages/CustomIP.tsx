@@ -21,6 +21,7 @@ const PROVIDERS = [
 
 export default function CustomIP() {
   const [step, setStep] = useState(1);
+  const [provider, setProvider] = useState<string>(PROVIDERS[0].value);
   const [input, setInput] = useState("");
   const [result, setResult] = useState<IpInfo | null>(null);
   const [loading, setLoading] = useState(false);
@@ -82,6 +83,8 @@ export default function CustomIP() {
     setTimeout(()=>setCopied(false),1200);
   }
 
+  const activeProvider = PROVIDERS.find((p) => p.value === provider) ?? PROVIDERS[0];
+
   return (
     <div className="customip-page">
       <div className="ci-bg" aria-hidden>
@@ -121,9 +124,18 @@ export default function CustomIP() {
         {step === 2 && (
           <div className="ci-stage wide ci-anim" key="step-2">
             <div className="ci-card">
-              <h3><span>2</span> Create Free Subdomain</h3>
+              <div className="ci-card-head">
+                <h3><span>2</span> Create Free Subdomain</h3>
+                <Select
+                  className="ci-provider"
+                  value={provider}
+                  onChange={setProvider}
+                  options={PROVIDERS.map((p) => ({ value: p.value, label: p.label }))}
+                  ariaLabel="Select subdomain provider"
+                />
+              </div>
               <p>Fill all information and click create — free subdomain for your server.</p>
-              <iframe title="subdomain" className="ci-frame" height={455} width="100%" src="https://shockbyte.com/es/subdomain-creator" loading="lazy" />
+              <iframe key={activeProvider.value} title={`${activeProvider.label} subdomain`} className="ci-frame" height={455} width="100%" src={activeProvider.url} loading="lazy" />
             </div>
           </div>
         )}
