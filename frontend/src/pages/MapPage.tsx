@@ -310,7 +310,7 @@ export default function MapPage() {
           .filter((s) => s.pages.length > 0),
       }))
       .filter((c) => c.sections.length > 0);
-  }, [data, dq, activeCat]);
+  }, [data, dq]);
 
   const filteredCount = useMemo(
     () =>
