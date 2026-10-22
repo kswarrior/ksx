@@ -37,15 +37,18 @@
         background: #f5f5f5;
         opacity: 0.22;
         will-change: transform, opacity;
-        animation: ks-boot-line-up 1.6s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+        animation: ks-boot-line-up 1.6s cubic-bezier(0.45, 0, 0.55, 1) -0.8s infinite;
+      }
+      #ks-boot .ks-boot-lines i:nth-child(1) {
+        transform: translateY(-8px);
       }
       #ks-boot .ks-boot-lines i:nth-child(2) {
         animation-name: ks-boot-line-update;
-        animation-delay: 0.18s;
+        transform: scaleY(1);
       }
       #ks-boot .ks-boot-lines i:nth-child(3) {
         animation-name: ks-boot-line-down;
-        animation-delay: 0.36s;
+        transform: translateY(8px);
       }
       @keyframes ks-boot-line-up {
         0%, 100% { transform: translateY(0); opacity: 0.22; }
