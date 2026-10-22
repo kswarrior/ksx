@@ -403,8 +403,8 @@ export default function MapPage() {
     world.style.setProperty("--mp-inv", String(1 / next.z));
     const page = pageRef.current;
     if (page) {
-      page.classList.toggle("mp-zoom-far", next.z < 0.62);
-      page.classList.toggle("mp-zoom-near", next.z >= 1.02);
+      page.dataset.zoom =
+        next.z < 0.62 ? "far" : next.z >= 1.02 ? "near" : "mid";
     }
     if (animate) {
       world.classList.add("is-animating");
@@ -650,7 +650,7 @@ export default function MapPage() {
       vp.setPointerCapture(e.pointerId);
       pointers.current.set(e.pointerId, { x: e.clientX, y: e.clientY });
       interacted.current = true;
-      pageRef.current?.classList.add("is-dragging");
+      viewportRef.current?.classList.add("is-dragging");
 
       if (pointers.current.size === 1) {
         gesture.current = {
@@ -737,7 +737,7 @@ export default function MapPage() {
       pointers.current.delete(e.pointerId);
       if (pointers.current.size === 0) {
         gesture.current = null;
-        pageRef.current?.classList.remove("is-dragging");
+        viewportRef.current?.classList.remove("is-dragging");
       } else if (pointers.current.size === 1) {
         const [p] = [...pointers.current.values()];
         const vp = viewportRef.current;
