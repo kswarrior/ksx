@@ -6,5 +6,13 @@
     "platform": "android",
     "version": "1.4.0",
     "downloadUrl": "https://github.com/kswarrior/opencode/raw/refs/heads/main/ks-apps/browser/android/release/ks-portal_1.4.0.apk"
+  },
+  {
+    "slug": "ks-client",
+    "name": "KS Client",
+    "owner": "KS Warrior",
+    "platform": "bedrock",
+    "version": "V3",
+    "downloadUrl": "https://www.mediafire.com/file/o78xzmld09b5nw9/KS_Client_V3.mcpack/file"
   }
 ]
