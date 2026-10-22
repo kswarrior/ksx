@@ -61,7 +61,7 @@ function SetupStep({ number, title, command, copyId, copied, onCopy }: SetupStep
             {isCopied ? "Copied" : "Copy"}
           </button>
         </div>
-        <pre className="bot-command">{command}</pre>
+        <pre className="bot-step-code">{command}</pre>
       </div>
     </div>
   );
