@@ -15,6 +15,7 @@ const VpsHosting = lazy(() => import("./pages/VpsHosting"));
 const JavaLauncher = lazy(() => import("./pages/JavaLauncher"));
 const JavaDownloader = lazy(() => import("./pages/JavaDownloader"));
 const JavaDownloaderProject = lazy(() => import("./pages/JavaDownloaderProject"));
+const BedrockDownloaderProject = lazy(() => import("./pages/BedrockDownloaderProject"));
 const KsClient = lazy(() => import("./pages/KsClient"));
 const ServerInfo = lazy(() => import("./pages/ServerInfo"));
 const BotPage = lazy(() => import("./pages/BotPage"));

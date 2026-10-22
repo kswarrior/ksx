@@ -25,6 +25,16 @@ type McpedlTag = {
   children?: McpedlTag[];
 };
 
+type ModrinthHit = {
+  project_id: string;
+  title: string;
+  description: string;
+  icon_url: string;
+  categories: string[];
+  downloads: number;
+  project_type: string;
+};
+
 type McpedlSearchItem = {
   id: number;
   title: string;
@@ -178,9 +188,14 @@ export default function JavaDownloader() {
     const r = await fetch(`${MODRINTH_API}/search?${params.toString()}`);
     if (!r.ok) throw new Error(`HTTP ${r.status}`);
     const d = await r.json();
-    return ((d.hits || []) as Omit<Project, "id" | "platform">[]).map((hit) => ({
-      ...hit,
-      id: (hit as unknown as { project_id: string }).project_id,
+    return ((d.hits || []) as ModrinthHit[]).map((hit) => ({
+      id: hit.project_id,
+      title: hit.title,
+      description: hit.description,
+      icon_url: hit.icon_url,
+      categories: hit.categories,
+      downloads: hit.downloads,
+      project_type: hit.project_type,
       platform: "java" as const,
     }));
   }
