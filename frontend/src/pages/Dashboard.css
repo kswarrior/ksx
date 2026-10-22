@@ -97,6 +97,7 @@
   box-shadow: 0 4px 12px rgba(0,0,0,0.2);
 }
 .li-icon svg{ width:20px; height:20px; display:block; }
+.li-icon img{ width:24px; height:24px; object-fit:contain; display:block; }
 .li-icon.pin{
   background: linear-gradient(135deg, rgba(255,255,255,0.10), rgba(255,255,255,0.04));
   border-color: rgba(255,255,255,0.14);

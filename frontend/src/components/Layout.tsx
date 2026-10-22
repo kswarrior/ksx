@@ -401,7 +401,11 @@ export default function Layout() {
                         role="option"
                         onClick={() => handleNavItem(p)}
                       >
-                        <span className="s-page-logo" dangerouslySetInnerHTML={{ __html: p.logo }} />
+                        {p.logoUrl ? (
+                          <BrandLogo className="s-page-logo" src={p.logoUrl} fallback="link" iconSize={18} />
+                        ) : (
+                          <span className="s-page-logo" dangerouslySetInnerHTML={{ __html: p.logo }} />
+                        )}
                         <span className="s-page-info">
                           <span className="s-page-name">{p.name}</span>
                           <span className="s-page-sub">{p.title} • {p.category}</span>

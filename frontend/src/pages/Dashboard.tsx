@@ -1,6 +1,7 @@
 import { useEffect, useState, type ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import { RECENT_KEY, RecentItem, PinItem, readPins } from "../hooks/useLocalStorage";
+import BrandLogo from "../components/BrandLogo";
 import Icon from "../components/Icon";
 import PageHero from "../components/PageHero";
 import "./Dashboard.css";
@@ -104,10 +105,15 @@ export default function Dashboard() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    try {
-      setRecent(JSON.parse(localStorage.getItem(RECENT_KEY) || "[]"));
-      setPins(readPins());
-    } catch {}
+    const loadStored = () => {
+      try {
+        setRecent(JSON.parse(localStorage.getItem(RECENT_KEY) || "[]"));
+        setPins(readPins());
+      } catch {}
+    };
+    loadStored();
+    window.addEventListener("ks-sitemap-ready", loadStored);
+    return () => window.removeEventListener("ks-sitemap-ready", loadStored);
   }, []);
 
   const news: NewsItem[] = [
@@ -164,7 +170,9 @@ export default function Dashboard() {
           ) : (
             pins.map((item) => (
               <div key={item.url} className="list-item" onClick={() => navigate(item.url)}>
-                {item.logo ? (
+                {item.logoUrl ? (
+                  <BrandLogo className="li-icon pin" src={item.logoUrl} fallback="link" iconSize={16} />
+                ) : item.logo ? (
                   <span className="li-icon pin" dangerouslySetInnerHTML={{ __html: item.logo }} />
                 ) : (
                   <span className="li-pin" aria-hidden>
@@ -195,7 +203,9 @@ export default function Dashboard() {
           ) : (
             recentTop.map((item) => (
               <div key={item.url} className="list-item" onClick={() => navigate(item.url)}>
-                {item.logo ? (
+                {item.logoUrl ? (
+                  <BrandLogo className="li-icon" src={item.logoUrl} fallback="link" iconSize={16} />
+                ) : item.logo ? (
                   <span className="li-icon" dangerouslySetInnerHTML={{ __html: item.logo }} />
                 ) : (
                   <span className="li-dot" />

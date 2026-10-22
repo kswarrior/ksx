@@ -10,6 +10,7 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import { SearchField } from "../components/ui";
 import { api, SitemapCategory } from "../lib/api";
+import BrandLogo from "../components/BrandLogo";
 import Icon from "../components/Icon";
 import KsLoader from "../components/KsLoader";
 import PageHero from "../components/PageHero";
@@ -18,6 +19,13 @@ import "./MapPage.css";
 
 type Page = SitemapCategory["sections"][number]["pages"][number];
 type Section = SitemapCategory["sections"][number];
+
+function PageMark({ page, className, iconSize = 18 }: { page: Page; className: string; iconSize?: number }) {
+  if (page.logoUrl) {
+    return <BrandLogo className={className} src={page.logoUrl} fallback="link" iconSize={iconSize} />;
+  }
+  return <span className={className} dangerouslySetInnerHTML={{ __html: page.logo }} />;
+}
 
 type Vec = { x: number; y: number };
 
@@ -405,6 +413,7 @@ export default function MapPage() {
           url: string;
           time: number;
           logo?: string;
+          logoUrl?: string;
           category?: string;
           title?: string;
         }[] = raw ? JSON.parse(raw) : [];
@@ -414,6 +423,7 @@ export default function MapPage() {
           url: page.url,
           time: Date.now(),
           logo: page.logo,
+          logoUrl: page.logoUrl,
           category,
           title: section,
         });
@@ -1316,12 +1326,7 @@ export default function MapPage() {
                                 )
                               }
                             >
-                              <span
-                                className="mp-moon-logo"
-                                dangerouslySetInnerHTML={{
-                                  __html: moon.page.logo,
-                                }}
-                              />
+                              <PageMark page={moon.page} className="mp-moon-logo" />
                               <span
                                 className="mp-label mp-moon-label"
                                 aria-hidden="true"
@@ -1376,12 +1381,7 @@ export default function MapPage() {
                     )
                   }
                 >
-                  <span
-                    className="mp-result-logo"
-                    dangerouslySetInnerHTML={{
-                      __html: result.page.logo,
-                    }}
-                  />
+                  <PageMark page={result.page} className="mp-result-logo" iconSize={16} />
                   <span className="mp-result-text">
                     <strong>{result.page.name}</strong>
                     <em>
@@ -1430,10 +1430,7 @@ export default function MapPage() {
                       saveRecent(page, selectedCat.category, selectedSec.title)
                     }
                   >
-                    <span
-                      className="mp-detail-logo"
-                      dangerouslySetInnerHTML={{ __html: page.logo }}
-                    />
+                    <PageMark page={page} className="mp-detail-logo" iconSize={18} />
                     <span className="mp-detail-text">
                       <strong>{page.name}</strong>
                       <em>{page.soon ? "Coming soon" : "Open moon"}</em>
