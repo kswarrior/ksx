@@ -4,6 +4,7 @@ import DownloadActions from "../components/DownloadActions";
 import Icon from "../components/Icon";
 import { SearchField, Select, type SelectOption } from "../components/ui";
 import { API_BASE } from "../lib/api";
+import { readSession, writeSession } from "../lib/sessionCache";
 import "./JavaDownloader.css";
 
 type ProjectDetail = {
