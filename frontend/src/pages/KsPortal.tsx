@@ -3,7 +3,7 @@ import Icon from "../components/Icon";
 import Markdown from "../components/Markdown";
 import { api } from "../lib/api";
 import portalMarkdown from "./ks-portal.md?raw";
-import "./KsPortal.css";
+import "./AppDashboard.css";
 
 const APP_SLUG = "ks-portal";
 const APP_VERSION = "1.4.0";
