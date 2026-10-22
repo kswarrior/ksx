@@ -1,6 +1,7 @@
 import { Suspense, useCallback, useEffect, useLayoutEffect, useState, useRef } from "react";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { api, SearchItem } from "../lib/api";
+import BrandLogo from "./BrandLogo";
 import Icon from "./Icon";
 import KsLoader from "./KsLoader";
 import { TextField } from "./ui";
@@ -44,11 +45,45 @@ export default function Layout() {
                 name: p.name,
                 url: p.url,
                 logo: p.logo,
+                logoUrl: p.logoUrl,
               });
             });
           });
         });
         setSitemap(flat);
+        const logoByUrl = new Map(
+          flat.filter((item) => item.logoUrl).map((item) => [item.url, item.logoUrl!])
+        );
+        try {
+          const recentRaw = localStorage.getItem(RECENT_KEY);
+          if (recentRaw) {
+            const recent: RecentItem[] = JSON.parse(recentRaw);
+            let changed = false;
+            const next = recent.map((item) => {
+              const logoUrl = logoByUrl.get(item.url);
+              if (logoUrl && item.logoUrl !== logoUrl) {
+                changed = true;
+                return { ...item, logoUrl };
+              }
+              return item;
+            });
+            if (changed) localStorage.setItem(RECENT_KEY, JSON.stringify(next));
+          }
+          const pins = readPins();
+          let pinsChanged = false;
+          const nextPins = pins.map((item) => {
+            const logoUrl = logoByUrl.get(item.url);
+            if (logoUrl && item.logoUrl !== logoUrl) {
+              pinsChanged = true;
+              return { ...item, logoUrl };
+            }
+            return item;
+          });
+          if (pinsChanged) localStorage.setItem(PIN_KEY, JSON.stringify(nextPins));
+        } catch {
+          /* ignore */
+        }
+        window.dispatchEvent(new Event("ks-sitemap-ready"));
       })
       .catch(() => {
         sitemapRequested.current = false;
@@ -112,7 +147,7 @@ export default function Layout() {
     setActiveIndex(-1);
   }, [query, sitemap]);
 
-  const saveRecent = (item: SearchItem | { name: string; url: string; logo?: string; category?: string; title?: string }) => {
+  const saveRecent = (item: SearchItem | { name: string; url: string; logo?: string; logoUrl?: string; category?: string; title?: string }) => {
     try {
       const raw = localStorage.getItem(RECENT_KEY);
       let recent: RecentItem[] = raw ? JSON.parse(raw) : [];
@@ -122,6 +157,7 @@ export default function Layout() {
         url: item.url,
         time: Date.now(),
         logo: (item as SearchItem).logo,
+        logoUrl: (item as SearchItem).logoUrl,
         category: (item as SearchItem).category,
         title: (item as SearchItem).title,
       });
@@ -142,7 +178,7 @@ export default function Layout() {
 
   const isDesktop = () => typeof window !== "undefined" && window.matchMedia("(min-width: 900px)").matches;
 
-  const handleNav = (url: string, name?: string, logo?: string) => {
+  const handleNav = (url: string, name?: string, logo?: string, logoUrl?: string) => {
     if (!isDesktop()) setSidebarOpen(false);
     setSearchActive(false);
     setQuery("");
@@ -150,7 +186,7 @@ export default function Layout() {
     const full = sitemap.find((s) => s.url === url);
     if (name) {
       saveRecent(
-        full ?? { name, url, logo }
+        full ?? { name, url, logo, logoUrl }
       );
     }
     const path = url.startsWith("/") ? url : `/${url}`;
@@ -158,7 +194,7 @@ export default function Layout() {
   };
 
   const handleNavItem = (it: SearchItem) => {
-    handleNav(it.url, it.name, it.logo);
+    handleNav(it.url, it.name, it.logo, it.logoUrl);
   };
 
   const isSidebarPage = location.pathname === "/" || /^\/(dashboard|map|social|about)(\/|$)/.test(location.pathname);
@@ -178,6 +214,7 @@ export default function Layout() {
             url: curUrl,
             time: Date.now(),
             logo: cur?.logo,
+            logoUrl: cur?.logoUrl,
             category: cur?.category,
             title: cur?.title,
           }, ...pins];
