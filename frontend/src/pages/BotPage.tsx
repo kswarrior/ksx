@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import BrandLogo from "../components/BrandLogo";
 import Icon from "../components/Icon";
 import { Select, TextField, type SelectOption } from "../components/ui";
 import {
@@ -270,9 +271,12 @@ export default function BotPage() {
 
       <div className="bot-shell">
         <header className="bot-hero">
-          <span className="bot-hero-icon" aria-hidden>
-            <Icon name="bot" size={22} />
-          </span>
+          <BrandLogo
+            className="bot-hero-icon"
+            src="https://github.com/PrismarineJS.png?size=128"
+            fallback="bot"
+            iconSize={22}
+          />
           <div className="bot-hero-text">
             <h1>Minecraft Bot</h1>
           </div>

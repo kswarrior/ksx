@@ -52,12 +52,11 @@
 }
 .bot-hero-icon{
   position:relative; z-index:1;
-  width:46px; height:46px; flex-shrink:0;
-  display:grid; place-items:center;
+  width:46px; height:46px; padding:6px; flex-shrink:0;
   border-radius:12px;
-  background:rgba(255,255,255,0.06);
-  border:1px solid rgba(255,255,255,0.10);
-  color:rgba(255,255,255,0.82);
+  background:linear-gradient(135deg,#ffffff,#f1f1f1);
+  border:1px solid rgba(255,255,255,0.12);
+  color:#111111;
   box-shadow:0 10px 24px rgba(0,0,0,0.28);
 }
 .bot-hero-text{position:relative; z-index:1; min-width:0;}

@@ -12,7 +12,7 @@ export default function About() {
         <div className="ab-bg-orb o2" />
       </div>
       <div className="ab-shell">
-        <PageHero icon="heart" title="About" />
+        <PageHero icon="heart" logoSrc="/image/ks-logo.webp" title="About" />
 
         <article className="ab-md">
           <Markdown source={aboutMarkdown} />
