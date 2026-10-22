@@ -53,6 +53,7 @@ export type VpsHosting = {
 
 export type WebsiteHosting = {
   name: string;
+  logo: string;
   type: string;
   storage: string;
   bandwidth: string;
@@ -70,6 +71,7 @@ export type WebsiteHosting = {
 
 export type DatabaseHosting = {
   name: string;
+  logo: string;
   type: string;
   storage: string;
   transfer: string;

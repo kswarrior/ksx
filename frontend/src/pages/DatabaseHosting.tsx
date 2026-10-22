@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { api, DatabaseHosting } from "../lib/api";
+import BrandLogo from "../components/BrandLogo";
 import Icon from "../components/Icon";
 import FilterMenu from "../components/FilterMenu";
 import PageHero from "../components/PageHero";
@@ -197,11 +198,14 @@ export default function DatabaseHostingPage() {
               <article key={host.name} className="d-card">
                 <div className="d-card-top">
                   <div className="d-card-heading">
-                    <span className="d-type" title={host.type}>
-                      {host.type}
-                    </span>
-                    <div className="d-card-name" title={host.name}>
-                      {host.name}
+                    <BrandLogo className="d-logo" src={host.logo} fallback="database" iconSize={20} />
+                    <div className="d-heading-copy">
+                      <span className="d-type" title={host.type}>
+                        {host.type}
+                      </span>
+                      <div className="d-card-name" title={host.name}>
+                        {host.name}
+                      </div>
                     </div>
                   </div>
                   <a

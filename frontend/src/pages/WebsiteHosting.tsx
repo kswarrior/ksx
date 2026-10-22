@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { api, WebsiteHosting } from "../lib/api";
+import BrandLogo from "../components/BrandLogo";
 import Icon from "../components/Icon";
 import FilterMenu from "../components/FilterMenu";
 import PageHero from "../components/PageHero";
@@ -180,9 +181,12 @@ export default function WebsiteHostingPage() {
               <article key={host.name} className="w-card">
                 <div className="w-card-top">
                   <div className="w-card-heading">
-                    <span className="w-type">{host.type}</span>
-                    <div className="w-card-name" title={host.name}>
-                      {host.name}
+                    <BrandLogo className="w-logo" src={host.logo} fallback="globe" iconSize={20} />
+                    <div className="w-heading-copy">
+                      <span className="w-type">{host.type}</span>
+                      <div className="w-card-name" title={host.name}>
+                        {host.name}
+                      </div>
                     </div>
                   </div>
                   <a

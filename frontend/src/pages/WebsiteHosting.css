@@ -31,7 +31,9 @@
 .w-card{background:var(--w-card); border:1px solid var(--w-border); border-radius:5px; padding:16px; display:flex; flex-direction:column; gap:12px; contain:layout paint style; content-visibility:auto; contain-intrinsic-size:360px; transition:border-color .2s, box-shadow .2s, transform .18s, background .2s;}
 .w-card:hover{border-color:var(--w-border2); box-shadow:0 14px 36px rgba(0, 0, 0,0.38); transform:translateY(-2px); background:rgba(23, 23, 23,0.98);}
 .w-card-top{display:flex; justify-content:space-between; align-items:center; gap:10px;}
-.w-card-heading{display:flex; flex-direction:column; align-items:flex-start; gap:6px; flex:1; min-width:0;}
+.w-card-heading{display:flex; align-items:center; gap:10px; flex:1; min-width:0;}
+.w-logo{width:40px; height:40px; padding:5px; border-radius:5px; background:linear-gradient(135deg,#ffffff,#f1f1f1); border:1px solid rgba(255,255,255,0.12); box-shadow:0 4px 12px rgba(0,0,0,0.18); color:#111111;}
+.w-heading-copy{display:flex; flex-direction:column; align-items:flex-start; gap:6px; min-width:0; flex:1;}
 .w-type{align-self:flex-start; font-size:10px; letter-spacing:0.8px; text-transform:uppercase; font-weight:900; color:#d4d4d4; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.1); padding:4px 8px; border-radius:6px; white-space:nowrap; max-width:100%; overflow:hidden; text-overflow:ellipsis;}
 .w-card-name{font-weight:900; font-size:15px; letter-spacing:-0.3px; flex:1; min-width:0; max-width:100%; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
 .w-visit{padding:8px 14px; border-radius:6px; border:1px solid rgba(255, 255, 255,0.12); background:#ffffff; color:#000000; font-size:12px; font-weight:800; cursor:pointer; transition:transform .15s, background .2s; flex-shrink:0; display:inline-flex; align-items:center; gap:6px; text-decoration:none;}
