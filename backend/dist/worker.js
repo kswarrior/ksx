@@ -273,6 +273,9 @@ async function fetchMcpedlViaTranslate(url) {
         return null;
     }
 }
+function getMcpedlCache() {
+    return globalThis.caches?.default;
+}
 async function fetchMcpedl(url) {
     let direct = null;
     try {
@@ -302,12 +305,36 @@ async function fetchMcpedl(url) {
 app.get("/api/mcpedl/*", async (c) => {
     const upstreamPath = c.req.path.slice("/api/mcpedl".length);
     const search = new URL(c.req.url).search;
+    const cache = getMcpedlCache();
+    const cacheKey = new Request(c.req.url, { method: "GET" });
+    if (cache) {
+        try {
+            const cached = await cache.match(cacheKey);
+            if (cached)
+                return cached;
+        }
+        catch {
+            // ignore cache failures and fetch upstream
+        }
+    }
     try {
         const res = await fetchMcpedl(`${MCPEDL_API}${upstreamPath}${search}`);
         const headers = new Headers();
         headers.set("Content-Type", res.headers.get("content-type") ?? "application/json");
-        headers.set("Cache-Control", res.ok ? "public, max-age=60, s-maxage=120" : "no-store");
-        return new Response(res.body, { status: res.status, headers });
+        headers.set("Cache-Control", res.ok ? "public, max-age=120, s-maxage=300, stale-while-revalidate=600" : "no-store");
+        const via = res.headers.get("x-ksx-mcpedl-via");
+        if (via)
+            headers.set("X-KSX-MCPEDL-Via", via);
+        const response = new Response(res.body, { status: res.status, headers });
+        if (cache && res.ok) {
+            try {
+                c.executionCtx.waitUntil(cache.put(cacheKey, response.clone()));
+            }
+            catch {
+                // no execution context (local dev)
+            }
+        }
+        return response;
     }
     catch {
         return c.json({ error: "MCPEDL request failed" }, 502);

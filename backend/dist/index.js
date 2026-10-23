@@ -213,6 +213,9 @@ app.get("/api/mcpedl/*", async (req, res) => {
         res.status(upstream.status);
         res.setHeader("Content-Type", upstream.headers.get("content-type") ?? "application/json");
         res.setHeader("Cache-Control", upstream.ok ? "public, max-age=60, s-maxage=120" : "no-store");
+        const via = upstream.headers.get("x-ksx-mcpedl-via");
+        if (via)
+            res.setHeader("X-KSX-MCPEDL-Via", via);
         res.send(Buffer.from(await upstream.arrayBuffer()));
     }
     catch {
