@@ -199,16 +199,6 @@ app.get("/api/modrinth/*", async (c) => {
 const MCPEDL_API = "https://api.mcpedl.com/api";
 const MCPEDL_JINA_API = "https://r.jina.ai/";
 const MCPEDL_UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36";
-const MCPEDL_HEADERS = {
-    "User-Agent": MCPEDL_UA,
-    Accept: "application/json, text/plain, */*",
-    "Accept-Language": "en-US,en;q=0.9",
-    Referer: "https://mcpedl.com/",
-    Origin: "https://mcpedl.com",
-    "Sec-Fetch-Dest": "empty",
-    "Sec-Fetch-Mode": "cors",
-    "Sec-Fetch-Site": "same-site",
-};
 function translateProxyUrl(url) {
     const target = new URL(url);
     const proxy = new URL(`https://${target.hostname.replace(/\./g, "-")}.translate.goog${target.pathname}`);
@@ -218,8 +208,6 @@ function translateProxyUrl(url) {
     proxy.searchParams.set("_x_tr_hl", "en");
     return proxy.toString();
 }
-const MCPEDL_DIRECT_BACKOFF_MS = 5 * 60_000;
-let mcpedlDirectBlockedUntil = 0;
 function isMcpedlBlocked(res) {
     if (res.status === 403 || res.status === 429 || res.status === 503)
         return true;
@@ -239,83 +227,81 @@ function markMcpedlResponse(res, via, trace) {
 // api.mcpedl.com puts Cloudflare's bot challenge in front of Cloudflare Workers
 // (requests made from the Workers runtime are challenged with a 403 HTML page).
 // Route those requests through the Jina reader, which returns the raw JSON body.
-async function fetchMcpedlViaJina(url, trace) {
-    try {
-        const res = await fetch(`${MCPEDL_JINA_API}${url}`, {
-            headers: {
-                "User-Agent": MCPEDL_UA,
-                "X-Return-Format": "text",
-            },
-        });
-        trace.push(`jina:${res.status}`);
-        if (!res.ok)
-            return null;
-        const text = (await res.text()).trim();
-        if (!text.startsWith("{") && !text.startsWith("[")) {
-            trace.push("jina:body");
-            return null;
-        }
-        return new Response(text, {
-            status: 200,
-            headers: {
-                "Content-Type": "application/json; charset=utf-8",
-                "X-KSX-MCPEDL-Via": "jina",
-                "X-KSX-MCPEDL-Trace": trace.join(","),
-            },
-        });
-    }
-    catch {
-        trace.push("jina:error");
-        return null;
-    }
+function sleep(ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
 }
-async function fetchMcpedlViaTranslate(url, trace) {
-    try {
-        const res = await fetch(translateProxyUrl(url), {
-            headers: { "User-Agent": MCPEDL_UA, Accept: "application/json" },
-        });
-        trace.push(`translate:${res.status}`);
-        if (!res.ok || isMcpedlBlocked(res))
-            return null;
-        return markMcpedlResponse(res, "translate", trace);
+async function fetchMcpedlViaJina(url, trace, attempts = 3) {
+    for (let attempt = 1; attempt <= attempts; attempt++) {
+        try {
+            const res = await fetch(`${MCPEDL_JINA_API}${url}`, {
+                headers: {
+                    "User-Agent": MCPEDL_UA,
+                    "X-Return-Format": "text",
+                },
+            });
+            trace.push(`jina:${res.status}`);
+            if (res.ok) {
+                const text = (await res.text()).trim();
+                if (text.startsWith("{") || text.startsWith("[")) {
+                    return new Response(text, {
+                        status: 200,
+                        headers: {
+                            "Content-Type": "application/json; charset=utf-8",
+                            "X-KSX-MCPEDL-Via": "jina",
+                            "X-KSX-MCPEDL-Trace": trace.join(","),
+                        },
+                    });
+                }
+                trace.push("jina:body");
+            }
+            if (attempt < attempts || res.status === 429 || res.status >= 500) {
+                if (attempt < attempts)
+                    await sleep(250 * attempt);
+                else if (res.status === 429) {
+                    const retryAfter = Number(res.headers.get("retry-after"));
+                    if (Number.isFinite(retryAfter) && retryAfter > 0 && retryAfter <= 2) {
+                        await sleep(retryAfter * 1000);
+                    }
+                }
+            }
+        }
+        catch {
+            trace.push("jina:error");
+            if (attempt < attempts)
+                await sleep(250 * attempt);
+        }
     }
-    catch {
-        trace.push("translate:error");
-        return null;
+    return null;
+}
+async function fetchMcpedlViaTranslate(url, trace, attempts = 2) {
+    for (let attempt = 1; attempt <= attempts; attempt++) {
+        try {
+            const res = await fetch(translateProxyUrl(url), {
+                headers: { "User-Agent": MCPEDL_UA, Accept: "application/json" },
+            });
+            trace.push(`translate:${res.status}`);
+            if (res.ok && !isMcpedlBlocked(res))
+                return markMcpedlResponse(res, "translate", trace);
+        }
+        catch {
+            trace.push("translate:error");
+        }
+        if (attempt < attempts)
+            await sleep(400 * attempt);
     }
+    return null;
 }
 function getMcpedlCache() {
     return globalThis.caches?.default;
 }
 async function fetchMcpedl(url) {
     const trace = [];
-    let direct = null;
-    if (Date.now() >= mcpedlDirectBlockedUntil) {
-        try {
-            direct = await fetch(url, {
-                headers: MCPEDL_HEADERS,
-                cf: { scrapeShield: false },
-            });
-            trace.push(`direct:${direct.status}`);
-            if (!isMcpedlBlocked(direct))
-                return markMcpedlResponse(direct, "direct", trace);
-            mcpedlDirectBlockedUntil = Date.now() + MCPEDL_DIRECT_BACKOFF_MS;
-        }
-        catch {
-            trace.push("direct:error");
-        }
-    }
-    else {
-        trace.push("direct:skipped");
-    }
     const viaJina = await fetchMcpedlViaJina(url, trace);
     if (viaJina)
         return viaJina;
     const viaTranslate = await fetchMcpedlViaTranslate(url, trace);
     if (viaTranslate)
         return viaTranslate;
-    if (direct)
-        return markMcpedlResponse(direct, "direct-blocked", trace);
     return new Response(JSON.stringify({ error: "MCPEDL request failed", trace }), {
         status: 502,
         headers: { "Content-Type": "application/json", "X-KSX-MCPEDL-Trace": trace.join(",") },
