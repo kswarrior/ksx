@@ -225,7 +225,7 @@ export function searchItems(
     return ranked.map((result) => result.item);
   }
 
-  const cutoff = ranked[0].score * 0.5;
+  const cutoff = ranked[0].score * 0.55;
   return ranked
     .filter((result) => {
       if (result.score >= cutoff) return true;
