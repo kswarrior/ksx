@@ -139,6 +139,9 @@ function translateProxyUrl(url: string): string {
   return proxy.toString();
 }
 
+const MCPEDL_DIRECT_BACKOFF_MS = 5 * 60_000;
+let mcpedlDirectBlockedUntil = 0;
+
 function isMcpedlBlocked(res: Response): boolean {
   if (res.status === 403 || res.status === 429 || res.status === 503) return true;
   return (res.headers.get("content-type") ?? "").includes("text/html");
@@ -194,11 +197,14 @@ async function fetchMcpedlViaTranslate(url: string): Promise<Response | null> {
 
 async function fetchMcpedl(url: string): Promise<Response> {
   let direct: Response | null = null;
-  try {
-    direct = await fetch(url, { headers: MCPEDL_HEADERS });
-    if (!isMcpedlBlocked(direct)) return markMcpedlResponse(direct, "direct");
-  } catch {
-    // try the mirrors below
+  if (Date.now() >= mcpedlDirectBlockedUntil) {
+    try {
+      direct = await fetch(url, { headers: MCPEDL_HEADERS });
+      if (!isMcpedlBlocked(direct)) return markMcpedlResponse(direct, "direct");
+      mcpedlDirectBlockedUntil = Date.now() + MCPEDL_DIRECT_BACKOFF_MS;
+    } catch {
+      // try the mirrors below
+    }
   }
 
   const viaJina = await fetchMcpedlViaJina(url);
