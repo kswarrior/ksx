@@ -67,6 +67,8 @@ export default function App() {
 
           <Route path="apps/android/ks-portal" element={<KsPortal />} />
           <Route path="apps/android/ks-portal.html" element={<KsPortal />} />
+          <Route path="apps/android/ks-portal/downloads" element={<KsPortalDownloads />} />
+          <Route path="apps/android/ks-portal/downloads.html" element={<KsPortalDownloads />} />
 
           <Route path="minecraft/make-hosting/pterodactyl" element={<PterodactylPage />} />
           <Route path="minecraft/make-hosting/pterodactyl.html" element={<PterodactylPage />} />
