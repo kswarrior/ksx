@@ -10,12 +10,14 @@ import vpsData from "./data/vps-hosting.json" with { type: "json" };
 import websiteData from "./data/website-hosting.json" with { type: "json" };
 import databaseData from "./data/database-hosting.json" with { type: "json" };
 import appsData from "./data/apps.json" with { type: "json" };
+import mcpedlFallbackData from "./data/mcpedl-fallback.json" with { type: "json" };
 const sitemap = sitemapData;
 const mcHosting = mcData;
 const vpsHosting = vpsData;
 const websiteHosting = websiteData;
 const databaseHosting = databaseData;
 const apps = appsData;
+const mcpedlFallback = mcpedlFallbackData;
 const CREATE_APPS_TABLE = `
   CREATE TABLE IF NOT EXISTS apps (
     slug TEXT PRIMARY KEY,
@@ -208,6 +210,13 @@ function translateProxyUrl(url) {
     proxy.searchParams.set("_x_tr_hl", "en");
     return proxy.toString();
 }
+function mcpedlFallbackKey(path, search) {
+    const normalizedPath = path.replace(/^\/+/, "");
+    if (!search)
+        return normalizedPath;
+    const sorted = [...new URLSearchParams(search).entries()].sort(([a], [b]) => a.localeCompare(b));
+    return `${normalizedPath}?${new URLSearchParams(sorted).toString()}`;
+}
 function isMcpedlBlocked(res) {
     if (res.status === 403 || res.status === 429 || res.status === 503)
         return true;
@@ -323,7 +332,20 @@ app.get("/api/mcpedl/*", async (c) => {
         }
     }
     try {
-        const res = await fetchMcpedl(`${MCPEDL_API}${upstreamPath}${search}`);
+        let res = await fetchMcpedl(`${MCPEDL_API}${upstreamPath}${search}`);
+        if (!res.ok) {
+            const fallback = mcpedlFallback[mcpedlFallbackKey(upstreamPath, search)];
+            if (fallback) {
+                const headers = {
+                    "Content-Type": "application/json; charset=utf-8",
+                    "X-KSX-MCPEDL-Via": "snapshot",
+                };
+                const trace = res.headers.get("x-ksx-mcpedl-trace");
+                if (trace)
+                    headers["X-KSX-MCPEDL-Trace"] = trace;
+                res = new Response(JSON.stringify(fallback), { status: 200, headers });
+            }
+        }
         const headers = new Headers();
         headers.set("Content-Type", res.headers.get("content-type") ?? "application/json");
         headers.set("Cache-Control", res.ok ? "public, max-age=120, s-maxage=300, stale-while-revalidate=600" : "no-store");
