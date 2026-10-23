@@ -130,6 +130,7 @@ function matchQuality(queryToken: string, textToken: string): number {
   const maxDistance = queryToken.length >= 7 ? 2 : 1;
   if (Math.abs(queryToken.length - textToken.length) > maxDistance) return 0;
   const distance = editDistance(queryToken, textToken, maxDistance);
+  if (distance > maxDistance) return 0;
   if (distance === 1) return 0.6;
   if (distance === 2) return 0.4;
   return 0;
