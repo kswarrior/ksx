@@ -289,9 +289,20 @@ server.registerTool(
             .filter((entry) => {
               if (entry.score >= ranked[0].score * 0.5) return true;
               const nameTokens = searchTokens(entry.page.name);
-              return queryTokens.some((queryToken) =>
-                nameTokens.some((nameToken) => tokensMatch(queryToken, nameToken))
+              const descriptionTokens = searchTokens(
+                entry.page.description ?? ""
               );
+              const allInName = queryTokens.every((queryToken) =>
+                nameTokens.some((nameToken) =>
+                  tokensMatch(queryToken, nameToken)
+                )
+              );
+              const allInDescription = queryTokens.every((queryToken) =>
+                descriptionTokens.some((descriptionToken) =>
+                  tokensMatch(queryToken, descriptionToken)
+                )
+              );
+              return allInName || allInDescription;
             })
             .map((entry) => entry.page);
     return text({ query, count: matches.length, results: matches });

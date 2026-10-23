@@ -230,9 +230,16 @@ export function searchItems(
     .filter((result) => {
       if (result.score >= cutoff) return true;
       const nameTokens = searchTokens(result.item.name);
-      return queryTokens.some((queryToken) =>
+      const descriptionTokens = searchTokens(result.item.description ?? "");
+      const allInName = queryTokens.every((queryToken) =>
         nameTokens.some((nameToken) => tokensMatch(queryToken, nameToken))
       );
+      const allInDescription = queryTokens.every((queryToken) =>
+        descriptionTokens.some((descriptionToken) =>
+          tokensMatch(queryToken, descriptionToken)
+        )
+      );
+      return allInName || allInDescription;
     })
     .map((result) => result.item);
 }
