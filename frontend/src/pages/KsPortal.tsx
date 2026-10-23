@@ -94,6 +94,10 @@ export default function KsPortal() {
   return (
     <div className="portal-page">
       <div className="portal-shell">
+        <Link className="portal-back" to="/apps/android/store">
+          <Icon name="chevron-left" size={16} /> Back to Store
+        </Link>
+
         <section className="portal-release" aria-labelledby="portal-release-title">
           <div className="portal-release-head">
             <span className="portal-release-icon">
