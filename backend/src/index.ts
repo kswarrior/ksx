@@ -204,27 +204,31 @@ async function fetchMcpedlViaTranslate(url: string, trace: string[]): Promise<Re
 }
 
 async function fetchMcpedl(url: string): Promise<Response> {
+  const trace: string[] = [];
   let direct: Response | null = null;
   if (Date.now() >= mcpedlDirectBlockedUntil) {
     try {
       direct = await fetch(url, { headers: MCPEDL_HEADERS });
-      if (!isMcpedlBlocked(direct)) return markMcpedlResponse(direct, "direct");
+      trace.push(`direct:${direct.status}`);
+      if (!isMcpedlBlocked(direct)) return markMcpedlResponse(direct, "direct", trace);
       mcpedlDirectBlockedUntil = Date.now() + MCPEDL_DIRECT_BACKOFF_MS;
     } catch {
-      // try the mirrors below
+      trace.push("direct:error");
     }
+  } else {
+    trace.push("direct:skipped");
   }
 
-  const viaJina = await fetchMcpedlViaJina(url);
+  const viaJina = await fetchMcpedlViaJina(url, trace);
   if (viaJina) return viaJina;
 
-  const viaTranslate = await fetchMcpedlViaTranslate(url);
+  const viaTranslate = await fetchMcpedlViaTranslate(url, trace);
   if (viaTranslate) return viaTranslate;
 
-  if (direct) return markMcpedlResponse(direct, "direct-blocked");
-  return new Response(JSON.stringify({ error: "MCPEDL request failed" }), {
+  if (direct) return markMcpedlResponse(direct, "direct-blocked", trace);
+  return new Response(JSON.stringify({ error: "MCPEDL request failed", trace }), {
     status: 502,
-    headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": "application/json", "X-KSX-MCPEDL-Trace": trace.join(",") },
   });
 }
 
