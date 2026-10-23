@@ -147,6 +147,7 @@ export interface AppRecord {
   screenshot?: string;
   requires?: string;
   price?: string;
+  size?: string;
   featured?: boolean;
 }
 

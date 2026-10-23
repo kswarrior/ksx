@@ -6,7 +6,6 @@ import Icon from "../components/Icon";
 import PageHero from "../components/PageHero";
 import { SearchField, Select, type SelectOption } from "../components/ui";
 import { api, type AppStats, type StoreApp } from "../lib/api";
-import { trackAppDownload } from "../lib/appDownloads";
 import "./Store.css";
 
 const SORT_OPTIONS: SelectOption[] = [
@@ -27,12 +26,6 @@ function appPath(app: StoreApp): string {
 function downloadsLabel(stats: AppStats | undefined): string | null {
   if (!stats || !stats.available || stats.downloads === null) return null;
   return `${stats.downloads.toLocaleString()} ${stats.downloads === 1 ? "download" : "downloads"}`;
-}
-
-function currentDownloadsLabel(stats: AppStats | undefined): string | null {
-  if (!stats || !stats.available || stats.currentDownloads == null) return null;
-  const count = stats.currentDownloads;
-  return `${count.toLocaleString()} ${count === 1 ? "download" : "downloads"}`;
 }
 
 export default function StorePage() {
@@ -125,7 +118,6 @@ export default function StorePage() {
     });
   }, [apps, q, category, sort]);
 
-  const featured = filtered.find((app) => app.featured);
   const activeFilters = [category].filter(Boolean).length + (sort === "featured" ? 0 : 1);
   const clearFilters = () => {
     setQ("");

@@ -115,6 +115,7 @@ export type StoreApp = {
   screenshot?: string;
   requires?: string;
   price?: string;
+  size?: string;
   featured?: boolean;
 };
 
