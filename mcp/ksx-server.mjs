@@ -30,7 +30,13 @@ function stripIcons(sitemap) {
     category: category.category,
     sections: category.sections.map((section) => ({
       title: section.title,
-      pages: section.pages.map((page) => ({ name: page.name, url: page.url })),
+      pages: section.pages.map((page) => ({
+        name: page.name,
+        url: page.url,
+        ...(page.description ? { description: page.description } : {}),
+        ...(page.keywords?.length ? { keywords: page.keywords } : {}),
+        ...(page.soon ? { soon: true } : {}),
+      })),
     })),
   }));
 }
@@ -43,6 +49,9 @@ function flattenSitemap(sitemap) {
         section: section.title,
         name: page.name,
         url: page.url,
+        ...(page.description ? { description: page.description } : {}),
+        ...(page.keywords?.length ? { keywords: page.keywords } : {}),
+        ...(page.soon ? { soon: true } : {}),
       }))
     )
   );
@@ -60,6 +69,83 @@ function fail(message) {
 
 function includes(value, needle) {
   return String(value).toLowerCase().includes(needle.toLowerCase());
+}
+
+const STOP_WORDS = new Set([
+  "a", "an", "and", "are", "as", "at", "be", "by", "can", "do", "for",
+  "from", "how", "i", "in", "is", "it", "me", "my", "of", "on", "or",
+  "the", "to", "what", "where", "with", "you", "your",
+]);
+
+function normalizeText(value) {
+  return String(value)
+    .toLowerCase()
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+}
+
+function stem(token) {
+  if (token.length > 4 && token.endsWith("ies")) return `${token.slice(0, -3)}y`;
+  if (token.length > 4 && token.endsWith("ses")) return token.slice(0, -2);
+  if (
+    token.length > 3 &&
+    token.endsWith("s") &&
+    !token.endsWith("ss") &&
+    !token.endsWith("us") &&
+    !token.endsWith("is")
+  ) {
+    return token.slice(0, -1);
+  }
+  return token;
+}
+
+function searchTokens(value) {
+  return normalizeText(value)
+    .split(" ")
+    .filter((token) => token && !STOP_WORDS.has(token))
+    .map(stem);
+}
+
+function tokensMatch(queryToken, textToken) {
+  if (queryToken === textToken) return true;
+  if (Math.min(queryToken.length, textToken.length) < 3) return false;
+  return textToken.startsWith(queryToken) || queryToken.startsWith(textToken);
+}
+
+function scorePage(page, query) {
+  const phrase = normalizeText(query);
+  if (!phrase) return 0;
+  const fields = {
+    name: { text: normalizeText(page.name), weight: 60 },
+    keywords: { text: normalizeText((page.keywords ?? []).join(" ")), weight: 32 },
+    description: { text: normalizeText(page.description ?? ""), weight: 16 },
+    section: { text: normalizeText(page.section), weight: 16 },
+    category: { text: normalizeText(page.category), weight: 18 },
+  };
+  const queryTokens = searchTokens(query);
+  if (queryTokens.length === 0) {
+    return Object.values(fields).some((field) => field.text.includes(phrase)) ? 1 : 0;
+  }
+  let score = 0;
+  for (const queryToken of queryTokens) {
+    let tokenScore = 0;
+    for (const field of Object.values(fields)) {
+      const fieldTokens = field.text.split(" ").map(stem);
+      if (fieldTokens.some((textToken) => tokensMatch(queryToken, textToken))) {
+        tokenScore += field.weight;
+      }
+    }
+    if (tokenScore === 0) return 0;
+    score += tokenScore;
+  }
+  if (fields.name.text === phrase) score += 400;
+  else if (fields.name.text.startsWith(phrase)) score += 120;
+  if (fields.name.text.includes(phrase)) score += 90;
+  if (fields.keywords.text.includes(phrase)) score += 70;
+  if (fields.description.text.includes(phrase)) score += 35;
+  return score;
 }
 
 async function fetchJson(path, timeoutMs = 15_000) {
@@ -178,17 +264,24 @@ server.registerTool(
   {
     title: "Search KSX pages",
     description:
-      "Search KSX pages by page name, section title, or category. Returns matching routes from the sitemap.",
+      "Search KSX pages by name, description, keywords, section title, or category. Multi-word queries match in any order, so 'paid plugins' and 'plugins paid' both find the Paid Plugins page.",
     inputSchema: {
-      query: z.string().min(1).describe("Search text, e.g. hosting, server, java, vps"),
+      query: z.string().min(1).describe("Search text, e.g. free minecraft hosting, plugins paid, java, vps"),
     },
     annotations: { readOnlyHint: true },
   },
   async ({ query }) => {
     const { sitemap } = loadData();
-    const matches = flattenSitemap(sitemap).filter(
-      (page) => includes(page.name, query) || includes(page.section, query) || includes(page.category, query)
-    );
+    const matches = flattenSitemap(sitemap)
+      .map((page) => ({ page, score: scorePage(page, query) }))
+      .filter((entry) => entry.score > 0)
+      .sort(
+        (a, b) =>
+          b.score - a.score ||
+          a.page.name.localeCompare(b.page.name) ||
+          a.page.url.localeCompare(b.page.url)
+      )
+      .map((entry) => entry.page);
     return text({ query, count: matches.length, results: matches });
   }
 );
