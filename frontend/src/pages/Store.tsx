@@ -29,6 +29,12 @@ function downloadsLabel(stats: AppStats | undefined): string | null {
   return `${stats.downloads.toLocaleString()} ${stats.downloads === 1 ? "download" : "downloads"}`;
 }
 
+function currentDownloadsLabel(stats: AppStats | undefined): string | null {
+  if (!stats || !stats.available || stats.currentDownloads == null) return null;
+  const count = stats.currentDownloads;
+  return `${count.toLocaleString()} ${count === 1 ? "download" : "downloads"}`;
+}
+
 export default function StorePage() {
   const [apps, setApps] = useState<StoreApp[]>([]);
   const [stats, setStats] = useState<Record<string, AppStats>>({});
@@ -262,9 +268,9 @@ export default function StorePage() {
                   </div>
 
                   <div className="store-featured-facts">
-                    {downloadsLabel(stats[featured.slug]) && (
+                    {currentDownloadsLabel(stats[featured.slug]) && (
                       <span>
-                        <strong>{downloadsLabel(stats[featured.slug])}</strong>
+                        <strong>{currentDownloadsLabel(stats[featured.slug])}</strong>
                         <small>on this version</small>
                       </span>
                     )}
