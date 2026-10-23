@@ -59,9 +59,12 @@ npm run typecheck
 npm start                # node backend/dist/index.js serves frontend/dist
 ```
 
-## App downloads (Cloudflare D1)
+## Download tracking (Cloudflare D1)
 
-The KS Portal download button sends a click to `POST /api/apps/ks-portal/download`.
+KS Portal (Android app) and KS Client (Bedrock resource pack) both record downloads
+through the same endpoints. The KS Portal download button sends a click to
+`POST /api/apps/ks-portal/download`; KS Client uses
+`POST /api/apps/ks-client/download`.
 On Cloudflare Workers this writes to the `app_downloads` D1 table. The Worker
 creates the tables and seeds the `apps` table automatically on the first request,
 so a manual seed is optional. Migration and seed files live in `backend/migrations/`.
