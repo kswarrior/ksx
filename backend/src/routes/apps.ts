@@ -18,6 +18,8 @@ router.get("/:slug/stats", (req, res) => {
     version: app.version,
     platform: app.platform,
     downloads: null,
+    currentDownloads: null,
+    versions: [],
     available: false,
     reason: "D1 is only available on Cloudflare Workers",
   });

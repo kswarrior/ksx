@@ -88,12 +88,21 @@ export type DatabaseHosting = {
   link: string;
 };
 
+export type AppVersionStats = {
+  version: string;
+  downloads: number;
+  current: boolean;
+  lastDownloadAt: string | null;
+};
+
 export type AppStats = {
   slug: string;
   name?: string;
   version?: string;
   platform?: string;
   downloads: number | null;
+  currentDownloads?: number | null;
+  versions?: AppVersionStats[];
   available: boolean;
   reason?: string;
   error?: string;

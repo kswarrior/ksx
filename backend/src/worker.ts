@@ -63,6 +63,11 @@ const CREATE_DOWNLOADS_INDEX = `
   ON app_downloads (app_slug, created_at DESC)
 `;
 
+const CREATE_DOWNLOADS_VERSION_INDEX = `
+  CREATE INDEX IF NOT EXISTS idx_app_downloads_app_version
+  ON app_downloads (app_slug, version)
+`;
+
 let appDbReady: Promise<void> | null = null;
 
 async function ensureAppDb(db: D1Database) {
@@ -72,6 +77,7 @@ async function ensureAppDb(db: D1Database) {
         db.prepare(CREATE_APPS_TABLE),
         db.prepare(CREATE_DOWNLOADS_TABLE),
         db.prepare(CREATE_DOWNLOADS_INDEX),
+        db.prepare(CREATE_DOWNLOADS_VERSION_INDEX),
       ]);
       for (const app of apps) {
         await db
@@ -364,6 +370,8 @@ app.get("/api/apps/:slug/stats", async (c) => {
       version: app.version,
       platform: app.platform,
       downloads: null,
+      currentDownloads: null,
+      versions: [],
       available: false,
       reason: "D1 binding DB is not configured",
     });
@@ -371,16 +379,51 @@ app.get("/api/apps/:slug/stats", async (c) => {
 
   try {
     await ensureAppDb(db);
-    const row = await db
-      .prepare("SELECT COUNT(*) AS downloads FROM app_downloads WHERE app_slug = ?")
+    const result = await db
+      .prepare(
+        `SELECT version, COUNT(*) AS downloads, MAX(created_at) AS last_download
+         FROM app_downloads
+         WHERE app_slug = ?
+         GROUP BY version`
+      )
       .bind(app.slug)
-      .first<{ downloads: number }>();
+      .all<{ version: string; downloads: number; last_download: string | null }>();
+
+    const versions = (result.results ?? []).map((row) => ({
+      version: String(row.version),
+      downloads: Number(row.downloads ?? 0),
+      current: String(row.version) === app.version,
+      lastDownloadAt: row.last_download ?? null,
+    }));
+
+    if (!versions.some((item) => item.current)) {
+      versions.push({
+        version: app.version,
+        downloads: 0,
+        current: true,
+        lastDownloadAt: null,
+      });
+    }
+
+    versions.sort((a, b) => {
+      if (a.current !== b.current) return a.current ? -1 : 1;
+      if (a.lastDownloadAt && b.lastDownloadAt) {
+        return b.lastDownloadAt.localeCompare(a.lastDownloadAt);
+      }
+      if (a.lastDownloadAt) return -1;
+      if (b.lastDownloadAt) return 1;
+      return b.version.localeCompare(a.version, undefined, { numeric: true });
+    });
+
+    const current = versions.find((item) => item.current);
     return c.json({
       slug: app.slug,
       name: app.name,
       version: app.version,
       platform: app.platform,
-      downloads: Number(row?.downloads ?? 0),
+      downloads: versions.reduce((sum, item) => sum + item.downloads, 0),
+      currentDownloads: current?.downloads ?? 0,
+      versions,
       available: true,
     });
   } catch (error) {
@@ -391,6 +434,8 @@ app.get("/api/apps/:slug/stats", async (c) => {
         version: app.version,
         platform: app.platform,
         downloads: null,
+        currentDownloads: null,
+        versions: [],
         available: false,
         error: error instanceof Error ? error.message : "D1 query failed",
       },
