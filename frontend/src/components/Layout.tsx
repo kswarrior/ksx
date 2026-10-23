@@ -1,29 +1,14 @@
 import { Suspense, useCallback, useEffect, useLayoutEffect, useState, useRef } from "react";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { api, SearchItem } from "../lib/api";
-import { flattenSitemap, highlightParts, searchItems } from "../lib/search";
+import { flattenSitemap, searchItems } from "../lib/search";
 import BrandLogo from "./BrandLogo";
+import HighlightedText from "./HighlightedText";
 import Icon from "./Icon";
 import KsLoader from "./KsLoader";
 import { TextField } from "./ui";
 import { PIN_KEY, LAST_PAGE_KEY, RECENT_KEY, MAX_RECENT, RecentItem, PinItem, readPins } from "../hooks/useLocalStorage";
 import "./Layout.css";
-
-function HighlightedText({ text, query }: { text: string; query: string }) {
-  return (
-    <>
-      {highlightParts(text, query).map((part, index) =>
-        part.match ? (
-          <mark key={index} className="s-mark">
-            {part.text}
-          </mark>
-        ) : (
-          <span key={index}>{part.text}</span>
-        )
-      )}
-    </>
-  );
-}
 
 export default function Layout() {
   const [sitemap, setSitemap] = useState<SearchItem[]>([]);

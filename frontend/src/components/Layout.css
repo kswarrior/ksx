@@ -242,15 +242,176 @@
 #suggestBox .s-title { padding: 8px 16px 6px; cursor: default; }
 #suggestBox .s-category:hover,
 #suggestBox .s-title:hover { background: transparent; }
-.s-page {
+#suggestBox .s-page {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin: 0 8px;
+  padding: 10px 9px;
+  color: var(--text);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+#suggestBox .s-page:hover,
+#suggestBox .s-page.active { background: rgba(255, 255, 255, 0.06); }
+.s-page:hover .s-page-name, .s-page.active .s-page-name { color: #ffffff; }
+.s-page-logo { margin-top: 1px; }
+.s-results-head {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin: 0;
-  color: var(--text);
-  cursor: pointer;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 0 8px 4px;
+  padding: 7px 9px 9px !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 750;
+  letter-spacing: 0.35px;
+  text-transform: uppercase;
+  cursor: default;
 }
-.s-page:hover .s-page-name, .s-page.active .s-page-name { color: #ffffff; }
+.s-results-head:hover { background: transparent; }
+.s-results-hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 600;
+  white-space: nowrap;
+}
+#suggestBox kbd {
+  display: inline-grid;
+  place-items: center;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.05);
+  color: #d6d6d6;
+  font: inherit;
+  font-size: 9px;
+  line-height: 1;
+}
+.s-page-name {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.s-page-path {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+  font-size: 10px;
+  font-weight: 600;
+  color: #8f8f8f;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.s-page-cat {
+  color: #c7c7c7;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.45px;
+  text-transform: uppercase;
+}
+.s-page-sep { opacity: 0.5; }
+.s-page-desc {
+  display: -webkit-box;
+  margin-top: 2px;
+  overflow: hidden;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.45;
+  white-space: normal;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+.s-mark {
+  padding: 0 1px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.18);
+  color: #ffffff;
+}
+.s-soon-pill {
+  margin-left: 2px;
+  padding: 1px 5px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+  color: var(--muted);
+  font-size: 8.5px;
+  font-weight: 800;
+  letter-spacing: 0.35px;
+  text-transform: uppercase;
+}
+.s-empty {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  padding: 18px 18px 20px !important;
+  cursor: default;
+}
+.s-empty:hover { background: transparent; }
+.s-empty-title { font-size: 13px; font-weight: 800; color: var(--text); }
+.s-empty-text { font-size: 11px; color: var(--muted); }
+.s-empty-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 2px; }
+.s-chip {
+  padding: 4px 9px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text);
+  font: inherit;
+  font-size: 10.5px;
+  font-weight: 650;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+.s-chip:hover { background: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.24); }
+.s-search-footer {
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 6px;
+  padding: 10px 17px 12px !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--panel);
+  cursor: default;
+}
+.s-search-footer:hover { background: var(--panel); }
+.s-kbd-hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--muted);
+  font-size: 9.5px;
+  font-weight: 600;
+}
+.s-all-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 9px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 7px;
+  background: rgba(255, 255, 255, 0.06);
+  color: #ffffff;
+  font: inherit;
+  font-size: 10px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+.s-all-btn:hover { background: rgba(255, 255, 255, 0.12); border-color: rgba(255, 255, 255, 0.26); }
 .s-page-logo {
   width: 36px;
   height: 36px;
