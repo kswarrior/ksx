@@ -147,9 +147,10 @@ function isMcpedlBlocked(res: Response): boolean {
   return (res.headers.get("content-type") ?? "").includes("text/html");
 }
 
-function markMcpedlResponse(res: Response, via: string): Response {
+function markMcpedlResponse(res: Response, via: string, trace?: string[]): Response {
   const headers = new Headers(res.headers);
   headers.set("X-KSX-MCPEDL-Via", via);
+  if (trace?.length) headers.set("X-KSX-MCPEDL-Trace", trace.join(","));
   return new Response(res.body, {
     status: res.status,
     statusText: res.statusText,
@@ -160,7 +161,7 @@ function markMcpedlResponse(res: Response, via: string): Response {
 // api.mcpedl.com puts Cloudflare's bot challenge in front of Cloudflare Workers
 // (requests made from the Workers runtime are challenged with a 403 HTML page).
 // Route those requests through the Jina reader, which returns the raw JSON body.
-async function fetchMcpedlViaJina(url: string): Promise<Response | null> {
+async function fetchMcpedlViaJina(url: string, trace: string[]): Promise<Response | null> {
   try {
     const res = await fetch(`${MCPEDL_JINA_API}${url}`, {
       headers: {
@@ -168,9 +169,13 @@ async function fetchMcpedlViaJina(url: string): Promise<Response | null> {
         "X-Return-Format": "text",
       },
     });
+    trace.push(`jina:${res.status}`);
     if (!res.ok) return null;
     const text = (await res.text()).trim();
-    if (!text.startsWith("{") && !text.startsWith("[")) return null;
+    if (!text.startsWith("{") && !text.startsWith("[")) {
+      trace.push("jina:body");
+      return null;
+    }
     return new Response(text, {
       status: 200,
       headers: {
@@ -179,18 +184,21 @@ async function fetchMcpedlViaJina(url: string): Promise<Response | null> {
       },
     });
   } catch {
+    trace.push("jina:error");
     return null;
   }
 }
 
-async function fetchMcpedlViaTranslate(url: string): Promise<Response | null> {
+async function fetchMcpedlViaTranslate(url: string, trace: string[]): Promise<Response | null> {
   try {
     const res = await fetch(translateProxyUrl(url), {
       headers: { "User-Agent": MCPEDL_UA, Accept: "application/json" },
     });
+    trace.push(`translate:${res.status}`);
     if (!res.ok || isMcpedlBlocked(res)) return null;
-    return markMcpedlResponse(res, "translate");
+    return markMcpedlResponse(res, "translate", trace);
   } catch {
+    trace.push("translate:error");
     return null;
   }
 }
