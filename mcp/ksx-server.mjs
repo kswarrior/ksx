@@ -111,7 +111,7 @@ function searchTokens(value) {
 function tokensMatch(queryToken, textToken) {
   if (queryToken === textToken) return true;
   if (Math.min(queryToken.length, textToken.length) < 3) return false;
-  return textToken.startsWith(queryToken) || queryToken.startsWith(textToken);
+  return textToken.startsWith(queryToken);
 }
 
 function scorePage(page, query) {

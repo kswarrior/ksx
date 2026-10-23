@@ -99,7 +99,7 @@ function tokensMatch(queryToken: string, textToken: string): boolean {
   if (queryToken === textToken) return true;
   if (Math.min(queryToken.length, textToken.length) < 3) return false;
   return (
-    textToken.startsWith(queryToken) || queryToken.startsWith(textToken)
+    textToken.startsWith(queryToken)
   );
 }
 
