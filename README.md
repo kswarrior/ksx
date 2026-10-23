@@ -176,7 +176,7 @@ starts from zero and does not inherit downloads from previous versions.
 
 `/api/social` returns the current YouTube subscriber, Discord member, and Instagram follower counts that power the Social page. Responses are cached for 5 minutes; each platform reports `available: false` (never a fabricated number) when its live source cannot be reached. Discord counts require a valid invite, and Instagram falls back to a public reader when no Graph API credentials are set.
 
-Search mimics original `s-*` grouping; `localStorage` keys `ks-web-recent`/`ks-web-fav`/`ks-web-last-page` preserved.
+Header and `/map` search rank pages across names, descriptions, keywords, sections, and categories. Multi-word queries match in any order, so `plugins paid` finds **Paid Plugins (Free)** and `free minecraft hosting` finds the Minecraft **Free Hosting List**. `localStorage` keys `ks-web-recent`/`ks-web-fav`/`ks-web-last-page` are preserved.
 
 ## MCP & Skills
 

@@ -67,6 +67,7 @@ Most routes are registered twice in `frontend/src/App.tsx`: with and without `.h
 
 - Edit hosting data only in `backend/src/data/*.json`; the API and UI read it at runtime.
 - To add a page to the map/search, update `backend/src/data/sitemap.json` (category -> sections -> pages) and `frontend/public/sitemap.xml`.
+- Every sitemap page should have a one-line `description` and a `keywords` array. The header search, `/map` search, `/api/sitemap/search`, and MCP search all match those fields, so include natural phrases users may type (for example `free minecraft hosting` or `paid plugins`).
 - Add `"soon": true` to a sitemap page to show a Coming Soon badge on `/map`; still register a route/page so the link works.
 - `frontend/public/sitemap.json` is a stale legacy copy. The React app never reads it; do not treat it as source of truth. Update it only if a task explicitly asks for the static copy.
 - Sitemap page URLs keep the `.html` suffix even though React Router serves both forms.
@@ -77,7 +78,7 @@ Most routes are registered twice in `frontend/src/App.tsx`: with and without `.h
 
 1. Create `frontend/src/pages/MyPage.tsx` (and `MyPage.css` if needed), following the styling of an existing page.
 2. Add a lazy import in `frontend/src/App.tsx` and register both `path` and `path.html`.
-3. Add the page to `backend/src/data/sitemap.json` so it appears on `/map` and in search.
+3. Add the page to `backend/src/data/sitemap.json` with a `description` and `keywords` so it appears on `/map` and in search.
 4. Add the URL to `frontend/public/sitemap.xml`.
 5. Run `npm run typecheck`.
 

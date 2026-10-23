@@ -13,7 +13,7 @@ The `ksx` MCP server is registered in `opencode.json` and runs `mcp/ksx-server.m
 | --- | --- |
 | `ksx_site_summary` | Stack, deploy target, counts, categories, page list, endpoints |
 | `ksx_get_sitemap` | Categories/sections/pages; optional `category`, `section`, `includeIcons` |
-| `ksx_search_pages` | Search pages by name, section, or category |
+| `ksx_search_pages` | Ranked page search across name, description, keywords, section, and category; word order does not matter |
 | `ksx_find_minecraft_hosting` | Filter hosts by `query`, `location`, `uptime`, `alwaysOn`, `minRam` |
 | `ksx_find_vps_hosting` | Filter providers by `query`, `type`, `location`, `renew`, `sudo`, `alwaysOn` |
 | `ksx_find_website_hosting` | Filter providers by `query`, `type`, `customDomain`, `ssl`, `ads`, `alwaysFree` |
@@ -53,8 +53,8 @@ curl localhost:8080/api/social
 
 ### Response shapes
 
-- `/api/sitemap` -> `SitemapCategory[]` with inline SVG `icon`/`logo` strings.
-- `/api/sitemap/search?q=` -> flat `SearchItem[]`; matches page `name`, section `title`, or category. Empty `q` -> `[]`.
+- `/api/sitemap` -> `SitemapCategory[]` with inline SVG `icon`/`logo` strings. Each page carries optional `description`, `keywords`, and `soon`.
+- `/api/sitemap/search?q=` -> flat `SearchItem[]`, ranked by relevance across page `name`, `description`, `keywords`, section `title`, category, and URL. Multi-word queries match in any order (`plugins paid` -> Paid Plugins). Empty `q` -> `[]`. The header and `/map` use the same algorithm through `frontend/src/lib/search.ts`; MCP mirrors it.
 - `/api/hosting/minecraft` -> `{ count, data: MinecraftHosting[] }`, filtered by name substring, location substring, minimum RAM, legacy exact `uptime`, and `alwaysOn` (`"true"`/`"false"`). Each entry also includes `players`, `alwaysOn`, `verification`, `limits`, and `notes`.
 - `/api/hosting/vps` -> `{ count, data: VpsHosting[] }`; `type` matches a substring of `VPS`, `Cloud shell`, `Cloud IDE`, `Notebook`, or `Sandbox`; `renew`, `sudo`, `alwaysOn` accept `"true"`/`"false"`. Each entry also includes `verification`, `limits`, and `notes`.
 - `/api/hosting/website` -> `{ count, data: WebsiteHosting[] }`; `type` matches a substring such as `Static`, `PHP`, `Python`, or `builder`; `customDomain`, `ssl`, `ads`, `alwaysFree` accept `"true"`/`"false"`. Each entry has `storage`, `bandwidth`, `sites`, `database`, `verification`, `limits`, and `notes`.
