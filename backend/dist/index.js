@@ -133,6 +133,15 @@ function isMcpedlBlocked(res) {
         return true;
     return (res.headers.get("content-type") ?? "").includes("text/html");
 }
+function markMcpedlResponse(res, via) {
+    const headers = new Headers(res.headers);
+    headers.set("X-KSX-MCPEDL-Via", via);
+    return new Response(res.body, {
+        status: res.status,
+        statusText: res.statusText,
+        headers,
+    });
+}
 // api.mcpedl.com puts Cloudflare's bot challenge in front of Cloudflare Workers
 // (requests made from the Workers runtime are challenged with a 403 HTML page).
 // Route those requests through the Jina reader, which returns the raw JSON body.
@@ -151,7 +160,10 @@ async function fetchMcpedlViaJina(url) {
             return null;
         return new Response(text, {
             status: 200,
-            headers: { "Content-Type": "application/json; charset=utf-8" },
+            headers: {
+                "Content-Type": "application/json; charset=utf-8",
+                "X-KSX-MCPEDL-Via": "jina",
+            },
         });
     }
     catch {
@@ -165,7 +177,7 @@ async function fetchMcpedlViaTranslate(url) {
         });
         if (!res.ok || isMcpedlBlocked(res))
             return null;
-        return res;
+        return markMcpedlResponse(res, "translate");
     }
     catch {
         return null;
@@ -176,7 +188,7 @@ async function fetchMcpedl(url) {
     try {
         direct = await fetch(url, { headers: MCPEDL_HEADERS });
         if (!isMcpedlBlocked(direct))
-            return direct;
+            return markMcpedlResponse(direct, "direct");
     }
     catch {
         // try the mirrors below
@@ -187,7 +199,9 @@ async function fetchMcpedl(url) {
     const viaTranslate = await fetchMcpedlViaTranslate(url);
     if (viaTranslate)
         return viaTranslate;
-    return direct ?? new Response(JSON.stringify({ error: "MCPEDL request failed" }), {
+    if (direct)
+        return markMcpedlResponse(direct, "direct-blocked");
+    return new Response(JSON.stringify({ error: "MCPEDL request failed" }), {
         status: 502,
         headers: { "Content-Type": "application/json" },
     });
