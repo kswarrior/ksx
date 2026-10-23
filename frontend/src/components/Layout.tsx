@@ -218,6 +218,11 @@ export default function Layout() {
   };
 
   const onKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Escape") {
+      setSearchActive(false);
+      setQuery("");
+      return;
+    }
     if (suggestions.length === 0) return;
     if (e.key === "ArrowDown") {
       e.preventDefault();
@@ -229,9 +234,6 @@ export default function Layout() {
       e.preventDefault();
       const it = suggestions[activeIndex] ?? suggestions[0];
       if (it) handleNavItem(it);
-    } else if (e.key === "Escape") {
-      setSearchActive(false);
-      setQuery("");
     }
   };
 
