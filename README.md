@@ -164,6 +164,7 @@ GET /api/hosting/minecraft?q=&alwaysOn=true&location=india&ram=4
 GET /api/hosting/vps?q=&type=VPS&renew=true&sudo=true&alwaysOn=true
 GET /api/hosting/website?q=&type=Static&customDomain=true&ssl=true&ads=false&alwaysFree=true
 GET /api/hosting/database?q=&type=PostgreSQL&cardRequired=false&backups=true&alwaysFree=true&ssl=true
+GET /api/apps
 GET /api/apps/:slug/stats
 POST /api/apps/:slug/download
 GET /api/social

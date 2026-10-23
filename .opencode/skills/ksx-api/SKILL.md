@@ -45,6 +45,7 @@ curl "localhost:8080/api/hosting/minecraft?q=&alwaysOn=true&location=india&ram=4
 curl "localhost:8080/api/hosting/vps?q=&type=VPS&renew=true&sudo=true&alwaysOn=true"
 curl "localhost:8080/api/hosting/website?q=&type=Static&customDomain=true&ssl=true&ads=false&alwaysFree=true"
 curl "localhost:8080/api/hosting/database?q=&type=PostgreSQL&cardRequired=false&backups=true&alwaysFree=true&ssl=true"
+curl localhost:8080/api/apps
 curl localhost:8080/api/apps/ks-portal/stats
 curl -X POST localhost:8080/api/apps/ks-portal/download -H "Content-Type: application/json" -d '{"version":"1.5.0","platform":"android"}'
 curl localhost:8080/api/social
@@ -58,6 +59,7 @@ curl localhost:8080/api/social
 - `/api/hosting/vps` -> `{ count, data: VpsHosting[] }`; `type` matches a substring of `VPS`, `Cloud shell`, `Cloud IDE`, `Notebook`, or `Sandbox`; `renew`, `sudo`, `alwaysOn` accept `"true"`/`"false"`. Each entry also includes `verification`, `limits`, and `notes`.
 - `/api/hosting/website` -> `{ count, data: WebsiteHosting[] }`; `type` matches a substring such as `Static`, `PHP`, `Python`, or `builder`; `customDomain`, `ssl`, `ads`, `alwaysFree` accept `"true"`/`"false"`. Each entry has `storage`, `bandwidth`, `sites`, `database`, `verification`, `limits`, and `notes`.
 - `/api/hosting/database` -> `{ count, data: DatabaseHosting[] }`; `type` matches a substring such as `PostgreSQL`, `SQLite`, `Document`, or `Vector`; `cardRequired`, `backups`, `ssl`, `alwaysFree` accept `"true"`/`"false"`. Each entry has `storage`, `transfer`, `databases`, `region`, `backups`, `verification`, `limits`, and `notes`.
+- `/api/apps` -> `{ count, data: AppRecord[] }`; the app catalog used by the KS Store, including optional store metadata (`category`, `tagline`, `description`, `tags`, `icon`, `screenshot`, `requires`, `price`, `featured`, `pageUrl`).
 - `/api/apps/:slug/stats` -> `{ slug, name, version, platform, downloads, currentDownloads, versions, available, reason? }`; `downloads` is the all-time D1 row count, `currentDownloads` counts only the current version, and `versions` is `[{ version, downloads, current, lastDownloadAt }]` with the current version first. Counts are `null`/`[]` when D1 is unavailable (Express). `available: false` does not mean zero. `POST /api/apps/:slug/download` records a click when D1 is bound. The `apps` namespace tracks downloads for both KS Portal (Android app) and KS Client (Bedrock resource pack).
 - `/api/social` -> `{ updatedAt, platforms: { youtube, discord, instagram } }`; each platform has `count`, `display`, `available`, `source`, optional `online`/`name`/`error`, and `fetchedAt`. Add `?refresh=1` to bypass the 5 minute server cache.
 - `/api/hosting/minecraft/:id` exists only on Express (index into the data array); the Worker does not implement it. Do not rely on it in frontend code.

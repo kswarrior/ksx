@@ -53,6 +53,8 @@ Run `npm run typecheck` before finishing changes. There is no test suite or lint
 | `/minecraft/make-hosting/{pterodactyl,puffer,airlink,ks-panel}[.html]` | Panel setup guides (KS Panel is coming soon) |
 | `/minecraft/java/{launcher,downloader}[.html]` | Java tools |
 | `/minecraft/bedrock/ks-client[.html]` | Bedrock client page |
+| `/apps/android/store[.html]` | KS Store (Android app catalog, search/filters) |
+| `/apps/android/ks-portal[.html]` | KS Portal app details |
 | `/apps/android/ks-portal/downloads[.html]` | KS Portal downloads by version |
 | `/minecraft/bedrock/ks-client/downloads[.html]` | KS Client downloads by version |
 | `/minecraft/server/{statics,bot}[.html]` | Server stat lookup / bot setup |
