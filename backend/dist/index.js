@@ -128,6 +128,8 @@ function translateProxyUrl(url) {
     proxy.searchParams.set("_x_tr_hl", "en");
     return proxy.toString();
 }
+const MCPEDL_DIRECT_BACKOFF_MS = 5 * 60_000;
+let mcpedlDirectBlockedUntil = 0;
 function isMcpedlBlocked(res) {
     if (res.status === 403 || res.status === 429 || res.status === 503)
         return true;
@@ -185,13 +187,16 @@ async function fetchMcpedlViaTranslate(url) {
 }
 async function fetchMcpedl(url) {
     let direct = null;
-    try {
-        direct = await fetch(url, { headers: MCPEDL_HEADERS });
-        if (!isMcpedlBlocked(direct))
-            return markMcpedlResponse(direct, "direct");
-    }
-    catch {
-        // try the mirrors below
+    if (Date.now() >= mcpedlDirectBlockedUntil) {
+        try {
+            direct = await fetch(url, { headers: MCPEDL_HEADERS });
+            if (!isMcpedlBlocked(direct))
+                return markMcpedlResponse(direct, "direct");
+            mcpedlDirectBlockedUntil = Date.now() + MCPEDL_DIRECT_BACKOFF_MS;
+        }
+        catch {
+            // try the mirrors below
+        }
     }
     const viaJina = await fetchMcpedlViaJina(url);
     if (viaJina)
