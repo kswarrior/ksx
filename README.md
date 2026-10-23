@@ -161,8 +161,14 @@ GET /api/hosting/minecraft?q=&alwaysOn=true&location=india&ram=4
 GET /api/hosting/vps?q=&type=VPS&renew=true&sudo=true&alwaysOn=true
 GET /api/hosting/website?q=&type=Static&customDomain=true&ssl=true&ads=false&alwaysFree=true
 GET /api/hosting/database?q=&type=PostgreSQL&cardRequired=false&backups=true&alwaysFree=true&ssl=true
+GET /api/apps/:slug/stats
+POST /api/apps/:slug/download
 GET /api/social
 ```
+
+`/api/apps/:slug/stats` returns the all-time `downloads` total plus `currentDownloads`
+and a `versions` breakdown. Each version keeps its own count, so a new release
+starts from zero and does not inherit downloads from previous versions.
 
 `/api/social` returns the current YouTube subscriber, Discord member, and Instagram follower counts that power the Social page. Responses are cached for 5 minutes; each platform reports `available: false` (never a fabricated number) when its live source cannot be reached. Discord counts require a valid invite, and Instagram falls back to a public reader when no Graph API credentials are set.
 
