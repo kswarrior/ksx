@@ -166,27 +166,38 @@ export default function BedrockDownloader() {
     const params = new URLSearchParams({ q: query || "", page: String(page), sort });
     if (type) params.set("type_id", type);
     if (category) params.set("cf_tags", category);
-    const r = await fetch(`${MCPEDL_API}/search/advanced?${params.toString()}`);
-    if (!r.ok) throw new Error(`HTTP ${r.status}`);
-    const d = (await r.json()) as McpedlSearchResponse;
-    const items = ((d.results || []) as McpedlSearchItem[]).map((item) => ({
-      id: item.slug,
-      title: item.title,
-      description:
-        item.summary ||
-        stripHtml(item.highlight?.description?.[0] ?? "") ||
-        item.introduction ||
-        "",
-      icon_url: item.image || "",
-      categories: (item.cf_tags ?? []).map((tag) => tag.name),
-      downloads: item.downloadCount ?? 0,
-      project_type: bedrockTypeLabels[String(item.type_id)] ?? "Addon",
-    }));
-    const total = d.meta?.total ?? items.length;
-    const pageCount =
-      d.meta?.page_count ??
-      Math.max(page, Math.ceil(total / Math.max(1, d.meta?.page_size ?? MCPEDL_PAGE_SIZE)));
-    return { items, pageCount };
+    let lastError: unknown = null;
+    for (let attempt = 1; attempt <= 2; attempt += 1) {
+      try {
+        const r = await fetch(`${MCPEDL_API}/search/advanced?${params.toString()}`);
+        if (!r.ok) throw new Error(`HTTP ${r.status}`);
+        const d = (await r.json()) as McpedlSearchResponse;
+        const items = ((d.results || []) as McpedlSearchItem[]).map((item) => ({
+          id: item.slug,
+          title: item.title,
+          description:
+            item.summary ||
+            stripHtml(item.highlight?.description?.[0] ?? "") ||
+            item.introduction ||
+            "",
+          icon_url: item.image || "",
+          categories: (item.cf_tags ?? []).map((tag) => tag.name),
+          downloads: item.downloadCount ?? 0,
+          project_type: bedrockTypeLabels[String(item.type_id)] ?? "Addon",
+        }));
+        const total = d.meta?.total ?? items.length;
+        const pageCount =
+          d.meta?.page_count ??
+          Math.max(page, Math.ceil(total / Math.max(1, d.meta?.page_size ?? MCPEDL_PAGE_SIZE)));
+        return { items, pageCount };
+      } catch (err) {
+        lastError = err;
+        if (attempt === 1) {
+          await new Promise((resolve) => setTimeout(resolve, 500));
+        }
+      }
+    }
+    throw lastError instanceof Error ? lastError : new Error("MCPEDL request failed");
   }
 
   async function fetchBedrockResults(startPage: number, wanted: number): Promise<ResultBatch> {
@@ -196,11 +207,16 @@ export default function BedrockDownloader() {
     let hasMoreResults = false;
     for (let i = 0; i < pagesToFetch; i += 1) {
       const pageNumber = nextPageNumber;
-      const page = await fetchBedrockPage(pageNumber);
-      items.push(...page.items);
-      hasMoreResults = page.items.length > 0 && pageNumber < page.pageCount;
-      nextPageNumber = pageNumber + 1;
-      if (!hasMoreResults) break;
+      try {
+        const page = await fetchBedrockPage(pageNumber);
+        items.push(...page.items);
+        hasMoreResults = page.items.length > 0 && pageNumber < page.pageCount;
+        nextPageNumber = pageNumber + 1;
+        if (!hasMoreResults) break;
+      } catch (err) {
+        if (items.length === 0) throw err;
+        return { items, hasMore: true, nextPage: pageNumber };
+      }
     }
     return { items, hasMore: hasMoreResults, nextPage: nextPageNumber };
   }
