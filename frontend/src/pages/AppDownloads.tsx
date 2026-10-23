@@ -11,6 +11,7 @@ type AppDownloadsProps = {
   platform: string;
   icon: string;
   homePath: string;
+  kind?: "app" | "resource pack";
 };
 
 function versionLabel(value: string | undefined): string {
@@ -43,6 +44,7 @@ export default function AppDownloads({
   platform,
   icon,
   homePath,
+  kind = "app",
 }: AppDownloadsProps) {
   const [stats, setStats] = useState<AppStats | null>(null);
   const [loading, setLoading] = useState(true);
@@ -100,15 +102,15 @@ export default function AppDownloads({
               <div className="portal-release-top">
                 <span className="portal-kicker">
                   <i aria-hidden="true" />
-                  Download history
+                  {kind === "resource pack" ? "Resource pack downloads" : "App downloads"}
                 </span>
               </div>
               <h1 id="app-downloads-title">
                 {name} <span>downloads</span>
               </h1>
               <p>
-                Downloads by version. Every release starts its own count, so a new
-                version does not inherit downloads from earlier versions.
+                Downloads by version. Every {kind} release starts its own count, so a
+                new version does not inherit downloads from earlier versions.
               </p>
             </div>
           </div>

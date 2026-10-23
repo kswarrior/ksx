@@ -115,8 +115,8 @@ export default function BedrockDownloaderProject() {
         <div className="jd-bg-orb o2" />
       </div>
       <div className="jd-shell">
-        <Link className="jd-back" to="/minecraft/java/downloader?platform=bedrock">
-          <Icon name="chevron-left" size={16} /> Back to Universal Downloader
+        <Link className="jd-back" to="/minecraft/bedrock/downloader">
+          <Icon name="chevron-left" size={16} /> Back to Bedrock Downloader
         </Link>
 
         {loading && !project && <div className="jd-loading">Loading project…</div>}

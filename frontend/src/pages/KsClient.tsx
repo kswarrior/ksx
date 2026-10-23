@@ -140,7 +140,7 @@ export default function KsClient() {
               <span className="portal-panel-icon" style={{ color: "#ff6b6b" }}>
                 <Icon name="package" size={16} />
               </span>
-              App info
+              Resource pack info
             </h2>
             <span className="portal-panel-count">Bedrock</span>
           </div>
