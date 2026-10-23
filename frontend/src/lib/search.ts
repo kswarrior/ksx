@@ -245,8 +245,8 @@ function scoreIndexedItem(
   }
 
   const coverage = matched / queryTokens.length;
-  score *= 0.35 + 0.65 * coverage;
-  if (coverage === 1) score += 80;
+  score *= 0.3 + 0.7 * coverage;
+  if (coverage === 1) score += 180;
 
   if (entry.normalized.name === phrase) score += 500;
   else if (entry.normalized.name.startsWith(phrase)) score += 220;
