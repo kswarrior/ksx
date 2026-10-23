@@ -9,6 +9,22 @@ import { TextField } from "./ui";
 import { PIN_KEY, LAST_PAGE_KEY, RECENT_KEY, MAX_RECENT, RecentItem, PinItem, readPins } from "../hooks/useLocalStorage";
 import "./Layout.css";
 
+function HighlightedText({ text, query }: { text: string; query: string }) {
+  return (
+    <>
+      {highlightParts(text, query).map((part, index) =>
+        part.match ? (
+          <mark key={index} className="s-mark">
+            {part.text}
+          </mark>
+        ) : (
+          <span key={index}>{part.text}</span>
+        )
+      )}
+    </>
+  );
+}
+
 export default function Layout() {
   const [sitemap, setSitemap] = useState<SearchItem[]>([]);
   const [query, setQuery] = useState("");
@@ -243,19 +259,6 @@ export default function Layout() {
     return () => document.removeEventListener("click", handler);
   }, []);
 
-  // Group suggestions for rendering like original: category → title → pages
-  const grouped = (() => {
-    const tree: Record<string, { icon: string; titles: Record<string, { icon: string; pages: SearchItem[] }> }> = {};
-    suggestions.forEach((i) => {
-      if (!tree[i.category]) tree[i.category] = { icon: i.icon, titles: {} };
-      if (!tree[i.category].titles[i.title]) tree[i.category].titles[i.title] = { icon: i.sectionIcon, pages: [] };
-      tree[i.category].titles[i.title].pages.push(i);
-    });
-    return tree;
-  })();
-
-  let flatIndex = -1;
-
   return (
     <>
       <div id="topbar" className={searchActive ? "search-active" : ""}>
@@ -361,47 +364,74 @@ export default function Layout() {
         onClick={(e) => e.stopPropagation()}
       >
         {suggestions.length === 0 && query.trim() ? (
-          <li style={{ padding: "12px 18px" }}>No results found</li>
-        ) : (
-          Object.entries(grouped).map(([category, data]) => (
-            <div key={category}>
-              <li className="s-category">
-                <span className="s-icon" dangerouslySetInnerHTML={{ __html: data.icon }} />
-                <span>{category}</span>
-              </li>
-              {Object.entries(data.titles).map(([title, group]) => (
-                <div key={title}>
-                  <li className="s-title">
-                    {group.icon && <span className="s-title-icon" dangerouslySetInnerHTML={{ __html: group.icon }} aria-hidden />}
-                    <span>{title}</span>
-                  </li>
-                  {group.pages.map((p) => {
-                    flatIndex++;
-                    const idx = flatIndex;
-                    return (
-                      <li
-                        key={`${p.category}-${p.title}-${p.name}`}
-                        className={`s-page ${idx === activeIndex ? "active" : ""}`}
-                        role="option"
-                        onClick={() => handleNavItem(p)}
-                      >
-                        {p.logoUrl ? (
-                          <BrandLogo className="s-page-logo" src={p.logoUrl} fallback="link" iconSize={18} />
-                        ) : (
-                          <span className="s-page-logo" dangerouslySetInnerHTML={{ __html: p.logo }} />
-                        )}
-                        <span className="s-page-info">
-                          <span className="s-page-name">{p.name}</span>
-                          <span className="s-page-sub">{p.title} • {p.category}</span>
-                        </span>
-                        <span className="s-page-go" aria-hidden><Icon name="external-link" size={12} /></span>
-                      </li>
-                    );
-                  })}
-                </div>
+          <li className="s-empty">
+            <span className="s-empty-title">No results for “{query.trim()}”</span>
+            <span className="s-empty-text">Try a broader search or one of these:</span>
+            <span className="s-empty-chips">
+              {["free hosting", "paid plugins", "java downloader", "custom ip"].map((term) => (
+                <button
+                  key={term}
+                  type="button"
+                  className="s-chip"
+                  onClick={() => setQuery(term)}
+                >
+                  {term}
+                </button>
               ))}
-            </div>
-          ))
+            </span>
+          </li>
+        ) : (
+          <>
+            <li className="s-results-head" role="presentation">
+              <span>
+                {suggestions.length} result{suggestions.length === 1 ? "" : "s"} for “{query.trim()}”
+              </span>
+              <span className="s-results-hint">
+                <kbd>↑</kbd><kbd>↓</kbd> to move
+              </span>
+            </li>
+            {suggestions.map((p, idx) => (
+              <li
+                key={`${p.category}-${p.title}-${p.url}`}
+                className={`s-page ${idx === activeIndex ? "active" : ""}`}
+                role="option"
+                aria-selected={idx === activeIndex}
+                onClick={() => handleNavItem(p)}
+              >
+                {p.logoUrl ? (
+                  <BrandLogo className="s-page-logo" src={p.logoUrl} fallback="link" iconSize={18} />
+                ) : (
+                  <span className="s-page-logo" dangerouslySetInnerHTML={{ __html: p.logo }} />
+                )}
+                <span className="s-page-info">
+                  <span className="s-page-name">
+                    <HighlightedText text={p.name} query={query} />
+                    {p.soon && <span className="s-soon-pill">Soon</span>}
+                  </span>
+                  <span className="s-page-path">
+                    <span className="s-page-cat">{p.category}</span>
+                    <span className="s-page-sep">›</span>
+                    {p.title}
+                  </span>
+                  {p.description && (
+                    <span className="s-page-desc">
+                      <HighlightedText text={p.description} query={query} />
+                    </span>
+                  )}
+                </span>
+                <span className="s-page-go" aria-hidden><Icon name="external-link" size={12} /></span>
+              </li>
+            ))}
+            <li className="s-search-footer" role="presentation">
+              <span className="s-kbd-hint">
+                <kbd>↵</kbd> open <kbd>esc</kbd> close
+              </span>
+              <button type="button" className="s-all-btn" onClick={openFullSearch}>
+                View all results
+                <Icon name="arrow-up-right" size={11} />
+              </button>
+            </li>
+          </>
         )}
       </ul>
 
