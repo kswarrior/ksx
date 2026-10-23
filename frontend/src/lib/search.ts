@@ -44,11 +44,11 @@ const FIELDS = [
 type Field = (typeof FIELDS)[number];
 
 const FIELD_WEIGHTS: Record<Field, number> = {
-  name: 60,
-  keywords: 32,
-  description: 16,
-  section: 16,
-  category: 18,
+  name: 100,
+  keywords: 50,
+  description: 28,
+  section: 32,
+  category: 34,
   url: 8,
 };
 
@@ -89,18 +89,78 @@ function stem(token: string): string {
 }
 
 export function searchTokens(value: string): string[] {
-  return normalizeSearchText(value)
-    .split(" ")
-    .filter((token) => token.length > 0 && !STOP_WORDS.has(token))
-    .map(stem);
+  const seen = new Set<string>();
+  const tokens: string[] = [];
+  for (const token of normalizeSearchText(value).split(" ")) {
+    if (!token || STOP_WORDS.has(token)) continue;
+    const stemmed = stem(token);
+    if (seen.has(stemmed)) continue;
+    seen.add(stemmed);
+    tokens.push(stemmed);
+  }
+  return tokens;
 }
 
-function tokensMatch(queryToken: string, textToken: string): boolean {
-  if (queryToken === textToken) return true;
-  if (Math.min(queryToken.length, textToken.length) < 3) return false;
-  return (
-    textToken.startsWith(queryToken)
-  );
+function editDistance(a: string, b: string, max: number): number {
+  if (Math.abs(a.length - b.length) > max) return max + 1;
+  let previous = Array.from({ length: b.length + 1 }, (_, index) => index);
+  let current = new Array<number>(b.length + 1);
+  for (let i = 1; i <= a.length; i += 1) {
+    current[0] = i;
+    let rowMin = i;
+    for (let j = 1; j <= b.length; j += 1) {
+      const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+      current[j] = Math.min(
+        previous[j] + 1,
+        current[j - 1] + 1,
+        previous[j - 1] + cost
+      );
+      if (current[j] < rowMin) rowMin = current[j];
+    }
+    if (rowMin > max) return max + 1;
+    [previous, current] = [current, previous];
+  }
+  return previous[b.length];
+}
+
+function matchQuality(queryToken: string, textToken: string): number {
+  if (queryToken === textToken) return 1;
+  if (queryToken.length < 3 || textToken.length < 3) return 0;
+  if (textToken.startsWith(queryToken) || queryToken.startsWith(textToken)) {
+    return 0.85;
+  }
+  const maxDistance = queryToken.length >= 7 ? 2 : 1;
+  if (Math.abs(queryToken.length - textToken.length) > maxDistance) return 0;
+  const distance = editDistance(queryToken, textToken, maxDistance);
+  if (distance === 1) return 0.6;
+  if (distance === 2) return 0.4;
+  return 0;
+}
+
+function bestMatch(tokens: string[], queryToken: string): number {
+  let best = 0;
+  for (const textToken of tokens) {
+    const quality = matchQuality(queryToken, textToken);
+    if (quality > best) {
+      best = quality;
+      if (best === 1) break;
+    }
+  }
+  return best;
+}
+
+function pairScore(text: string, queryTokens: string[]): number {
+  let matches = 0;
+  for (let i = 0; i < queryTokens.length; i += 1) {
+    for (let j = i + 1; j < queryTokens.length; j += 1) {
+      const a = queryTokens[i];
+      const b = queryTokens[j];
+      if (text.includes(`${a} ${b}`) || text.includes(`${b} ${a}`)) {
+        matches += 1;
+      }
+    }
+  }
+  return matches;
 }
 
 export function flattenSitemap(sitemap: SitemapCategory[]): SearchItem[] {
@@ -152,53 +212,58 @@ function indexItem(item: SearchItem): IndexedItem {
   };
 }
 
-function scoreIndexedItem(entry: IndexedItem, query: string): number {
-  const phrase = normalizeSearchText(query);
-  if (!phrase) return 0;
-
-  const queryTokens = searchTokens(query);
-  if (queryTokens.length === 0) {
-    return FIELDS.some((field) => entry.normalized[field].includes(phrase))
-      ? 1
-      : 0;
-  }
-
+function scoreIndexedItem(
+  entry: IndexedItem,
+  queryTokens: string[],
+  phrase: string
+): number {
   let score = 0;
+  let matched = 0;
+  let nameMatched = 0;
+
   for (const queryToken of queryTokens) {
-    let tokenScore = 0;
+    let best = 0;
+    let total = 0;
+    let nameQuality = 0;
     for (const field of FIELDS) {
-      if (
-        entry.tokens[field].some((textToken) =>
-          tokensMatch(queryToken, textToken)
-        )
-      ) {
-        tokenScore += FIELD_WEIGHTS[field];
-      }
+      const quality = bestMatch(entry.tokens[field], queryToken);
+      if (quality === 0) continue;
+      const fieldScore = quality * FIELD_WEIGHTS[field];
+      total += fieldScore;
+      if (fieldScore > best) best = fieldScore;
+      if (field === "name") nameQuality = quality;
     }
-    if (tokenScore === 0) return 0;
-    score += tokenScore;
+    if (best === 0) continue;
+    matched += 1;
+    if (nameQuality > 0) nameMatched += 1;
+    score += best + (total - best) * 0.3;
   }
 
-  if (entry.normalized.name === phrase) score += 400;
-  else if (entry.normalized.name.startsWith(phrase)) score += 120;
-  if (entry.normalized.name.includes(phrase)) score += 90;
-  if (entry.normalized.keywords.includes(phrase)) score += 70;
-  if (entry.normalized.description.includes(phrase)) score += 35;
-  if (entry.normalized.section.includes(phrase)) score += 25;
-
-  const everyTokenInName = queryTokens.every((queryToken) =>
-    entry.tokens.name.some((textToken) => tokensMatch(queryToken, textToken))
-  );
-  if (everyTokenInName) score += 60;
-  else if (
-    queryTokens.some((queryToken) =>
-      entry.tokens.name.some((textToken) =>
-        tokensMatch(queryToken, textToken)
-      )
-    )
-  ) {
-    score += 20;
+  if (matched === 0 || matched < Math.ceil(queryTokens.length * 0.5)) {
+    return 0;
   }
+
+  const coverage = matched / queryTokens.length;
+  score *= 0.35 + 0.65 * coverage;
+  if (coverage === 1) score += 80;
+
+  if (entry.normalized.name === phrase) score += 500;
+  else if (entry.normalized.name.startsWith(phrase)) score += 220;
+  else if (entry.normalized.name.includes(phrase)) score += 130;
+
+  if (entry.normalized.keywords.includes(phrase)) score += 90;
+  if (entry.normalized.description.includes(phrase)) score += 45;
+  if (entry.normalized.section.includes(phrase)) score += 40;
+  if (entry.normalized.category.includes(phrase)) score += 40;
+
+  if (nameMatched === queryTokens.length) score += 120;
+  else if (nameMatched > 0) score += nameMatched * 18;
+
+  score += pairScore(entry.normalized.name, queryTokens) * 30;
+  score += pairScore(entry.normalized.keywords, queryTokens) * 15;
+  score += pairScore(entry.normalized.description, queryTokens) * 6;
+  score += pairScore(entry.normalized.section, queryTokens) * 8;
+  score += pairScore(entry.normalized.category, queryTokens) * 8;
 
   return score;
 }
@@ -211,36 +276,21 @@ export function searchItems(
   if (!trimmed) return [];
 
   const queryTokens = searchTokens(trimmed);
-  const ranked = items
-    .map((item) => ({ item, score: scoreIndexedItem(indexItem(item), trimmed) }))
+  if (queryTokens.length === 0) return [];
+  const phrase = queryTokens.join(" ");
+
+  return items
+    .map((item) => ({
+      item,
+      score: scoreIndexedItem(indexItem(item), queryTokens, phrase),
+    }))
     .filter((result) => result.score > 0)
     .sort(
       (a, b) =>
         b.score - a.score ||
         a.item.name.localeCompare(b.item.name) ||
         a.item.url.localeCompare(b.item.url)
-    );
-
-  if (queryTokens.length < 2 || ranked.length === 0) {
-    return ranked.map((result) => result.item);
-  }
-
-  const cutoff = ranked[0].score * 0.55;
-  return ranked
-    .filter((result) => {
-      if (result.score >= cutoff) return true;
-      const nameTokens = searchTokens(result.item.name);
-      const descriptionTokens = searchTokens(result.item.description ?? "");
-      const allInName = queryTokens.every((queryToken) =>
-        nameTokens.some((nameToken) => tokensMatch(queryToken, nameToken))
-      );
-      const allInDescription = queryTokens.every((queryToken) =>
-        descriptionTokens.some((descriptionToken) =>
-          tokensMatch(queryToken, descriptionToken)
-        )
-      );
-      return allInName || allInDescription;
-    })
+    )
     .map((result) => result.item);
 }
 
