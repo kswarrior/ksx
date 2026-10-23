@@ -14,6 +14,7 @@ const MinecraftHosting = lazy(() => import("./pages/MinecraftHosting"));
 const VpsHosting = lazy(() => import("./pages/VpsHosting"));
 const WebsiteHosting = lazy(() => import("./pages/WebsiteHosting"));
 const DatabaseHosting = lazy(() => import("./pages/DatabaseHosting"));
+const Store = lazy(() => import("./pages/Store"));
 const KsPortal = lazy(() => import("./pages/KsPortal"));
 const KsPortalDownloads = lazy(() => import("./pages/KsPortalDownloads"));
 const JavaLauncher = lazy(() => import("./pages/JavaLauncher"));
@@ -66,6 +67,8 @@ export default function App() {
           <Route path="database/hosting/list/free" element={<DatabaseHosting />} />
           <Route path="database/hosting/list/free.html" element={<DatabaseHosting />} />
 
+          <Route path="apps/android/store" element={<Store />} />
+          <Route path="apps/android/store.html" element={<Store />} />
           <Route path="apps/android/ks-portal" element={<KsPortal />} />
           <Route path="apps/android/ks-portal.html" element={<KsPortal />} />
           <Route path="apps/android/ks-portal/downloads" element={<KsPortalDownloads />} />
