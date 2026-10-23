@@ -230,7 +230,7 @@ export function searchSitemap(
     return ranked.map((result) => result.item);
   }
 
-  const cutoff = ranked[0].score * 0.45;
+  const cutoff = ranked[0].score * 0.5;
   return ranked
     .filter((result) => {
       if (result.score >= cutoff) return true;
