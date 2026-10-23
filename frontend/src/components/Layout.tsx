@@ -1,6 +1,7 @@
 import { Suspense, useCallback, useEffect, useLayoutEffect, useState, useRef } from "react";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { api, SearchItem } from "../lib/api";
+import { flattenSitemap, highlightParts, searchItems } from "../lib/search";
 import BrandLogo from "./BrandLogo";
 import Icon from "./Icon";
 import KsLoader from "./KsLoader";
@@ -33,23 +34,7 @@ export default function Layout() {
     api
       .getSitemap()
       .then((data) => {
-        const flat: SearchItem[] = [];
-        data.forEach((cat) => {
-          cat.sections.forEach((sec) => {
-            sec.pages.forEach((p) => {
-              flat.push({
-                category: cat.category,
-                icon: cat.icon,
-                title: sec.title,
-                sectionIcon: sec.icon,
-                name: p.name,
-                url: p.url,
-                logo: p.logo,
-                logoUrl: p.logoUrl,
-              });
-            });
-          });
-        });
+        const flat: SearchItem[] = flattenSitemap(data);
         setSitemap(flat);
         const logoByUrl = new Map(
           flat.filter((item) => item.logoUrl).map((item) => [item.url, item.logoUrl!])
@@ -129,21 +114,14 @@ export default function Layout() {
     };
   }, [menuOpen]);
 
-  // Filter suggestions
+  // Rank suggestions across names, descriptions, keywords, sections and categories
   useEffect(() => {
-    const q = query.trim().toLowerCase();
-    if (!q) {
+    if (!query.trim()) {
       setSuggestions([]);
       setActiveIndex(-1);
       return;
     }
-    const matched = sitemap.filter(
-      (i) =>
-        i.name.toLowerCase().includes(q) ||
-        i.title.toLowerCase().includes(q) ||
-        i.category.toLowerCase().includes(q)
-    );
-    setSuggestions(matched);
+    setSuggestions(searchItems(sitemap, query));
     setActiveIndex(-1);
   }, [query, sitemap]);
 
@@ -197,6 +175,14 @@ export default function Layout() {
     handleNav(it.url, it.name, it.logo, it.logoUrl);
   };
 
+  const openFullSearch = () => {
+    const q = query.trim();
+    if (!q) return;
+    setSearchActive(false);
+    setQuery("");
+    navigate(`/map?q=${encodeURIComponent(q)}`);
+  };
+
   const isSidebarPage = location.pathname === "/" || /^\/(dashboard|map|social|about)(\/|$)/.test(location.pathname);
 
   const togglePin = () => {
@@ -233,10 +219,8 @@ export default function Layout() {
       setActiveIndex((i) => (i - 1 + suggestions.length) % suggestions.length);
     } else if (e.key === "Enter") {
       e.preventDefault();
-      if (activeIndex >= 0) {
-        const it = suggestions[activeIndex];
-        handleNavItem(it);
-      }
+      const it = suggestions[activeIndex] ?? suggestions[0];
+      if (it) handleNavItem(it);
     } else if (e.key === "Escape") {
       setSearchActive(false);
       setQuery("");
