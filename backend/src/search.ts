@@ -211,7 +211,9 @@ export function searchSitemap(
 ): SearchItem[] {
   const trimmed = query.trim();
   if (!trimmed) return [];
-  return flattenSitemap(sitemap)
+
+  const queryTokens = searchTokens(trimmed);
+  const ranked = flattenSitemap(sitemap)
     .map((item) => ({
       item,
       score: scoreIndexedItem(indexItem(item), trimmed),
@@ -222,6 +224,20 @@ export function searchSitemap(
         b.score - a.score ||
         a.item.name.localeCompare(b.item.name) ||
         a.item.url.localeCompare(b.item.url)
-    )
+    );
+
+  if (queryTokens.length < 2 || ranked.length === 0) {
+    return ranked.map((result) => result.item);
+  }
+
+  const cutoff = ranked[0].score * 0.45;
+  return ranked
+    .filter((result) => {
+      if (result.score >= cutoff) return true;
+      const nameTokens = searchTokens(result.item.name);
+      return queryTokens.some((queryToken) =>
+        nameTokens.some((nameToken) => tokensMatch(queryToken, nameToken))
+      );
+    })
     .map((result) => result.item);
 }

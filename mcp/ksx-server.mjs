@@ -272,7 +272,8 @@ server.registerTool(
   },
   async ({ query }) => {
     const { sitemap } = loadData();
-    const matches = flattenSitemap(sitemap)
+    const queryTokens = searchTokens(query);
+    const ranked = flattenSitemap(sitemap)
       .map((page) => ({ page, score: scorePage(page, query) }))
       .filter((entry) => entry.score > 0)
       .sort(
@@ -280,8 +281,19 @@ server.registerTool(
           b.score - a.score ||
           a.page.name.localeCompare(b.page.name) ||
           a.page.url.localeCompare(b.page.url)
-      )
-      .map((entry) => entry.page);
+      );
+    const matches =
+      queryTokens.length < 2 || ranked.length === 0
+        ? ranked.map((entry) => entry.page)
+        : ranked
+            .filter((entry) => {
+              if (entry.score >= ranked[0].score * 0.45) return true;
+              const nameTokens = searchTokens(entry.page.name);
+              return queryTokens.some((queryToken) =>
+                nameTokens.some((nameToken) => tokensMatch(queryToken, nameToken))
+              );
+            })
+            .map((entry) => entry.page);
     return text({ query, count: matches.length, results: matches });
   }
 );
