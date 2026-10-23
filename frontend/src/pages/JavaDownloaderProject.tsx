@@ -107,7 +107,7 @@ export default function JavaDownloaderProject() {
       </div>
       <div className="jd-shell">
         <Link className="jd-back" to="/minecraft/java/downloader">
-          <Icon name="chevron-left" size={16} /> Back to Universal Downloader
+          <Icon name="chevron-left" size={16} /> Back to Java Downloader
         </Link>
 
         {loading && !project && <div className="jd-loading">Loading project…</div>}
