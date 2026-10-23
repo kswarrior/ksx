@@ -130,6 +130,7 @@ export interface AppRecord {
     screenshot?: string;
     requires?: string;
     price?: string;
+    size?: string;
     featured?: boolean;
 }
 export interface D1Result<T = unknown> {
