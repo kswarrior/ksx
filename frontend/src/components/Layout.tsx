@@ -141,6 +141,13 @@ export default function Layout() {
     setActiveIndex(-1);
   }, [query, sitemap]);
 
+  useEffect(() => {
+    if (activeIndex < 0) return;
+    suggestRef.current
+      ?.querySelector(".s-page.active")
+      ?.scrollIntoView({ block: "nearest" });
+  }, [activeIndex]);
+
   const saveRecent = (item: SearchItem | { name: string; url: string; logo?: string; logoUrl?: string; category?: string; title?: string }) => {
     try {
       const raw = localStorage.getItem(RECENT_KEY);
