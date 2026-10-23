@@ -70,7 +70,31 @@ const CREATE_DOWNLOADS_VERSION_INDEX = `
   ON app_downloads (app_slug, version)
 `;
 
+const CREATE_MCPEDL_CACHE_TABLE = `
+  CREATE TABLE IF NOT EXISTS mcpedl_cache (
+    cache_key TEXT PRIMARY KEY,
+    body TEXT NOT NULL,
+    content_type TEXT NOT NULL,
+    updated_at INTEGER NOT NULL
+  )
+`;
+
 let appDbReady: Promise<void> | null = null;
+let mcpedlDbReady: Promise<void> | null = null;
+
+async function ensureMcpedlDb(db: D1Database) {
+  if (!mcpedlDbReady) {
+    mcpedlDbReady = db
+      .prepare(CREATE_MCPEDL_CACHE_TABLE)
+      .run()
+      .then(() => undefined)
+      .catch((error) => {
+        mcpedlDbReady = null;
+        throw error;
+      });
+  }
+  return mcpedlDbReady;
+}
 
 async function ensureAppDb(db: D1Database) {
   if (!appDbReady) {
@@ -244,13 +268,32 @@ function translateProxyUrl(url: string): string {
   return proxy.toString();
 }
 
-function mcpedlFallbackKey(path: string, search: string): string {
+function mcpedlCacheKey(path: string, search: string): string {
   const normalizedPath = path.replace(/^\/+/, "");
   if (!search) return normalizedPath;
   const sorted = [...new URLSearchParams(search).entries()].sort(([a], [b]) =>
     a.localeCompare(b)
   );
   return `${normalizedPath}?${new URLSearchParams(sorted).toString()}`;
+}
+
+const MCPEDL_DB_FRESH_MS = 5 * 60_000;
+
+type McpedlCacheRow = {
+  body: string;
+  content_type: string;
+  updated_at: number;
+};
+
+function mcpedlCachedResponse(row: McpedlCacheRow, via: string): Response {
+  return new Response(row.body, {
+    status: 200,
+    headers: {
+      "Content-Type": row.content_type,
+      "X-KSX-MCPEDL-Via": via,
+      "Cache-Control": "public, max-age=120, s-maxage=300, stale-while-revalidate=600",
+    },
+  });
 }
 
 function isMcpedlBlocked(res: Response): boolean {
@@ -368,6 +411,25 @@ async function fetchMcpedl(url: string): Promise<Response> {
 app.get("/api/mcpedl/*", async (c) => {
   const upstreamPath = c.req.path.slice("/api/mcpedl".length);
   const search = new URL(c.req.url).search;
+  const dbKey = mcpedlCacheKey(upstreamPath, search);
+  const db = c.env.DB;
+  let stale: McpedlCacheRow | null = null;
+
+  if (db) {
+    try {
+      await ensureMcpedlDb(db);
+      stale = await db
+        .prepare("SELECT body, content_type, updated_at FROM mcpedl_cache WHERE cache_key = ?")
+        .bind(dbKey)
+        .first<McpedlCacheRow>();
+      if (stale && Date.now() - stale.updated_at < MCPEDL_DB_FRESH_MS) {
+        return mcpedlCachedResponse(stale, "d1");
+      }
+    } catch {
+      // D1 is best-effort; continue with the live request/cache below
+    }
+  }
+
   const cache = getMcpedlCache();
   const cacheKey = new Request(c.req.url, { method: "GET" });
   if (cache) {
@@ -378,10 +440,14 @@ app.get("/api/mcpedl/*", async (c) => {
       // ignore cache failures and fetch upstream
     }
   }
+
   try {
     let res = await fetchMcpedl(`${MCPEDL_API}${upstreamPath}${search}`);
+    if (!res.ok && stale) {
+      return mcpedlCachedResponse(stale, "d1-stale");
+    }
     if (!res.ok) {
-      const fallback = mcpedlFallback[mcpedlFallbackKey(upstreamPath, search)];
+      const fallback = mcpedlFallback[dbKey];
       if (fallback) {
         const headers: Record<string, string> = {
           "Content-Type": "application/json; charset=utf-8",
@@ -392,8 +458,29 @@ app.get("/api/mcpedl/*", async (c) => {
         res = new Response(JSON.stringify(fallback), { status: 200, headers });
       }
     }
+    const body = await res.text();
+    const contentType = res.headers.get("content-type") ?? "application/json";
+    if (res.ok && db) {
+      try {
+        c.executionCtx.waitUntil(
+          db
+            .prepare(
+              `INSERT INTO mcpedl_cache (cache_key, body, content_type, updated_at)
+               VALUES (?, ?, ?, ?)
+               ON CONFLICT(cache_key) DO UPDATE SET
+                 body = excluded.body,
+                 content_type = excluded.content_type,
+                 updated_at = excluded.updated_at`
+            )
+            .bind(dbKey, body, contentType, Date.now())
+            .run()
+        );
+      } catch {
+        // no execution context (local dev)
+      }
+    }
     const headers = new Headers();
-    headers.set("Content-Type", res.headers.get("content-type") ?? "application/json");
+    headers.set("Content-Type", contentType);
     headers.set(
       "Cache-Control",
       res.ok ? "public, max-age=120, s-maxage=300, stale-while-revalidate=600" : "no-store"
@@ -402,7 +489,7 @@ app.get("/api/mcpedl/*", async (c) => {
     if (via) headers.set("X-KSX-MCPEDL-Via", via);
     const trace = res.headers.get("x-ksx-mcpedl-trace");
     if (trace) headers.set("X-KSX-MCPEDL-Trace", trace);
-    const response = new Response(res.body, { status: res.status, headers });
+    const response = new Response(body, { status: res.status, headers });
     if (cache && res.ok) {
       try {
         c.executionCtx.waitUntil(cache.put(cacheKey, response.clone()));
@@ -412,6 +499,7 @@ app.get("/api/mcpedl/*", async (c) => {
     }
     return response;
   } catch {
+    if (stale) return mcpedlCachedResponse(stale, "d1-stale");
     return c.json({ error: "MCPEDL request failed" }, 502);
   }
 });
