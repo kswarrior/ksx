@@ -287,7 +287,7 @@ server.registerTool(
         ? ranked.map((entry) => entry.page)
         : ranked
             .filter((entry) => {
-              if (entry.score >= ranked[0].score * 0.45) return true;
+              if (entry.score >= ranked[0].score * 0.5) return true;
               const nameTokens = searchTokens(entry.page.name);
               return queryTokens.some((queryToken) =>
                 nameTokens.some((nameToken) => tokensMatch(queryToken, nameToken))
