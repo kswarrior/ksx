@@ -7,10 +7,12 @@ import {
   useRef,
   useState,
 } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { SearchField } from "../components/ui";
 import { api, SitemapCategory } from "../lib/api";
+import { flattenSitemap, searchItems } from "../lib/search";
 import BrandLogo from "../components/BrandLogo";
+import HighlightedText from "../components/HighlightedText";
 import Icon from "../components/Icon";
 import KsLoader from "../components/KsLoader";
 import PageHero from "../components/PageHero";
@@ -266,7 +268,9 @@ export default function MapPage() {
   const [data, setData] = useState<SitemapCategory[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [query, setQuery] = useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [query, setQuery] = useState(() => searchParams.get("q") ?? "");
+  const urlQuery = searchParams.get("q") ?? "";
   const dq = useDebounced(query.trim().toLowerCase(), 140);
   const [selection, setSelection] = useState<Selection>(null);
   const [ready, setReady] = useState(false);
@@ -293,6 +297,10 @@ export default function MapPage() {
   const pointers = useRef(new Map<number, Vec>());
   const gesture = useRef<Gesture | null>(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    setQuery(urlQuery);
+  }, [urlQuery]);
 
   useEffect(() => {
     let alive = true;
@@ -331,61 +339,34 @@ export default function MapPage() {
 
   const shown = visible ?? allVisible;
 
-  const filtered = useMemo(() => {
-    if (!dq) return data;
-    return data
-      .map((cat) => ({
-        ...cat,
-        sections: cat.sections
-          .map((sec) => ({
-            ...sec,
-            pages: sec.pages.filter(
-              (p) =>
-                p.name.toLowerCase().includes(dq) ||
-                sec.title.toLowerCase().includes(dq) ||
-                cat.category.toLowerCase().includes(dq)
-            ),
-          }))
-          .filter((s) => s.pages.length > 0),
-      }))
-      .filter((c) => c.sections.length > 0);
-  }, [data, dq]);
+  const flatItems = useMemo(() => flattenSitemap(data), [data]);
 
-  const filteredCount = useMemo(
-    () =>
-      filtered.reduce(
-        (acc, c) => acc + c.sections.reduce((a, s) => a + s.pages.length, 0),
-        0
-      ),
-    [filtered]
+  const matches = useMemo(
+    () => (dq ? searchItems(flatItems, dq) : []),
+    [flatItems, dq]
   );
+
+  const filteredCount = matches.length;
 
   const filterSets = useMemo(() => {
     const active = Boolean(dq);
     const cats = new Set<string>();
     const secs = new Set<string>();
     const pages = new Set<string>();
-    filtered.forEach((cat) => {
-      cats.add(cat.category);
-      cat.sections.forEach((sec) => {
-        secs.add(`${cat.category}::${sec.title}`);
-        sec.pages.forEach((p) => pages.add(p.url));
-      });
+    matches.forEach((match) => {
+      cats.add(match.category);
+      secs.add(`${match.category}::${match.title}`);
+      pages.add(match.url);
     });
     return { active, cats, secs, pages };
-  }, [filtered, dq]);
+  }, [matches, dq]);
 
-  const searchResults = useMemo(
-    () =>
-      filtered
-        .flatMap((category) =>
-          category.sections.flatMap((section) =>
-            section.pages.map((page) => ({ page, section, category }))
-          )
-        )
-        .slice(0, 8),
-    [filtered]
-  );
+  const searchResults = useMemo(() => matches.slice(0, 8), [matches]);
+
+  const clearSearch = useCallback(() => {
+    setQuery("");
+    if (searchParams.get("q")) setSearchParams({}, { replace: true });
+  }, [searchParams, setSearchParams]);
 
   const selectedCat = useMemo(
     () =>
@@ -673,11 +654,11 @@ export default function MapPage() {
         setSelection(null);
         return;
       }
-      if (query) setQuery("");
+      if (query) clearSearch();
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [query, selection]);
+  }, [clearSearch, query, selection]);
 
   const focusNode = useCallback(
     (pos: Vec, zoom: number) => {
@@ -743,10 +724,10 @@ export default function MapPage() {
 
   const resetMap = useCallback(() => {
     setSelection(null);
-    setQuery("");
+    clearSearch();
     interacted.current = false;
     fitView(true);
-  }, [fitView]);
+  }, [clearSearch, fitView]);
 
   const zoomAt = useCallback(
     (
@@ -1017,10 +998,10 @@ export default function MapPage() {
     if (e.key === "Enter" && searchResults.length > 0) {
       e.preventDefault();
       const first = searchResults[0];
-      saveRecent(first.page, first.category.category, first.section.title);
-      navigate(first.page.url);
+      saveRecent(first, first.category, first.title);
+      navigate(first.url);
     } else if (e.key === "Escape") {
-      setQuery("");
+      clearSearch();
     }
   };
 
@@ -1316,8 +1297,16 @@ export default function MapPage() {
                               ]
                                 .filter(Boolean)
                                 .join(" ")}
-                              title={moon.page.name}
-                              aria-label={`Open ${moon.page.name}${moon.page.soon ? " — coming soon" : ""}`}
+                              title={
+                                moon.page.description
+                                  ? `${moon.page.name} — ${moon.page.description}`
+                                  : moon.page.name
+                              }
+                              aria-label={`Open ${moon.page.name}${
+                                moon.page.description
+                                  ? `. ${moon.page.description}`
+                                  : ""
+                              }${moon.page.soon ? " — coming soon" : ""}`}
                               onClick={() =>
                                 saveRecent(
                                   moon.page,
@@ -1370,24 +1359,30 @@ export default function MapPage() {
             {searchResults.length > 0 ? (
               searchResults.map((result) => (
                 <Link
-                  key={`${result.category.category}-${result.section.title}-${result.page.url}`}
-                  to={result.page.url}
+                  key={`${result.category}-${result.title}-${result.url}`}
+                  to={result.url}
                   className="mp-result"
                   onClick={() =>
-                    saveRecent(
-                      result.page,
-                      result.category.category,
-                      result.section.title
-                    )
+                    saveRecent(result, result.category, result.title)
                   }
                 >
-                  <PageMark page={result.page} className="mp-result-logo" iconSize={16} />
+                  <PageMark page={result} className="mp-result-logo" iconSize={16} />
                   <span className="mp-result-text">
-                    <strong>{result.page.name}</strong>
-                    <em>
-                      {result.section.title} · {result.category.category}
-                      {result.page.soon ? " · Coming soon" : ""}
-                    </em>
+                    <strong>
+                      <HighlightedText text={result.name} query={query} />
+                    </strong>
+                    <span className="mp-result-path">
+                      {result.category} › {result.title}
+                      {result.soon ? " · Coming soon" : ""}
+                    </span>
+                    {result.description && (
+                      <span className="mp-result-desc">
+                        <HighlightedText
+                          text={result.description}
+                          query={query}
+                        />
+                      </span>
+                    )}
                   </span>
                   <Icon name="arrow-up-right" size={12} />
                 </Link>
@@ -1432,8 +1427,14 @@ export default function MapPage() {
                   >
                     <PageMark page={page} className="mp-detail-logo" iconSize={18} />
                     <span className="mp-detail-text">
-                      <strong>{page.name}</strong>
-                      <em>{page.soon ? "Coming soon" : "Open moon"}</em>
+                      <strong>
+                        {page.name}
+                        {page.soon && <span className="mp-soon-pill">Soon</span>}
+                      </strong>
+                      <em>
+                        {page.description ??
+                          (page.soon ? "Coming soon" : "Open moon")}
+                      </em>
                     </span>
                     <Icon name="arrow-up-right" size={13} />
                   </Link>
