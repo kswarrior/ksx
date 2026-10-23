@@ -145,11 +145,13 @@ export default function KsClient() {
             <span className="portal-panel-count">Bedrock</span>
           </div>
           <div className="portal-info-grid">
-            <div
+            <Link
               className="portal-info-tile downloads"
+              to="/minecraft/bedrock/ks-client/downloads"
+              aria-label="View downloads by version"
               title={
                 downloadsAvailable
-                  ? "Total downloads recorded in D1"
+                  ? `Downloads for ${APP_VERSION} (current version)`
                   : "Download count is available on the live site"
               }
             >
@@ -158,10 +160,10 @@ export default function KsClient() {
               </span>
               <span className="portal-item-text">
                 <span className="name">Downloads</span>
-                <span className="sub">All time</span>
+                <span className="sub">This version</span>
               </span>
               <span className="portal-item-value">{downloadLabel}</span>
-            </div>
+            </Link>
             {DETAILS.map((detail) => (
               <div key={detail.label} className="portal-info-tile">
                 <span className="portal-item-icon small">
