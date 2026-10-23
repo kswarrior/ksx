@@ -11,26 +11,72 @@
             "name": "Pterodactyl Panel",
             "url": "/minecraft/make-hosting/pterodactyl.html",
             "logo": "<svg viewBox='0 0 24 24' width='24' height='24' fill='none' xmlns='http://www.w3.org/2000/svg'><rect x='3' y='3' width='18' height='14' rx='2.4' stroke='#fff' stroke-width='1.6'/><path d='M3 7.2H21' stroke='rgba(255,255,255,0.7)' stroke-width='1'/><circle cx='6' cy='5.1' r='0.9' fill='#ff5f56'/><circle cx='9' cy='5.1' r='0.9' fill='#ffbd2e'/><circle cx='12' cy='5.1' r='0.9' fill='#27c93f'/><path d='M12 10.2c-2.2-3-4.4 0-6.2-.6' stroke='#38bdf8' stroke-width='1.6' stroke-linecap='round' fill='none'/><path d='M12 10.2c2.2-3 4.4 0 6.2-.6' stroke='#38bdf8' stroke-width='1.6' stroke-linecap='round' fill='none'/><path d='M12 12.2l-2 2M12 12.2l2 2' stroke='#e2e8f0' stroke-width='1.2' stroke-linecap='round'/><circle cx='12' cy='13.8' r='0.9' fill='#fff'/></svg>",
-            "logoUrl": "https://github.com/pterodactyl.png?size=128"
+            "logoUrl": "https://github.com/pterodactyl.png?size=128",
+            "description": "Install the Pterodactyl game panel on a VPS to manage Minecraft servers from a modern web dashboard.",
+            "keywords": [
+              "pterodactyl",
+              "panel",
+              "install",
+              "vps",
+              "minecraft server",
+              "game panel",
+              "web panel",
+              "free",
+              "make hosting"
+            ]
           },
           {
             "name": "Puffer Panel",
             "url": "/minecraft/make-hosting/puffer.html",
             "logo": "<svg viewBox='0 0 24 24' width='24' height='24' fill='none' xmlns='http://www.w3.org/2000/svg'><rect x='3' y='3' width='18' height='14' rx='2.4' stroke='#fff' stroke-width='1.6'/><path d='M3 7.2H21' stroke='rgba(255,255,255,0.7)' stroke-width='1'/><circle cx='6' cy='5.1' r='0.9' fill='#ff5f56'/><circle cx='9' cy='5.1' r='0.9' fill='#ffbd2e'/><circle cx='12' cy='5.1' r='0.9' fill='#27c93f'/><circle cx='12' cy='11.2' r='3.4' stroke='#06b6d4' stroke-width='1.6'/><path d='M12 7.2v3M12 13.2v2.6M8 11.2H5.6M18.4 11.2H16M9.1 8.3L7.7 6.9M16.3 15.5L14.9 14.1M14.9 8.3L16.3 6.9M7.7 15.5L9.1 14.1' stroke='#06b6d4' stroke-width='1' stroke-linecap='round'/><circle cx='11' cy='10.4' r='0.9' fill='#fff'/></svg>",
-            "logoUrl": "https://github.com/PufferPanel.png?size=128"
+            "logoUrl": "https://github.com/PufferPanel.png?size=128",
+            "description": "Set up PufferPanel, a lightweight open-source game panel for Minecraft and other game servers.",
+            "keywords": [
+              "puffer panel",
+              "pufferpanel",
+              "panel",
+              "install",
+              "vps",
+              "minecraft server",
+              "game panel",
+              "open source",
+              "free",
+              "make hosting"
+            ]
           },
           {
             "name": "Airlink Panel",
             "url": "/minecraft/make-hosting/airlink.html",
             "logo": "<svg viewBox='0 0 24 24' width='24' height='24' fill='none' xmlns='http://www.w3.org/2000/svg'><rect x='3' y='3' width='18' height='14' rx='2.4' stroke='#fff' stroke-width='1.6'/><path d='M3 7.2H21' stroke='rgba(255,255,255,0.7)' stroke-width='1'/><circle cx='6' cy='5.1' r='0.9' fill='#ff5f56'/><circle cx='9' cy='5.1' r='0.9' fill='#ffbd2e'/><circle cx='12' cy='5.1' r='0.9' fill='#27c93f'/><path d='M7.6 12.4c0-1.2 1-2.2 2.2-2.2.3 0 .6.1.8.2.4-.8 1.3-1.4 2.3-1.4 1.5 0 2.8 1.2 2.8 2.8' stroke='#7dd3fc' stroke-width='1.5' stroke-linecap='round'/><path d='M8.2 14.2h7.6' stroke='#7dd3fc' stroke-width='1.3' stroke-linecap='round'/><circle cx='17.2' cy='10.2' r='1.1' fill='#fde68a' stroke='#f59e0b' stroke-width='0.9'/></svg>",
-            "logoUrl": "https://github.com/AirlinkLabs.png?size=128"
+            "logoUrl": "https://github.com/AirlinkLabs.png?size=128",
+            "description": "Deploy the Airlink panel to run, monitor and manage Minecraft servers from one dashboard.",
+            "keywords": [
+              "airlink",
+              "panel",
+              "install",
+              "vps",
+              "minecraft server",
+              "dashboard",
+              "free",
+              "make hosting"
+            ]
           },
           {
             "name": "KS Panel",
             "url": "/minecraft/make-hosting/ks-panel.html",
             "soon": true,
             "logo": "<svg viewBox='0 0 24 24' width='24' height='24' fill='none' xmlns='http://www.w3.org/2000/svg'><rect x='3' y='3' width='18' height='14' rx='2.4' stroke='#fff' stroke-width='1.6'/><path d='M3 7.2H21' stroke='rgba(255,255,255,0.7)' stroke-width='1'/><circle cx='6' cy='5.1' r='0.9' fill='#ff5f56'/><circle cx='9' cy='5.1' r='0.9' fill='#ffbd2e'/><circle cx='12' cy='5.1' r='0.9' fill='#27c93f'/><path d='M8.2 10.3v5.2M8.2 12.9l2.5-2.6M8.2 12.9l2.7 2.6' stroke='#a78bfa' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/><path d='M13.4 10.3h2.4a1.9 1.9 0 010 3.8h-2.4v1.4' stroke='#38bdf8' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/><path d='M13.4 15.5h2.6' stroke='#38bdf8' stroke-width='1.5' stroke-linecap='round'/></svg>",
-            "logoUrl": "/image/ks-logo.webp"
+            "logoUrl": "/image/ks-logo.webp",
+            "description": "KS Panel is the upcoming all-in-one hosting panel from KS for managing Minecraft servers.",
+            "keywords": [
+              "ks panel",
+              "panel",
+              "coming soon",
+              "hosting",
+              "minecraft server",
+              "dashboard",
+              "free"
+            ]
           }
         ]
       },
@@ -41,7 +87,21 @@
           {
             "name": "Free Hosting List",
             "url": "/minecraft/hosting/free.html",
-            "logo": "<svg viewBox='0 0 24 24' width='24' height='24' fill='none' xmlns='http://www.w3.org/2000/svg'><rect x='3' y='4' width='18' height='15' rx='2.2' stroke='#fff' stroke-width='1.6'/><path d='M3 8H21' stroke='#fff' stroke-width='1' opacity='0.6'/><circle cx='6.5' cy='6' r='0.8' fill='#22c55e'/><circle cx='9.2' cy='6' r='0.8' fill='#f59e0b'/><path d='M6.5 11.5h5M6.5 14.2h7M6.5 16.8h4.2' stroke='#fff' stroke-width='1.3' stroke-linecap='round'/><circle cx='17' cy='14.8' r='2.2' fill='#22c55e' stroke='#fff' stroke-width='1'/><path d='M15.7 14.8L16.6 15.7L18.4 13.9' stroke='#fff' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round'/></svg>"
+            "logo": "<svg viewBox='0 0 24 24' width='24' height='24' fill='none' xmlns='http://www.w3.org/2000/svg'><rect x='3' y='4' width='18' height='15' rx='2.2' stroke='#fff' stroke-width='1.6'/><path d='M3 8H21' stroke='#fff' stroke-width='1' opacity='0.6'/><circle cx='6.5' cy='6' r='0.8' fill='#22c55e'/><circle cx='9.2' cy='6' r='0.8' fill='#f59e0b'/><path d='M6.5 11.5h5M6.5 14.2h7M6.5 16.8h4.2' stroke='#fff' stroke-width='1.3' stroke-linecap='round'/><circle cx='17' cy='14.8' r='2.2' fill='#22c55e' stroke='#fff' stroke-width='1'/><path d='M15.7 14.8L16.6 15.7L18.4 13.9' stroke='#fff' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round'/></svg>",
+            "description": "Compare free Minecraft server hosting plans by RAM, CPU, disk, player slots, uptime and always-on support.",
+            "keywords": [
+              "free minecraft hosting",
+              "minecraft hosting",
+              "free hosting list",
+              "minecraft server",
+              "free host",
+              "always on",
+              "24/7",
+              "ram",
+              "player slots",
+              "no credit card",
+              "mc hosting"
+            ]
           }
         ]
       },
@@ -52,12 +112,40 @@
           {
             "name": "Launcher",
             "url": "/minecraft/java/launcher.html",
-            "logo": "<svg viewBox='0 0 24 24' width='24' height='24' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M12 3L13.9 8.2H19.3L14.9 11.4L16.4 16.6L12 13.4L7.6 16.6L9.1 11.4L4.7 8.2H10.1L12 3z' stroke='#fff' stroke-width='1.5' stroke-linejoin='round'/><path d='M12 13.4V20' stroke='#f59e0b' stroke-width='1.6' stroke-linecap='round'/><path d='M9.2 17.8L12 20L14.8 17.8' stroke='#f59e0b' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/><circle cx='12' cy='8.6' r='1' fill='#38bdf8'/></svg>"
+            "logo": "<svg viewBox='0 0 24 24' width='24' height='24' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M12 3L13.9 8.2H19.3L14.9 11.4L16.4 16.6L12 13.4L7.6 16.6L9.1 11.4L4.7 8.2H10.1L12 3z' stroke='#fff' stroke-width='1.5' stroke-linejoin='round'/><path d='M12 13.4V20' stroke='#f59e0b' stroke-width='1.6' stroke-linecap='round'/><path d='M9.2 17.8L12 20L14.8 17.8' stroke='#f59e0b' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/><circle cx='12' cy='8.6' r='1' fill='#38bdf8'/></svg>",
+            "description": "Browse and download Minecraft Java launchers, including official, modded, PvP and mobile options.",
+            "keywords": [
+              "minecraft launcher",
+              "launcher list",
+              "java edition",
+              "download",
+              "modded",
+              "pvp",
+              "prism",
+              "modrinth",
+              "official",
+              "android",
+              "ios"
+            ]
           },
           {
             "name": "Java Downloader",
             "url": "/minecraft/java/downloader.html",
-            "logo": "<svg viewBox='0 0 24 24' width='24' height='24' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M12 4v10.2' stroke='#fff' stroke-width='1.8' stroke-linecap='round'/><path d='M8.2 10.8L12 14.2L15.8 10.8' stroke='#fff' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'/><path d='M4 17v1.8a1.6 1.6 0 001.6 1.6h12.8a1.6 1.6 0 001.6-1.6V17' stroke='#38bdf8' stroke-width='1.6' stroke-linecap='round'/><rect x='10.8' y='13.2' width='2.4' height='2.4' rx='0.6' fill='#38bdf8'/></svg>"
+            "logo": "<svg viewBox='0 0 24 24' width='24' height='24' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M12 4v10.2' stroke='#fff' stroke-width='1.8' stroke-linecap='round'/><path d='M8.2 10.8L12 14.2L15.8 10.8' stroke='#fff' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'/><path d='M4 17v1.8a1.6 1.6 0 001.6 1.6h12.8a1.6 1.6 0 001.6-1.6V17' stroke='#38bdf8' stroke-width='1.6' stroke-linecap='round'/><rect x='10.8' y='13.2' width='2.4' height='2.4' rx='0.6' fill='#38bdf8'/></svg>",
+            "description": "Download Java runtimes for Minecraft, modded clients and server jars, with version and platform filters.",
+            "keywords": [
+              "java downloader",
+              "java",
+              "jdk",
+              "jre",
+              "download",
+              "install",
+              "minecraft java",
+              "version",
+              "windows",
+              "linux",
+              "macos"
+            ]
           }
         ]
       },
@@ -69,12 +157,35 @@
             "name": "KS Client",
             "url": "/minecraft/bedrock/ks-client.html",
             "logo": "<svg viewBox='0 0 24 24' width='24' height='24' fill='none' xmlns='http://www.w3.org/2000/svg'><rect x='5' y='3' width='14' height='16' rx='2.4' stroke='#fff' stroke-width='1.6'/><rect x='8.2' y='6.2' width='7.6' height='5.2' rx='1.1' fill='none' stroke='#a78bfa' stroke-width='1.4'/><path d='M8.2 13.2h7.6M8.2 15.6h5' stroke='#fff' stroke-width='1.3' stroke-linecap='round'/><circle cx='17.2' cy='16.2' r='1' fill='#22c55e' stroke='#fff' stroke-width='0.8'/><path d='M11 9H13' stroke='#a78bfa' stroke-width='1.2' stroke-linecap='round'/></svg>",
-            "logoUrl": "/minecraft/bedrock/pack_icon.webp"
+            "logoUrl": "/minecraft/bedrock/pack_icon.webp",
+            "description": "Get the KS Client for Minecraft Bedrock with useful in-game tools and quality-of-life features.",
+            "keywords": [
+              "ks client",
+              "minecraft bedrock",
+              "bedrock client",
+              "download",
+              "client",
+              "tools",
+              "quality of life",
+              "mobile"
+            ]
           },
           {
             "name": "Bedrock Downloader",
             "url": "/minecraft/bedrock/downloader.html",
-            "logo": "<svg viewBox='0 0 24 24' width='24' height='24' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M12 4v10.2' stroke='#fff' stroke-width='1.8' stroke-linecap='round'/><path d='M8.2 10.8L12 14.2L15.8 10.8' stroke='#fff' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'/><path d='M4 17v1.8a1.6 1.6 0 001.6 1.6h12.8a1.6 1.6 0 001.6-1.6V17' stroke='#22c55e' stroke-width='1.6' stroke-linecap='round'/><rect x='10.8' y='13.2' width='2.4' height='2.4' rx='0.6' fill='#22c55e'/></svg>"
+            "logo": "<svg viewBox='0 0 24 24' width='24' height='24' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M12 4v10.2' stroke='#fff' stroke-width='1.8' stroke-linecap='round'/><path d='M8.2 10.8L12 14.2L15.8 10.8' stroke='#fff' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'/><path d='M4 17v1.8a1.6 1.6 0 001.6 1.6h12.8a1.6 1.6 0 001.6-1.6V17' stroke='#22c55e' stroke-width='1.6' stroke-linecap='round'/><rect x='10.8' y='13.2' width='2.4' height='2.4' rx='0.6' fill='#22c55e'/></svg>",
+            "description": "Search and download Minecraft Bedrock addons, mods, maps and texture packs from MCPEDL.",
+            "keywords": [
+              "bedrock downloader",
+              "mcpedl",
+              "bedrock addons",
+              "mods",
+              "maps",
+              "texture packs",
+              "download",
+              "minecraft bedrock",
+              "behavior packs"
+            ]
           }
         ]
       },
@@ -85,29 +196,87 @@
           {
             "name": "Setup Server (VPS / VM / Container)",
             "url": "/minecraft/make-server/setup-server-in-vps.html",
-            "logo": "<svg viewBox='0 0 24 24' width='24' height='24' fill='none' xmlns='http://www.w3.org/2000/svg'><rect x='3' y='3' width='18' height='5' rx='1.5' stroke='#fff' stroke-width='1.5'/><rect x='3' y='9.8' width='18' height='5' rx='1.5' stroke='#fff' stroke-width='1.5'/><rect x='3' y='16.6' width='18' height='4.4' rx='1.2' stroke='rgba(255,255,255,0.7)' stroke-width='1.3'/><circle cx='6.8' cy='5.5' r='0.9' fill='#22c55e'/><circle cx='6.8' cy='12.3' r='0.9' fill='#3b82f6'/><circle cx='6.8' cy='18.8' r='0.9' fill='#f59e0b'/><circle cx='17' cy='12.3' r='2.1' fill='none' stroke='#a78bfa' stroke-width='1.4'/><path d='M17 11.2v1.1l0.7 0.7' stroke='#a78bfa' stroke-width='1.1' stroke-linecap='round' stroke-linejoin='round'/><path d='M9.5 5.5h6M9.5 12.3h5M9.5 18.8h6' stroke='rgba(255,255,255,0.6)' stroke-width='1' stroke-linecap='round'/></svg>"
+            "logo": "<svg viewBox='0 0 24 24' width='24' height='24' fill='none' xmlns='http://www.w3.org/2000/svg'><rect x='3' y='3' width='18' height='5' rx='1.5' stroke='#fff' stroke-width='1.5'/><rect x='3' y='9.8' width='18' height='5' rx='1.5' stroke='#fff' stroke-width='1.5'/><rect x='3' y='16.6' width='18' height='4.4' rx='1.2' stroke='rgba(255,255,255,0.7)' stroke-width='1.3'/><circle cx='6.8' cy='5.5' r='0.9' fill='#22c55e'/><circle cx='6.8' cy='12.3' r='0.9' fill='#3b82f6'/><circle cx='6.8' cy='18.8' r='0.9' fill='#f59e0b'/><circle cx='17' cy='12.3' r='2.1' fill='none' stroke='#a78bfa' stroke-width='1.4'/><path d='M17 11.2v1.1l0.7 0.7' stroke='#a78bfa' stroke-width='1.1' stroke-linecap='round' stroke-linejoin='round'/><path d='M9.5 5.5h6M9.5 12.3h5M9.5 18.8h6' stroke='rgba(255,255,255,0.6)' stroke-width='1' stroke-linecap='round'/></svg>",
+            "description": "Follow a step-by-step guide to set up a Minecraft server on a VPS, VM or container.",
+            "keywords": [
+              "setup minecraft server",
+              "minecraft server",
+              "vps",
+              "vm",
+              "container",
+              "install",
+              "guide",
+              "linux",
+              "java",
+              "server jar"
+            ]
           },
           {
             "name": "Server Jar Downloader",
             "url": "/minecraft/make-server/server.jar-downloader.html",
-            "logo": "<svg viewBox='0 0 24 24' width='24' height='24' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M8 3.5h8a1.2 1.2 0 011.2 1.2v4.2a4.8 4.8 0 01-4.8 4.8 4.8 4.8 0 01-4.8-4.8V4.7A1.2 1.2 0 018 3.5z' stroke='#fff' stroke-width='1.6'/><path d='M8.5 7.2h7M8.5 9.6h7M12 13.7v4.2' stroke='#fff' stroke-width='1.2' stroke-linecap='round'/><path d='M9.2 17.2L12 20l2.8-2.8' stroke='#22c55e' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/><path d='M9 5.6c1.6 0.8 3.2-0.6 6 0' stroke='#f59e0b' stroke-width='0.9' opacity='0.7' stroke-linecap='round'/></svg>"
+            "logo": "<svg viewBox='0 0 24 24' width='24' height='24' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M8 3.5h8a1.2 1.2 0 011.2 1.2v4.2a4.8 4.8 0 01-4.8 4.8 4.8 4.8 0 01-4.8-4.8V4.7A1.2 1.2 0 018 3.5z' stroke='#fff' stroke-width='1.6'/><path d='M8.5 7.2h7M8.5 9.6h7M12 13.7v4.2' stroke='#fff' stroke-width='1.2' stroke-linecap='round'/><path d='M9.2 17.2L12 20l2.8-2.8' stroke='#22c55e' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/><path d='M9 5.6c1.6 0.8 3.2-0.6 6 0' stroke='#f59e0b' stroke-width='0.9' opacity='0.7' stroke-linecap='round'/></svg>",
+            "description": "Download Paper, Purpur, Fabric, Forge, Vanilla and other Minecraft server jars in one place.",
+            "keywords": [
+              "server jar downloader",
+              "minecraft server jar",
+              "paper",
+              "purpur",
+              "fabric",
+              "forge",
+              "vanilla",
+              "download",
+              "server software"
+            ]
           },
           {
             "name": "Paid Plugins (Free)",
             "url": "/minecraft/make-server/paid-plugin-free.html",
-            "logo": "<svg viewBox='0 0 24 24' width='24' height='24' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M6 8.2c1.5-1.8 3.8 0.6 5.2-1 1.4 1.6 3.7-0.8 5.2 1v3.8l-5.2 2.2-5.2-2.2V8.2z' stroke='#fff' stroke-width='1.4' stroke-linejoin='round'/><path d='M11.2 14.2v5M6 12l5.2 2.2L16.4 12' stroke='#fff' stroke-width='1.2' stroke-linecap='round'/><circle cx='18' cy='5.5' r='2.1' fill='#22c55e' stroke='#fff' stroke-width='1'/><path d='M16.9 5.5l0.7 0.7 1.5-1.5' stroke='#fff' stroke-width='1' stroke-linecap='round' stroke-linejoin='round'/><circle cx='6' cy='5.6' r='1' fill='#f59e0b'/></svg>"
+            "logo": "<svg viewBox='0 0 24 24' width='24' height='24' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M6 8.2c1.5-1.8 3.8 0.6 5.2-1 1.4 1.6 3.7-0.8 5.2 1v3.8l-5.2 2.2-5.2-2.2V8.2z' stroke='#fff' stroke-width='1.4' stroke-linejoin='round'/><path d='M11.2 14.2v5M6 12l5.2 2.2L16.4 12' stroke='#fff' stroke-width='1.2' stroke-linecap='round'/><circle cx='18' cy='5.5' r='2.1' fill='#22c55e' stroke='#fff' stroke-width='1'/><path d='M16.9 5.5l0.7 0.7 1.5-1.5' stroke='#fff' stroke-width='1' stroke-linecap='round' stroke-linejoin='round'/><circle cx='6' cy='5.6' r='1' fill='#f59e0b'/></svg>",
+            "description": "Download paid premium Minecraft plugins for free, with direct download links for your server.",
+            "keywords": [
+              "paid plugins",
+              "premium plugins",
+              "free plugins",
+              "minecraft plugins",
+              "plugin download",
+              "spigot",
+              "bukkit",
+              "paper",
+              "paid plugin free",
+              "plugins paid"
+            ]
           },
           {
             "name": "KS Plugins",
             "url": "/minecraft/make-server/ks-plugins.html",
             "soon": true,
             "logo": "<svg viewBox='0 0 24 24' width='24' height='24' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M9 3v5M15 3v5' stroke='#fff' stroke-width='1.6' stroke-linecap='round'/><path d='M6 8h12v3a6 6 0 0 1-12 0V8Z' stroke='#fff' stroke-width='1.6' stroke-linejoin='round'/><path d='M12 17v4' stroke='#a78bfa' stroke-width='1.6' stroke-linecap='round'/><circle cx='12' cy='11.2' r='1.3' fill='#22c55e'/></svg>",
-            "logoUrl": "/image/ks-logo.webp"
+            "logoUrl": "/image/ks-logo.webp",
+            "description": "KS Plugins is the upcoming home for Minecraft server plugins built by KS Warrior, with features and downloads.",
+            "keywords": [
+              "ks plugins",
+              "minecraft plugins",
+              "server plugins",
+              "coming soon",
+              "download",
+              "ks warrior",
+              "plugin releases"
+            ]
           },
           {
             "name": "Custom IP",
             "url": "/minecraft/make-server/custom-ip.html",
-            "logo": "<svg viewBox='0 0 24 24' width='24' height='24' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='12' cy='12' r='7.4' stroke='#fff' stroke-width='1.5'/><path d='M4.6 12h14.8M12 4.6c2.1 2 3.3 4.7 3.3 7.4S14.1 17.4 12 19.4c-2.1-2-3.3-4.7-3.3-7.4S9.9 6.6 12 4.6z' stroke='#fff' stroke-width='1.2'/><rect x='9.4' y='9.4' width='5.2' height='5.2' rx='1.1' fill='#3b82f6' stroke='#fff' stroke-width='1.2'/><path d='M10.8 12h2.4M12 10.8v2.4' stroke='#fff' stroke-width='1.1' stroke-linecap='round'/></svg>"
+            "logo": "<svg viewBox='0 0 24 24' width='24' height='24' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='12' cy='12' r='7.4' stroke='#fff' stroke-width='1.5'/><path d='M4.6 12h14.8M12 4.6c2.1 2 3.3 4.7 3.3 7.4S14.1 17.4 12 19.4c-2.1-2-3.3-4.7-3.3-7.4S9.9 6.6 12 4.6z' stroke='#fff' stroke-width='1.2'/><rect x='9.4' y='9.4' width='5.2' height='5.2' rx='1.1' fill='#3b82f6' stroke='#fff' stroke-width='1.2'/><path d='M10.8 12h2.4M12 10.8v2.4' stroke='#fff' stroke-width='1.1' stroke-linecap='round'/></svg>",
+            "description": "Connect a custom domain or IP address to your Minecraft server so players can join with an easy name.",
+            "keywords": [
+              "custom ip",
+              "custom domain",
+              "minecraft server ip",
+              "srv record",
+              "dns",
+              "connect",
+              "server address"
+            ]
           }
         ]
       },
@@ -118,13 +287,33 @@
           {
             "name": "Statics",
             "url": "/minecraft/server/statics.html",
-            "logo": "<svg viewBox='0 0 24 24' width='24' height='24' fill='none' xmlns='http://www.w3.org/2000/svg'><rect x='3' y='3' width='18' height='18' rx='2.2' stroke='#fff' stroke-width='1.6'/><path d='M7 16V12.2M12 16V8.2M17 16V10.2' stroke='#3b82f6' stroke-width='1.8' stroke-linecap='round'/><circle cx='7' cy='11' r='1' fill='#3b82f6'/><circle cx='12' cy='7' r='1' fill='#8b5cf6'/><circle cx='17' cy='9' r='1' fill='#06b6d4'/><path d='M7 11L12 7L17 9' stroke='#a78bfa' stroke-width='1.1' stroke-linecap='round' stroke-linejoin='round' opacity='0.8'/></svg>"
+            "logo": "<svg viewBox='0 0 24 24' width='24' height='24' fill='none' xmlns='http://www.w3.org/2000/svg'><rect x='3' y='3' width='18' height='18' rx='2.2' stroke='#fff' stroke-width='1.6'/><path d='M7 16V12.2M12 16V8.2M17 16V10.2' stroke='#3b82f6' stroke-width='1.8' stroke-linecap='round'/><circle cx='7' cy='11' r='1' fill='#3b82f6'/><circle cx='12' cy='7' r='1' fill='#8b5cf6'/><circle cx='17' cy='9' r='1' fill='#06b6d4'/><path d='M7 11L12 7L17 9' stroke='#a78bfa' stroke-width='1.1' stroke-linecap='round' stroke-linejoin='round' opacity='0.8'/></svg>",
+            "description": "Look up live Minecraft server stats, including status, version, player count and MOTD by IP.",
+            "keywords": [
+              "minecraft server stats",
+              "server status",
+              "player count",
+              "motd",
+              "server lookup",
+              "query",
+              "statics"
+            ]
           },
           {
             "name": "Bots",
             "url": "/minecraft/server/bot.html",
             "logo": "<svg viewBox='0 0 24 24' width='24' height='24' fill='none' xmlns='http://www.w3.org/2000/svg'><rect x='6.5' y='7.5' width='11' height='9' rx='2' stroke='#fff' stroke-width='1.6'/><circle cx='9.6' cy='11.6' r='1.2' fill='#38bdf8'/><circle cx='14.4' cy='11.6' r='1.2' fill='#38bdf8'/><path d='M9.6 14.6c1.2 0.7 3 0.7 4.8 0' stroke='#fff' stroke-width='1.2' stroke-linecap='round'/><path d='M12 7.5V5.4' stroke='#a78bfa' stroke-width='1.3' stroke-linecap='round'/><circle cx='12' cy='4.2' r='1.1' fill='#a78bfa' stroke='#fff' stroke-width='0.9'/><path d='M6.5 10H4.7a1 1 0 00-1 1v0.8a1 1 0 001 1H6.5M17.5 10H19.3a1 1 0 011 1v0.8a1 1 0 01-1 1H17.5' stroke='#fff' stroke-width='1.2'/></svg>",
-            "logoUrl": "https://github.com/PrismarineJS.png?size=128"
+            "logoUrl": "https://github.com/PrismarineJS.png?size=128",
+            "description": "Set up and run a Minecraft bot to keep your server online, automate tasks or test connections.",
+            "keywords": [
+              "minecraft bot",
+              "afk bot",
+              "keep server online",
+              "automation",
+              "mineflayer",
+              "prismarine",
+              "bot setup"
+            ]
           }
         ]
       }
@@ -141,7 +330,20 @@
           {
             "name": "Free Hosting List",
             "url": "/vps/hosting/list/free.html",
-            "logo": "<svg viewBox='0 0 24 24' width='24' height='24' fill='none' xmlns='http://www.w3.org/2000/svg'><rect x='3' y='5' width='18' height='4.5' rx='1.4' stroke='#fff' stroke-width='1.5'/><rect x='3' y='10.5' width='18' height='4.5' rx='1.4' stroke='#fff' stroke-width='1.5'/><rect x='3' y='16' width='18' height='3.5' rx='1.2' fill='none' stroke='#22c55e' stroke-width='1.4'/><circle cx='6.5' cy='7.2' r='0.8' fill='#22c55e'/><circle cx='6.5' cy='12.8' r='0.8' fill='#3b82f6'/><path d='M9 7.2h8M9 12.8h8' stroke='rgba(255,255,255,0.6)' stroke-width='1' stroke-linecap='round'/><circle cx='17.5' cy='15.2' r='1' fill='#22c55e' stroke='#fff' stroke-width='0.8'/><path d='M12 17.6v1.2' stroke='#22c55e' stroke-width='1' stroke-linecap='round'/></svg>"
+            "logo": "<svg viewBox='0 0 24 24' width='24' height='24' fill='none' xmlns='http://www.w3.org/2000/svg'><rect x='3' y='5' width='18' height='4.5' rx='1.4' stroke='#fff' stroke-width='1.5'/><rect x='3' y='10.5' width='18' height='4.5' rx='1.4' stroke='#fff' stroke-width='1.5'/><rect x='3' y='16' width='18' height='3.5' rx='1.2' fill='none' stroke='#22c55e' stroke-width='1.4'/><circle cx='6.5' cy='7.2' r='0.8' fill='#22c55e'/><circle cx='6.5' cy='12.8' r='0.8' fill='#3b82f6'/><path d='M9 7.2h8M9 12.8h8' stroke='rgba(255,255,255,0.6)' stroke-width='1' stroke-linecap='round'/><circle cx='17.5' cy='15.2' r='1' fill='#22c55e' stroke='#fff' stroke-width='0.8'/><path d='M12 17.6v1.2' stroke='#22c55e' stroke-width='1' stroke-linecap='round'/></svg>",
+            "description": "Compare free VPS providers by RAM, CPU, storage, location, renewal, root access and always-on support.",
+            "keywords": [
+              "free vps",
+              "vps hosting",
+              "free vps list",
+              "free hosting list",
+              "root access",
+              "sudo",
+              "always on",
+              "renew",
+              "linux",
+              "server"
+            ]
           }
         ]
       }
@@ -158,7 +360,19 @@
           {
             "name": "Free Hosting List",
             "url": "/website/hosting/list/free.html",
-            "logo": "<svg viewBox='0 0 24 24' width='24' height='24' fill='none' xmlns='http://www.w3.org/2000/svg'><rect x='3' y='4' width='18' height='16' rx='2.2' stroke='#fff' stroke-width='1.5'/><path d='M3 8.2h18' stroke='#fff' stroke-width='1' opacity='0.55'/><circle cx='6' cy='6.1' r='0.8' fill='#22c55e'/><circle cx='8.6' cy='6.1' r='0.8' fill='#3b82f6'/><circle cx='11.2' cy='6.1' r='0.8' fill='#a78bfa'/><circle cx='12' cy='13.8' r='3.2' stroke='#22c55e' stroke-width='1.4'/><path d='M8.8 13.8h6.4M12 10.6c.9.9 1.4 2 1.4 3.2S13 15.9 12 16.9c-.9-1-1.4-2-1.4-3.2s.5-2.3 1.4-3.1Z' stroke='#22c55e' stroke-width='1'/><path d='M7.6 17.6h8.8' stroke='#38bdf8' stroke-width='1.2' stroke-linecap='round'/></svg>"
+            "logo": "<svg viewBox='0 0 24 24' width='24' height='24' fill='none' xmlns='http://www.w3.org/2000/svg'><rect x='3' y='4' width='18' height='16' rx='2.2' stroke='#fff' stroke-width='1.5'/><path d='M3 8.2h18' stroke='#fff' stroke-width='1' opacity='0.55'/><circle cx='6' cy='6.1' r='0.8' fill='#22c55e'/><circle cx='8.6' cy='6.1' r='0.8' fill='#3b82f6'/><circle cx='11.2' cy='6.1' r='0.8' fill='#a78bfa'/><circle cx='12' cy='13.8' r='3.2' stroke='#22c55e' stroke-width='1.4'/><path d='M8.8 13.8h6.4M12 10.6c.9.9 1.4 2 1.4 3.2S13 15.9 12 16.9c-.9-1-1.4-2-1.4-3.2s.5-2.3 1.4-3.1Z' stroke='#22c55e' stroke-width='1'/><path d='M7.6 17.6h8.8' stroke='#38bdf8' stroke-width='1.2' stroke-linecap='round'/></svg>",
+            "description": "Find free website hosting providers with storage, bandwidth, SSL, custom domains and database support.",
+            "keywords": [
+              "free website hosting",
+              "website hosting",
+              "free hosting list",
+              "web host",
+              "ssl",
+              "custom domain",
+              "bandwidth",
+              "storage",
+              "database"
+            ]
           }
         ]
       }
@@ -175,7 +389,20 @@
           {
             "name": "Free Database List",
             "url": "/database/hosting/list/free.html",
-            "logo": "<svg viewBox='0 0 24 24' width='24' height='24' fill='none' xmlns='http://www.w3.org/2000/svg'><ellipse cx='12' cy='5.5' rx='7' ry='2.5' stroke='#fff' stroke-width='1.5'/><path d='M5 5.5v4.5c0 1.4 3.1 2.5 7 2.5s7-1.1 7-2.5V5.5' stroke='#38bdf8' stroke-width='1.3'/><path d='M5 10v4.5c0 1.4 3.1 2.5 7 2.5s7-1.1 7-2.5V10' stroke='#22c55e' stroke-width='1.3'/><path d='M5 14.5V19c0 1.4 3.1 2.5 7 2.5s7-1.1 7-2.5v-4.5' stroke='#a78bfa' stroke-width='1.3'/></svg>"
+            "logo": "<svg viewBox='0 0 24 24' width='24' height='24' fill='none' xmlns='http://www.w3.org/2000/svg'><ellipse cx='12' cy='5.5' rx='7' ry='2.5' stroke='#fff' stroke-width='1.5'/><path d='M5 5.5v4.5c0 1.4 3.1 2.5 7 2.5s7-1.1 7-2.5V5.5' stroke='#38bdf8' stroke-width='1.3'/><path d='M5 10v4.5c0 1.4 3.1 2.5 7 2.5s7-1.1 7-2.5V10' stroke='#22c55e' stroke-width='1.3'/><path d='M5 14.5V19c0 1.4 3.1 2.5 7 2.5s7-1.1 7-2.5v-4.5' stroke='#a78bfa' stroke-width='1.3'/></svg>",
+            "description": "Compare free database hosting for MySQL, PostgreSQL, Redis, MongoDB and other managed databases.",
+            "keywords": [
+              "free database hosting",
+              "database hosting",
+              "free database list",
+              "mysql",
+              "postgresql",
+              "redis",
+              "mongodb",
+              "sql",
+              "managed database",
+              "free db"
+            ]
           }
         ]
       }
@@ -193,7 +420,19 @@
             "name": "Store",
             "url": "/apps/android/store.html",
             "logo": "<svg viewBox='0 0 24 24' width='24' height='24' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M4.2 8.4h15.6l-1.1 9.9a2.2 2.2 0 0 1-2.2 2H7.5a2.2 2.2 0 0 1-2.2-2L4.2 8.4z' stroke='#fff' stroke-width='1.5' stroke-linejoin='round'/><path d='M8.6 8.4V6.9a3.4 3.4 0 0 1 6.8 0v1.5' stroke='#38bdf8' stroke-width='1.5' stroke-linecap='round'/><path d='M10.3 12.1l4.2 2.1-4.2 2.1v-4.2z' fill='#22c55e'/></svg>",
-            "logoUrl": "/image/ks-logo.webp"
+            "logoUrl": "/image/ks-logo.webp",
+            "description": "Browse and download KS apps, tools and browsers for Android and Windows.",
+            "keywords": [
+              "ks store",
+              "apps",
+              "download",
+              "android",
+              "windows",
+              "tools",
+              "browser",
+              "ks apps",
+              "store"
+            ]
           }
         ]
       },
