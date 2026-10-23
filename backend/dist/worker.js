@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { getSocialStats } from "./social.js";
+import { searchSitemap } from "./search.js";
 // Vite/Workers JSON import — with nodejs_compat we can use import assertions
 // For wrangler, use `import ... with {type:"json"}` or `import ... from "...json"` with bundler.
 // We inline import via `import * as` fallback for compatibility.
@@ -449,19 +450,8 @@ app.get("/api/mcpedl/*", async (c) => {
 // Sitemap
 app.get("/api/sitemap", (c) => c.json(sitemap));
 app.get("/api/sitemap/search", (c) => {
-    const q = (c.req.query("q") ?? "").trim().toLowerCase();
-    if (!q)
-        return c.json([]);
-    const flat = [];
-    for (const cat of sitemap) {
-        for (const sec of cat.sections) {
-            for (const page of sec.pages) {
-                flat.push({ category: cat.category, icon: cat.icon, title: sec.title, sectionIcon: sec.icon, name: page.name, url: page.url, logo: page.logo, logoUrl: page.logoUrl });
-            }
-        }
-    }
-    const matched = flat.filter((i) => i.name.toLowerCase().includes(q) || i.title.toLowerCase().includes(q) || i.category.toLowerCase().includes(q));
-    return c.json(matched);
+    const q = (c.req.query("q") ?? "").trim();
+    return c.json(searchSitemap(sitemap, q));
 });
 // App catalog
 app.get("/api/apps", (c) => c.json({ count: apps.length, data: apps }));

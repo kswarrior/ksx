@@ -4,6 +4,8 @@ export interface SitemapPage {
     logo: string;
     logoUrl?: string;
     soon?: boolean;
+    description?: string;
+    keywords?: string[];
 }
 export interface SitemapSection {
     title: string;
@@ -89,6 +91,9 @@ export interface SearchItem {
     url: string;
     logo: string;
     logoUrl?: string;
+    description?: string;
+    keywords?: string[];
+    soon?: boolean;
 }
 export type SocialPlatformName = "youtube" | "discord" | "instagram";
 export interface SocialStat {
