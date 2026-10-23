@@ -207,176 +207,73 @@ export default function StorePage() {
             </button>
           </div>
         ) : (
-          <>
-            {featured && (
-              <section className="store-featured" aria-labelledby="store-featured-title">
-                <div className="store-featured-copy">
-                  <span className="store-featured-kicker">
-                    <Icon name="sparkles" size={12} /> Featured app
-                  </span>
-                  <div className="store-featured-app">
-                    <BrandLogo
-                      className="store-featured-icon"
-                      src={featured.icon}
-                      fallback="package"
-                      iconSize={36}
-                    />
-                    <div className="store-featured-info">
-                      <h2 id="store-featured-title">{featured.name}</h2>
-                      <p className="store-featured-dev">{featured.owner}</p>
-                      <p className="store-featured-meta">
-                        {[featured.category, featured.price, featured.requires]
-                          .filter(Boolean)
-                          .join(" · ")}
-                      </p>
-                    </div>
-                  </div>
+          <section className="store-catalog" aria-labelledby="store-catalog-title">
+            <div className="store-section-head">
+              <h2 id="store-catalog-title">All apps</h2>
+              <span>{filtered.length}</span>
+            </div>
 
-                  {featured.tagline && <p className="store-featured-tagline">{featured.tagline}</p>}
-
-                  {featured.tags && featured.tags.length > 0 && (
-                    <div className="store-featured-tags">
-                      {featured.tags.map((tag) => (
-                        <span key={tag}>{tag}</span>
-                      ))}
-                    </div>
-                  )}
-
-                  <div className="store-featured-actions">
-                    <a
-                      className="store-install"
-                      href={featured.downloadUrl}
-                      download
-                      onClick={() =>
-                        trackAppDownload(featured.slug, featured.version, featured.platform)
-                      }
-                    >
-                      <Icon name="download" size={15} />
-                      Install
-                      <span>{versionLabel(featured.version)}</span>
-                    </a>
-                    <Link className="store-details-btn" to={appPath(featured)}>
-                      Details <Icon name="chevron-right" size={15} />
-                    </Link>
-                  </div>
-
-                  <div className="store-featured-facts">
-                    {currentDownloadsLabel(stats[featured.slug]) && (
-                      <span>
-                        <strong>{currentDownloadsLabel(stats[featured.slug])}</strong>
-                        <small>on this version</small>
-                      </span>
-                    )}
-                    <span>
-                      <strong>{versionLabel(featured.version)}</strong>
-                      <small>latest version</small>
-                    </span>
-                    <span>
-                      <strong>{featured.requires ?? featured.platform}</strong>
-                      <small>requires</small>
-                    </span>
-                  </div>
+            {filtered.length === 0 ? (
+              <div className="store-empty">
+                <div className="store-empty-icon">
+                  <Icon name="search" size={26} />
                 </div>
-
-                {featured.screenshot && (
-                  <Link
-                    className="store-featured-shot"
-                    to={appPath(featured)}
-                    aria-label={`View ${featured.name}`}
-                  >
-                    <span className="store-phone">
-                      <img
-                        src={featured.screenshot}
-                        alt={`${featured.name} screenshot`}
-                        width={412}
-                        height={915}
-                        loading="lazy"
-                        decoding="async"
-                      />
-                    </span>
-                  </Link>
-                )}
-              </section>
-            )}
-
-            <section className="store-catalog" aria-labelledby="store-catalog-title">
-              <div className="store-section-head">
-                <h2 id="store-catalog-title">All apps</h2>
-                <span>{filtered.length}</span>
+                <div className="store-empty-title">No apps found</div>
+                <div className="store-empty-text">Try a different search or category.</div>
+                <button type="button" className="store-empty-btn" onClick={clearFilters}>
+                  Clear filters
+                </button>
               </div>
-
-              {filtered.length === 0 ? (
-                <div className="store-empty">
-                  <div className="store-empty-icon">
-                    <Icon name="search" size={26} />
-                  </div>
-                  <div className="store-empty-title">No apps found</div>
-                  <div className="store-empty-text">Try a different search or category.</div>
-                  <button type="button" className="store-empty-btn" onClick={clearFilters}>
-                    Clear filters
-                  </button>
-                </div>
-              ) : (
-                <div className="store-grid">
-                  {filtered.map((app) => {
-                    const download = downloadsLabel(stats[app.slug]);
-                    return (
-                      <article key={app.slug} className="store-card">
-                        <div className="store-card-top">
-                          <BrandLogo
-                            className="store-card-icon"
-                            src={app.icon}
-                            fallback="package"
-                            iconSize={30}
-                          />
-                          <div className="store-card-info">
-                            <div className="store-card-title">
-                              <h3>{app.name}</h3>
-                              {app.featured && <span className="store-badge">Featured</span>}
-                            </div>
-                            <p className="store-card-dev">{app.owner}</p>
-                            <p className="store-card-meta">
-                              {[app.category, app.price, app.requires].filter(Boolean).join(" · ")}
-                            </p>
-                          </div>
+            ) : (
+              <div className="store-grid">
+                {filtered.map((app) => {
+                  const download = downloadsLabel(stats[app.slug]);
+                  return (
+                    <Link key={app.slug} className="store-card" to={appPath(app)}>
+                      <div className="store-card-top">
+                        <BrandLogo
+                          className="store-card-icon"
+                          src={app.icon}
+                          fallback="package"
+                          iconSize={30}
+                        />
+                        <div className="store-card-info">
+                          <h3>{app.name}</h3>
+                          <p className="store-card-dev">{app.owner}</p>
                         </div>
+                      </div>
 
-                        <p className="store-card-tagline">{app.tagline ?? app.description}</p>
-
-                        {app.tags && app.tags.length > 0 && (
-                          <div className="store-card-tags">
-                            {app.tags.map((tag) => (
-                              <span key={tag}>{tag}</span>
-                            ))}
-                          </div>
-                        )}
-
-                        <div className="store-card-footer">
-                          <span className="store-card-downloads">
-                            <Icon name={download ? "download" : "sparkles"} size={13} />
-                            {download ?? "New release"}
-                          </span>
-                          <div className="store-card-actions">
-                            <Link className="store-card-details" to={appPath(app)}>
-                              Details
-                            </Link>
-                            <a
-                              className="store-card-install"
-                              href={app.downloadUrl}
-                              download
-                              onClick={() => trackAppDownload(app.slug, app.version, app.platform)}
-                            >
-                              Install
-                            </a>
-                          </div>
+                      <dl className="store-card-facts">
+                        <div>
+                          <dt>Price</dt>
+                          <dd>{app.price ?? "Free"}</dd>
                         </div>
-                      </article>
-                    );
-                  })}
-                </div>
-              )}
-            </section>
-          </>
+                        <div>
+                          <dt>Version</dt>
+                          <dd>{versionLabel(app.version)}</dd>
+                        </div>
+                        <div>
+                          <dt>Android</dt>
+                          <dd>{app.requires ?? "—"}</dd>
+                        </div>
+                        <div>
+                          <dt>Size</dt>
+                          <dd>{app.size ?? "—"}</dd>
+                        </div>
+                      </dl>
+
+                      <div className="store-card-footer">
+                        <span className="store-card-downloads">
+                          <Icon name="download" size={13} />
+                          {download ?? "0 downloads"}
+                        </span>
+                      </div>
+                    </Link>
+                  );
+                })}
+              </div>
+            )}
+          </section>
         )}
       </div>
     </div>
