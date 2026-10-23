@@ -107,6 +107,7 @@ app.get("/api/modrinth/*", async (req, res) => {
 });
 // MCPEDL API proxy (PE / Bedrock content)
 const MCPEDL_API = "https://api.mcpedl.com/api";
+const MCPEDL_JINA_API = "https://r.jina.ai/";
 const MCPEDL_UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36";
 const MCPEDL_HEADERS = {
     "User-Agent": MCPEDL_UA,
@@ -127,21 +128,67 @@ function translateProxyUrl(url) {
     proxy.searchParams.set("_x_tr_hl", "en");
     return proxy.toString();
 }
-async function fetchMcpedl(url) {
-    const direct = await fetch(url, { headers: MCPEDL_HEADERS });
-    if (direct.status !== 403 && direct.status !== 429)
-        return direct;
+// api.mcpedl.com puts Cloudflare's bot challenge in front of Cloudflare Workers
+// (requests made from the Workers runtime are challenged with a 403 HTML page).
+// Route those requests through the Jina reader, which returns the raw JSON body.
+async function fetchMcpedlViaJina(url) {
     try {
-        const fallback = await fetch(translateProxyUrl(url), {
-            headers: { "User-Agent": MCPEDL_UA, Accept: "application/json" },
+        const res = await fetch(`${MCPEDL_JINA_API}${url}`, {
+            headers: {
+                "User-Agent": MCPEDL_UA,
+                "X-Return-Format": "text",
+            },
         });
-        if (fallback.ok)
-            return fallback;
+        if (!res.ok)
+            return null;
+        const text = (await res.text()).trim();
+        if (!text.startsWith("{") && !text.startsWith("["))
+            return null;
+        return new Response(text, {
+            status: 200,
+            headers: { "Content-Type": "application/json; charset=utf-8" },
+        });
     }
     catch {
-        // keep the upstream response
+        return null;
     }
-    return direct;
+}
+async function fetchMcpedlViaTranslate(url) {
+    try {
+        const res = await fetch(translateProxyUrl(url), {
+            headers: { "User-Agent": MCPEDL_UA, Accept: "application/json" },
+        });
+        if (!res.ok)
+            return null;
+        const type = res.headers.get("content-type") ?? "";
+        if (type.includes("text/html"))
+            return null;
+        return res;
+    }
+    catch {
+        return null;
+    }
+}
+async function fetchMcpedl(url) {
+    let direct = null;
+    try {
+        direct = await fetch(url, { headers: MCPEDL_HEADERS });
+        if (direct.status !== 403 && direct.status !== 429 && direct.status !== 503)
+            return direct;
+    }
+    catch {
+        // try the mirrors below
+    }
+    const viaJina = await fetchMcpedlViaJina(url);
+    if (viaJina)
+        return viaJina;
+    const viaTranslate = await fetchMcpedlViaTranslate(url);
+    if (viaTranslate)
+        return viaTranslate;
+    return direct ?? new Response(JSON.stringify({ error: "MCPEDL request failed" }), {
+        status: 502,
+        headers: { "Content-Type": "application/json" },
+    });
 }
 app.get("/api/mcpedl/*", async (req, res) => {
     const upstreamPath = req.originalUrl.slice("/api/mcpedl".length);
