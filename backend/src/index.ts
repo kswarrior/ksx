@@ -139,6 +139,11 @@ function translateProxyUrl(url: string): string {
   return proxy.toString();
 }
 
+function isMcpedlBlocked(res: Response): boolean {
+  if (res.status === 403 || res.status === 429 || res.status === 503) return true;
+  return (res.headers.get("content-type") ?? "").includes("text/html");
+}
+
 // api.mcpedl.com puts Cloudflare's bot challenge in front of Cloudflare Workers
 // (requests made from the Workers runtime are challenged with a 403 HTML page).
 // Route those requests through the Jina reader, which returns the raw JSON body.
@@ -167,9 +172,7 @@ async function fetchMcpedlViaTranslate(url: string): Promise<Response | null> {
     const res = await fetch(translateProxyUrl(url), {
       headers: { "User-Agent": MCPEDL_UA, Accept: "application/json" },
     });
-    if (!res.ok) return null;
-    const type = res.headers.get("content-type") ?? "";
-    if (type.includes("text/html")) return null;
+    if (!res.ok || isMcpedlBlocked(res)) return null;
     return res;
   } catch {
     return null;
@@ -180,7 +183,7 @@ async function fetchMcpedl(url: string): Promise<Response> {
   let direct: Response | null = null;
   try {
     direct = await fetch(url, { headers: MCPEDL_HEADERS });
-    if (direct.status !== 403 && direct.status !== 429 && direct.status !== 503) return direct;
+    if (!isMcpedlBlocked(direct)) return direct;
   } catch {
     // try the mirrors below
   }

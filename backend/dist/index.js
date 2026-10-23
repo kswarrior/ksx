@@ -128,6 +128,11 @@ function translateProxyUrl(url) {
     proxy.searchParams.set("_x_tr_hl", "en");
     return proxy.toString();
 }
+function isMcpedlBlocked(res) {
+    if (res.status === 403 || res.status === 429 || res.status === 503)
+        return true;
+    return (res.headers.get("content-type") ?? "").includes("text/html");
+}
 // api.mcpedl.com puts Cloudflare's bot challenge in front of Cloudflare Workers
 // (requests made from the Workers runtime are challenged with a 403 HTML page).
 // Route those requests through the Jina reader, which returns the raw JSON body.
@@ -158,10 +163,7 @@ async function fetchMcpedlViaTranslate(url) {
         const res = await fetch(translateProxyUrl(url), {
             headers: { "User-Agent": MCPEDL_UA, Accept: "application/json" },
         });
-        if (!res.ok)
-            return null;
-        const type = res.headers.get("content-type") ?? "";
-        if (type.includes("text/html"))
+        if (!res.ok || isMcpedlBlocked(res))
             return null;
         return res;
     }
@@ -173,7 +175,7 @@ async function fetchMcpedl(url) {
     let direct = null;
     try {
         direct = await fetch(url, { headers: MCPEDL_HEADERS });
-        if (direct.status !== 403 && direct.status !== 429 && direct.status !== 503)
+        if (!isMcpedlBlocked(direct))
             return direct;
     }
     catch {
