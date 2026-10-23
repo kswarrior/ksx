@@ -412,7 +412,8 @@ app.get("/api/mcpedl/*", async (c) => {
                  content_type = excluded.content_type,
                  updated_at = excluded.updated_at`)
                     .bind(dbKey, body, contentType, Date.now())
-                    .run());
+                    .run()
+                    .catch(() => undefined));
             }
             catch {
                 // no execution context (local dev)

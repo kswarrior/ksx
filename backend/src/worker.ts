@@ -474,6 +474,7 @@ app.get("/api/mcpedl/*", async (c) => {
             )
             .bind(dbKey, body, contentType, Date.now())
             .run()
+            .catch(() => undefined)
         );
       } catch {
         // no execution context (local dev)
