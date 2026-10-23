@@ -116,6 +116,16 @@ export interface AppRecord {
     platform: string;
     version: string;
     downloadUrl: string;
+    pageUrl?: string;
+    category?: string;
+    tagline?: string;
+    description?: string;
+    tags?: string[];
+    icon?: string;
+    screenshot?: string;
+    requires?: string;
+    price?: string;
+    featured?: boolean;
 }
 export interface D1Result<T = unknown> {
     success: boolean;

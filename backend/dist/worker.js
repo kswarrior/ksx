@@ -125,6 +125,7 @@ app.get("/api/stats", (c) => {
             "GET /api/hosting/vps?q=&type=&renew=&sudo=&alwaysOn=",
             "GET /api/hosting/website?q=&type=&customDomain=&ssl=&ads=&alwaysFree=",
             "GET /api/hosting/database?q=&type=&cardRequired=&backups=&alwaysFree=&ssl=",
+            "GET /api/apps",
             "GET /api/apps/:slug/stats",
             "POST /api/apps/:slug/download",
             "GET /api/social",
@@ -462,6 +463,8 @@ app.get("/api/sitemap/search", (c) => {
     const matched = flat.filter((i) => i.name.toLowerCase().includes(q) || i.title.toLowerCase().includes(q) || i.category.toLowerCase().includes(q));
     return c.json(matched);
 });
+// App catalog
+app.get("/api/apps", (c) => c.json({ count: apps.length, data: apps }));
 // App download tracking (Cloudflare D1)
 app.post("/api/apps/:slug/download", async (c) => {
     const slug = c.req.param("slug");
