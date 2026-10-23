@@ -189,7 +189,8 @@ export default function StorePage() {
                 "Loading…"
               ) : (
                 <>
-                  <strong>{filtered.length}</strong> of <strong>{apps.length}</strong> apps
+                  <strong>{filtered.length}</strong> of <strong>{apps.length}</strong>{" "}
+                  {apps.length === 1 ? "app" : "apps"}
                 </>
               )}
             </div>
