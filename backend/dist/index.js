@@ -170,6 +170,7 @@ async function fetchMcpedlViaJina(url, trace) {
             headers: {
                 "Content-Type": "application/json; charset=utf-8",
                 "X-KSX-MCPEDL-Via": "jina",
+                "X-KSX-MCPEDL-Trace": trace.join(","),
             },
         });
     }
@@ -234,6 +235,9 @@ app.get("/api/mcpedl/*", async (req, res) => {
         const via = upstream.headers.get("x-ksx-mcpedl-via");
         if (via)
             res.setHeader("X-KSX-MCPEDL-Via", via);
+        const trace = upstream.headers.get("x-ksx-mcpedl-trace");
+        if (trace)
+            res.setHeader("X-KSX-MCPEDL-Trace", trace);
         res.send(Buffer.from(await upstream.arrayBuffer()));
     }
     catch {
