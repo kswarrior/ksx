@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import Icon from "../components/Icon";
 import Markdown from "../components/Markdown";
 import { api } from "../lib/api";
@@ -70,7 +71,7 @@ export default function KsClient() {
       .getAppStats(APP_SLUG)
       .then((stats) => {
         if (cancelled) return;
-        setDownloads(stats.downloads);
+        setDownloads(stats.currentDownloads ?? stats.downloads);
         setDownloadsAvailable(stats.available);
         setDownloadsLoaded(true);
       })

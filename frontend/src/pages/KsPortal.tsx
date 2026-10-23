@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import Icon from "../components/Icon";
 import Markdown from "../components/Markdown";
 import { api } from "../lib/api";
@@ -89,7 +90,7 @@ export default function KsPortal() {
       .getAppStats(APP_SLUG)
       .then((stats) => {
         if (cancelled) return;
-        setDownloads(stats.downloads);
+        setDownloads(stats.currentDownloads ?? stats.downloads);
         setDownloadsAvailable(stats.available);
         setDownloadsLoaded(true);
       })
@@ -189,11 +190,13 @@ export default function KsPortal() {
             <span className="portal-panel-count">Android</span>
           </div>
           <div className="portal-info-grid">
-            <div
+            <Link
               className="portal-info-tile downloads"
+              to="/apps/android/ks-portal/downloads"
+              aria-label="View downloads by version"
               title={
                 downloadsAvailable
-                  ? "Total downloads recorded in D1"
+                  ? `Downloads for v${APP_VERSION} (current version)`
                   : "Download count is available on the live site"
               }
             >
@@ -202,10 +205,10 @@ export default function KsPortal() {
               </span>
               <span className="portal-item-text">
                 <span className="name">Downloads</span>
-                <span className="sub">All time</span>
+                <span className="sub">This version</span>
               </span>
               <span className="portal-item-value">{downloadLabel}</span>
-            </div>
+            </Link>
             {DETAILS.map((detail) => (
               <div key={detail.label} className="portal-info-tile">
                 <span className="portal-item-icon small">

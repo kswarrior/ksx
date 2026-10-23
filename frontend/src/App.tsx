@@ -89,6 +89,8 @@ export default function App() {
           <Route path="minecraft/bedrock/downloader/:slug" element={<BedrockDownloaderProject />} />
           <Route path="minecraft/bedrock/ks-client" element={<KsClient />} />
           <Route path="minecraft/bedrock/ks-client.html" element={<KsClient />} />
+          <Route path="minecraft/bedrock/ks-client/downloads" element={<KsClientDownloads />} />
+          <Route path="minecraft/bedrock/ks-client/downloads.html" element={<KsClientDownloads />} />
           <Route path="minecraft/server/statics" element={<ServerInfo />} />
           <Route path="minecraft/server/statics.html" element={<ServerInfo />} />
           <Route path="minecraft/server/bot" element={<BotPage />} />
