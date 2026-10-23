@@ -126,7 +126,7 @@ export default function StorePage() {
   }, [apps, q, category, sort]);
 
   const featured = filtered.find((app) => app.featured);
-  const activeFilters = [category].filter(Boolean).length;
+  const activeFilters = [category].filter(Boolean).length + (sort === "featured" ? 0 : 1);
   const clearFilters = () => {
     setQ("");
     setCategory("");
