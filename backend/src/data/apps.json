@@ -5,7 +5,17 @@
     "owner": "KS Warrior",
     "platform": "android",
     "version": "1.5.0",
-    "downloadUrl": "https://github.com/kswarrior/opencode/raw/refs/heads/main/ks-apps/browser/android/release/ks-portal_1.5.0.apk"
+    "downloadUrl": "https://github.com/kswarrior/opencode/raw/refs/heads/main/ks-apps/browser/android/release/ks-portal_1.5.0.apk",
+    "pageUrl": "/apps/android/ks-portal",
+    "category": "Browsers",
+    "tagline": "A fast, private browser built for the KS ecosystem.",
+    "description": "KS Portal is a lightweight, privacy-first Android browser with AI Mode, tab groups, a built-in ad blocker and powerful downloads.",
+    "tags": ["Browser", "Privacy", "AI Mode", "Ad blocker"],
+    "icon": "/portal.png",
+    "screenshot": "/image/ks-portal/home.png",
+    "requires": "Android 5.0+",
+    "price": "Free",
+    "featured": true
   },
   {
     "slug": "ks-client",

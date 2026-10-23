@@ -5,6 +5,10 @@ import appsData from "../data/apps.json" with { type: "json" };
 const apps = appsData as AppRecord[];
 const router = Router();
 
+router.get("/", (_req, res) => {
+  res.json({ count: apps.length, data: apps });
+});
+
 router.get("/:slug/stats", (req, res) => {
   const app = apps.find((item) => item.slug === req.params.slug);
   if (!app) {

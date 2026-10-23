@@ -88,6 +88,25 @@ export type DatabaseHosting = {
   link: string;
 };
 
+export type StoreApp = {
+  slug: string;
+  name: string;
+  owner: string;
+  platform: string;
+  version: string;
+  downloadUrl: string;
+  pageUrl?: string;
+  category?: string;
+  tagline?: string;
+  description?: string;
+  tags?: string[];
+  icon?: string;
+  screenshot?: string;
+  requires?: string;
+  price?: string;
+  featured?: boolean;
+};
+
 export type AppVersionStats = {
   version: string;
   downloads: number;
@@ -172,6 +191,8 @@ export const api = {
       `/api/hosting/database${qs}`
     );
   },
+  getApps: () =>
+    fetchJson<{ count: number; data: StoreApp[] }>("/api/apps"),
   getAppStats: (slug: string) =>
     fetchJson<AppStats>(`/api/apps/${encodeURIComponent(slug)}/stats`),
   getSocialStats: (refresh = false) =>

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import Icon from "../components/Icon";
 import Markdown from "../components/Markdown";
 import { api } from "../lib/api";
+import { trackAppDownload } from "../lib/appDownloads";
 import portalMarkdown from "./ks-portal.md?raw";
 import "./AppDashboard.css";
 
@@ -10,24 +11,6 @@ const APP_SLUG = "ks-portal";
 const APP_VERSION = "1.5.0";
 const DOWNLOAD_URL =
   "https://github.com/kswarrior/opencode/raw/refs/heads/main/ks-apps/browser/android/release/ks-portal_1.5.0.apk";
-
-function trackDownload() {
-  const payload = JSON.stringify({ version: APP_VERSION, platform: "android" });
-  try {
-    if (navigator.sendBeacon) {
-      const blob = new Blob([payload], { type: "application/json" });
-      if (navigator.sendBeacon(`/api/apps/${APP_SLUG}/download`, blob)) return;
-    }
-  } catch {
-    /* fall through to fetch */
-  }
-  void fetch(`/api/apps/${APP_SLUG}/download`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: payload,
-    keepalive: true,
-  }).catch(() => {});
-}
 
 const FEATURES = [
   {
@@ -138,7 +121,7 @@ export default function KsPortal() {
               className="portal-btn primary"
               href={DOWNLOAD_URL}
               download
-              onClick={trackDownload}
+              onClick={() => trackAppDownload(APP_SLUG, APP_VERSION, "android")}
             >
               <Icon name="download" size={15} />
               Download APK
