@@ -181,9 +181,14 @@ const PAIR_WEIGHTS: Record<Field, number> = {
   url: 2,
 };
 
+type IndexedVariant = {
+  value: string;
+  joined: boolean;
+};
+
 type IndexedField = {
   tokens: string[];
-  variants: string[];
+  variants: IndexedVariant[];
   normalized: string;
   rawCompact: string;
   canonicalCompact: string;
@@ -407,11 +412,15 @@ function matchQuality(a: string, b: string): number {
   return 0;
 }
 
-function bestMatch(textVariants: string[], queryVariants: string[]): number {
+function bestMatch(
+  textVariants: IndexedVariant[],
+  queryVariants: string[]
+): number {
   let best = 0;
   for (const queryVariant of queryVariants) {
     for (const textVariant of textVariants) {
-      const quality = matchQuality(queryVariant, textVariant);
+      const quality = matchQuality(queryVariant, textVariant.value);
+      if (textVariant.joined && quality < 0.65) continue;
       if (quality > best) {
         best = quality;
         if (best === 1) return 1;
@@ -461,26 +470,36 @@ function unique(values: string[]): string[] {
 function indexField(value: string): IndexedField {
   const raw = unique(rawTokens(value));
   const canonical = unique(raw.map(canonicalize).filter(Boolean));
-  const variants = new Set<string>();
+  const variants = new Map<string, boolean>();
+  const addVariant = (variant: string, joined: boolean) => {
+    if (!variant) return;
+    const existing = variants.get(variant);
+    if (existing === undefined || (existing && !joined)) {
+      variants.set(variant, joined);
+    }
+  };
   for (const token of raw) {
     for (const variant of variantsFor(token, canonicalize(token))) {
-      variants.add(variant);
+      addVariant(variant, false);
     }
   }
   for (const token of canonical) {
     for (const variant of variantsFor(token, token)) {
-      variants.add(variant);
+      addVariant(variant, false);
     }
   }
   for (let i = 0; i < raw.length - 1; i += 1) {
-    variants.add(`${raw[i]}${raw[i + 1]}`);
+    addVariant(`${raw[i]}${raw[i + 1]}`, true);
   }
   for (let i = 0; i < canonical.length - 1; i += 1) {
-    variants.add(`${canonical[i]}${canonical[i + 1]}`);
+    addVariant(`${canonical[i]}${canonical[i + 1]}`, true);
   }
   return {
     tokens: canonical,
-    variants: [...variants].filter(Boolean),
+    variants: [...variants].map(([variant, joined]) => ({
+      value: variant,
+      joined,
+    })),
     normalized: canonical.join(" "),
     rawCompact: raw.join(""),
     canonicalCompact: canonical.join(""),
@@ -731,7 +750,9 @@ export function highlightParts(text: string, query: string): HighlightPart[] {
     const word = match[0];
     const canonical = canonicalize(normalizeSearchText(word));
     if (!canonical) continue;
-    const variants = variantsFor(normalizeSearchText(word), canonical);
+    const variants = variantsFor(normalizeSearchText(word), canonical).map(
+      (value) => ({ value, joined: false })
+    );
     let quality = 0;
     for (const queryToken of analysis.tokens) {
       const current = bestMatch(variants, queryToken.variants);
@@ -752,5 +773,3 @@ export function highlightParts(text: string, query: string): HighlightPart[] {
 
   return parts.length > 0 ? parts : [{ text, match: false }];
 }
-
-export const __debugSearchInternals = { analyzeQuery, indexItem, evaluateItem, bestMatch, matchQuality };
