@@ -66,13 +66,18 @@
   width: 2000px;
   height: 1400px;
   transform-origin: 0 0;
-  will-change: transform;
   opacity: 0;
   transition: opacity 0.2s ease;
 }
 
 .mp-world.is-ready {
   opacity: 1;
+}
+
+.mp-viewport.is-dragging .mp-world,
+.map-page.is-zooming .mp-world,
+.mp-world.is-animating {
+  will-change: transform;
 }
 
 .mp-world.is-animating {
@@ -370,6 +375,12 @@
 .mp-moon-node .mp-label {
   font-size: 9.5px;
   color: #b9b9b9;
+}
+
+.map-page.is-zooming .mp-label {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  transition: none !important;
 }
 
 .mp-soon-pill {

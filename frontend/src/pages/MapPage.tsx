@@ -891,12 +891,11 @@ export default function MapPage() {
         const dy = e.clientY - g.startY;
         if (Math.abs(dx) + Math.abs(dy) > 3) g.moved = true;
         if (!g.moved) return;
-        applyTf(
+        applyTfQueued(
           clampView(
             { x: g.startTf.x + dx, y: g.startTf.y + dy, z: g.startTf.z },
             g.rect
-          ),
-          false
+          )
         );
         return;
       }
@@ -920,7 +919,7 @@ export default function MapPage() {
         (g.startMid.x - g.rect.left - g.startTf.x) / g.startTf.z;
       const worldY =
         (g.startMid.y - g.rect.top - g.startTf.y) / g.startTf.z;
-      applyTf(
+      applyTfQueued(
         clampView(
           {
             x: mid.x - g.rect.left - worldX * z,
@@ -928,11 +927,10 @@ export default function MapPage() {
             z,
           },
           g.rect
-        ),
-        false
+        )
       );
     },
-    [applyTf, clampView]
+    [applyTfQueued, clampView]
   );
 
   const endPointer = useCallback(
