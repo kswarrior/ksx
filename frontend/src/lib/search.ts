@@ -394,7 +394,7 @@ function matchQuality(a: string, b: string): number {
     if (a.startsWith(b) && ratio >= 0.8) {
       return 0.55 + 0.3 * ratio;
     }
-    if (bLength >= 4 && ratio >= 0.7 && b.includes(a)) {
+    if (bLength >= 4 && ratio >= 0.55 && b.includes(a)) {
       return 0.5 + 0.25 * ratio;
     }
     if (aLength >= 4 && ratio >= 0.7 && a.includes(b)) {
