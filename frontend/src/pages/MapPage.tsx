@@ -507,15 +507,24 @@ export default function MapPage() {
       const page = pageRef.current;
 
       if (Math.abs(inv - invRef.current) > 0.0001) {
+        const now = performance.now();
+        const burst = now - lastZoomAt.current < 200;
+        lastZoomAt.current = now;
         window.clearTimeout(invTimer.current);
-        if (animate) {
+
+        if (animate || !burst) {
           invRef.current = inv;
           world.style.setProperty("--mp-inv", String(inv));
-          page?.classList.add("is-zooming");
-          invTimer.current = window.setTimeout(() => {
+          if (animate) {
+            page?.classList.add("is-zooming");
+            invTimer.current = window.setTimeout(() => {
+              invTimer.current = undefined;
+              pageRef.current?.classList.remove("is-zooming");
+            }, 480);
+          } else {
+            page?.classList.remove("is-zooming");
             invTimer.current = undefined;
-            pageRef.current?.classList.remove("is-zooming");
-          }, 480);
+          }
         } else {
           page?.classList.add("is-zooming");
           invTimer.current = window.setTimeout(() => {
