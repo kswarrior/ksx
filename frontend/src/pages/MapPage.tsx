@@ -504,13 +504,13 @@ export default function MapPage() {
         const next = { stars, planets, moons };
         visibleRef.current = next;
         startTransition(() => setVisible(next));
-      }, 300);
+      }, 120);
     },
     [layout]
   );
 
-  const setLabelsHidden = useCallback((hidden: boolean) => {
-    if (labelsHidden.current === hidden) return;
+  const setLabelsHidden = useCallback((hidden: boolean, force = false) => {
+    if (!force && labelsHidden.current === hidden) return;
     labelsHidden.current = hidden;
     const world = worldRef.current;
     if (!world) return;
@@ -588,6 +588,10 @@ export default function MapPage() {
     },
     [applyTf]
   );
+
+  useEffect(() => {
+    if (labelsHidden.current) setLabelsHidden(true, true);
+  }, [setLabelsHidden, visible]);
 
   useEffect(
     () => () => {
