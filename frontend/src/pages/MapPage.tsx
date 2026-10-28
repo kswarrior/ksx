@@ -114,6 +114,18 @@ const PALETTE = [
 const ZOOM_FAR = 0.8;
 const ZOOM_NEAR = 1.15;
 
+function zoomBucketFor(z: number): "far" | "mid" | "near" {
+  return z < ZOOM_FAR ? "far" : z >= ZOOM_NEAR ? "near" : "mid";
+}
+
+function applyZoomBucket(page: HTMLElement | null, z: number, state: { current: string }) {
+  if (!page) return;
+  const bucket = zoomBucketFor(z);
+  if (state.current === bucket) return;
+  state.current = bucket;
+  page.dataset.zoom = bucket;
+}
+
 function sameKeys(a: Set<string>, b: Set<string>) {
   if (a.size !== b.size) return false;
   for (const key of a) if (!b.has(key)) return false;
@@ -513,6 +525,7 @@ export default function MapPage() {
           page?.classList.add("is-zooming");
           invTimer.current = window.setTimeout(() => {
             invTimer.current = undefined;
+            applyZoomBucket(pageRef.current, tfRef.current.z, zoomBucket);
             pageRef.current?.classList.remove("is-zooming");
           }, 480);
         } else {
@@ -522,17 +535,9 @@ export default function MapPage() {
             const settled = 1 / tfRef.current.z;
             invRef.current = settled;
             worldRef.current?.style.setProperty("--mp-inv", String(settled));
+            applyZoomBucket(pageRef.current, tfRef.current.z, zoomBucket);
             pageRef.current?.classList.remove("is-zooming");
           }, 160);
-        }
-      }
-
-      if (page) {
-        const bucket =
-          next.z < ZOOM_FAR ? "far" : next.z >= ZOOM_NEAR ? "near" : "mid";
-        if (zoomBucket.current !== bucket) {
-          zoomBucket.current = bucket;
-          page.dataset.zoom = bucket;
         }
       }
       if (zoomReadout.current) {
