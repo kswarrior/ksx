@@ -752,3 +752,5 @@ export function highlightParts(text: string, query: string): HighlightPart[] {
 
   return parts.length > 0 ? parts : [{ text, match: false }];
 }
+
+export const __debugSearchInternals = { analyzeQuery, indexItem, evaluateItem, bestMatch, matchQuality };
