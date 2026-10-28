@@ -386,10 +386,10 @@ function matchQuality(a: string, b: string): number {
     if (a.startsWith(b) || b.startsWith(a)) {
       return 0.55 + 0.3 * ratio;
     }
-    if (bLength >= 4 && b.includes(a)) {
+    if (bLength >= 4 && ratio >= 0.7 && b.includes(a)) {
       return 0.5 + 0.25 * ratio;
     }
-    if (aLength >= 4 && a.includes(b)) {
+    if (aLength >= 4 && ratio >= 0.7 && a.includes(b)) {
       return 0.5 + 0.25 * ratio;
     }
   }
