@@ -383,7 +383,10 @@ function matchQuality(a: string, b: string): number {
     const shorter = Math.min(aLength, bLength);
     const longer = Math.max(aLength, bLength);
     const ratio = shorter / longer;
-    if (a.startsWith(b) || b.startsWith(a)) {
+    if (b.startsWith(a) && ratio >= 0.4) {
+      return 0.55 + 0.3 * ratio;
+    }
+    if (a.startsWith(b) && ratio >= 0.8) {
       return 0.55 + 0.3 * ratio;
     }
     if (bLength >= 4 && ratio >= 0.7 && b.includes(a)) {
@@ -699,6 +702,7 @@ function runSearch(
     .sort(
       (a, b) =>
         b.score - a.score ||
+        a.item.name.length - b.item.name.length ||
         a.item.name.localeCompare(b.item.name) ||
         a.item.url.localeCompare(b.item.url)
     )
