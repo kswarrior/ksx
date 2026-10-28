@@ -635,7 +635,13 @@ function evaluateItem(entry: IndexedItem, query: QueryAnalysis): ScoreResult {
     }
   }
 
-  if (entry.fields.name.normalized === query.canonical.join(" ")) {
+  const nameTokenSet = new Set(entry.fields.name.tokens);
+  const queryTokenSet = new Set(query.canonical);
+  if (
+    queryTokenSet.size > 0 &&
+    nameTokenSet.size === queryTokenSet.size &&
+    [...queryTokenSet].every((token) => nameTokenSet.has(token))
+  ) {
     score += 620;
   } else if (
     query.canonical.length > 0 &&
