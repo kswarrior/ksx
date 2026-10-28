@@ -294,6 +294,7 @@ export default function MapPage() {
   const lastTap = useRef<{ time: number; x: number; y: number } | null>(null);
   const animTimer = useRef<number | undefined>(undefined);
   const invTimer = useRef<number | undefined>(undefined);
+  const lastZoomAt = useRef(0);
   const moveFrame = useRef(0);
   const queuedTf = useRef<View | null>(null);
   const interacted = useRef(false);
