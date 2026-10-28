@@ -504,7 +504,7 @@ export default function MapPage() {
         const next = { stars, planets, moons };
         visibleRef.current = next;
         startTransition(() => setVisible(next));
-      }, 180);
+      }, 300);
     },
     [layout]
   );
