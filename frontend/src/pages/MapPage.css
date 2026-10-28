@@ -377,6 +377,11 @@
   color: #b9b9b9;
 }
 
+.map-page.is-zooming .mp-label {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  transition: none !important;
+}
 
 .mp-soon-pill {
   display: inline-block;

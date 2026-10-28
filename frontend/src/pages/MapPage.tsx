@@ -294,7 +294,6 @@ export default function MapPage() {
   const lastTap = useRef<{ time: number; x: number; y: number } | null>(null);
   const animTimer = useRef<number | undefined>(undefined);
   const invTimer = useRef<number | undefined>(undefined);
-  const lastZoomAt = useRef(0);
   const moveFrame = useRef(0);
   const queuedTf = useRef<View | null>(null);
   const interacted = useRef(false);
@@ -507,24 +506,15 @@ export default function MapPage() {
       const page = pageRef.current;
 
       if (Math.abs(inv - invRef.current) > 0.0001) {
-        const now = performance.now();
-        const burst = now - lastZoomAt.current < 200;
-        lastZoomAt.current = now;
         window.clearTimeout(invTimer.current);
-
-        if (animate || !burst) {
+        if (animate) {
           invRef.current = inv;
           world.style.setProperty("--mp-inv", String(inv));
-          if (animate) {
-            page?.classList.add("is-zooming");
-            invTimer.current = window.setTimeout(() => {
-              invTimer.current = undefined;
-              pageRef.current?.classList.remove("is-zooming");
-            }, 480);
-          } else {
-            page?.classList.remove("is-zooming");
+          page?.classList.add("is-zooming");
+          invTimer.current = window.setTimeout(() => {
             invTimer.current = undefined;
-          }
+            pageRef.current?.classList.remove("is-zooming");
+          }, 480);
         } else {
           page?.classList.add("is-zooming");
           invTimer.current = window.setTimeout(() => {
