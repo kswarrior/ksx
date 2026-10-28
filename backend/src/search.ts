@@ -490,9 +490,11 @@ function indexField(value: string): IndexedField {
   }
   for (let i = 0; i < raw.length - 1; i += 1) {
     addVariant(`${raw[i]}${raw[i + 1]}`, true);
+    addVariant(`${raw[i + 1]}${raw[i]}`, true);
   }
   for (let i = 0; i < canonical.length - 1; i += 1) {
     addVariant(`${canonical[i]}${canonical[i + 1]}`, true);
+    addVariant(`${canonical[i + 1]}${canonical[i]}`, true);
   }
   return {
     tokens: canonical,
