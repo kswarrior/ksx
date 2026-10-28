@@ -302,6 +302,7 @@ export default function MapPage() {
   const invRef = useRef(1);
   const visTimer = useRef<number | undefined>(undefined);
   const zoomBucket = useRef("");
+  const labelsHidden = useRef(false);
   const suppressClickUntil = useRef(0);
   const lastTap = useRef<{ time: number; x: number; y: number } | null>(null);
   const animTimer = useRef<number | undefined>(undefined);
@@ -508,6 +509,18 @@ export default function MapPage() {
     [layout]
   );
 
+  const setLabelsHidden = useCallback((hidden: boolean) => {
+    if (labelsHidden.current === hidden) return;
+    labelsHidden.current = hidden;
+    const world = worldRef.current;
+    if (!world) return;
+    world.querySelectorAll<HTMLElement>(".mp-label").forEach((label) => {
+      label.style.visibility = hidden ? "hidden" : "";
+      label.style.opacity = hidden ? "0" : "";
+      label.style.transition = hidden ? "none" : "";
+    });
+  }, []);
+
   const applyTf = useCallback(
     (next: View, animate = false) => {
       const world = worldRef.current;
@@ -519,6 +532,7 @@ export default function MapPage() {
 
       if (Math.abs(inv - invRef.current) > 0.0001) {
         window.clearTimeout(invTimer.current);
+        setLabelsHidden(true);
         if (animate) {
           invRef.current = inv;
           world.style.setProperty("--mp-inv", String(inv));
@@ -527,6 +541,7 @@ export default function MapPage() {
             invTimer.current = undefined;
             applyZoomBucket(pageRef.current, tfRef.current.z, zoomBucket);
             pageRef.current?.classList.remove("is-zooming");
+            setLabelsHidden(false);
           }, 480);
         } else {
           page?.classList.add("is-zooming");
@@ -537,6 +552,7 @@ export default function MapPage() {
             worldRef.current?.style.setProperty("--mp-inv", String(settled));
             applyZoomBucket(pageRef.current, tfRef.current.z, zoomBucket);
             pageRef.current?.classList.remove("is-zooming");
+            setLabelsHidden(false);
           }, 160);
         }
       }
@@ -556,7 +572,7 @@ export default function MapPage() {
         );
       }
     },
-    [syncVisible]
+    [setLabelsHidden, syncVisible]
   );
 
   const applyTfQueued = useCallback(
