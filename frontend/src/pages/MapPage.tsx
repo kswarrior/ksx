@@ -341,7 +341,7 @@ export default function MapPage() {
     return { stars, planets, moons };
   }, [layout]);
 
-  const shown = allVisible;
+  const shown = visible ?? allVisible;
 
   const flatItems = useMemo(() => flattenSitemap(data), [data]);
 
@@ -491,7 +491,7 @@ export default function MapPage() {
         }
         const next = { stars, planets, moons };
         visibleRef.current = next;
-        void next;
+        startTransition(() => setVisible(next));
       }, 120);
     },
     [layout]

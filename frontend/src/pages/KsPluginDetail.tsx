@@ -59,15 +59,14 @@ export default function KsPluginDetail() {
           </div>
 
           <div className="portal-actions">
-            <a
+            <span
               className="portal-btn primary"
-              href={plugin.downloadUrl}
-              download
+              aria-disabled="true"
+              style={{ cursor: "not-allowed", opacity: 0.7 }}
             >
               <Icon name="download" size={15} />
-              {plugin.downloadLabel}
-              <span className="portal-btn-version">v{plugin.version}</span>
-            </a>
+              Coming Soon
+            </span>
           </div>
         </section>
 
