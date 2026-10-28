@@ -75,7 +75,6 @@
 }
 
 .mp-viewport.is-dragging .mp-world,
-.map-page.is-zooming .mp-world,
 .mp-world.is-animating {
   will-change: transform;
 }
