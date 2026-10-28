@@ -75,6 +75,7 @@
 }
 
 .mp-viewport.is-dragging .mp-world,
+.map-page.is-zooming .mp-world,
 .mp-world.is-animating {
   will-change: transform;
 }
@@ -376,11 +377,6 @@
   color: #b9b9b9;
 }
 
-.map-page.is-zooming .mp-label {
-  opacity: 0 !important;
-  visibility: hidden !important;
-  transition: none !important;
-}
 
 .mp-soon-pill {
   display: inline-block;
