@@ -66,6 +66,7 @@
   width: 2000px;
   height: 1400px;
   transform-origin: 0 0;
+  will-change: transform;
   opacity: 0;
   transition: opacity 0.2s ease;
 }
