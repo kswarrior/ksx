@@ -262,6 +262,39 @@
             ]
           },
           {
+            "name": "KS Lifestead",
+            "url": "/minecraft/make-server/ks-plugins/lifestead.html",
+            "logo": "<svg viewBox='0 0 24 24' width='24' height='24' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M9 3v5M15 3v5' stroke='#fff' stroke-width='1.6' stroke-linecap='round'/><path d='M6 8h12v3a6 6 0 0 1-12 0V8Z' stroke='#fff' stroke-width='1.6' stroke-linejoin='round'/><path d='M12 17v4' stroke='#a78bfa' stroke-width='1.6' stroke-linecap='round'/><circle cx='12' cy='11.2' r='1.3' fill='#22c55e'/></svg>",
+            "description": "KS Lifestead is a Spigot-API plugin for Minecraft Java 1.21.11 that turns player deaths into a heart economy with PvP stealing, withdraw, deposit, elimination and revive.",
+            "keywords": [
+              "ks lifestead",
+              "lifesteal",
+              "minecraft plugin",
+              "heart economy",
+              "pvp hearts",
+              "revive",
+              "placeholderapi",
+              "ks warrior"
+            ]
+          },
+          {
+            "name": "KS Plugin Manager",
+            "url": "/minecraft/make-server/ks-plugins/plugin-manager.html",
+            "logo": "<svg viewBox='0 0 24 24' width='24' height='24' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M9 3v5M15 3v5' stroke='#fff' stroke-width='1.6' stroke-linecap='round'/><path d='M6 8h12v3a6 6 0 0 1-12 0V8Z' stroke='#fff' stroke-width='1.6' stroke-linejoin='round'/><path d='M12 17v4' stroke='#a78bfa' stroke-width='1.6' stroke-linecap='round'/><circle cx='12' cy='11.2' r='1.3' fill='#22c55e'/></svg>",
+            "description": "KS Plugin Manager is a runtime plugin manager for Paper, Spigot and Bukkit with load, unload, reload, enable, disable, update and remove commands.",
+            "keywords": [
+              "ks plugin manager",
+              "plugin manager",
+              "load plugin",
+              "unload plugin",
+              "reload plugin",
+              "plugin updates",
+              "paper",
+              "spigot",
+              "bukkit"
+            ]
+          },
+          {
             "name": "Custom IP",
             "url": "/minecraft/make-server/custom-ip.html",
             "logo": "<svg viewBox='0 0 24 24' width='24' height='24' fill='none' xmlns='http://www.w3.org/2000/svg'><circle cx='12' cy='12' r='7.4' stroke='#fff' stroke-width='1.5'/><path d='M4.6 12h14.8M12 4.6c2.1 2 3.3 4.7 3.3 7.4S14.1 17.4 12 19.4c-2.1-2-3.3-4.7-3.3-7.4S9.9 6.6 12 4.6z' stroke='#fff' stroke-width='1.2'/><rect x='9.4' y='9.4' width='5.2' height='5.2' rx='1.1' fill='#3b82f6' stroke='#fff' stroke-width='1.2'/><path d='M10.8 12h2.4M12 10.8v2.4' stroke='#fff' stroke-width='1.1' stroke-linecap='round'/></svg>",

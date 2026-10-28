@@ -32,6 +32,7 @@ const SetupServer = lazy(() => import("./pages/SetupServer"));
 const ServerJarDownloader = lazy(() => import("./pages/ServerJarDownloader"));
 const PaidPluginFree = lazy(() => import("./pages/PaidPluginFree"));
 const KsPlugins = lazy(() => import("./pages/KsPlugins"));
+const KsPluginDetail = lazy(() => import("./pages/KsPluginDetail"));
 const CustomIP = lazy(() => import("./pages/CustomIP"));
 const GenericPlaceholder = lazy(() => import("./pages/GenericPlaceholder"));
 const NotFound = lazy(() => import("./pages/NotFound"));
@@ -110,6 +111,8 @@ export default function App() {
           <Route path="minecraft/make-server/paid-plugin-free.html" element={<PaidPluginFree />} />
           <Route path="minecraft/make-server/ks-plugins" element={<KsPlugins />} />
           <Route path="minecraft/make-server/ks-plugins.html" element={<KsPlugins />} />
+          <Route path="minecraft/make-server/ks-plugins/:slug" element={<KsPluginDetail />} />
+          <Route path="minecraft/make-server/ks-plugins/:slug.html" element={<KsPluginDetail />} />
           <Route path="minecraft/make-server/custom-ip" element={<CustomIP />} />
           <Route path="minecraft/make-server/custom-ip.html" element={<CustomIP />} />
 
