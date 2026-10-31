@@ -1,0 +1,107 @@
+.page-hero {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+  position: relative;
+  color: inherit;
+}
+
+.page-hero-icon {
+  position: relative;
+  z-index: 1;
+  width: 46px;
+  height: 46px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.82);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
+}
+
+.page-hero-logo {
+  padding: 6px;
+  background: linear-gradient(135deg, #ffffff, #f1f1f1);
+  border-color: rgba(255, 255, 255, 0.12);
+  color: #111111;
+}
+
+.page-hero-text {
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+}
+
+.page-hero-kicker {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.52);
+}
+
+.page-hero-text h1 {
+  font-size: clamp(20px, 3vw, 26px);
+  font-weight: 900;
+  letter-spacing: -0.8px;
+  line-height: 1.15;
+}
+
+.page-hero-text p {
+  margin-top: 4px;
+  max-width: 620px;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.page-hero--card {
+  padding: 16px 18px;
+  margin-bottom: 14px;
+  background: rgba(18, 18, 18, 0.82);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 5px;
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
+  overflow: hidden;
+}
+
+.page-hero--card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(600px 220px at 20% 0%, rgba(255, 255, 255, 0.06), transparent 65%);
+  pointer-events: none;
+}
+
+.page-hero--inline {
+  padding-bottom: 12px;
+  margin-bottom: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.page-hero--inline .page-hero-icon {
+  width: 42px;
+  height: 42px;
+}
+
+@media (max-width: 640px) {
+  .page-hero--card {
+    padding: 14px 16px;
+  }
+
+  .page-hero-icon {
+    width: 42px;
+    height: 42px;
+  }
+
+  .page-hero-text h1 {
+    font-size: 20px;
+  }
+}
