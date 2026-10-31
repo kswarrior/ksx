@@ -1,5 +1,6 @@
 import { useEffect, useState, type CSSProperties } from "react";
 import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
+import { useAuth } from "../lib/auth";
 import Icon, { type IconName } from "./Icon";
 import "./Layout.css";
 
@@ -26,6 +27,8 @@ export default function Layout() {
   const [sidebarOpen, setSidebarOpen] = useState(isDesktopViewport);
   const [online, setOnline] = useState<boolean | null>(null);
   const location = useLocation();
+  const { state, logout } = useAuth();
+  const username = state.status === "authenticated" ? state.username : "";
 
   useEffect(() => {
     const controller = new AbortController();
@@ -165,7 +168,19 @@ export default function Layout() {
               <Icon name="arrow-up-right" size={11} />
             </span>
           </Link>
-          <div className="sb-copy">KSX Admin · v0.1.0</div>
+          <button
+            type="button"
+            className="sb-signout"
+            onClick={() => {
+              void logout();
+            }}
+          >
+            <Icon name="arrow-right" size={13} />
+            Sign out
+          </button>
+          <div className="sb-copy">
+            {username ? `Signed in as ${username}` : "KSX Admin · v0.1.0"}
+          </div>
         </div>
       </nav>
 
