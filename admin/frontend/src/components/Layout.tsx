@@ -14,7 +14,7 @@ const NAV_ITEMS: NavItem[] = [
   { to: "/", label: "Overview", icon: "gamepad", end: true },
   { to: "/github", label: "GitHub", icon: "terminal" },
   { to: "/cloudflare", label: "Cloudflare", icon: "cloud" },
-  { to: "/jobs", label: "Background Jobs", icon: "zap" },
+  { to: "/jobs", label: "Jobs", icon: "zap" },
   { to: "/settings", label: "Settings", icon: "sliders" },
 ];
 
@@ -159,7 +159,7 @@ export default function Layout() {
             </span>
             <span className="sb-foot-text">
               <strong>Environment</strong>
-              <small>Tokens and configuration</small>
+              <small>Tokens &amp; config</small>
             </span>
             <span className="sb-foot-arrow" aria-hidden="true">
               <Icon name="arrow-up-right" size={11} />
