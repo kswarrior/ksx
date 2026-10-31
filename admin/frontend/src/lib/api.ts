@@ -19,9 +19,18 @@ export type Integration = {
 
 async function getJSON<T>(path: string): Promise<T> {
   const response = await fetch(path, { headers: { Accept: "application/json" } });
+
+  if (response.status === 401) {
+    if (window.location.pathname !== "/login") {
+      window.location.assign("/login");
+    }
+    throw new Error("Unauthorized");
+  }
+
   if (!response.ok) {
     throw new Error(`${path} returned ${response.status}`);
   }
+
   return (await response.json()) as T;
 }
 
