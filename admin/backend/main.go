@@ -16,13 +16,20 @@ import (
 	"time"
 )
 
-const version = "0.1.0"
+const (
+	version              = "0.1.0"
+	defaultAdminUsername = "kswarrior"
+	defaultAdminPassword = "kswarrior@123"
+	sessionTTL           = 12 * time.Hour
+)
 
 //go:embed all:public
 var publicFiles embed.FS
 
 type config struct {
 	port                string
+	adminUsername       string
+	adminPassword       string
 	githubToken         string
 	githubOwner         string
 	githubRepo          string
@@ -33,6 +40,8 @@ type config struct {
 func loadConfig() config {
 	return config{
 		port:                env("PORT", "8080"),
+		adminUsername:       env("ADMIN_USERNAME", defaultAdminUsername),
+		adminPassword:       env("ADMIN_PASSWORD", defaultAdminPassword),
 		githubToken:         os.Getenv("GITHUB_TOKEN"),
 		githubOwner:         os.Getenv("GITHUB_OWNER"),
 		githubRepo:          os.Getenv("GITHUB_REPO"),
@@ -49,24 +58,29 @@ func env(key, fallback string) string {
 }
 
 type server struct {
-	started time.Time
-	cfg     config
-	static  fs.FS
+	started  time.Time
+	cfg      config
+	static   fs.FS
+	sessions *sessionStore
 }
 
 func newServer(cfg config, static fs.FS) *server {
 	return &server{
-		started: time.Now(),
-		cfg:     cfg,
-		static:  static,
+		started:  time.Now(),
+		cfg:      cfg,
+		static:   static,
+		sessions: newSessionStore(sessionTTL),
 	}
 }
 
 func (s *server) routes() http.Handler {
 	mux := http.NewServeMux()
-	mux.HandleFunc("GET /api/hello", s.handleHello)
 	mux.HandleFunc("GET /api/health", s.handleHealth)
-	mux.HandleFunc("GET /api/integrations", s.handleIntegrations)
+	mux.HandleFunc("GET /api/session", s.handleSession)
+	mux.HandleFunc("POST /api/login", s.handleLogin)
+	mux.HandleFunc("POST /api/logout", s.handleLogout)
+	mux.HandleFunc("GET /api/hello", s.requireAuth(s.handleHello))
+	mux.HandleFunc("GET /api/integrations", s.requireAuth(s.handleIntegrations))
 	mux.Handle("/", spaHandler(s.static))
 
 	return withLogging(withSecurityHeaders(mux))
@@ -178,6 +192,10 @@ func main() {
 	slog.SetDefault(slog.New(slog.NewJSONHandler(os.Stdout, nil)))
 
 	cfg := loadConfig()
+	if cfg.adminUsername == defaultAdminUsername && cfg.adminPassword == defaultAdminPassword {
+		slog.Warn("default admin credentials are in use; set ADMIN_USERNAME and ADMIN_PASSWORD")
+	}
+
 	static, err := fs.Sub(publicFiles, "public")
 	if err != nil {
 		slog.Error("failed to load embedded frontend", "error", err)
