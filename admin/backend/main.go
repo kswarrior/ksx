@@ -129,6 +129,10 @@ func spaHandler(static fs.FS) http.Handler {
 			name = "index.html"
 		}
 		if _, err := fs.Stat(static, name); err != nil {
+			if strings.HasPrefix(name, "assets/") || path.Ext(name) != "" {
+				http.NotFound(w, r)
+				return
+			}
 			r.URL.Path = "/"
 		}
 		fileServer.ServeHTTP(w, r)
