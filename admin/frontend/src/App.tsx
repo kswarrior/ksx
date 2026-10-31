@@ -15,6 +15,18 @@ export default function App() {
             <Route element={<Layout />}>
               <Route index element={<Overview />} />
               <Route
+                path="ksx"
+                element={
+                  <Placeholder
+                    icon="sparkles"
+                    kicker="Workspace"
+                    title="KSX"
+                    subtitle="The KSX workspace is coming soon."
+                    message="KSX controls, services, and site data will live here in the next iteration."
+                  />
+                }
+              />
+              <Route
                 path="github"
                 element={
                   <Placeholder

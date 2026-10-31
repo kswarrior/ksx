@@ -13,10 +13,7 @@ type NavItem = {
 
 const NAV_ITEMS: NavItem[] = [
   { to: "/", label: "Overview", icon: "gamepad", end: true },
-  { to: "/github", label: "GitHub", icon: "terminal" },
-  { to: "/cloudflare", label: "Cloudflare", icon: "cloud" },
-  { to: "/jobs", label: "Jobs", icon: "zap" },
-  { to: "/settings", label: "Settings", icon: "sliders" },
+  { to: "/ksx", label: "KSX", icon: "sparkles" },
 ];
 
 function isDesktopViewport() {
@@ -150,24 +147,6 @@ export default function Layout() {
         </div>
 
         <div className="sb-foot">
-          <Link
-            to="/settings"
-            className="sb-foot-card"
-            onClick={() => {
-              if (!isDesktopViewport()) setSidebarOpen(false);
-            }}
-          >
-            <span className="sb-foot-icon" aria-hidden="true">
-              <Icon name="sliders" size={15} />
-            </span>
-            <span className="sb-foot-text">
-              <strong>Environment</strong>
-              <small>Tokens &amp; config</small>
-            </span>
-            <span className="sb-foot-arrow" aria-hidden="true">
-              <Icon name="arrow-up-right" size={11} />
-            </span>
-          </Link>
           <button
             type="button"
             className="sb-signout"

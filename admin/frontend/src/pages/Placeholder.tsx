@@ -8,9 +8,16 @@ type PlaceholderProps = {
   kicker: string;
   title: string;
   subtitle: string;
+  message?: string;
 };
 
-export default function Placeholder({ icon, kicker, title, subtitle }: PlaceholderProps) {
+export default function Placeholder({
+  icon,
+  kicker,
+  title,
+  subtitle,
+  message,
+}: PlaceholderProps) {
   return (
     <div className="placeholder-page">
       <PageHero icon={icon} kicker={kicker} title={title} subtitle={subtitle} />
@@ -21,8 +28,8 @@ export default function Placeholder({ icon, kicker, title, subtitle }: Placehold
         </span>
         <h2>Coming soon</h2>
         <p>
-          The layout and navigation are ready. This module will be wired to the API
-          in a later step.
+          {message ??
+            "The layout and navigation are ready. This module will be wired to the API in a later step."}
         </p>
         <Link to="/" className="btn">
           <Icon name="arrow-left" size={13} />
