@@ -1,0 +1,225 @@
+.admins-page {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 22px 18px 64px;
+  color: #f5f5f5;
+}
+
+.admins-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.admins-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.admins-filters {
+  display: inline-flex;
+  gap: 4px;
+  padding: 3px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.admins-filter {
+  padding: 5px 11px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: capitalize;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.admins-filter:hover {
+  color: #fff;
+}
+
+.admins-filter.active {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+
+.admins-search {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-width: 220px;
+  padding: 7px 11px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.045);
+  color: var(--muted);
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.admins-search:focus-within {
+  border-color: rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.admins-search input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  color: #f5f5f5;
+  font-size: 12px;
+  outline: none;
+}
+
+.admins-search input::placeholder {
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.admins-list {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.admin-card {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1.1fr) minmax(0, 1.3fr) minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px;
+  padding: 13px 15px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.045);
+  transition: background 0.2s, border-color 0.2s, transform 0.2s;
+}
+
+.admin-card:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.12);
+  transform: translateX(3px);
+}
+
+.admin-avatar {
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.07);
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.admin-identity {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.admin-name {
+  color: #f5f5f5;
+  font-size: 13px;
+  font-weight: 750;
+  letter-spacing: -0.2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.admin-username {
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.admin-meta,
+.admin-logins {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.admin-email,
+.admin-login-value {
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 11.5px;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.admin-role,
+.admin-login-label {
+  color: var(--muted);
+  font-size: 10.5px;
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.admin-error {
+  color: #f87171;
+  font-size: 11.5px;
+  font-weight: 600;
+}
+
+.admins-source {
+  color: var(--muted);
+  font-size: 10.5px;
+  font-weight: 500;
+}
+
+.admins-source code {
+  padding: 2px 6px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 10.5px;
+}
+
+@media (max-width: 900px) {
+  .admin-card {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    row-gap: 10px;
+  }
+
+  .admin-meta,
+  .admin-logins {
+    grid-column: 2 / -1;
+  }
+}
+
+@media (max-width: 768px) {
+  .admins-page {
+    padding: 14px 10px 40px;
+  }
+
+  .admins-toolbar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .admins-search {
+    width: 100%;
+  }
+}

@@ -1,6 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Layout from "./components/Layout";
 import { AuthProvider, RequireAuth } from "./lib/auth";
+import Admins from "./pages/Admins";
 import Login from "./pages/Login";
 import Overview from "./pages/Overview";
 import Placeholder from "./pages/Placeholder";
