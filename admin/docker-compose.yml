@@ -14,6 +14,9 @@ services:
       PORT: "8080"
       GOMAXPROCS: "1"
       GOMEMLIMIT: "96MiB"
+      ADMINS_FILE: "/app/data/admins.yaml"
+    volumes:
+      - ./backend/data:/app/data:ro
     mem_limit: 192m
     cpus: 0.50
     security_opt:
