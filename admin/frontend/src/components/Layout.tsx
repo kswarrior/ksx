@@ -13,6 +13,7 @@ type NavItem = {
 
 const NAV_ITEMS: NavItem[] = [
   { to: "/", label: "Overview", icon: "gamepad", end: true },
+  { to: "/admins", label: "Admins", icon: "users" },
   { to: "/ksx", label: "KSX", icon: "sparkles" },
 ];
 

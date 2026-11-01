@@ -15,6 +15,7 @@ export default function App() {
           <Route element={<RequireAuth />}>
             <Route element={<Layout />}>
               <Route index element={<Overview />} />
+              <Route path="admins" element={<Admins />} />
               <Route
                 path="ksx"
                 element={
