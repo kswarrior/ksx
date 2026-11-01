@@ -10,6 +10,7 @@ import (
 	"errors"
 	"fmt"
 	"io/fs"
+	"log/slog"
 	"os"
 	"path/filepath"
 	"strconv"
@@ -170,12 +171,12 @@ func (s *adminStore) touchLastLogin(username string) {
 
 	data, err := yaml.Marshal(file)
 	if err != nil {
-		slogWarn("failed to encode admin roster", "error", err)
+		slog.Debug("failed to encode admin roster", "error", err)
 		return
 	}
 
 	if err := os.WriteFile(s.path, data, 0o600); err != nil {
-		slogWarn("failed to update admin roster", "error", err)
+		slog.Debug("failed to update admin roster", "error", err)
 	}
 }
 
