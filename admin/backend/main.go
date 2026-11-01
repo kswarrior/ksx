@@ -64,6 +64,7 @@ type server struct {
 	cfg      config
 	static   fs.FS
 	sessions *sessionStore
+	admins   *adminStore
 }
 
 func newServer(cfg config, static fs.FS) *server {
@@ -72,6 +73,7 @@ func newServer(cfg config, static fs.FS) *server {
 		cfg:      cfg,
 		static:   static,
 		sessions: newSessionStore(sessionTTL),
+		admins:   newAdminStore(cfg.adminsFile),
 	}
 }
 
@@ -83,6 +85,7 @@ func (s *server) routes() http.Handler {
 	mux.HandleFunc("POST /api/logout", s.handleLogout)
 	mux.HandleFunc("GET /api/hello", s.requireAuth(s.handleHello))
 	mux.HandleFunc("GET /api/integrations", s.requireAuth(s.handleIntegrations))
+	mux.HandleFunc("GET /api/admins", s.requireAuth(s.handleAdmins))
 	mux.Handle("/", spaHandler(s.static))
 
 	return withLogging(withSecurityHeaders(mux))
