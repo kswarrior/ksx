@@ -5,6 +5,7 @@ import (
 	"embed"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io/fs"
 	"log/slog"
 	"net/http"
@@ -210,6 +211,22 @@ func withSecurityHeaders(next http.Handler) http.Handler {
 
 func main() {
 	slog.SetDefault(slog.New(slog.NewJSONHandler(os.Stdout, nil)))
+
+	if len(os.Args) > 1 && os.Args[1] == "hash-password" {
+		if len(os.Args) < 3 {
+			slog.Error("usage: admin hash-password <password>")
+			os.Exit(1)
+		}
+
+		hashed, err := hashPassword(os.Args[2])
+		if err != nil {
+			slog.Error("failed to hash password", "error", err)
+			os.Exit(1)
+		}
+
+		fmt.Println(hashed)
+		return
+	}
 
 	cfg := loadConfig()
 	if cfg.adminUsername == defaultAdminUsername && cfg.adminPassword == defaultAdminPassword {
