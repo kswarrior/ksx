@@ -45,12 +45,16 @@ type adminFile struct {
 }
 
 type adminStore struct {
-	mu   sync.Mutex
-	path string
+	mu        sync.Mutex
+	path      string
+	lastLogin map[string]string
 }
 
 func newAdminStore(path string) *adminStore {
-	return &adminStore{path: path}
+	return &adminStore{
+		path:      path,
+		lastLogin: make(map[string]string),
+	}
 }
 
 func (s *adminStore) source() string {
@@ -112,6 +116,12 @@ func (s *adminStore) list() ([]adminRecord, string, error) {
 	file, err := s.read()
 	if err != nil {
 		return nil, "", err
+	}
+
+	for index := range file.Admins {
+		if stamp, ok := s.lastLogin[file.Admins[index].Username]; ok {
+			file.Admins[index].LastLogin = stamp
+		}
 	}
 
 	return file.Admins, s.source(), nil
