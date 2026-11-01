@@ -45,24 +45,19 @@ type adminFile struct {
 }
 
 type adminStore struct {
-	mu     sync.Mutex
-	path   string
-	source string
+	mu   sync.Mutex
+	path string
 }
 
 func newAdminStore(path string) *adminStore {
-	store := &adminStore{path: path}
-	store.source = store.resolveSource()
-	return store
+	return &adminStore{path: path}
 }
 
-func (s *adminStore) resolveSource() string {
-	if s.path == "" {
-		return "embedded"
-	}
-
-	if _, err := os.Stat(s.path); err == nil {
-		return s.path
+func (s *adminStore) source() string {
+	if s.path != "" {
+		if _, err := os.Stat(s.path); err == nil {
+			return s.path
+		}
 	}
 
 	return "embedded"
@@ -119,7 +114,7 @@ func (s *adminStore) list() ([]adminRecord, string, error) {
 		return nil, "", err
 	}
 
-	return file.Admins, s.source, nil
+	return file.Admins, s.source(), nil
 }
 
 func (s *adminStore) find(username string) (adminRecord, bool) {
