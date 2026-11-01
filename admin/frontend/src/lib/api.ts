@@ -17,6 +17,22 @@ export type Integration = {
   description: string;
 };
 
+export type Admin = {
+  username: string;
+  displayName: string;
+  email: string;
+  role: string;
+  status: string;
+  createdAt: string;
+  lastLogin: string;
+};
+
+export type AdminList = {
+  admins: Admin[];
+  count: number;
+  source: string;
+};
+
 async function getJSON<T>(path: string): Promise<T> {
   const response = await fetch(path, { headers: { Accept: "application/json" } });
 
@@ -38,4 +54,5 @@ export const api = {
   hello: () => getJSON<Hello>("/api/hello"),
   health: () => getJSON<Health>("/api/health"),
   integrations: () => getJSON<{ integrations: Integration[] }>("/api/integrations"),
+  admins: () => getJSON<AdminList>("/api/admins"),
 };
