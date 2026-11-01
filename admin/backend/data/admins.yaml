@@ -1,0 +1,27 @@
+# KSX Admin roster.
+#
+# This file is the source of truth for who can sign in to the admin panel.
+# It is read at request time, so edits apply without a restart.
+#
+# Fields
+#   username      login handle (required, unique)
+#   displayName   shown in the admin list
+#   email         contact address
+#   role          owner | admin | viewer
+#   status        active | disabled
+#   createdAt     RFC3339 timestamp
+#   lastLogin     RFC3339 timestamp, updated by the server after a sign-in
+#   passwordHash  pbkdf2-sha256$iterations$salt$hash
+#
+# Generate a hash with:
+#   docker compose run --rm admin hash-password 'your-password'
+
+admins:
+  - username: kswarrior
+    displayName: KS Warrior
+    email: admin@ksx.dev
+    role: owner
+    status: active
+    createdAt: "2026-01-01T00:00:00Z"
+    lastLogin: ""
+    passwordHash: "pbkdf2-sha256$600000$zh16GIj3c/n73q6UOQ3j1w$A3FNug2bNRAWbyGDcfb0alKQ/5oALBENHAhCa14hmiw"
