@@ -125,6 +125,21 @@ func (s *server) handleIntegrations(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
+func (s *server) handleAdmins(w http.ResponseWriter, r *http.Request) {
+	admins, source, err := s.admins.list()
+	if err != nil {
+		slog.Error("failed to load admin roster", "error", err)
+		writeJSON(w, http.StatusInternalServerError, map[string]string{"error": "Could not load admins"})
+		return
+	}
+
+	writeJSON(w, http.StatusOK, map[string]any{
+		"admins": admins,
+		"count":  len(admins),
+		"source": source,
+	})
+}
+
 func writeJSON(w http.ResponseWriter, status int, payload any) {
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	w.Header().Set("Cache-Control", "no-store")

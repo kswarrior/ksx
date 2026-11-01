@@ -95,7 +95,7 @@ func (s *server) handleLogin(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if !secureEqual(request.Username, s.cfg.adminUsername) || !secureEqual(request.Password, s.cfg.adminPassword) {
+	if !s.authenticate(request.Username, request.Password) {
 		time.Sleep(250 * time.Millisecond)
 		writeJSON(w, http.StatusUnauthorized, map[string]string{"error": "Invalid username or password"})
 		return
@@ -106,6 +106,8 @@ func (s *server) handleLogin(w http.ResponseWriter, r *http.Request) {
 		writeJSON(w, http.StatusInternalServerError, map[string]string{"error": "Could not create session"})
 		return
 	}
+
+	go s.admins.touchLastLogin(request.Username)
 
 	http.SetCookie(w, &http.Cookie{
 		Name:     sessionCookieName,
