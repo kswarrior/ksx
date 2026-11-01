@@ -155,6 +155,9 @@ func (s *adminStore) touchLastLogin(username string) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
+	stamp := time.Now().UTC().Format(time.RFC3339)
+	s.lastLogin[username] = stamp
+
 	if s.path == "" {
 		return
 	}
@@ -169,7 +172,6 @@ func (s *adminStore) touchLastLogin(username string) {
 		return
 	}
 
-	stamp := time.Now().UTC().Format(time.RFC3339)
 	if !setAdminLastLogin(&root, username, stamp) {
 		return
 	}
@@ -181,7 +183,7 @@ func (s *adminStore) touchLastLogin(username string) {
 	}
 
 	if err := os.WriteFile(s.path, encoded, 0o600); err != nil {
-		slog.Debug("failed to update admin roster", "error", err)
+		slog.Debug("failed to persist admin roster", "error", err)
 	}
 }
 
