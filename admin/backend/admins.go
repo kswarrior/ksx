@@ -145,34 +145,91 @@ func (s *adminStore) touchLastLogin(username string) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
-	file, err := s.read()
+	if s.path == "" {
+		return
+	}
+
+	data, err := os.ReadFile(s.path)
 	if err != nil {
 		return
 	}
 
-	changed := false
-	for index := range file.Admins {
-		if file.Admins[index].Username != username {
-			continue
-		}
-		file.Admins[index].LastLogin = time.Now().UTC().Format(time.RFC3339)
-		changed = true
-		break
-	}
-
-	if !changed || s.path == "" {
+	var root yaml.Node
+	if err := yaml.Unmarshal(data, &root); err != nil {
 		return
 	}
 
-	data, err := yaml.Marshal(file)
+	stamp := time.Now().UTC().Format(time.RFC3339)
+	if !setAdminLastLogin(&root, username, stamp) {
+		return
+	}
+
+	encoded, err := yaml.Marshal(&root)
 	if err != nil {
 		slog.Debug("failed to encode admin roster", "error", err)
 		return
 	}
 
-	if err := os.WriteFile(s.path, data, 0o600); err != nil {
+	if err := os.WriteFile(s.path, encoded, 0o600); err != nil {
 		slog.Debug("failed to update admin roster", "error", err)
 	}
+}
+
+func setAdminLastLogin(root *yaml.Node, username, stamp string) bool {
+	if root.Kind == yaml.DocumentNode && len(root.Content) > 0 {
+		root = root.Content[0]
+	}
+
+	if root.Kind != yaml.MappingNode {
+		return false
+	}
+
+	for index := 0; index+1 < len(root.Content); index += 2 {
+		if root.Content[index].Value != "admins" {
+			continue
+		}
+
+		sequence := root.Content[index+1]
+		if sequence.Kind != yaml.SequenceNode {
+			return false
+		}
+
+		for _, entry := range sequence.Content {
+			if entry.Kind != yaml.MappingNode {
+				continue
+			}
+
+			if adminNodeValue(entry, "username") != username {
+				continue
+			}
+
+			for field := 0; field+1 < len(entry.Content); field += 2 {
+				if entry.Content[field].Value == "lastLogin" {
+					entry.Content[field+1].Value = stamp
+					entry.Content[field+1].Tag = "!!str"
+					return true
+				}
+			}
+
+			entry.Content = append(entry.Content,
+				&yaml.Node{Kind: yaml.ScalarNode, Tag: "!!str", Value: "lastLogin"},
+				&yaml.Node{Kind: yaml.ScalarNode, Tag: "!!str", Value: stamp},
+			)
+			return true
+		}
+	}
+
+	return false
+}
+
+func adminNodeValue(entry *yaml.Node, key string) string {
+	for index := 0; index+1 < len(entry.Content); index += 2 {
+		if entry.Content[index].Value == key {
+			return entry.Content[index+1].Value
+		}
+	}
+
+	return ""
 }
 
 func verifyPassword(encoded, password string) bool {
