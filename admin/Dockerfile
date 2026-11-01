@@ -9,7 +9,7 @@ RUN npm run build
 
 FROM golang:1.26-alpine AS backend
 WORKDIR /src
-COPY backend/go.mod ./
+COPY backend/go.mod backend/go.sum ./
 RUN go mod download
 COPY backend/ ./
 COPY --from=frontend /app/dist/ ./public/
@@ -21,6 +21,7 @@ RUN apk add --no-cache ca-certificates \
     && adduser -S -G app app
 WORKDIR /app
 COPY --from=backend /out/admin ./admin
+COPY --from=backend /src/data ./data
 USER app
 ENV PORT=8080 \
     GOMAXPROCS=1 \
