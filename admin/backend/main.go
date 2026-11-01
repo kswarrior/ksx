@@ -30,6 +30,7 @@ type config struct {
 	port                string
 	adminUsername       string
 	adminPassword       string
+	adminsFile          string
 	githubToken         string
 	githubOwner         string
 	githubRepo          string
@@ -42,6 +43,7 @@ func loadConfig() config {
 		port:                env("PORT", "8080"),
 		adminUsername:       env("ADMIN_USERNAME", defaultAdminUsername),
 		adminPassword:       env("ADMIN_PASSWORD", defaultAdminPassword),
+		adminsFile:          resolveAdminsPath(os.Getenv("ADMINS_FILE")),
 		githubToken:         os.Getenv("GITHUB_TOKEN"),
 		githubOwner:         os.Getenv("GITHUB_OWNER"),
 		githubRepo:          os.Getenv("GITHUB_REPO"),
