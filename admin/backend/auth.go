@@ -158,6 +158,14 @@ func (s *server) handleSession(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
+func (s *server) authenticate(username, password string) bool {
+	if s.admins.authenticate(username, password) {
+		return true
+	}
+
+	return secureEqual(username, s.cfg.adminUsername) && secureEqual(password, s.cfg.adminPassword)
+}
+
 func (s *server) requireAuth(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if _, ok := s.currentSession(r); !ok {
